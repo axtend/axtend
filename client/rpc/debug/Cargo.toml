@@ -1,0 +1,37 @@
+[package]
+name = "moonbeam-rpc-debug"
+authors = ["PureStake"]
+edition = "2018"
+homepage = "https://moonbeam.network"
+license = "GPL-3.0-only"
+repository = "https://github.com/PureStake/moonbeam/"
+version = "0.1.0"
+
+[dependencies]
+futures = { version = "0.3", features = ["compat"] }
+jsonrpc-core = "18.0.0"
+tokio = { version = "1.10", features = ["sync", "time"] }
+
+ethereum = { version = "0.9.0", default-features = false, features = [
+    "with-codec",
+] }
+ethereum-types = "0.12.0"
+sc-client-api = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sc-utils = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sp-api = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sp-block-builder = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sp-blockchain = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sp-core = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sp-io = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sp-runtime = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+
+fc-consensus = { git = "https://github.com/axtend/frontier", branch = "2da9bb8" }
+fc-db = { git = "https://github.com/axtend/frontier", branch = "2da9bb8" }
+fc-rpc = { git = "https://github.com/axtend/frontier", branch = "2da9bb8", features = [
+    "rpc_binary_search_estimate",
+] }
+fp-rpc = { git = "https://github.com/axtend/frontier", branch = "2da9bb8" }
+moonbeam-client-evm-tracing = { path = "../../evm-tracing" }
+moonbeam-rpc-core-debug = { path = "../../rpc-core/debug" }
+moonbeam-rpc-core-types = { path = "../../rpc-core/types" }
+moonbeam-rpc-primitives-debug = { path = "../../../primitives/rpc/debug" }

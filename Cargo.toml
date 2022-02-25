@@ -1,0 +1,25 @@
+[workspace]
+exclude = ["bin/utils/moonkey"]
+members = [
+	"bin/utils/moonkey",
+	"client/rpc/manual-xcm",
+	"node",
+	"node/cli",
+	"node/service",
+	"pallets/maintenance-mode",
+	"pallets/migrations",
+	"pallets/proxy-genesis-companion",
+	"precompiles/utils/macro",
+	"runtime/moonbase",
+	"runtime/moonbeam",
+	"runtime/moonriver",
+]
+
+[patch.crates-io]
+ethereum = { git = "https://github.com/axtend/ethereum", branch = "2b98173" }
+evm = { git = "https://github.com/axtend/evm", branch = "e17436b" }
+evm-gasometer = { git = "https://github.com/axtend/evm", branch = "e17436b" }
+evm-runtime = { git = "https://github.com/axtend/evm", branch = "e17436b" }
+
+[profile.release]
+panic = "unwind"

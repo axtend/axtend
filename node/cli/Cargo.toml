@@ -1,0 +1,60 @@
+[package]
+name = "moonbeam-cli"
+authors = ["PureStake"]
+edition = "2018"
+version = "0.18.1"
+
+[dependencies]
+log = "0.4.8"
+parity-scale-codec = "2.2"
+structopt = "0.3.8"
+
+# Moonbeam
+cli-opt = { package = "moonbeam-cli-opt", path = "../cli-opt", default-features = false }
+perf-test = { path = "../perf-test" }
+service = { package = "moonbeam-service", path = "../service", default-features = false }
+
+# Substrate
+frame-benchmarking-cli = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sc-cli = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sc-service = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sc-telemetry = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sc-tracing = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sp-core = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sp-runtime = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+try-runtime-cli = { git = "https://github.com/axtend/axlib", branch = "e09e70a", optional = true }
+
+# Cumulus / Nimbus
+cumulus-client-cli = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
+cumulus-client-service = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
+nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "faabf10" }
+
+# Polkadot
+polkadot-cli = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
+polkadot-parachain = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
+polkadot-primitives = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
+polkadot-service = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
+
+[build-dependencies]
+substrate-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+
+[features]
+default = [
+	"moonbase-native",
+	"moonbeam-native",
+	"moonriver-native",
+	"wasmtime",
+	"westend-native",
+]
+
+westend-native = ["polkadot-service/westend-native"]
+
+moonbase-native = ["service/moonbase-native", "westend-native"]
+moonbeam-native = ["service/moonbeam-native"]
+moonriver-native = ["service/moonriver-native"]
+
+moonbase-runtime-benchmarks = ["service/moonbase-runtime-benchmarks"]
+runtime-benchmarks = ["service/runtime-benchmarks"]
+try-runtime = ["service/try-runtime", "try-runtime-cli"]
+wasmtime = ["sc-cli/wasmtime"]

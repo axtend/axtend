@@ -1,0 +1,50 @@
+[package]
+name = "moonbeam-relay-encoder"
+authors = ["PureStake"]
+edition = "2018"
+homepage = "https://moonbeam.network"
+license = "GPL-3.0-only"
+repository = "https://github.com/PureStake/moonbeam/"
+version = "0.1.0"
+
+[dependencies]
+
+# Moonbeam
+relay-encoder-precompiles = { path = "../../precompiles/relay-encoder/", default-features = false }
+xcm-primitives = { path = "../../primitives/xcm", default-features = false }
+
+# Substrate
+frame-system = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
+pallet-staking = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
+parity-scale-codec = { version = "2.0.0", default-features = false, features = [
+	"derive",
+] }
+sp-runtime = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
+sp-std = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
+
+# Cumulus
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
+
+[dev-dependencies]
+frame-support = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+pallet-proxy = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+pallet-utility = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+
+kusama-runtime = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
+polkadot-runtime = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
+rococo-runtime = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
+westend-runtime = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
+
+[features]
+default = ["std"]
+std = [
+	"cumulus-primitives-core/std",
+	"frame-system/std",
+	"pallet-staking/std",
+	"parity-scale-codec/std",
+	"parity-scale-codec/std",
+	"relay-encoder-precompiles/std",
+	"sp-runtime/std",
+	"sp-std/std",
+	"xcm-primitives/std",
+]
