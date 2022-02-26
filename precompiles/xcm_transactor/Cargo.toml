@@ -1,6 +1,6 @@
 [package]
 name = "xcm-transactor-precompiles"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 description = "A Precompile to make xcm-transactor accessible to pallet-evm"
 edition = "2018"
 version = "0.1.0"
@@ -16,19 +16,21 @@ xcm-primitives = { path = "../../primitives/xcm/", default-features = false }
 xcm-transactor = { path = "../../pallets/xcm-transactor", default-features = false }
 
 # Substrate
-frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-sp-core = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-sp-std = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+frame-support = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
+frame-system = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
+sp-core = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
+sp-runtime = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
+sp-std = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 
 # Frontier
-evm = { version = "0.33.1", default-features = false, features = [ "with-codec" ] }
-fp-evm = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-pallet-evm = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+evm = { version = "0.33.1", default-features = false, features = [
+	"with-codec",
+] }
+fp-evm = { git = "https://github.com/axtend/frontier", branch = "2be428c", default-features = false }
+pallet-evm = { git = "https://github.com/axtend/frontier", branch = "2be428c", default-features = false }
 
 # Polkadot
-xcm = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 
 [dev-dependencies]
 derive_more = "0.99"
@@ -39,22 +41,26 @@ sha3 = "0.9"
 xcm-primitives = { path = "../../primitives/xcm/" }
 
 # Substrate
-codec = { package = "parity-scale-codec", version = "2.2", default-features = false, features = [ "max-encoded-len" ] }
-pallet-balances = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
-pallet-timestamp = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
-scale-info = { version = "1.0", default-features = false, features = [ "derive" ] }
-sp-io = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
+codec = { package = "parity-scale-codec", version = "2.2", default-features = false, features = [
+	"max-encoded-len",
+] }
+pallet-balances = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+pallet-timestamp = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+scale-info = { version = "1.0", default-features = false, features = [
+	"derive",
+] }
+sp-io = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
 # Cumulus
-cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17" }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 
 # Polkadot
-pallet-xcm = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.17" }
-xcm-builder = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.17" }
-xcm-executor = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.17" }
+pallet-xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+xcm-builder = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+xcm-executor = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 
 [features]
-default = [ "std" ]
+default = ["std"]
 std = [
 	"evm/std",
 	"frame-support/std",

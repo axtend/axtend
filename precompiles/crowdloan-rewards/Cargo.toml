@@ -1,6 +1,6 @@
 [package]
 name = "crowdloan-rewards-precompiles"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 description = "A Precompile to make crowdloan rewards accessible to pallet-evm"
 edition = "2018"
 version = "0.6.0"
@@ -14,13 +14,13 @@ rustc-hex = { version = "2.0.1", default-features = false }
 precompile-utils = { path = "../utils", default-features = false }
 
 # Substrate
-fp-evm = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-pallet-crowdloan-rewards = { git = "https://github.com/purestake/crowdloan-rewards", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-pallet-evm = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-sp-core = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-sp-std = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+fp-evm = { git = "https://github.com/axtend/frontier", branch = "2be428c", default-features = false }
+frame-support = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
+frame-system = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
+pallet-crowdloan-rewards = { git = "https://github.com/axtend/crowdloan-rewards", branch = "9a9c171", default-features = false }
+pallet-evm = { git = "https://github.com/axtend/frontier", branch = "2be428c", default-features = false }
+sp-core = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
+sp-std = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 
 [dev-dependencies]
 derive_more = "0.99"
@@ -28,22 +28,26 @@ serde = "1.0.100"
 sha3 = "0.9"
 
 # Substrate
-codec = { package = "parity-scale-codec", version = "2.2", default-features = false, features = [ "max-encoded-len" ] }
-pallet-balances = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
-pallet-scheduler = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
-pallet-timestamp = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
-scale-info = { version = "1.0", default-features = false, features = [ "derive" ] }
-sp-io = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
+codec = { package = "parity-scale-codec", version = "2.2", default-features = false, features = [
+	"max-encoded-len",
+] }
+pallet-balances = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+pallet-scheduler = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+pallet-timestamp = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+scale-info = { version = "1.0", default-features = false, features = [
+	"derive",
+] }
+sp-io = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
+sp-runtime = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
 # Cumulus
-cumulus-pallet-parachain-system = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-cumulus-primitives-parachain-inherent = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
-cumulus-test-relay-sproof-builder = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+cumulus-pallet-parachain-system = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
+cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
+cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 
 [features]
-default = [ "std" ]
+default = ["std"]
 std = [
 	"fp-evm/std",
 	"frame-support/std",
