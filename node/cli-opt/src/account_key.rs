@@ -1,4 +1,4 @@
-// Copyright 2019-2021 PureStake Inc.
+// Copyright 2019-2022 PureStake Inc.
 // This file is part of Moonbeam.
 
 // Moonbeam is free software: you can redistribute it and/or modify
@@ -15,24 +15,24 @@
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 
 use bip39::{Language, Mnemonic, MnemonicType, Seed};
+use clap::Parser;
 use libsecp256k1::{PublicKey, SecretKey};
 use primitive_types::H256;
 use sp_runtime::traits::IdentifyAccount;
-use structopt::StructOpt;
 use tiny_hderive::bip32::ExtendedPrivKey;
 
-#[derive(Debug, StructOpt)]
+#[derive(Debug, Parser)]
 pub struct GenerateAccountKey {
 	/// Generate 12 words mnemonic instead of 24
-	#[structopt(long, short = "w")]
+	#[clap(long, short = 'w')]
 	w12: bool,
 
 	/// Specify the mnemonic
-	#[structopt(long, short = "m")]
+	#[clap(long, short = 'm')]
 	mnemonic: Option<String>,
 
 	/// The account index to use in the derivation path
-	#[structopt(long = "account-index", short = "a")]
+	#[clap(long = "account-index", short = 'a')]
 	account_index: Option<u32>,
 }
 

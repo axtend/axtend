@@ -66,6 +66,7 @@ impl frame_system::Config for Runtime {
 	type SystemWeightInfo = ();
 	type SS58Prefix = ();
 	type OnSetCode = ();
+	type MaxConsumers = frame_support::traits::ConstU32<16>;
 }
 
 parameter_types! {
@@ -90,6 +91,7 @@ impl pallet_utility::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 	type WeightInfo = ();
+	type PalletsOrigin = OriginCaller;
 }
 
 impl shared::Config for Runtime {}

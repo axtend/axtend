@@ -1,21 +1,21 @@
 import { expect } from "chai";
 import { GENESIS_ACCOUNT } from "../../util/constants";
 
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createTransfer } from "../../util/transactions";
 
-describeDevMoonbeam("Balance extrinsics", (context) => {
+describeDevMoonbeamAllEthTxTypes("Balance extrinsics", (context) => {
   it("should appear after transfer", async function () {
     const testAddress = "0x1111111111111111111111111111111111111111";
     await context.createBlock({
-      transactions: [await createTransfer(context.web3, testAddress, 512)],
+      transactions: [await createTransfer(context, testAddress, 512)],
     });
 
     const blockHash = await context.polkadotApi.rpc.chain.getBlockHash(1);
     const signedBlock = await context.polkadotApi.rpc.chain.getBlock(blockHash);
-    const allRecords = await context.polkadotApi.query.system.events.at(
+    const allRecords = (await context.polkadotApi.query.system.events.at(
       signedBlock.block.header.hash
-    );
+    )) as any;
 
     // map between the extrinsics and events
     signedBlock.block.extrinsics.forEach(({ method: { method, section } }, index) => {

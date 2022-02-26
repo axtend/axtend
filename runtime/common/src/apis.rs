@@ -1,4 +1,4 @@
-// Copyright 2019-2021 PureStake Inc.
+// Copyright 2019-2022 PureStake Inc.
 // This file is part of Moonbeam.
 
 // Moonbeam is free software: you can redistribute it and/or modify
@@ -134,7 +134,6 @@ macro_rules! impl_runtime_apis_plus_common {
 					#[cfg(feature = "evm-tracing")]
 					{
 						use moonbeam_evm_tracer::tracer::EvmTracer;
-						use sha3::{Digest, Keccak256};
 
 						let mut config = <Runtime as pallet_evm::Config>::config().clone();
 						config.estimate = true;
@@ -143,9 +142,7 @@ macro_rules! impl_runtime_apis_plus_common {
 						for ext in extrinsics.into_iter() {
 							match &ext.0.function {
 								Call::Ethereum(transact { transaction }) => {
-									let eth_extrinsic_hash =
-										H256::from_slice(Keccak256::digest(&rlp::encode(transaction)).as_slice());
-									if known_transactions.contains(&eth_extrinsic_hash) {
+									if known_transactions.contains(&transaction.hash()) {
 										// Each known extrinsic is a new call stack.
 										EvmTracer::emit_new();
 										EvmTracer::new().trace(|| Executive::apply_extrinsic(ext));
@@ -225,9 +222,11 @@ macro_rules! impl_runtime_apis_plus_common {
 					data: Vec<u8>,
 					value: U256,
 					gas_limit: U256,
-					gas_price: Option<U256>,
+					max_fee_per_gas: Option<U256>,
+					max_priority_fee_per_gas: Option<U256>,
 					nonce: Option<U256>,
 					estimate: bool,
+					access_list: Option<Vec<(H160, Vec<H256>)>>,
 				) -> Result<pallet_evm::CallInfo, sp_runtime::DispatchError> {
 					let config = if estimate {
 						let mut config = <Runtime as pallet_evm::Config>::config().clone();
@@ -243,13 +242,12 @@ macro_rules! impl_runtime_apis_plus_common {
 						data,
 						value,
 						gas_limit.low_u64(),
-						gas_price,
+						max_fee_per_gas,
+						max_priority_fee_per_gas,
 						nonce,
-						config
-							.as_ref()
-							.unwrap_or_else(|| <Runtime as pallet_evm::Config>::config()),
-					)
-					.map_err(|err| err.into())
+						Vec::new(),
+						config.as_ref().unwrap_or(<Runtime as pallet_evm::Config>::config()),
+					).map_err(|err| err.into())
 				}
 
 				fn create(
@@ -257,9 +255,11 @@ macro_rules! impl_runtime_apis_plus_common {
 					data: Vec<u8>,
 					value: U256,
 					gas_limit: U256,
-					gas_price: Option<U256>,
+					max_fee_per_gas: Option<U256>,
+					max_priority_fee_per_gas: Option<U256>,
 					nonce: Option<U256>,
 					estimate: bool,
+					access_list: Option<Vec<(H160, Vec<H256>)>>,
 				) -> Result<pallet_evm::CreateInfo, sp_runtime::DispatchError> {
 					let config = if estimate {
 						let mut config = <Runtime as pallet_evm::Config>::config().clone();
@@ -275,13 +275,12 @@ macro_rules! impl_runtime_apis_plus_common {
 						data,
 						value,
 						gas_limit.low_u64(),
-						gas_price,
+						max_fee_per_gas,
+						max_priority_fee_per_gas,
 						nonce,
-						config
-							.as_ref()
-							.unwrap_or(<Runtime as pallet_evm::Config>::config()),
-					)
-					.map_err(|err| err.into())
+						Vec::new(),
+						config.as_ref().unwrap_or(<Runtime as pallet_evm::Config>::config()),
+					).map_err(|err| err.into())
 				}
 
 				fn current_transaction_statuses() -> Option<Vec<TransactionStatus>> {
@@ -315,6 +314,20 @@ macro_rules! impl_runtime_apis_plus_common {
 						Call::Ethereum(transact { transaction }) => Some(transaction),
 						_ => None
 					}).collect::<Vec<EthereumTransaction>>()
+				}
+
+				fn elasticity() -> Option<Permill> {
+					Some(BaseFee::elasticity())
+				}
+			}
+
+			impl fp_rpc::ConvertTransactionRuntimeApi<Block> for Runtime {
+				fn convert_transaction(
+					transaction: pallet_ethereum::Transaction
+				) -> <Block as BlockT>::Extrinsic {
+					UncheckedExtrinsic::new_unsigned(
+						pallet_ethereum::Call::<Runtime>::transact { transaction }.into(),
+					)
 				}
 			}
 
@@ -351,7 +364,6 @@ macro_rules! impl_runtime_apis_plus_common {
 						&block_number,
 						&parent_header.hash(),
 						&parent_header.digest,
-						frame_system::InitKind::Inspection
 					);
 					RandomnessCollectiveFlip::on_initialize(block_number);
 
@@ -389,8 +401,10 @@ macro_rules! impl_runtime_apis_plus_common {
 			}
 
 			impl cumulus_primitives_core::CollectCollationInfo<Block> for Runtime {
-				fn collect_collation_info() -> cumulus_primitives_core::CollationInfo {
-					ParachainSystem::collect_collation_info()
+				fn collect_collation_info(
+					header: &<Block as BlockT>::Header
+				) -> cumulus_primitives_core::CollationInfo {
+					ParachainSystem::collect_collation_info(header)
 				}
 			}
 
@@ -409,6 +423,8 @@ macro_rules! impl_runtime_apis_plus_common {
 					use pallet_author_mapping::Pallet as PalletAuthorMappingBench;
 					#[cfg(feature = "moonbase-runtime-benchmarks")]
 					use pallet_asset_manager::Pallet as PalletAssetManagerBench;
+					#[cfg(feature = "moonbase-runtime-benchmarks")]
+					use xcm_transactor::Pallet as XcmTransactorBench;
 
 					let mut list = Vec::<BenchmarkList>::new();
 
@@ -418,6 +434,8 @@ macro_rules! impl_runtime_apis_plus_common {
 					list_benchmark!(list, extra, pallet_author_mapping, PalletAuthorMappingBench::<Runtime>);
 					#[cfg(feature = "moonbase-runtime-benchmarks")]
 					list_benchmark!(list, extra, pallet_asset_manager, PalletAssetManagerBench::<Runtime>);
+					#[cfg(feature = "moonbase-runtime-benchmarks")]
+					list_benchmark!(list, extra, xcm_transactor, XcmTransactorBench::<Runtime>);
 
 					let storage_info = AllPalletsWithSystem::storage_info();
 
@@ -439,7 +457,8 @@ macro_rules! impl_runtime_apis_plus_common {
 					use pallet_author_mapping::Pallet as PalletAuthorMappingBench;
 					#[cfg(feature = "moonbase-runtime-benchmarks")]
 					use pallet_asset_manager::Pallet as PalletAssetManagerBench;
-
+					#[cfg(feature = "moonbase-runtime-benchmarks")]
+					use xcm_transactor::Pallet as XcmTransactorBench;
 
 					let whitelist: Vec<TrackedStorageKey> = vec![];
 
@@ -471,6 +490,13 @@ macro_rules! impl_runtime_apis_plus_common {
 						batches,
 						pallet_asset_manager,
 						PalletAssetManagerBench::<Runtime>
+					);
+					#[cfg(feature = "moonbase-runtime-benchmarks")]
+					add_benchmark!(
+						params,
+						batches,
+						xcm_transactor,
+						XcmTransactorBench::<Runtime>
 					);
 
 					if batches.is_empty() {

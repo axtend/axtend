@@ -3,7 +3,6 @@ import {
   BlockHash,
   DispatchError,
   DispatchInfo,
-  EventRecord,
   Extrinsic,
   RuntimeDispatchInfo,
 } from "@polkadot/types/interfaces";
@@ -11,7 +10,10 @@ import type { Block } from "@polkadot/types/interfaces/runtime/types";
 import type { TxWithEvent } from "@polkadot/api-derive/types";
 import Debug from "debug";
 import { WEIGHT_PER_GAS } from "./constants";
+import { DevTestContext } from "./setup-dev-tests";
+import { FrameSystemEventRecord } from "@polkadot/types/lookup";
 const debug = Debug("blocks");
+import "@polkadot/api-augment";
 
 export async function createAndFinalizeBlock(
   api: ApiPromise,
@@ -49,9 +51,9 @@ export interface BlockDetails {
 }
 
 export function mapExtrinsics(
-  extrinsics: Extrinsic[],
-  records: EventRecord[],
-  fees?: RuntimeDispatchInfo[]
+  extrinsics: Extrinsic[] | any,
+  records: FrameSystemEventRecord[] | any,
+  fees?: RuntimeDispatchInfo[] | any
 ): TxWithEventAndFee[] {
   return extrinsics.map((extrinsic, index): TxWithEventAndFee => {
     let dispatchError: DispatchError | undefined;
@@ -62,26 +64,29 @@ export function mapExtrinsics(
       .map(({ event }) => {
         if (event.section === "system") {
           if (event.method === "ExtrinsicSuccess") {
-            dispatchInfo = event.data[0] as DispatchInfo;
+            dispatchInfo = event.data[0] as any as DispatchInfo;
           } else if (event.method === "ExtrinsicFailed") {
-            dispatchError = event.data[0] as DispatchError;
-            dispatchInfo = event.data[1] as DispatchInfo;
+            dispatchError = event.data[0] as any as DispatchError;
+            dispatchInfo = event.data[1] as any as DispatchInfo;
           }
         }
 
-        return event;
+        return event as any;
       });
 
     return { dispatchError, dispatchInfo, events, extrinsic, fee: fees ? fees[index] : undefined };
   });
 }
 
-const getBlockDetails = async (api: ApiPromise, blockHash: BlockHash): Promise<BlockDetails> => {
+const getBlockDetails = async (
+  api: ApiPromise,
+  blockHash: BlockHash | string | any
+): Promise<BlockDetails> => {
   debug(`Querying ${blockHash}`);
 
   const [{ block }, records] = await Promise.all([
     api.rpc.chain.getBlock(blockHash),
-    api.query.system.events.at(blockHash),
+    await (await api.at(blockHash)).query.system.events(),
   ]);
 
   const fees = await Promise.all(
@@ -93,7 +98,7 @@ const getBlockDetails = async (api: ApiPromise, blockHash: BlockHash): Promise<B
   return {
     block,
     txWithEvents,
-  } as BlockDetails;
+  } as any as BlockDetails;
 };
 
 export interface BlockRangeOption {
@@ -125,12 +130,13 @@ export const exploreBlockRange = async (
 };
 
 export const verifyBlockFees = async (
-  api: ApiPromise,
+  context: DevTestContext,
   fromBlockNumber: number,
   toBlockNumber: number,
   expect,
   expectedBalanceDiff: bigint
 ) => {
+  const api = context.polkadotApi;
   debug(`========= Checking block ${fromBlockNumber}...${toBlockNumber}`);
   let sumBlockFees = 0n;
   let sumBlockBurnt = 0n;
@@ -138,12 +144,14 @@ export const verifyBlockFees = async (
 
   // Get from block hash and totalSupply
   const fromPreBlockHash = (await api.rpc.chain.getBlockHash(fromBlockNumber - 1)).toString();
-  const fromPreSupply = await (await api.at(fromPreBlockHash)).query.balances.totalIssuance();
+  const fromPreSupply = (await (
+    await api.at(fromPreBlockHash)
+  ).query.balances.totalIssuance()) as any;
   let previousBlockHash = fromPreBlockHash;
 
   // Get to block hash and totalSupply
   const toBlockHash = (await api.rpc.chain.getBlockHash(toBlockNumber)).toString();
-  const toSupply = await (await api.at(toBlockHash)).query.balances.totalIssuance();
+  const toSupply = (await (await api.at(toBlockHash)).query.balances.totalIssuance()) as any;
 
   // fetch block information for all blocks in the range
   await exploreBlockRange(
@@ -194,8 +202,26 @@ export const verifyBlockFees = async (
               if (extrinsic.method.section == "ethereum") {
                 // For Ethereum tx we caluculate fee by first converting weight to gas
                 const gasFee = dispatchInfo.weight.toBigInt() / WEIGHT_PER_GAS;
+                let ethTxWrapper = extrinsic.method.args[0] as any;
+                let gasPrice;
+                // Transaction is an enum now with as many variants as supported transaction types.
+                if (ethTxWrapper.isLegacy) {
+                  gasPrice = ethTxWrapper.asLegacy.gasPrice.toBigInt();
+                } else if (ethTxWrapper.isEip2930) {
+                  gasPrice = ethTxWrapper.asEip2930.gasPrice.toBigInt();
+                } else if (ethTxWrapper.isEip1559) {
+                  let number = blockDetails.block.header.number.toNumber();
+                  // The on-chain base fee used by the transaction. Aka the parent block's base fee.
+                  //
+                  // Note on 1559 fees: no matter what the user was willing to pay (maxFeePerGas),
+                  // the transaction fee is ultimately computed using the onchain base fee. The
+                  // additional tip eventually paid by the user (maxPriorityFeePerGas) is purely a
+                  // prioritization component: the EVM is not aware of it and thus not part of the
+                  // weight cost of the extrinsic.
+                  gasPrice = BigInt((await context.web3.eth.getBlock(number - 1)).baseFeePerGas);
+                }
                 // And then multiplying by gasPrice
-                txFees = gasFee * (extrinsic.method.args[0] as any).gasPrice.toBigInt();
+                txFees = gasFee * gasPrice;
               } else {
                 // For a regular substrate tx, we use the partialFee
                 txFees = fee.partialFee.toBigInt();
@@ -210,18 +236,17 @@ export const verifyBlockFees = async (
                 : extrinsic.signer.toString();
 
               // Get balance of the origin account both before and after extrinsic execution
-              const fromBalance = await (
+              const fromBalance = (await (
                 await api.at(previousBlockHash)
-              ).query.system.account(origin);
-              const toBalance = await (
+              ).query.system.account(origin)) as any;
+              const toBalance = (await (
                 await api.at(blockDetails.block.hash)
-              ).query.system.account(origin);
+              ).query.system.account(origin)) as any;
 
               expect(txFees.toString()).to.eq(
                 (
-                  fromBalance.data.free.toBigInt() -
-                  toBalance.data.free.toBigInt() -
-                  expectedBalanceDiff
+                  (((fromBalance.data.free.toBigInt() as any) -
+                    toBalance.data.free.toBigInt()) as any) - expectedBalanceDiff
                 ).toString()
               );
             }
@@ -267,11 +292,11 @@ export const verifyBlockFees = async (
 };
 
 export const verifyLatestBlockFees = async (
-  api: ApiPromise,
+  context: DevTestContext,
   expect,
   expectedBalanceDiff: bigint = BigInt(0)
 ) => {
-  const signedBlock = await api.rpc.chain.getBlock();
+  const signedBlock = await context.polkadotApi.rpc.chain.getBlock();
   const blockNumber = Number(signedBlock.block.header.number);
-  return verifyBlockFees(api, blockNumber, blockNumber, expect, expectedBalanceDiff);
+  return verifyBlockFees(context, blockNumber, blockNumber, expect, expectedBalanceDiff);
 };

@@ -1,6 +1,6 @@
 [package]
 name = "moonbeam-rpc-core-debug"
-authors = ["PureStake"]
+authors = [ "PureStake" ]
 edition = "2018"
 homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
@@ -8,15 +8,14 @@ repository = "https://github.com/PureStake/moonbeam/"
 version = "0.1.0"
 
 [dependencies]
-ethereum-types = "0.12.0"
-futures = { version = "0.3", features = ["compat"] }
+ethereum-types = "0.12.1"
+futures = { version = "0.3", features = [ "compat" ] }
 jsonrpc-core = "18.0.0"
 jsonrpc-core-client = "18.0.0"
 jsonrpc-derive = "18.0.0"
-serde = { version = "1.0", features = ["derive"] }
-serde_json = "1.0"
-
 moonbeam-client-evm-tracing = { path = "../../evm-tracing" }
 moonbeam-rpc-core-types = { path = "../types" }
+serde = { version = "1.0", features = [ "derive" ] }
+serde_json = "1.0"
 
-sp-core = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+sp-core = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }

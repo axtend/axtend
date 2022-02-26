@@ -1,4 +1,4 @@
-// Copyright 2019-2021 PureStake Inc.
+// Copyright 2019-2022 PureStake Inc.
 // This file is part of Moonbeam.
 
 // Moonbeam is free software: you can redistribute it and/or modify
@@ -14,19 +14,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 
+use std::assert_matches::assert_matches;
+
 use crate::mock::{
-	events, evm_test_context, precompile_address, CurrencyId, ExtBuilder, Precompiles,
-	TestAccount::*,
+	events, evm_test_context, precompile_address, CurrencyId, ExtBuilder, PrecompilesValue,
+	Runtime, TestAccount::*, TestPrecompiles,
 };
 use crate::{Action, PrecompileOutput};
-use fp_evm::Context;
+use fp_evm::{Context, PrecompileFailure};
 use num_enum::TryFromPrimitive;
 use orml_xtokens::Event as XtokensEvent;
 use pallet_evm::{ExitSucceed, PrecompileSet};
-use precompile_utils::{error, Address, EvmDataWriter};
+use precompile_utils::{Address, EvmDataWriter};
 use sha3::{Digest, Keccak256};
 use sp_core::U256;
 use xcm::v1::{AssetId, Fungibility, Junction, Junctions, MultiAsset, MultiLocation, NetworkId};
+
+fn precompiles() -> TestPrecompiles<Runtime> {
+	PrecompilesValue::get()
+}
 
 #[test]
 fn test_selector_enum() {
@@ -74,17 +80,16 @@ fn selector_less_than_four_bytes() {
 		// This selector is only three bytes long when four are required.
 		let bogus_selector = vec![1u8, 2u8, 3u8];
 
-		// Expected result is an error stating there are too few bytes
-		let expected_result = Some(Err(error("tried to parse selector out of bounds")));
-
-		assert_eq!(
-			Precompiles::execute(
+		assert_matches!(
+			precompiles().execute(
 				precompile_address(),
 				&bogus_selector,
 				None,
 				&evm_test_context(),
+				false,
 			),
-			expected_result
+			Some(Err(PrecompileFailure::Revert { output, ..}))
+				if output == b"tried to parse selector out of bounds",
 		);
 	});
 }
@@ -94,17 +99,16 @@ fn no_selector_exists_but_length_is_right() {
 	ExtBuilder::default().build().execute_with(|| {
 		let bogus_selector = vec![1u8, 2u8, 3u8, 4u8];
 
-		// Expected result is an error stating there are such a selector does not exist
-		let expected_result = Some(Err(error("unknown selector")));
-
-		assert_eq!(
-			Precompiles::execute(
+		assert_matches!(
+			precompiles().execute(
 				precompile_address(),
 				&bogus_selector,
 				None,
 				&evm_test_context(),
+				false,
 			),
-			expected_result
+			Some(Err(PrecompileFailure::Revert { output, ..}))
+				if output == b"unknown selector",
 		);
 	});
 }
@@ -122,8 +126,9 @@ fn transfer_self_reserve_works() {
 					id: [1u8; 32],
 				}),
 			);
+
 			assert_eq!(
-				Precompiles::execute(
+				precompiles().execute(
 					Precompile.into(),
 					&EvmDataWriter::new_with_selector(Action::Transfer)
 						.write(Address(SelfReserve.into()))
@@ -137,6 +142,7 @@ fn transfer_self_reserve_works() {
 						caller: Alice.into(),
 						apparent_value: From::from(0),
 					},
+					false,
 				),
 				Some(Ok(PrecompileOutput {
 					exit_status: ExitSucceed::Returned,
@@ -145,8 +151,13 @@ fn transfer_self_reserve_works() {
 					logs: vec![]
 				}))
 			);
-			let expected: crate::mock::Event =
-				XtokensEvent::Transferred(Alice, CurrencyId::SelfReserve, 500, destination).into();
+			let expected: crate::mock::Event = XtokensEvent::Transferred {
+				sender: Alice,
+				currency_id: CurrencyId::SelfReserve,
+				amount: 500,
+				dest: destination,
+			}
+			.into();
 			// Assert that the events vector contains the one expected
 			assert!(events().contains(&expected));
 		});
@@ -167,7 +178,7 @@ fn transfer_to_reserve_works() {
 			);
 			// We are transferring asset 0, which we have instructed to be the relay asset
 			assert_eq!(
-				Precompiles::execute(
+				precompiles().execute(
 					Precompile.into(),
 					&EvmDataWriter::new_with_selector(Action::Transfer)
 						.write(Address(AssetId(0u128).into()))
@@ -181,6 +192,7 @@ fn transfer_to_reserve_works() {
 						caller: Alice.into(),
 						apparent_value: From::from(0),
 					},
+					false,
 				),
 				Some(Ok(PrecompileOutput {
 					exit_status: ExitSucceed::Returned,
@@ -189,9 +201,13 @@ fn transfer_to_reserve_works() {
 					logs: vec![]
 				}))
 			);
-			let expected: crate::mock::Event =
-				XtokensEvent::Transferred(Alice, CurrencyId::OtherReserve(0u128), 500, destination)
-					.into();
+			let expected: crate::mock::Event = XtokensEvent::Transferred {
+				sender: Alice,
+				currency_id: CurrencyId::OtherReserve(0u128),
+				amount: 500,
+				dest: destination,
+			}
+			.into();
 			// Assert that the events vector contains the one expected
 			assert!(events().contains(&expected));
 		});
@@ -213,14 +229,14 @@ fn transfer_to_reserve_with_fee_works() {
 			// We are transferring asset 0, which we have instructed to be the relay asset
 			// Fees are not trully charged, so no worries
 			assert_eq!(
-				Precompiles::execute(
+				precompiles().execute(
 					Precompile.into(),
 					&EvmDataWriter::new_with_selector(Action::TransferWithFee)
 						.write(Address(AssetId(0u128).into()))
-						.write(U256::from(500))
-						.write(U256::from(50))
+						.write(U256::from(500u64))
+						.write(U256::from(50u64))
 						.write(destination.clone())
-						.write(U256::from(4000000))
+						.write(U256::from(4000000u64))
 						.build(),
 					None,
 					&Context {
@@ -228,6 +244,7 @@ fn transfer_to_reserve_with_fee_works() {
 						caller: Alice.into(),
 						apparent_value: From::from(0),
 					},
+					false,
 				),
 				Some(Ok(PrecompileOutput {
 					exit_status: ExitSucceed::Returned,
@@ -236,13 +253,13 @@ fn transfer_to_reserve_with_fee_works() {
 					logs: vec![]
 				}))
 			);
-			let expected: crate::mock::Event = XtokensEvent::TransferredWithFee(
-				Alice,
-				CurrencyId::OtherReserve(0u128),
-				500,
-				50,
-				destination,
-			)
+			let expected: crate::mock::Event = XtokensEvent::TransferredWithFee {
+				sender: Alice,
+				currency_id: CurrencyId::OtherReserve(0u128),
+				amount: 500,
+				fee: 50,
+				dest: destination,
+			}
 			.into();
 			// Assert that the events vector contains the one expected
 			assert!(events().contains(&expected));
@@ -265,7 +282,7 @@ fn transfer_non_reserve_to_non_reserve_works() {
 
 			// We are transferring asset 1, which corresponds to another parachain Id asset
 			assert_eq!(
-				Precompiles::execute(
+				precompiles().execute(
 					Precompile.into(),
 					&EvmDataWriter::new_with_selector(Action::Transfer)
 						.write(Address(AssetId(1u128).into()))
@@ -279,6 +296,7 @@ fn transfer_non_reserve_to_non_reserve_works() {
 						caller: Alice.into(),
 						apparent_value: From::from(0),
 					},
+					false,
 				),
 				Some(Ok(PrecompileOutput {
 					exit_status: ExitSucceed::Returned,
@@ -287,9 +305,13 @@ fn transfer_non_reserve_to_non_reserve_works() {
 					logs: vec![]
 				}))
 			);
-			let expected: crate::mock::Event =
-				XtokensEvent::Transferred(Alice, CurrencyId::OtherReserve(1u128), 500, destination)
-					.into();
+			let expected: crate::mock::Event = XtokensEvent::Transferred {
+				sender: Alice,
+				currency_id: CurrencyId::OtherReserve(1u128),
+				amount: 500,
+				dest: destination,
+			}
+			.into();
 			// Assert that the events vector contains the one expected
 			assert!(events().contains(&expected));
 		});
@@ -311,7 +333,7 @@ fn transfer_non_reserve_to_non_reserve_with_fee_works() {
 
 			// We are transferring asset 1, which corresponds to another parachain Id asset
 			assert_eq!(
-				Precompiles::execute(
+				precompiles().execute(
 					Precompile.into(),
 					&EvmDataWriter::new_with_selector(Action::TransferWithFee)
 						.write(Address(AssetId(1u128).into()))
@@ -326,6 +348,7 @@ fn transfer_non_reserve_to_non_reserve_with_fee_works() {
 						caller: Alice.into(),
 						apparent_value: From::from(0),
 					},
+					false
 				),
 				Some(Ok(PrecompileOutput {
 					exit_status: ExitSucceed::Returned,
@@ -334,13 +357,13 @@ fn transfer_non_reserve_to_non_reserve_with_fee_works() {
 					logs: vec![]
 				}))
 			);
-			let expected: crate::mock::Event = XtokensEvent::TransferredWithFee(
-				Alice,
-				CurrencyId::OtherReserve(1u128),
-				500,
-				50,
-				destination,
-			)
+			let expected: crate::mock::Event = XtokensEvent::TransferredWithFee {
+				sender: Alice,
+				currency_id: CurrencyId::OtherReserve(1u128),
+				amount: 500,
+				fee: 50,
+				dest: destination,
+			}
 			.into();
 			// Assert that the events vector contains the one expected
 			assert!(events().contains(&expected));
@@ -364,12 +387,12 @@ fn transfer_multi_asset_to_reserve_works() {
 			let asset = MultiLocation::parent();
 
 			assert_eq!(
-				Precompiles::execute(
+				precompiles().execute(
 					Precompile.into(),
 					&EvmDataWriter::new_with_selector(Action::TransferMultiAsset)
 						.write(asset.clone())
 						.write(U256::from(500))
-						.write(destination)
+						.write(destination.clone())
 						.write(U256::from(4000000))
 						.build(),
 					None,
@@ -378,6 +401,7 @@ fn transfer_multi_asset_to_reserve_works() {
 						caller: Alice.into(),
 						apparent_value: From::from(0),
 					},
+					false,
 				),
 				Some(Ok(PrecompileOutput {
 					exit_status: ExitSucceed::Returned,
@@ -386,14 +410,15 @@ fn transfer_multi_asset_to_reserve_works() {
 					logs: vec![]
 				}))
 			);
-			let expected: crate::mock::Event = XtokensEvent::TransferredMultiAsset(
-				Alice,
-				MultiAsset {
+
+			let expected: crate::mock::Event = XtokensEvent::TransferredMultiAsset {
+				sender: Alice,
+				asset: MultiAsset {
 					id: AssetId::Concrete(asset),
 					fun: Fungibility::Fungible(500),
 				},
-				MultiLocation::parent(),
-			)
+				dest: destination,
+			}
 			.into();
 			// Assert that the events vector contains the one expected
 			assert!(events().contains(&expected));
@@ -417,20 +442,21 @@ fn transfer_multi_asset_self_reserve_works() {
 			let self_reserve = crate::mock::SelfReserve::get();
 
 			assert_eq!(
-				Precompiles::execute(
+				precompiles().execute(
 					Precompile.into(),
 					&EvmDataWriter::new_with_selector(Action::TransferMultiAsset)
 						.write(self_reserve.clone())
-						.write(U256::from(500))
-						.write(destination)
-						.write(U256::from(4000000))
+						.write(U256::from(500u32))
+						.write(destination.clone())
+						.write(U256::from(4000000u32))
 						.build(),
 					None,
 					&Context {
 						address: Precompile.into(),
 						caller: Alice.into(),
-						apparent_value: From::from(0),
+						apparent_value: From::from(0u32),
 					},
+					false,
 				),
 				Some(Ok(PrecompileOutput {
 					exit_status: ExitSucceed::Returned,
@@ -439,14 +465,14 @@ fn transfer_multi_asset_self_reserve_works() {
 					logs: vec![]
 				}))
 			);
-			let expected: crate::mock::Event = XtokensEvent::TransferredMultiAsset(
-				Alice,
-				MultiAsset {
+			let expected: crate::mock::Event = XtokensEvent::TransferredMultiAsset {
+				sender: Alice,
+				asset: MultiAsset {
 					id: AssetId::Concrete(self_reserve),
 					fun: Fungibility::Fungible(500),
 				},
-				MultiLocation::parent(),
-			)
+				dest: destination,
+			}
 			.into();
 			// Assert that the events vector contains the one expected
 			assert!(events().contains(&expected));
@@ -470,13 +496,13 @@ fn transfer_multi_asset_self_reserve_with_fee_works() {
 			let self_reserve = crate::mock::SelfReserve::get();
 
 			assert_eq!(
-				Precompiles::execute(
+				precompiles().execute(
 					Precompile.into(),
 					&EvmDataWriter::new_with_selector(Action::TransferMultiAssetWithFee)
 						.write(self_reserve.clone())
 						.write(U256::from(500))
 						.write(U256::from(50))
-						.write(destination)
+						.write(destination.clone())
 						.write(U256::from(4000000))
 						.build(),
 					None,
@@ -485,6 +511,7 @@ fn transfer_multi_asset_self_reserve_with_fee_works() {
 						caller: Alice.into(),
 						apparent_value: From::from(0),
 					},
+					false,
 				),
 				Some(Ok(PrecompileOutput {
 					exit_status: ExitSucceed::Returned,
@@ -493,18 +520,19 @@ fn transfer_multi_asset_self_reserve_with_fee_works() {
 					logs: vec![]
 				}))
 			);
-			let expected: crate::mock::Event = XtokensEvent::TransferredMultiAssetWithFee(
-				Alice,
-				MultiAsset {
+
+			let expected: crate::mock::Event = XtokensEvent::TransferredMultiAssetWithFee {
+				sender: Alice,
+				asset: MultiAsset {
 					id: AssetId::Concrete(self_reserve.clone()),
 					fun: Fungibility::Fungible(500),
 				},
-				MultiAsset {
+				fee: MultiAsset {
 					id: AssetId::Concrete(self_reserve),
 					fun: Fungibility::Fungible(50),
 				},
-				MultiLocation::parent(),
-			)
+				dest: destination,
+			}
 			.into();
 			// Assert that the events vector contains the one expected
 			assert!(events().contains(&expected));
@@ -531,20 +559,21 @@ fn transfer_multi_asset_non_reserve_to_non_reserve() {
 			);
 
 			assert_eq!(
-				Precompiles::execute(
+				precompiles().execute(
 					Precompile.into(),
 					&EvmDataWriter::new_with_selector(Action::TransferMultiAsset)
 						.write(asset_location.clone())
-						.write(U256::from(500))
+						.write(U256::from(500u32))
 						.write(destination.clone())
-						.write(U256::from(4000000))
+						.write(U256::from(4000000u32))
 						.build(),
 					None,
 					&Context {
 						address: Precompile.into(),
 						caller: Alice.into(),
-						apparent_value: From::from(0),
+						apparent_value: From::from(0u32),
 					},
+					false,
 				),
 				Some(Ok(PrecompileOutput {
 					exit_status: ExitSucceed::Returned,
@@ -553,14 +582,14 @@ fn transfer_multi_asset_non_reserve_to_non_reserve() {
 					logs: vec![]
 				}))
 			);
-			let expected: crate::mock::Event = XtokensEvent::TransferredMultiAsset(
-				Alice,
-				MultiAsset {
+			let expected: crate::mock::Event = XtokensEvent::TransferredMultiAsset {
+				sender: Alice,
+				asset: MultiAsset {
 					id: AssetId::Concrete(asset_location),
 					fun: Fungibility::Fungible(500),
 				},
-				MultiLocation::parent(),
-			)
+				dest: destination,
+			}
 			.into();
 			// Assert that the events vector contains the one expected
 			assert!(events().contains(&expected));
@@ -587,7 +616,7 @@ fn transfer_multi_asset_non_reserve_to_non_reserve_with_fee() {
 			);
 
 			assert_eq!(
-				Precompiles::execute(
+				precompiles().execute(
 					Precompile.into(),
 					&EvmDataWriter::new_with_selector(Action::TransferMultiAssetWithFee)
 						.write(asset_location.clone())
@@ -601,7 +630,8 @@ fn transfer_multi_asset_non_reserve_to_non_reserve_with_fee() {
 						address: Precompile.into(),
 						caller: Alice.into(),
 						apparent_value: From::from(0),
-					}
+					},
+					false
 				),
 				Some(Ok(PrecompileOutput {
 					exit_status: ExitSucceed::Returned,
@@ -610,18 +640,19 @@ fn transfer_multi_asset_non_reserve_to_non_reserve_with_fee() {
 					logs: vec![]
 				}))
 			);
-			let expected: crate::mock::Event = XtokensEvent::TransferredMultiAssetWithFee(
-				Alice,
-				MultiAsset {
+
+			let expected: crate::mock::Event = XtokensEvent::TransferredMultiAssetWithFee {
+				sender: Alice,
+				asset: MultiAsset {
 					id: AssetId::Concrete(asset_location.clone()),
 					fun: Fungibility::Fungible(500),
 				},
-				MultiAsset {
+				fee: MultiAsset {
 					id: AssetId::Concrete(asset_location),
 					fun: Fungibility::Fungible(50),
 				},
-				MultiLocation::parent(),
-			)
+				dest: destination,
+			}
 			.into();
 			// Assert that the events vector contains the one expected
 			assert!(events().contains(&expected));
