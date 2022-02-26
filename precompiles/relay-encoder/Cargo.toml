@@ -30,7 +30,7 @@ fp-evm = { git = "https://github.com/axtend/frontier", branch = "2da9bb8", defau
 pallet-evm = { git = "https://github.com/axtend/frontier", branch = "2da9bb8", default-features = false }
 
 # Cumulus
-cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
 
 [dev-dependencies]
 derive_more = "0.99"
@@ -47,7 +47,7 @@ scale-info = { version = "1.0", default-features = false, features = [
 sp-io = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
 
 # Cumulus
-cumulus-pallet-parachain-system = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
+cumulus-pallet-parachain-system = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
 
 [features]
 default = ["std"]

@@ -94,13 +94,13 @@ pallet-evm-precompile-sha3fips = { git = "https://github.com/axtend/frontier", b
 pallet-evm-precompile-simple = { git = "https://github.com/axtend/frontier", branch = "2da9bb8", default-features = false }
 
 # Cumulus / Nimbus
-cumulus-pallet-parachain-system = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
-cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
-cumulus-primitives-timestamp = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
+cumulus-pallet-parachain-system = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
+cumulus-primitives-timestamp = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
 nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "faabf10", default-features = false }
 pallet-author-inherent = { git = "https://github.com/axtend/nimbus", branch = "faabf10", default-features = false }
 pallet-author-slot-filter = { git = "https://github.com/axtend/nimbus", branch = "faabf10", default-features = false }
-parachain-info = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
+parachain-info = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
 
 # Benchmarking
 frame-benchmarking = { git = "https://github.com/axtend/axlib", branch = "e09e70a", optional = true, default-features = false }
@@ -111,8 +111,8 @@ hex = "0.4"
 rlp = "0.5"
 sha3 = "0.9"
 
-cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
-cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
+cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
+cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
 
 [build-dependencies]
 substrate-wasm-builder = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }

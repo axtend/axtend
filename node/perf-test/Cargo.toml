@@ -61,5 +61,5 @@ fp-rpc = { git = "https://github.com/axtend/frontier", branch = "2da9bb8" }
 pallet-ethereum = { git = "https://github.com/axtend/frontier", branch = "2da9bb8" }
 
 # Cumulus / Nimbus
-cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
+cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
 nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "faabf10" }

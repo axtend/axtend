@@ -41,10 +41,10 @@ sp-io = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-f
 sp-runtime = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
 
 # Cumulus
-cumulus-pallet-parachain-system = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
-cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
-cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
-cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
+cumulus-pallet-parachain-system = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
+cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
+cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
 
 [features]
 default = ["std"]

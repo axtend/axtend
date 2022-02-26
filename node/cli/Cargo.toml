@@ -25,9 +25,9 @@ sp-runtime = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
 try-runtime-cli = { git = "https://github.com/axtend/axlib", branch = "e09e70a", optional = true }
 
 # Cumulus / Nimbus
-cumulus-client-cli = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
-cumulus-client-service = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
-cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
+cumulus-client-cli = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-client-service = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
 nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "faabf10" }
 
 # Polkadot

@@ -17,4 +17,4 @@ parity-scale-codec = "2.2"
 tokio = { version = "1.12.0", features = ["sync", "time"] }
 xcm = { git = "https://github.com/axtend/axia", branch = "415ce0d", default-features = false }
 
-cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }

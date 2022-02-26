@@ -106,14 +106,14 @@ fp-rpc = { git = "https://github.com/axtend/frontier", branch = "2da9bb8" }
 pallet-ethereum = { git = "https://github.com/axtend/frontier", branch = "2da9bb8" }
 
 # Cumulus / Nimbus
-cumulus-client-cli = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
-cumulus-client-collator = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
-cumulus-client-consensus-relay-chain = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
-cumulus-client-network = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
-cumulus-client-service = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
-cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
-cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
-cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
+cumulus-client-cli = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-client-collator = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-client-consensus-relay-chain = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-client-network = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-client-service = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
 nimbus-consensus = { git = "https://github.com/axtend/nimbus", branch = "faabf10" }
 # TODO we should be able to depend only on the primitives crate once we move the inherent data provider there.
 nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "faabf10" }

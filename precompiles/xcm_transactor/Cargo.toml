@@ -51,7 +51,7 @@ scale-info = { version = "1.0", default-features = false, features = [
 sp-io = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
 
 # Cumulus
-cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23" }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
 
 # Polkadot
 pallet-xcm = { git = "https://github.com/axtend/axia", branch = "415ce0d" }

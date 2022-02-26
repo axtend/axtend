@@ -23,7 +23,7 @@ sp-runtime = { git = "https://github.com/axtend/axlib", branch = "e09e70a", defa
 sp-std = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
 
 # Cumulus
-cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
 
 [dev-dependencies]
 frame-support = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
