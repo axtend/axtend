@@ -22,14 +22,15 @@
 #[cfg(test)]
 use crate::chain_spec::{derive_bip44_pairs_from_mnemonic, get_account_id_from_pair};
 use crate::chain_spec::{generate_accounts, get_from_seed, Extensions};
-use cumulus_primitives_core::ParaId;
 use axtend_runtime::{
-	currency::GLMR, currency::SUPPLY_FACTOR, AccountId, AuthorFilterConfig, AuthorMappingConfig,
-	Balance, BalancesConfig, CouncilCollectiveConfig, CrowdloanRewardsConfig, DemocracyConfig,
-	EVMConfig, EthereumChainIdConfig, EthereumConfig, GenesisAccount, GenesisConfig, InflationInfo,
-	MaintenanceModeConfig, AllychainInfoConfig, AllychainStakingConfig, AxiaXcmConfig,
-	Precompiles, Range, SystemConfig, TechCommitteeCollectiveConfig, WASM_BINARY,
+	currency::GLMR, currency::SUPPLY_FACTOR, AccountId, AllychainInfoConfig,
+	AllychainStakingConfig, AuthorFilterConfig, AuthorMappingConfig, AxiaXcmConfig, Balance,
+	BalancesConfig, CouncilCollectiveConfig, CrowdloanRewardsConfig, DemocracyConfig, EVMConfig,
+	EthereumChainIdConfig, EthereumConfig, GenesisAccount, GenesisConfig, InflationInfo,
+	MaintenanceModeConfig, Precompiles, Range, SystemConfig, TechCommitteeCollectiveConfig,
+	WASM_BINARY,
 };
+use cumulus_primitives_core::ParaId;
 use nimbus_primitives::NimbusId;
 use sc_service::ChainType;
 #[cfg(test)]
@@ -283,7 +284,7 @@ pub fn testnet_genesis(
 			start_in_maintenance_mode: false,
 		},
 		// This should initialize it to whatever we have set in the pallet
-		polkadot_xcm: AxiaXcmConfig::default(),
+		axia_xcm: AxiaXcmConfig::default(),
 	}
 }
 

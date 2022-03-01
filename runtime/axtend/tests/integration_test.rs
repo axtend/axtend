@@ -1757,7 +1757,7 @@ fn make_sure_glmr_cannot_be_transferred() {
 }
 
 #[test]
-fn make_sure_polkadot_xcm_cannot_be_called() {
+fn make_sure_axia_xcm_cannot_be_called() {
 	ExtBuilder::default()
 		.with_balances(vec![
 			(AccountId::from(ALICE), 2_000 * GLMR),

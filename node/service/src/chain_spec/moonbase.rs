@@ -299,7 +299,7 @@ pub fn testnet_genesis(
 			start_in_maintenance_mode: false,
 		},
 		// This should initialize it to whatever we have set in the pallet
-		polkadot_xcm: AxiaXcmConfig::default(),
+		axia_xcm: AxiaXcmConfig::default(),
 	}
 }
 
