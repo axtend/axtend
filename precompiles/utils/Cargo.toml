@@ -13,7 +13,7 @@ sha3 = { version = "0.9", default-features = false }
 # Moonbeam
 precompile-utils-macro = { path = "macro" }
 
-# Substrate
+# Axlib
 codec = { package = "parity-scale-codec", version = "2.2", default-features = false }
 frame-support = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 frame-system = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
@@ -25,7 +25,7 @@ sp-std = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-
 fp-evm = { git = "https://github.com/axtend/frontier", branch = "2be428c", default-features = false }
 pallet-evm = { git = "https://github.com/axtend/frontier", branch = "2be428c", default-features = false }
 
-# Polkadot / XCM
+# Axia / XCM
 xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 
 [dev-dependencies]

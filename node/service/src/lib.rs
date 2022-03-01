@@ -19,7 +19,7 @@
 //!
 //! This module can assemble:
 //! PartialComponents: For maintence tasks without a complete node (eg import/export blocks, purge)
-//! Full Service: A complete parachain node including the pool, rpc, network, embedded relay chain
+//! Full Service: A complete allychain node including the pool, rpc, network, embedded relay chain
 //! Dev Service: A leaner service without the relay chain backing.
 
 use cli_opt::{EthApi as EthApiCmd, RpcConfig};
@@ -28,19 +28,19 @@ use fc_rpc_core::types::{FeeHistoryCache, FilterPool};
 use futures::StreamExt;
 #[cfg(feature = "moonbase-native")]
 pub use moonbase_runtime;
-#[cfg(feature = "moonbeam-native")]
-pub use moonbeam_runtime;
+#[cfg(feature = "axtend-native")]
+pub use axtend_runtime;
 #[cfg(feature = "moonriver-native")]
 pub use moonriver_runtime;
 use std::{collections::BTreeMap, sync::Mutex, time::Duration};
 pub mod rpc;
-use cumulus_client_consensus_common::ParachainConsensus;
+use cumulus_client_consensus_common::AllychainConsensus;
 use cumulus_client_network::BlockAnnounceValidator;
 use cumulus_client_service::{
 	prepare_node_config, start_collator, start_full_node, StartCollatorParams, StartFullNodeParams,
 };
 use cumulus_primitives_core::ParaId;
-use cumulus_primitives_parachain_inherent::{
+use cumulus_primitives_allychain_inherent::{
 	MockValidationDataInherentDataProvider, MockXcmConfig,
 };
 use cumulus_relay_chain_interface::RelayChainInterface;
@@ -59,7 +59,7 @@ use sp_api::ConstructRuntimeApi;
 use sp_blockchain::HeaderBackend;
 use sp_keystore::SyncCryptoStorePtr;
 use std::sync::Arc;
-use substrate_prometheus_endpoint::Registry;
+use axlib_prometheus_endpoint::Registry;
 
 pub use client::*;
 pub mod chain_spec;
@@ -72,22 +72,22 @@ type MaybeSelectChain = Option<sc_consensus::LongestChain<FullBackend, Block>>;
 
 pub type HostFunctions = (
 	frame_benchmarking::benchmarking::HostFunctions,
-	moonbeam_primitives_ext::moonbeam_ext::HostFunctions,
+	axtend_primitives_ext::axtend_ext::HostFunctions,
 );
 
-#[cfg(feature = "moonbeam-native")]
+#[cfg(feature = "axtend-native")]
 pub struct MoonbeamExecutor;
 
-#[cfg(feature = "moonbeam-native")]
+#[cfg(feature = "axtend-native")]
 impl sc_executor::NativeExecutionDispatch for MoonbeamExecutor {
 	type ExtendHostFunctions = HostFunctions;
 
 	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
-		moonbeam_runtime::api::dispatch(method, data)
+		axtend_runtime::api::dispatch(method, data)
 	}
 
 	fn native_version() -> sc_executor::NativeVersion {
-		moonbeam_runtime::native_version()
+		axtend_runtime::native_version()
 	}
 }
 
@@ -126,7 +126,7 @@ impl sc_executor::NativeExecutionDispatch for MoonbaseExecutor {
 /// Trivial enum representing runtime variant
 #[derive(Clone)]
 pub enum RuntimeVariant {
-	#[cfg(feature = "moonbeam-native")]
+	#[cfg(feature = "axtend-native")]
 	Moonbeam,
 	#[cfg(feature = "moonriver-native")]
 	Moonriver,
@@ -138,8 +138,8 @@ pub enum RuntimeVariant {
 impl RuntimeVariant {
 	pub fn from_chain_spec(chain_spec: &Box<dyn ChainSpec>) -> Self {
 		match chain_spec {
-			#[cfg(feature = "moonbeam-native")]
-			spec if spec.is_moonbeam() => Self::Moonbeam,
+			#[cfg(feature = "axtend-native")]
+			spec if spec.is_axtend() => Self::Moonbeam,
 			#[cfg(feature = "moonriver-native")]
 			spec if spec.is_moonriver() => Self::Moonriver,
 			#[cfg(feature = "moonbase-native")]
@@ -156,7 +156,7 @@ pub trait IdentifyVariant {
 	fn is_moonbase(&self) -> bool;
 
 	/// Returns `true` if this is a configuration for the `Moonbeam` network.
-	fn is_moonbeam(&self) -> bool;
+	fn is_axtend(&self) -> bool;
 
 	/// Returns `true` if this is a configuration for the `Moonriver` network.
 	fn is_moonriver(&self) -> bool;
@@ -170,8 +170,8 @@ impl IdentifyVariant for Box<dyn ChainSpec> {
 		self.id().starts_with("moonbase")
 	}
 
-	fn is_moonbeam(&self) -> bool {
-		self.id().starts_with("moonbeam")
+	fn is_axtend(&self) -> bool {
+		self.id().starts_with("axtend")
 	}
 
 	fn is_moonriver(&self) -> bool {
@@ -189,7 +189,7 @@ pub fn frontier_database_dir(config: &Configuration) -> std::path::PathBuf {
 		.as_ref()
 		.map(|base_path| base_path.config_dir(config.chain_spec.id()))
 		.unwrap_or_else(|| {
-			BasePath::from_project("", "", "moonbeam").config_dir(config.chain_spec.id())
+			BasePath::from_project("", "", "axtend").config_dir(config.chain_spec.id())
 		});
 	config_dir.join("frontier").join("db")
 }
@@ -230,9 +230,9 @@ pub fn new_chain_ops(
 		spec if spec.is_moonriver() => {
 			new_chain_ops_inner::<moonriver_runtime::RuntimeApi, MoonriverExecutor>(config)
 		}
-		#[cfg(feature = "moonbeam-native")]
-		spec if spec.is_moonbeam() => {
-			new_chain_ops_inner::<moonbeam_runtime::RuntimeApi, MoonbeamExecutor>(config)
+		#[cfg(feature = "axtend-native")]
+		spec if spec.is_axtend() => {
+			new_chain_ops_inner::<axtend_runtime::RuntimeApi, MoonbeamExecutor>(config)
 		}
 		#[cfg(feature = "moonbase-native")]
 		_ => new_chain_ops_inner::<moonbase_runtime::RuntimeApi, MoonbaseExecutor>(config),
@@ -277,7 +277,7 @@ where
 	))
 }
 
-/// Builds the PartialComponents for a parachain or development service
+/// Builds the PartialComponents for a allychain or development service
 ///
 /// Use this function if you don't actually need the full service, but just the partial in order to
 /// be able to perform chain operations.
@@ -405,12 +405,12 @@ where
 	})
 }
 
-/// Start a node with the given parachain `Configuration` and relay chain `Configuration`.
+/// Start a node with the given allychain `Configuration` and relay chain `Configuration`.
 ///
 /// This is the actual implementation that is abstract over the executor and the runtime api.
 #[sc_tracing::logging::prefix_logs_with("🌗")]
 async fn start_node_impl<RuntimeApi, Executor, BIC>(
-	parachain_config: Configuration,
+	allychain_config: Configuration,
 	polkadot_config: Configuration,
 	id: polkadot_primitives::v0::Id,
 	rpc_config: RpcConfig,
@@ -437,15 +437,15 @@ where
 		Arc<NetworkService<Block, Hash>>,
 		SyncCryptoStorePtr,
 		bool,
-	) -> Result<Box<dyn ParachainConsensus<Block>>, sc_service::Error>,
+	) -> Result<Box<dyn AllychainConsensus<Block>>, sc_service::Error>,
 {
-	if matches!(parachain_config.role, Role::Light) {
+	if matches!(allychain_config.role, Role::Light) {
 		return Err("Light client not supported!".into());
 	}
 
-	let parachain_config = prepare_node_config(parachain_config);
+	let allychain_config = prepare_node_config(allychain_config);
 
-	let params = new_partial(&parachain_config, false)?;
+	let params = new_partial(&allychain_config, false)?;
 	let (
 		_block_import,
 		filter_pool,
@@ -468,14 +468,14 @@ where
 
 	let block_announce_validator = BlockAnnounceValidator::new(relay_chain_interface.clone(), id);
 
-	let force_authoring = parachain_config.force_authoring;
-	let collator = parachain_config.role.is_authority();
-	let prometheus_registry = parachain_config.prometheus_registry().cloned();
+	let force_authoring = allychain_config.force_authoring;
+	let collator = allychain_config.role.is_authority();
+	let prometheus_registry = allychain_config.prometheus_registry().cloned();
 	let transaction_pool = params.transaction_pool.clone();
 	let import_queue = cumulus_client_service::SharedImportQueue::new(params.import_queue);
 	let (network, system_rpc_tx, start_network) =
 		sc_service::build_network(sc_service::BuildNetworkParams {
-			config: &parachain_config,
+			config: &allychain_config,
 			client: client.clone(),
 			transaction_pool: transaction_pool.clone(),
 			spawn_handle: task_manager.spawn_handle(),
@@ -494,7 +494,7 @@ where
 	rpc::spawn_essential_tasks(rpc::SpawnTasksParams {
 		task_manager: &task_manager,
 		client: client.clone(),
-		substrate_backend: backend.clone(),
+		axlib_backend: backend.clone(),
 		frontier_backend: frontier_backend.clone(),
 		filter_pool: filter_pool.clone(),
 		overrides: overrides.clone(),
@@ -510,7 +510,7 @@ where
 				rpc::SpawnTasksParams {
 					task_manager: &task_manager,
 					client: client.clone(),
-					substrate_backend: backend.clone(),
+					axlib_backend: backend.clone(),
 					frontier_backend: frontier_backend.clone(),
 					filter_pool: filter_pool.clone(),
 					overrides: overrides.clone(),
@@ -584,7 +584,7 @@ where
 		client: client.clone(),
 		transaction_pool: transaction_pool.clone(),
 		task_manager: &mut task_manager,
-		config: parachain_config,
+		config: allychain_config,
 		keystore: params.keystore_container.sync_keystore(),
 		backend: backend.clone(),
 		network: network.clone(),
@@ -600,7 +600,7 @@ where
 	let relay_chain_slot_duration = Duration::from_secs(6);
 
 	if collator {
-		let parachain_consensus = build_consensus(
+		let allychain_consensus = build_consensus(
 			client.clone(),
 			prometheus_registry.as_ref(),
 			telemetry.as_ref().map(|t| t.handle()),
@@ -622,7 +622,7 @@ where
 			task_manager: &mut task_manager,
 			relay_chain_interface,
 			spawner,
-			parachain_consensus,
+			allychain_consensus,
 			import_queue,
 			collator_key,
 			relay_chain_slot_duration,
@@ -648,11 +648,11 @@ where
 	Ok((task_manager, client))
 }
 
-/// Start a normal parachain node.
+/// Start a normal allychain node.
 // Rustfmt wants to format the closure with space identation.
 #[rustfmt::skip]
 pub async fn start_node<RuntimeApi, Executor>(
-	parachain_config: Configuration,
+	allychain_config: Configuration,
 	polkadot_config: Configuration,
 	id: polkadot_primitives::v0::Id,
 	rpc_config: RpcConfig,
@@ -665,7 +665,7 @@ where
 	Executor: NativeExecutionDispatch + 'static,
 {
 	start_node_impl(
-		parachain_config,
+		allychain_config,
 		polkadot_config,
 		id,
 		rpc_config,
@@ -692,8 +692,8 @@ where
 			let provider = move |_, (relay_parent, validation_data, author_id)| {
 				let relay_chain_interface = relay_chain_interface.clone();
 				async move {
-					let parachain_inherent =
-						cumulus_primitives_parachain_inherent::ParachainInherentData::create_at(
+					let allychain_inherent =
+						cumulus_primitives_allychain_inherent::AllychainInherentData::create_at(
 							relay_parent,
 							&relay_chain_interface,
 							&validation_data,
@@ -703,15 +703,15 @@ where
 
 					let time = sp_timestamp::InherentDataProvider::from_system_time();
 
-					let parachain_inherent = parachain_inherent.ok_or_else(|| {
+					let allychain_inherent = allychain_inherent.ok_or_else(|| {
 						Box::<dyn std::error::Error + Send + Sync>::from(
-							"Failed to create parachain inherent",
+							"Failed to create allychain inherent",
 						)
 					})?;
 
 					let author = nimbus_primitives::InherentDataProvider::<NimbusId>(author_id);
 
-					Ok((time, parachain_inherent, author))
+					Ok((time, allychain_inherent, author))
 				}
 			};
 
@@ -719,7 +719,7 @@ where
 				para_id: id,
 				proposer_factory,
 				block_import: client.clone(),
-				parachain_client: client.clone(),
+				allychain_client: client.clone(),
 				keystore,
 				skip_prediction: force_authoring,
 				create_inherent_data_providers: provider,
@@ -730,7 +730,7 @@ where
 }
 
 /// Builds a new development service. This service uses manual seal, and mocks
-/// the parachain inherent.
+/// the allychain inherent.
 pub fn new_dev<RuntimeApi, Executor>(
 	config: Configuration,
 	_author_id: Option<nimbus_primitives::NimbusId>,
@@ -880,7 +880,7 @@ where
 					async move {
 						let time = sp_timestamp::InherentDataProvider::from_system_time();
 
-						let mocked_parachain = MockValidationDataInherentDataProvider {
+						let mocked_allychain = MockValidationDataInherentDataProvider {
 							current_para_block,
 							relay_offset: 1000,
 							relay_blocks_per_para_block: 2,
@@ -894,7 +894,7 @@ where
 							raw_horizontal_messages: hrmp_xcm_receiver.drain().collect(),
 						};
 
-						Ok((time, mocked_parachain))
+						Ok((time, mocked_allychain))
 					}
 				},
 			}),
@@ -903,7 +903,7 @@ where
 	rpc::spawn_essential_tasks(rpc::SpawnTasksParams {
 		task_manager: &task_manager,
 		client: client.clone(),
-		substrate_backend: backend.clone(),
+		axlib_backend: backend.clone(),
 		frontier_backend: frontier_backend.clone(),
 		filter_pool: filter_pool.clone(),
 		overrides: overrides.clone(),
@@ -918,7 +918,7 @@ where
 				rpc::SpawnTasksParams {
 					task_manager: &task_manager,
 					client: client.clone(),
-					substrate_backend: backend.clone(),
+					axlib_backend: backend.clone(),
 					frontier_backend: frontier_backend.clone(),
 					filter_pool: filter_pool.clone(),
 					overrides: overrides.clone(),

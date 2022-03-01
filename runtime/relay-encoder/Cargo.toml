@@ -1,10 +1,10 @@
 [package]
-name = "moonbeam-relay-encoder"
+name = "axtend-relay-encoder"
 authors = ["PureStake"]
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
-repository = "https://github.com/PureStake/moonbeam/"
+repository = "https://github.com/PureStake/axtend/"
 version = "0.1.0"
 
 [dependencies]
@@ -13,7 +13,7 @@ version = "0.1.0"
 relay-encoder-precompiles = { path = "../../precompiles/relay-encoder/", default-features = false }
 xcm-primitives = { path = "../../primitives/xcm", default-features = false }
 
-# Substrate
+# Axlib
 frame-system = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 pallet-staking = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 parity-scale-codec = { version = "2.0.0", default-features = false, features = [
@@ -30,10 +30,10 @@ frame-support = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 pallet-proxy = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 pallet-utility = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
-kusama-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axctest-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 polkadot-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-rococo-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-westend-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+betanet-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+alphanet-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 
 [features]
 default = ["std"]

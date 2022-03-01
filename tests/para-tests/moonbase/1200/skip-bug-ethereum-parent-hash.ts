@@ -4,16 +4,16 @@ import Web3 from "web3";
 
 import { ALITH_PRIV_KEY, BALTATHAR_PRIV_KEY } from "../../../util/constants";
 import { customWeb3Request } from "../../../util/providers";
-import { describeParachain } from "../../../util/setup-para-tests";
+import { describeAllychain } from "../../../util/setup-para-tests";
 import { createTransfer } from "../../../util/transactions";
 
 // This test will run on local until the new runtime is available
 
 const runtimeVersion = "runtime-1200";
-describeParachain(
+describeAllychain(
   `Runtime ${runtimeVersion} migration`,
   {
-    parachain: {
+    allychain: {
       chain: "moonbase-local",
       runtime: "runtime-1103",
       binary: "v0.19.1",

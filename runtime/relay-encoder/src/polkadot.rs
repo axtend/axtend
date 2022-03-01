@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 
-// We want to avoid including the rococo-runtime here.
-// TODO: whenever a conclusion is taken from https://github.com/paritytech/substrate/issues/8158
+// We want to avoid including the betanet-runtime here.
+// TODO: whenever a conclusion is taken from https://github.com/paritytech/axlib/issues/8158
 
 use parity_scale_codec::{Decode, Encode};
 use sp_runtime::traits::{AccountIdLookup, StaticLookup};
@@ -69,9 +69,9 @@ pub enum StakeCall {
 	Rebond(#[codec(compact)] cumulus_primitives_core::relay_chain::Balance),
 }
 
-pub struct PolkadotEncoder;
+pub struct AxiaEncoder;
 
-impl xcm_primitives::UtilityEncodeCall for PolkadotEncoder {
+impl xcm_primitives::UtilityEncodeCall for AxiaEncoder {
 	fn encode_call(self, call: xcm_primitives::UtilityAvailableCalls) -> Vec<u8> {
 		match call {
 			xcm_primitives::UtilityAvailableCalls::AsDerivative(a, b) => {
@@ -85,7 +85,7 @@ impl xcm_primitives::UtilityEncodeCall for PolkadotEncoder {
 	}
 }
 
-impl relay_encoder_precompiles::StakeEncodeCall for PolkadotEncoder {
+impl relay_encoder_precompiles::StakeEncodeCall for AxiaEncoder {
 	fn encode_call(call: relay_encoder_precompiles::AvailableStakeCalls) -> Vec<u8> {
 		match call {
 			relay_encoder_precompiles::AvailableStakeCalls::Bond(a, b, c) => {
@@ -137,7 +137,7 @@ impl relay_encoder_precompiles::StakeEncodeCall for PolkadotEncoder {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::polkadot::PolkadotEncoder;
+	use crate::polkadot::AxiaEncoder;
 	use frame_support::traits::PalletInfo;
 	use relay_encoder_precompiles::StakeEncodeCall;
 	use sp_runtime::Perbill;
@@ -161,7 +161,7 @@ mod tests {
 		.encode();
 		expected_encoded.append(&mut expected);
 
-		let call_bytes = <PolkadotEncoder as StakeEncodeCall>::encode_call(
+		let call_bytes = <AxiaEncoder as StakeEncodeCall>::encode_call(
 			relay_encoder_precompiles::AvailableStakeCalls::Chill,
 		);
 
@@ -169,7 +169,7 @@ mod tests {
 
 		assert_eq!(
 			xcm_primitives::UtilityEncodeCall::encode_call(
-				PolkadotEncoder,
+				AxiaEncoder,
 				xcm_primitives::UtilityAvailableCalls::AsDerivative(1, call_bytes)
 			),
 			expected_encoded
@@ -196,7 +196,7 @@ mod tests {
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<PolkadotEncoder as StakeEncodeCall>::encode_call(
+			<AxiaEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Bond(
 					relay_account.into(),
 					100u32.into(),
@@ -223,7 +223,7 @@ mod tests {
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<PolkadotEncoder as StakeEncodeCall>::encode_call(
+			<AxiaEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::BondExtra(100u32.into(),)
 			),
 			expected_encoded
@@ -246,7 +246,7 @@ mod tests {
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<PolkadotEncoder as StakeEncodeCall>::encode_call(
+			<AxiaEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Unbond(100u32.into(),)
 			),
 			expected_encoded
@@ -269,7 +269,7 @@ mod tests {
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<PolkadotEncoder as StakeEncodeCall>::encode_call(
+			<AxiaEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::WithdrawUnbonded(100u32,)
 			),
 			expected_encoded
@@ -297,7 +297,7 @@ mod tests {
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<PolkadotEncoder as StakeEncodeCall>::encode_call(
+			<AxiaEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Validate(validator_prefs)
 			),
 			expected_encoded
@@ -321,7 +321,7 @@ mod tests {
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<PolkadotEncoder as StakeEncodeCall>::encode_call(
+			<AxiaEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Nominate(
 					vec![relay_account.into()]
 				)
@@ -343,7 +343,7 @@ mod tests {
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<PolkadotEncoder as StakeEncodeCall>::encode_call(
+			<AxiaEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Chill
 			),
 			expected_encoded
@@ -367,7 +367,7 @@ mod tests {
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<PolkadotEncoder as StakeEncodeCall>::encode_call(
+			<AxiaEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::SetPayee(
 					pallet_staking::RewardDestination::Controller
 				)
@@ -394,7 +394,7 @@ mod tests {
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<PolkadotEncoder as StakeEncodeCall>::encode_call(
+			<AxiaEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::SetController(
 					relay_account.clone().into()
 				)
@@ -419,7 +419,7 @@ mod tests {
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<PolkadotEncoder as StakeEncodeCall>::encode_call(
+			<AxiaEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Rebond(100u32.into())
 			),
 			expected_encoded

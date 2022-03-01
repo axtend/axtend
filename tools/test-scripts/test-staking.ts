@@ -1,6 +1,6 @@
 import { ApiPromise, Keyring, WsProvider } from "@polkadot/api";
 import { start } from "polkadot-launch";
-import { typesBundlePre900 } from "../../moonbeam-types-bundle/dist";
+import { typesBundlePre900 } from "../../axtend-types-bundle/dist";
 import {
   ALITH,
   GERALD,
@@ -26,7 +26,7 @@ async function wait(duration: number) {
 }
 
 async function test() {
-  await start("config_moonbeam_staking.json");
+  await start("config_axtend_staking.json");
   const WS_PORT = 36946;
   const wsProviderUrl = `ws://localhost:${WS_PORT}`;
 
@@ -55,16 +55,16 @@ async function test() {
   );
 
   // Nominators
-  const nominators = await polkadotApi.query.parachainStaking.nominatorState(GERALD);
+  const nominators = await polkadotApi.query.allychainStaking.nominatorState(GERALD);
   assert(nominators.toHuman() === null, "there should be no nominator");
 
   // Validators
-  const validators = await polkadotApi.query.parachainStaking.selectedCandidates();
+  const validators = await polkadotApi.query.allychainStaking.selectedCandidates();
   assert(validators.toHuman()[0] === GERALD, "Gerald is not a validator");
   assert(validators.toHuman()[1] === FAITH, "Faith is not a validator");
 
   // Candidates
-  const candidates = await polkadotApi.query.parachainStaking.candidatePool();
+  const candidates = await polkadotApi.query.allychainStaking.candidatePool();
   assert(candidates.toHuman()[0].owner === GERALD, "Gerald is not a candidates");
   assert(candidates.toHuman()[1].owner === FAITH, "Faith is not a candidates");
   assert(candidates.toHuman()[0].amount === STAKING_AMOUNT, "Gerald has wrong staking amount");
@@ -74,7 +74,7 @@ async function test() {
   const keyring = new Keyring({ type: "ethereum" });
   const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
   await new Promise<void>(async (res) => {
-    const unsub = await polkadotApi.tx.parachainStaking
+    const unsub = await polkadotApi.tx.allychainStaking
       .joinCandidates(MIN_GLMR_STAKING)
       .signAndSend(ethan, ({ events = [], status }) => {
         console.log(`Current status is ${status.type}`);
@@ -101,7 +101,7 @@ async function test() {
         }
       });
   });
-  let candidatesAfter = await polkadotApi.query.parachainStaking.candidatePool();
+  let candidatesAfter = await polkadotApi.query.allychainStaking.candidatePool();
   assert(
     (candidatesAfter.toHuman() as { owner: string; amount: string }[]).length === 3,
     "new candidate should have been added"
@@ -117,7 +117,7 @@ async function test() {
 
   // Candidate bond more
   await new Promise<void>(async (res) => {
-    const unsub = await polkadotApi.tx.parachainStaking
+    const unsub = await polkadotApi.tx.allychainStaking
       .candidateBondMore(MIN_GLMR_STAKING)
       .signAndSend(ethan, ({ events = [], status }) => {
         console.log(`Current status is ${status.type}`);
@@ -144,7 +144,7 @@ async function test() {
         }
       });
   });
-  candidatesAfter = await polkadotApi.query.parachainStaking.candidatePool();
+  candidatesAfter = await polkadotApi.query.allychainStaking.candidatePool();
   assert(
     (candidatesAfter.toHuman() as { owner: string; amount: string }[])[2].amount === "2.0000 kUnit",
     "bond should have increased"
@@ -152,7 +152,7 @@ async function test() {
 
   // Candidate bond less
   await new Promise<void>(async (res) => {
-    const unsub = await polkadotApi.tx.parachainStaking
+    const unsub = await polkadotApi.tx.allychainStaking
       .candidateBondLess(MIN_GLMR_STAKING)
       .signAndSend(ethan, ({ events = [], status }) => {
         console.log(`Current status is ${status.type}`);
@@ -179,7 +179,7 @@ async function test() {
         }
       });
   });
-  candidatesAfter = await polkadotApi.query.parachainStaking.candidatePool();
+  candidatesAfter = await polkadotApi.query.allychainStaking.candidatePool();
   assert(
     (candidatesAfter.toHuman() as { owner: string; amount: string }[])[2].amount === "1.0000 kUnit",
     "bond should have decreased"
@@ -189,7 +189,7 @@ async function test() {
   const keyringAlith = new Keyring({ type: "ethereum" });
   const alith = await keyringAlith.addFromUri(ALITH_PRIVKEY, null, "ethereum");
   await new Promise<void>(async (res) => {
-    const unsub = await polkadotApi.tx.parachainStaking
+    const unsub = await polkadotApi.tx.allychainStaking
       .nominate(GERALD, MIN_GLMR_NOMINATOR)
       .signAndSend(alith, ({ events = [], status }) => {
         console.log(`Current status is ${status.type}`);
@@ -216,7 +216,7 @@ async function test() {
         }
       });
   });
-  const nominatorsAfter = await polkadotApi.query.parachainStaking.nominatorState(ALITH);
+  const nominatorsAfter = await polkadotApi.query.allychainStaking.nominatorState(ALITH);
   assert(
     (
       nominatorsAfter.toHuman() as {
@@ -228,7 +228,7 @@ async function test() {
 
   // Revoke Delegation
   await new Promise<void>(async (res) => {
-    const unsub = await polkadotApi.tx.parachainStaking
+    const unsub = await polkadotApi.tx.allychainStaking
       .revokeDelegation(GERALD) //TODO: when converting to test add .leaveNominators()
       // that should produce the same behavior
       .signAndSend(alith, ({ events = [], status }) => {
@@ -256,7 +256,7 @@ async function test() {
         }
       });
   });
-  const nominatorsAfterRevocation = await polkadotApi.query.parachainStaking.nominatorState(ALITH);
+  const nominatorsAfterRevocation = await polkadotApi.query.allychainStaking.nominatorState(ALITH);
   assert(nominatorsAfterRevocation.toHuman() === null, "there should be no nominator");
 
   console.log("SUCCESS");

@@ -15,7 +15,7 @@ import {
 import { execFromAllMembersOfTechCommittee } from "../util/governance";
 
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic, createBlockWithExtrinsicParachain } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic, createBlockWithExtrinsicAllychain } from "../util/axlib-rpc";
 import { createTransfer } from "../util/transactions";
 import { VESTING_PERIOD } from "./test-crowdloan";
 import { mockAssetBalance } from "./test-precompile/test-precompile-assets-erc20";
@@ -338,7 +338,7 @@ describeDevMoonbeam(
   "Pallet Maintenance Mode - no xtokens transfer with maintenance mode",
   (context) => {
     let baltathar: KeyringPair;
-    before("First send relay chain asset to parachain", async function () {
+    before("First send relay chain asset to allychain", async function () {
       const keyring = new Keyring({ type: "ethereum" });
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
 
@@ -362,7 +362,7 @@ describeDevMoonbeam(
                 parents: new BN(1),
                 interior: {
                   X2: [
-                    { Parachain: new BN(2000) },
+                    { Allychain: new BN(2000) },
                     { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                   ],
                 },
@@ -381,7 +381,7 @@ describeDevMoonbeam(
   "Pallet Maintenance Mode - no xcmTransactor transfer with maintenance mode",
   (context) => {
     let sudoAccount;
-    before("First send relay chain asset to parachain", async function () {
+    before("First send relay chain asset to allychain", async function () {
       const keyring = new Keyring({ type: "ethereum" });
       sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
@@ -408,7 +408,7 @@ describeDevMoonbeam(
   "Pallet Maintenance Mode - no xcmTransactor transfer with maintenance mode",
   (context) => {
     let sudoAccount;
-    before("First send relay chain asset to parachain", async function () {
+    before("First send relay chain asset to allychain", async function () {
       const keyring = new Keyring({ type: "ethereum" });
       sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
@@ -444,8 +444,8 @@ describeDevMoonbeam(
     let sudoAccount, assetId;
     before("Register asset and go to maintenance", async function () {
       const assetMetadata = {
-        name: "DOT",
-        symbol: "DOT",
+        name: "AXC",
+        symbol: "AXC",
         decimals: new BN(12),
         isFrozen: false,
       };
@@ -502,7 +502,7 @@ describeDevMoonbeam(
       // Create a block in which the XCM should be executed
       await context.createBlock();
 
-      // Make sure the state does not have ALITH's DOT tokens
+      // Make sure the state does not have ALITH's AXC tokens
       let alithBalance = (await context.polkadotApi.query.assets.account(assetId, ALITH)) as any;
 
       // Alith balance is 0
@@ -517,12 +517,12 @@ describeDevMoonbeam(
       // Create a block in which the XCM will be executed
       await context.createBlock();
 
-      // Make sure the state has ALITH's to DOT tokens
+      // Make sure the state has ALITH's to AXC tokens
       alithBalance = ((await context.polkadotApi.query.assets.account(assetId, ALITH)) as any)
         .unwrap()
         ["balance"].toBigInt();
 
-      // Alith balance is 10 DOT
+      // Alith balance is 10 AXC
       expect(alithBalance).to.eq(BigInt(10000000000000));
     });
   }
@@ -543,7 +543,7 @@ describeDevMoonbeam(
       };
 
       const sourceLocation = {
-        XCM: { parents: 1, interior: { X1: { Parachain: foreignParaId } } },
+        XCM: { parents: 1, interior: { X1: { Allychain: foreignParaId } } },
       };
 
       const keyring = new Keyring({ type: "ethereum" });

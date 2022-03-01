@@ -207,7 +207,7 @@ impl pallet_evm::Config for Runtime {
 	type ChainId = ();
 	type OnChargeTransaction = ();
 	type BlockGasLimit = ();
-	type BlockHashMapping = pallet_evm::SubstrateBlockHashMapping<Self>;
+	type BlockHashMapping = pallet_evm::AxlibBlockHashMapping<Self>;
 	type FindAuthor = ();
 }
 
@@ -236,7 +236,7 @@ impl pallet_assets::Config for Runtime {
 	type Freezer = ();
 	type Extra = ();
 	type AssetAccountDeposit = AssetAccountDeposit;
-	type WeightInfo = pallet_assets::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_assets::weights::AxlibWeight<Runtime>;
 }
 
 // Configure a mock runtime to test the pallet.

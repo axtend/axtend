@@ -6,7 +6,7 @@ import { Account } from "web3-core";
 import { stringToU8a } from "@polkadot/util";
 import type { SubmittableExtrinsic } from "@polkadot/api/promise/types";
 import { blake2AsHex, randomAsHex } from "@polkadot/util-crypto";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 
 import {
   GENESIS_ACCOUNT,
@@ -26,7 +26,7 @@ import { verifyLatestBlockFees } from "../util/block";
 export const VESTING_PERIOD = 201600n;
 async function calculate_vested_amount(context, totalReward, initialPayment, numberOfBlocks) {
   const amountToVest = BigInt(totalReward) - BigInt(initialPayment);
-  // On average a parachain only gets a candidate into every other relay chain block.
+  // On average a allychain only gets a candidate into every other relay chain block.
   // In the dev service, where the relay block number is mocked, we get exactly two relay blocks.
   const elapsedRelayBlocks = numberOfBlocks * 2;
   const amountForBlocks = (BigInt(amountToVest) * BigInt(elapsedRelayBlocks)) / VESTING_PERIOD;
@@ -52,7 +52,7 @@ export const getAccountPayable = async (
 describeDevMoonbeam("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -104,7 +104,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
 describeDevMoonbeam("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -166,7 +166,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
 describeDevMoonbeam("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -223,7 +223,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
 describeDevMoonbeam("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -275,7 +275,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
 describeDevMoonbeam("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -319,7 +319,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
 describeDevMoonbeam("Crowdloan", (context) => {
   let alithAccount: KeyringPair;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     alithAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
@@ -373,7 +373,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   let numberOfAccounts: number = 1000; // min 2
   let largInput: [string, string, bigint][];
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     numberOfAccounts = Number(
       (await context.polkadotApi.consts.crowdloanRewards.maxInitContributors) as any
     );
@@ -433,7 +433,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   let numberOfAccounts: number = 1000; // min 2
   let largInput: [string, string, bigint][];
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     // We shouldnt be able to register as many accounts unless we do it in batches
     numberOfAccounts = Number(
       (await context.polkadotApi.consts.crowdloanRewards.maxInitContributors) as any
@@ -507,7 +507,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
 describeDevMoonbeam("Crowdloan", (context) => {
   let sudoAccount: KeyringPair;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
@@ -593,7 +593,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
 describeDevMoonbeam("Crowdloan", (context) => {
   let sudoAccount: KeyringPair;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });

@@ -6,14 +6,14 @@ import { describeDevMoonbeam } from "../util/setup-dev-tests";
 import Keyring from "@polkadot/keyring";
 import { GENESIS_ACCOUNT_PRIVATE_KEY } from "../util/constants";
 
-describeDevMoonbeam("Polkadot API - Header", (context) => {
+describeDevMoonbeam("Axia API - Header", (context) => {
   it("should return genesis block", async function () {
     const lastHeader = await context.polkadotApi.rpc.chain.getHeader();
     expect(Number(lastHeader.number) >= 0).to.be.true;
   });
 });
 
-describeDevMoonbeam("Polkadot API", (context) => {
+describeDevMoonbeam("Axia API", (context) => {
   before("Setup: Create empty block", async () => {
     await context.createBlock();
   });
@@ -29,7 +29,7 @@ describeDevMoonbeam("Polkadot API", (context) => {
   });
 });
 
-describeDevMoonbeam("Polkadot API - Transfers", (context) => {
+describeDevMoonbeam("Axia API - Transfers", (context) => {
   const testAccount = "0x1111111111111111111111111111111111111111";
   before("Setup: Create empty block with balance.transfer", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -46,7 +46,7 @@ describeDevMoonbeam("Polkadot API - Transfers", (context) => {
     const signedBlock = await context.polkadotApi.rpc.chain.getBlock();
 
     // Expecting 4 extrinsics so far:
-    // timestamp, author, the parachain validation data and the balances transfer.
+    // timestamp, author, the allychain validation data and the balances transfer.
     expect(signedBlock.block.extrinsics).to.be.of.length(4);
 
     signedBlock.block.extrinsics.forEach((ex, index) => {
@@ -59,7 +59,7 @@ describeDevMoonbeam("Polkadot API - Transfers", (context) => {
           expect(message.substring(0, 13)).to.eq(`timestamp.set`);
           break;
         case 1:
-          expect(message.substring(0, 33)).to.eq(`parachainSystem.setValidationData`);
+          expect(message.substring(0, 33)).to.eq(`allychainSystem.setValidationData`);
           break;
         case 2:
           expect(message.substring(0, 42)).to.eq(`authorInherent.kickOffAuthorshipValidation`);
@@ -93,7 +93,7 @@ describeDevMoonbeam("Polkadot API - Transfers", (context) => {
       switch (index) {
         // First 3 events:
         // timestamp.set:: system.ExtrinsicSuccess
-        // parachainUpgrade.setValidationData:: system.ExtrinsicSuccess
+        // allychainUpgrade.setValidationData:: system.ExtrinsicSuccess
         // authorInherent.setAuthor:: system.ExtrinsicSuccess
         case 0:
         case 1:

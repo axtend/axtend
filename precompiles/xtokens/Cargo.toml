@@ -14,7 +14,7 @@ rustc-hex = { version = "2.0.1", default-features = false }
 precompile-utils = { path = "../utils", default-features = false }
 xcm-primitives = { path = "../../primitives/xcm/", default-features = false }
 
-# Substrate
+# Axlib
 frame-support = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 sp-core = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 sp-runtime = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
@@ -25,7 +25,7 @@ fp-evm = { git = "https://github.com/axtend/frontier", branch = "2be428c", defau
 frame-system = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 pallet-evm = { git = "https://github.com/axtend/frontier", branch = "2be428c", default-features = false }
 
-# Polkadot / XCM
+# Axia / XCM
 orml-xtokens = { git = "https://github.com/axtend/open-runtime-module-library", branch = "7ba9fad", default-features = false }
 xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 
@@ -34,7 +34,7 @@ derive_more = "0.99"
 serde = "1.0.100"
 sha3 = "0.9"
 
-# Substrate
+# Axlib
 codec = { package = "parity-scale-codec", version = "2.2", default-features = false, features = [
 	"max-encoded-len",
 ] }
@@ -46,7 +46,7 @@ sp-io = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 # Cumulus
 cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 
-# Polkadot
+# Axia
 pallet-xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 xcm-builder = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 xcm-executor = { git = "https://github.com/axtend/axia", branch = "66cb46b" }

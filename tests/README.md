@@ -27,35 +27,35 @@ and to print more information:
 npm run test-with-logs
 ```
 
-# Running a parachain test
+# Running a allychain test
 
-Either use script or use parachain testing framework.
+Either use script or use allychain testing framework.
 
 ## Using Script
 
-You can directly launch a parachain test with this script.
+You can directly launch a allychain test with this script.
 It takes care of getting the binary relay node and spawns 2 validators and 2 collators.
 
 ```bash
 scripts/run-para-test-single.sh moonriver/test-balance-genesis.ts
 ```
 
-## Using parachain testing framework
+## Using allychain testing framework
 
 ### Requirements
 
-First make sure you have compiled moonbeam with `cargo build --release` and also copied
+First make sure you have compiled axtend with `cargo build --release` and also copied
 the polkadot executable (built with `cargo build --release`) into the same folder as
-the moonbeam executable: `./target/release`
-(`cp ./target/release/polkadot ../moonbeam/target/release/polkadot`).
+the axtend executable: `./target/release`
+(`cp ./target/release/polkadot ../axtend/target/release/polkadot`).
 
-Also don't forget to build `moonbeam-types-bundle` with `yarn run build` in that folder.
+Also don't forget to build `axtend-types-bundle` with `yarn run build` in that folder.
 
 ### Execution
 
-Then run `npm run para-test-no-ci` to run the parachain tests in the para-tests-no-ci folder.
+Then run `npm run para-test-no-ci` to run the allychain tests in the para-tests-no-ci folder.
 
-This script is prefixed with `DEBUG=test:substrateEvents ` to log events during the tests.
+This script is prefixed with `DEBUG=test:axlibEvents ` to log events during the tests.
 
 ## Write Tests
 
@@ -68,10 +68,10 @@ This script is prefixed with `DEBUG=test:substrateEvents ` to log events during 
 
 ## Verbose mode
 
-You can also add the node's logs to the output using the `MOONBEAM_LOG` env variable. Ex:
+You can also add the node's logs to the output using the `AXTEND_LOG` env variable. Ex:
 
 ```
-MOONBEAM_LOG="warn,rpc=trace" npm run test
+AXTEND_LOG="warn,rpc=trace" npm run test
 ```
 
 The test script will find available ports above 20000 in order to ensure that it doesn't conflict

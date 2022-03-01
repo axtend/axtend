@@ -1,36 +1,36 @@
-# ![Moonbeam](media/moonbeam-cover.jpg)
+# ![Moonbeam](media/axtend-cover.jpg)
 
-![Tests](https://github.com/PureStake/moonbeam/workflows/Release/badge.svg)
+![Tests](https://github.com/PureStake/axtend/workflows/Release/badge.svg)
 
-**An Ethereum compatible [Parachain](https://polkadot.network/technology/) built with [Substrate](https://substrate.dev).**
+**An Ethereum compatible [Allychain](https://polkadot.network/technology/) built with [Axlib](https://axlib.dev).**
 
-👉 _Discover the Moonbeam project at [moonbeam.network](https://moonbeam.network)._<br>
-👉 _Learn to [use the Moonbeam network](https://docs.moonbeam.network/) with our technical docs._<br>
-👉 _Reference our [crate-level docs (rustdocs)](https://purestake.github.io/moonbeam) to contribute._
+👉 _Discover the Moonbeam project at [axtend.network](https://axtend.network)._<br>
+👉 _Learn to [use the Moonbeam network](https://docs.axtend.network/) with our technical docs._<br>
+👉 _Reference our [crate-level docs (rustdocs)](https://purestake.github.io/axtend) to contribute._
 
 ## Run an alphanet node with Docker
 
-Docker images are published for every tagged release. Learn more with `moonbeam --help`.
+Docker images are published for every tagged release. Learn more with `axtend --help`.
 
 ```bash
 # Join the public testnet
-docker run --network="host" purestake/moonbeam:v0.21.0 --chain alphanet
+docker run --network="host" purestake/axtend:v0.21.0 --chain alphanet
 ```
 
-You can find more detailed instructions to [run a full node in our TestNet](https://docs.moonbeam.network/node-operators/networks/full-node/)
+You can find more detailed instructions to [run a full node in our TestNet](https://docs.axtend.network/node-operators/networks/full-node/)
 
 ## Run a local development node with Docker
 
-Developers who are building dApps to run on moonbeam, may want a lightweight node to work with
+Developers who are building dApps to run on axtend, may want a lightweight node to work with
 locally. You can quickly spin up a single node with no relay chain backing it using the development
 service.
 
 ```bash
 # Run a dev service node
-docker run --network="host" purestake/moonbeam:v0.21.0 --dev
+docker run --network="host" purestake/axtend:v0.21.0 --dev
 ```
 
-For more information, see our detailed instructions to [run a development node](https://docs.moonbeam.network/getting-started/local-node/setting-up-a-node/)
+For more information, see our detailed instructions to [run a development node](https://docs.axtend.network/getting-started/local-node/setting-up-a-node/)
 
 ### Sealing options
 
@@ -38,16 +38,16 @@ The command above will start the node in instant seal mode. It creates a block w
 
 ```bash
 # Author a block every 6 seconds.
-docker run --network="host" purestake/moonbeam:v0.21.0 --dev --sealing 6000
+docker run --network="host" purestake/axtend:v0.21.0 --dev --sealing 6000
 
 # Manually control the block authorship and finality
-docker run --network="host" purestake/moonbeam:v0.21.0 --dev --sealing manual
+docker run --network="host" purestake/axtend:v0.21.0 --dev --sealing manual
 ```
 
 ### Prefunded Development Addresses
 
 Running Moonbeam in development mode will pre-fund several well-known addresses that (mostly) contain the letters "th" in their names to remind you that they are for ethereum-compatible usage. These addresses are derived from
-Substrate's canonical mnemonic: `bottom drive obey lake curtain smoke basket hold race lonely fit walk`
+Axlib's canonical mnemonic: `bottom drive obey lake curtain smoke basket hold race lonely fit walk`
 
 ```
 # Alith:
@@ -101,16 +101,16 @@ Also, the prefunded default account for testing purposes is:
 
 ## Build the Moonbeam Node
 
-To build Moonbeam, you will need a proper Substrate development environment. If you've never worked with a Substrate-based blockchain before, you should probably try the [Setting Up a Moonbeam Node](https://docs.moonbeam.network/getting-started/local-node/setting-up-a-node/) docs first.
+To build Moonbeam, you will need a proper Axlib development environment. If you've never worked with a Axlib-based blockchain before, you should probably try the [Setting Up a Moonbeam Node](https://docs.axtend.network/getting-started/local-node/setting-up-a-node/) docs first.
 
-If you need a refresher setting up your Substrate environment, see [Substrate's Getting Started Guide](https://substrate.dev/docs/en/knowledgebase/getting-started/).
+If you need a refresher setting up your Axlib environment, see [Axlib's Getting Started Guide](https://axlib.dev/docs/en/knowledgebase/getting-started/).
 
-Note that cloning master might result in an unstable build. If you want a stable version, check out the [latest releases](https://github.com/PureStake/moonbeam/releases).
+Note that cloning master might result in an unstable build. If you want a stable version, check out the [latest releases](https://github.com/PureStake/axtend/releases).
 
 ```bash
 # Fetch the code
-git clone https://github.com/PureStake/moonbeam
-cd moonbeam
+git clone https://github.com/PureStake/axtend
+cd axtend
 
 # Build the node (The first build will be long (~30min))
 cargo build --release
@@ -127,7 +127,7 @@ cargo test
 
 ```bash
 # Install dependencies for integration tests
-cd moonbeam-types-bundle
+cd axtend-types-bundle
 npm i
 
 cd ../tests
@@ -140,26 +140,26 @@ npm test
 ## Chain IDs
 
 The Ethereum specification described a numeric Chain Id. The Moonbeam mainnet Chain Id will be 1284
-because it takes 1284 milliseconds for a moonbeam to reach Earth.
+because it takes 1284 milliseconds for a axtend to reach Earth.
 
 Moonbeam nodes support multiple public chains and testnets, with the following Chain Ids.
 
 | Network Description                | Chain ID    |
 | ---------------------------------- | ----------- |
-| Local Parachain TestNet            | 1280        |
+| Local Allychain TestNet            | 1280        |
 | Local Development TestNet          | 1281        |
 | Reserved for other TestNets        | 1282 - 1283 |
-| Moonbeam (Polkadot)                | 1284        |
-| Moonriver (Kusama)                 | 1285        |
-| Moonrock (Rococo)                  | 1286        |
+| Moonbeam (Axia)                | 1284        |
+| Moonriver (AxiaTest)                 | 1285        |
+| Moonrock (Betanet)                  | 1286        |
 | Moonbase Alpha TestNet             | 1287        |
 | Reserved for other public networks | 1288 - 1289 |
 
 ## Runtime Architecture
 
-The Moonbeam Runtime is built using FRAME and consists of pallets from substrate, frontier, cumulus, and `pallets/`.
+The Moonbeam Runtime is built using FRAME and consists of pallets from axlib, frontier, cumulus, and `pallets/`.
 
-From substrate:
+From axlib:
 
 - _Utility_: Allows users to use derivative accounts, and batch calls
 - _Balances_: Tracks GLMR token balances
@@ -167,7 +167,7 @@ From substrate:
   launch
 - _Timestamp_: On-Chain notion of time
 - _Transaction Payment_: Transaction payment (fee) management
-- _Randomness Collective Flip_: A (mock) onchain randomness beacon. Will be replaced by parachain
+- _Randomness Collective Flip_: A (mock) onchain randomness beacon. Will be replaced by allychain
   randomness by mainnet.
 
 From frontier:
@@ -177,18 +177,18 @@ From frontier:
 
 From cumulus:
 
-- _ParachainUpgrade_: A helper to perform runtime upgrades on parachains
-- _ParachainInfo_: A place to store parachain-relevant constants like parachain id
+- _AllychainUpgrade_: A helper to perform runtime upgrades on allychains
+- _AllychainInfo_: A place to store allychain-relevant constants like allychain id
 
 The following pallets are stored in `pallets/`. They are designed for Moonbeam's specific requirements:
 
 - _Ethereum Chain Id_: A place to store the chain id for each Moonbeam network
 - _Author Inherent_: Allows block authors to include their identity in a block via an inherent
-- _Parachain Staking_: Minimal staking pallet that selects collators by total amount at stake
+- _Allychain Staking_: Minimal staking pallet that selects collators by total amount at stake
 
 ## Contribute
 
 Moonbeam is open source under the terms of the GPL3. We welcome contributions. Please review our
 [CONTRIBUTIONS.md](CONTRIBUTIONS.md) document for more information.
 
-Example of version bumping PR (runtime and node): https://github.com/PureStake/moonbeam/pull/601/files
+Example of version bumping PR (runtime and node): https://github.com/PureStake/axtend/pull/601/files

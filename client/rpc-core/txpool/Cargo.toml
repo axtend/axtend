@@ -1,10 +1,10 @@
 [package]
-name = "moonbeam-rpc-core-txpool"
+name = "axtend-rpc-core-txpool"
 authors = ["PureStake"]
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
-repository = "https://github.com/PureStake/moonbeam/"
+repository = "https://github.com/PureStake/axtend/"
 version = "0.6.0"
 
 [dependencies]

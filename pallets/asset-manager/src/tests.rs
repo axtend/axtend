@@ -499,17 +499,17 @@ fn test_asset_manager_change_statemine_prefixes() {
 
 		let statemine_multilocation = MockAssetType::Xcm(MultiLocation {
 			parents: 1,
-			interior: X2(Parachain(statemine_para_id), GeneralIndex(1)),
+			interior: X2(Allychain(statemine_para_id), GeneralIndex(1)),
 		});
 
 		let statemine_multilocation_2 = MockAssetType::Xcm(MultiLocation {
 			parents: 1,
-			interior: X2(Parachain(statemine_para_id), GeneralIndex(2)),
+			interior: X2(Allychain(statemine_para_id), GeneralIndex(2)),
 		});
 
 		let statemine_multilocation_3 = MockAssetType::Xcm(MultiLocation {
 			parents: 1,
-			interior: X2(Parachain(statemine_para_id), GeneralIndex(3)),
+			interior: X2(Allychain(statemine_para_id), GeneralIndex(3)),
 		});
 
 		let asset_id: mock::AssetId = statemine_multilocation.clone().into();
@@ -571,7 +571,7 @@ fn test_asset_manager_change_statemine_prefixes() {
 		let expected_statemine_multilocation = MockAssetType::Xcm(MultiLocation {
 			parents: 1,
 			interior: X3(
-				Parachain(statemine_para_id),
+				Allychain(statemine_para_id),
 				PalletInstance(statemine_assets_pallet),
 				GeneralIndex(1),
 			),
@@ -587,7 +587,7 @@ fn test_asset_manager_change_statemine_prefixes() {
 		let expected_statemine_multilocation_2 = MockAssetType::Xcm(MultiLocation {
 			parents: 1,
 			interior: X3(
-				Parachain(statemine_para_id),
+				Allychain(statemine_para_id),
 				PalletInstance(statemine_assets_pallet),
 				GeneralIndex(2),
 			),
@@ -613,7 +613,7 @@ fn test_asset_manager_change_statemine_prefixes() {
 		let expected_statemine_multilocation_3 = MockAssetType::Xcm(MultiLocation {
 			parents: 1,
 			interior: X3(
-				Parachain(statemine_para_id),
+				Allychain(statemine_para_id),
 				PalletInstance(statemine_assets_pallet),
 				GeneralIndex(3),
 			),

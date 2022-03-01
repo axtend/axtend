@@ -14,13 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Moonbase parachain collator
+//! Moonbase allychain collator
 
 #![warn(missing_docs)]
 
 #[cfg(test)]
 mod tests;
 
-fn main() -> moonbeam_cli::Result<()> {
-	moonbeam_cli::run()
+fn main() -> axtend_cli::Result<()> {
+	axtend_cli::run()
 }

@@ -28,7 +28,7 @@ import type {
   Permill,
 } from "@polkadot/types/interfaces/runtime";
 import type {
-  CumulusPrimitivesParachainInherentParachainInherentData,
+  CumulusPrimitivesAllychainInherentAllychainInherentData,
   EthereumTransactionTransactionV2,
   MoonriverRuntimeAssetRegistrarMetadata,
   MoonriverRuntimeAssetType,
@@ -43,8 +43,8 @@ import type {
   PalletIdentityBitFlags,
   PalletIdentityIdentityInfo,
   PalletIdentityJudgement,
-  ParachainStakingInflationRangePerbill,
-  ParachainStakingInflationRangeU128,
+  AllychainStakingInflationRangePerbill,
+  AllychainStakingInflationRangeU128,
   SpRuntimeMultiSignature,
   XcmV1MultiLocation,
   XcmV2WeightLimit,
@@ -706,7 +706,7 @@ declare module "@polkadot/api-base/types/submittable" {
        * This inherent is a workaround to run code after the "real" inherents
        * have executed, but before transactions are executed. This this should
        * go into on_post_inherents when it is ready
-       * https://github.com/paritytech/substrate/pull/10128 TODO better weight.
+       * https://github.com/paritytech/axlib/pull/10128 TODO better weight.
        * For now we jsut set a somewhat soncervative fudge factor
        */
       kickOffAuthorshipValidation: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;
@@ -2263,7 +2263,7 @@ declare module "@polkadot/api-base/types/submittable" {
        */
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
-    parachainStaking: {
+    allychainStaking: {
       /**
        * Cancel pending request to adjust the collator candidate self bond
        */
@@ -2463,24 +2463,24 @@ declare module "@polkadot/api-base/types/submittable" {
       setInflation: AugmentedSubmittable<
         (
           schedule:
-            | ParachainStakingInflationRangePerbill
+            | AllychainStakingInflationRangePerbill
             | { min?: any; ideal?: any; max?: any }
             | string
             | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [ParachainStakingInflationRangePerbill]
+        [AllychainStakingInflationRangePerbill]
       >;
       /**
-       * Set the account that will hold funds set aside for parachain bond
+       * Set the account that will hold funds set aside for allychain bond
        */
-      setParachainBondAccount: AugmentedSubmittable<
+      setAllychainBondAccount: AugmentedSubmittable<
         (updated: AccountId20 | string | Uint8Array) => SubmittableExtrinsic<ApiType>,
         [AccountId20]
       >;
       /**
-       * Set the percent of inflation set aside for parachain bond
+       * Set the percent of inflation set aside for allychain bond
        */
-      setParachainBondReservePercent: AugmentedSubmittable<
+      setAllychainBondReservePercent: AugmentedSubmittable<
         (updated: Percent | AnyNumber | Uint8Array) => SubmittableExtrinsic<ApiType>,
         [Percent]
       >;
@@ -2491,12 +2491,12 @@ declare module "@polkadot/api-base/types/submittable" {
       setStakingExpectations: AugmentedSubmittable<
         (
           expectations:
-            | ParachainStakingInflationRangeU128
+            | AllychainStakingInflationRangeU128
             | { min?: any; ideal?: any; max?: any }
             | string
             | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [ParachainStakingInflationRangeU128]
+        [AllychainStakingInflationRangeU128]
       >;
       /**
        * Set the total number of collator candidates selected per round
@@ -2512,7 +2512,7 @@ declare module "@polkadot/api-base/types/submittable" {
        */
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
-    parachainSystem: {
+    allychainSystem: {
       authorizeUpgrade: AugmentedSubmittable<
         (codeHash: H256 | string | Uint8Array) => SubmittableExtrinsic<ApiType>,
         [H256]
@@ -2535,7 +2535,7 @@ declare module "@polkadot/api-base/types/submittable" {
       setValidationData: AugmentedSubmittable<
         (
           data:
-            | CumulusPrimitivesParachainInherentParachainInherentData
+            | CumulusPrimitivesAllychainInherentAllychainInherentData
             | {
                 validationData?: any;
                 relayChainState?: any;
@@ -2545,7 +2545,7 @@ declare module "@polkadot/api-base/types/submittable" {
             | string
             | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [CumulusPrimitivesParachainInherentParachainInherentData]
+        [CumulusPrimitivesAllychainInherentAllychainInherentData]
       >;
       sudoSendUpwardMessage: AugmentedSubmittable<
         (message: Bytes | string | Uint8Array) => SubmittableExtrinsic<ApiType>,
@@ -2641,8 +2641,8 @@ declare module "@polkadot/api-base/types/submittable" {
        *
        * - `origin`: Must be capable of withdrawing the `assets` and executing XCM.
        * - `dest`: Destination context for the assets. Will typically be
-       *   `X2(Parent, Parachain(..))` to send from parachain to parachain, or
-       *   `X1(Parachain(..))` to send from relay to parachain.
+       *   `X2(Parent, Allychain(..))` to send from allychain to allychain, or
+       *   `X1(Allychain(..))` to send from relay to allychain.
        * - `beneficiary`: A beneficiary location for the assets in the context of
        *   `dest`. Will generally be an `AccountId32` value.
        * - `assets`: The assets to be withdrawn. This should include the assets
@@ -2680,8 +2680,8 @@ declare module "@polkadot/api-base/types/submittable" {
        *
        * - `origin`: Must be capable of withdrawing the `assets` and executing XCM.
        * - `dest`: Destination context for the assets. Will typically be
-       *   `X2(Parent, Parachain(..))` to send from parachain to parachain, or
-       *   `X1(Parachain(..))` to send from relay to parachain.
+       *   `X2(Parent, Allychain(..))` to send from allychain to allychain, or
+       *   `X1(Allychain(..))` to send from relay to allychain.
        * - `beneficiary`: A beneficiary location for the assets in the context of
        *   `dest`. Will generally be an `AccountId32` value.
        * - `assets`: The assets to be withdrawn. The first item should be the
@@ -2721,8 +2721,8 @@ declare module "@polkadot/api-base/types/submittable" {
        *
        * - `origin`: Must be capable of withdrawing the `assets` and executing XCM.
        * - `dest`: Destination context for the assets. Will typically be
-       *   `X2(Parent, Parachain(..))` to send from parachain to parachain, or
-       *   `X1(Parachain(..))` to send from relay to parachain.
+       *   `X2(Parent, Allychain(..))` to send from allychain to allychain, or
+       *   `X1(Allychain(..))` to send from relay to allychain.
        * - `beneficiary`: A beneficiary location for the assets in the context of
        *   `dest`. Will generally be an `AccountId32` value.
        * - `assets`: The assets to be withdrawn. This should include the assets
@@ -2755,8 +2755,8 @@ declare module "@polkadot/api-base/types/submittable" {
        *
        * - `origin`: Must be capable of withdrawing the `assets` and executing XCM.
        * - `dest`: Destination context for the assets. Will typically be
-       *   `X2(Parent, Parachain(..))` to send from parachain to parachain, or
-       *   `X1(Parachain(..))` to send from relay to parachain.
+       *   `X2(Parent, Allychain(..))` to send from allychain to allychain, or
+       *   `X1(Allychain(..))` to send from relay to allychain.
        * - `beneficiary`: A beneficiary location for the assets in the context of
        *   `dest`. Will generally be an `AccountId32` value.
        * - `assets`: The assets to be withdrawn. The first item should be the
@@ -3726,7 +3726,7 @@ declare module "@polkadot/api-base/types/submittable" {
             | { CouncilCollective: any }
             | { TechCommitteeCollective: any }
             | { CumulusXcm: any }
-            | { PolkadotXcm: any }
+            | { AxiaXcm: any }
             | string
             | Uint8Array,
           call: Call | { callIndex?: any; args?: any } | string | Uint8Array

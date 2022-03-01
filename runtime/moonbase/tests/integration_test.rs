@@ -31,7 +31,7 @@ use frame_support::{
 };
 use moonbase_runtime::{
 	currency::UNIT, AccountId, AssetId, AssetManager, AssetRegistrarMetadata, AssetType, Assets,
-	Balances, BaseFee, BlockWeights, Call, CrowdloanRewards, Event, ParachainStaking, PolkadotXcm,
+	Balances, BaseFee, BlockWeights, Call, CrowdloanRewards, Event, AllychainStaking, AxiaXcm,
 	Precompiles, Runtime, System, XTokens, XcmTransactor,
 };
 use nimbus_primitives::NimbusId;
@@ -63,25 +63,25 @@ fn verify_pallet_prefixes() {
 		// Compares the unhashed pallet prefix in the `StorageInstance` implementation by every
 		// storage item in the pallet P. This pallet prefix is used in conjunction with the
 		// item name to get the unique storage key: hash(PalletPrefix) + hash(StorageName)
-		// https://github.com/paritytech/substrate/blob/master/frame/support/procedural/src/pallet/
+		// https://github.com/paritytech/axlib/blob/master/frame/support/procedural/src/pallet/
 		// expand/storage.rs#L389-L401
 		assert_eq!(
 			<moonbase_runtime::Runtime as frame_system::Config>::PalletInfo::name::<P>(),
 			Some(name)
 		);
 	}
-	// TODO: use StorageInfoTrait from https://github.com/paritytech/substrate/pull/9246
+	// TODO: use StorageInfoTrait from https://github.com/paritytech/axlib/pull/9246
 	// This is now available with polkadot-v0.9.9 dependencies
 	is_pallet_prefix::<moonbase_runtime::System>("System");
 	is_pallet_prefix::<moonbase_runtime::Utility>("Utility");
 	is_pallet_prefix::<moonbase_runtime::RandomnessCollectiveFlip>("RandomnessCollectiveFlip");
-	is_pallet_prefix::<moonbase_runtime::ParachainSystem>("ParachainSystem");
+	is_pallet_prefix::<moonbase_runtime::AllychainSystem>("AllychainSystem");
 	is_pallet_prefix::<moonbase_runtime::TransactionPayment>("TransactionPayment");
-	is_pallet_prefix::<moonbase_runtime::ParachainInfo>("ParachainInfo");
+	is_pallet_prefix::<moonbase_runtime::AllychainInfo>("AllychainInfo");
 	is_pallet_prefix::<moonbase_runtime::EthereumChainId>("EthereumChainId");
 	is_pallet_prefix::<moonbase_runtime::EVM>("EVM");
 	is_pallet_prefix::<moonbase_runtime::Ethereum>("Ethereum");
-	is_pallet_prefix::<moonbase_runtime::ParachainStaking>("ParachainStaking");
+	is_pallet_prefix::<moonbase_runtime::AllychainStaking>("AllychainStaking");
 	is_pallet_prefix::<moonbase_runtime::Scheduler>("Scheduler");
 	is_pallet_prefix::<moonbase_runtime::Democracy>("Democracy");
 	is_pallet_prefix::<moonbase_runtime::CouncilCollective>("CouncilCollective");
@@ -227,13 +227,13 @@ fn verify_pallet_indices() {
 	is_pallet_index::<moonbase_runtime::Balances>(3);
 	is_pallet_index::<moonbase_runtime::Sudo>(4);
 	is_pallet_index::<moonbase_runtime::RandomnessCollectiveFlip>(5);
-	is_pallet_index::<moonbase_runtime::ParachainSystem>(6);
+	is_pallet_index::<moonbase_runtime::AllychainSystem>(6);
 	is_pallet_index::<moonbase_runtime::TransactionPayment>(7);
-	is_pallet_index::<moonbase_runtime::ParachainInfo>(8);
+	is_pallet_index::<moonbase_runtime::AllychainInfo>(8);
 	is_pallet_index::<moonbase_runtime::EthereumChainId>(9);
 	is_pallet_index::<moonbase_runtime::EVM>(10);
 	is_pallet_index::<moonbase_runtime::Ethereum>(11);
-	is_pallet_index::<moonbase_runtime::ParachainStaking>(12);
+	is_pallet_index::<moonbase_runtime::AllychainStaking>(12);
 	is_pallet_index::<moonbase_runtime::Scheduler>(13);
 	is_pallet_index::<moonbase_runtime::Democracy>(14);
 	is_pallet_index::<moonbase_runtime::CouncilCollective>(15);
@@ -278,36 +278,36 @@ fn join_collator_candidates() {
 		.build()
 		.execute_with(|| {
 			assert_noop!(
-				ParachainStaking::join_candidates(
+				AllychainStaking::join_candidates(
 					origin_of(AccountId::from(ALICE)),
 					1_000 * UNIT,
 					2u32
 				),
-				parachain_staking::Error::<Runtime>::CandidateExists
+				allychain_staking::Error::<Runtime>::CandidateExists
 			);
 			assert_noop!(
-				ParachainStaking::join_candidates(
+				AllychainStaking::join_candidates(
 					origin_of(AccountId::from(CHARLIE)),
 					1_000 * UNIT,
 					2u32
 				),
-				parachain_staking::Error::<Runtime>::DelegatorExists
+				allychain_staking::Error::<Runtime>::DelegatorExists
 			);
 			assert!(System::events().is_empty());
-			assert_ok!(ParachainStaking::join_candidates(
+			assert_ok!(AllychainStaking::join_candidates(
 				origin_of(AccountId::from(DAVE)),
 				1_000 * UNIT,
 				2u32
 			));
 			assert_eq!(
 				last_event(),
-				Event::ParachainStaking(parachain_staking::Event::JoinedCollatorCandidates {
+				Event::AllychainStaking(allychain_staking::Event::JoinedCollatorCandidates {
 					account: AccountId::from(DAVE),
 					amount_locked: 1_000 * UNIT,
 					new_total_amt_locked: 3_100 * UNIT
 				})
 			);
-			let candidates = ParachainStaking::candidate_pool();
+			let candidates = AllychainStaking::candidate_pool();
 			assert_eq!(candidates.0[0].owner, AccountId::from(ALICE));
 			assert_eq!(candidates.0[0].amount, 1_050 * UNIT);
 			assert_eq!(candidates.0[1].owner, AccountId::from(BOB));
@@ -325,7 +325,7 @@ fn transfer_through_evm_to_stake() {
 		.execute_with(|| {
 			// Charlie has no balance => fails to stake
 			assert_noop!(
-				ParachainStaking::join_candidates(
+				AllychainStaking::join_candidates(
 					origin_of(AccountId::from(CHARLIE)),
 					1_000 * UNIT,
 					0u32
@@ -366,12 +366,12 @@ fn transfer_through_evm_to_stake() {
 			);
 
 			// Charlie can stake now
-			assert_ok!(ParachainStaking::join_candidates(
+			assert_ok!(AllychainStaking::join_candidates(
 				origin_of(AccountId::from(CHARLIE)),
 				1_000 * UNIT,
 				0u32,
 			),);
-			let candidates = ParachainStaking::candidate_pool();
+			let candidates = AllychainStaking::candidate_pool();
 			assert_eq!(candidates.0[0].owner, AccountId::from(CHARLIE));
 			assert_eq!(candidates.0[0].amount, 1_000 * UNIT);
 		});
@@ -397,7 +397,7 @@ fn reward_block_authors() {
 		)])
 		.build()
 		.execute_with(|| {
-			set_parachain_inherent_data();
+			set_allychain_inherent_data();
 			for x in 2..1199 {
 				run_to_block(x, Some(NimbusId::from_slice(&ALICE_NIMBUS).unwrap()));
 			}
@@ -418,7 +418,7 @@ fn reward_block_authors() {
 }
 
 #[test]
-fn reward_block_authors_with_parachain_bond_reserved() {
+fn reward_block_authors_with_allychain_bond_reserved() {
 	ExtBuilder::default()
 		.with_balances(vec![
 			// Alice gets 100 extra tokens for her mapping deposit
@@ -438,8 +438,8 @@ fn reward_block_authors_with_parachain_bond_reserved() {
 		)])
 		.build()
 		.execute_with(|| {
-			set_parachain_inherent_data();
-			assert_ok!(ParachainStaking::set_parachain_bond_account(
+			set_allychain_inherent_data();
+			assert_ok!(AllychainStaking::set_allychain_bond_account(
 				root_origin(),
 				AccountId::from(CHARLIE),
 			),);
@@ -460,7 +460,7 @@ fn reward_block_authors_with_parachain_bond_reserved() {
 				Balances::free_balance(AccountId::from(BOB)),
 				525841666640825000000,
 			);
-			// 30% reserved for parachain bond
+			// 30% reserved for allychain bond
 			assert_eq!(
 				Balances::free_balance(AccountId::from(CHARLIE)),
 				47515000000000000000,
@@ -483,8 +483,8 @@ fn initialize_crowdloan_addresses_with_batch_and_pay() {
 		.with_crowdloan_fund(3_000_000 * UNIT)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			let init_block = CrowdloanRewards::init_vesting_block();
 			// This matches the previous vesting
 			let end_block = init_block + 4 * WEEKS;
@@ -591,8 +591,8 @@ fn initialize_crowdloan_address_and_change_with_relay_key_sig() {
 		.with_crowdloan_fund(3_000_000 * UNIT)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			let init_block = CrowdloanRewards::init_vesting_block();
 			// This matches the previous vesting
 			let end_block = init_block + 4 * WEEKS;
@@ -695,8 +695,8 @@ fn claim_via_precompile() {
 		.with_crowdloan_fund(3_000_000 * UNIT)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			let init_block = CrowdloanRewards::init_vesting_block();
 			// This matches the previous vesting
 			let end_block = init_block + 4 * WEEKS;
@@ -785,8 +785,8 @@ fn is_contributor_via_precompile() {
 		.with_crowdloan_fund(3_000_000 * UNIT)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			let init_block = CrowdloanRewards::init_vesting_block();
 			// This matches the previous vesting
 			let end_block = init_block + 4 * WEEKS;
@@ -895,8 +895,8 @@ fn reward_info_via_precompile() {
 		.with_crowdloan_fund(3_000_000 * UNIT)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			let init_block = CrowdloanRewards::init_vesting_block();
 			// This matches the previous vesting
 			let end_block = init_block + 4 * WEEKS;
@@ -981,8 +981,8 @@ fn update_reward_address_via_precompile() {
 		.with_crowdloan_fund(3_000_000 * UNIT)
 		.build()
 		.execute_with(|| {
-			// set parachain inherent data
-			set_parachain_inherent_data();
+			// set allychain inherent data
+			set_allychain_inherent_data();
 			let init_block = CrowdloanRewards::init_vesting_block();
 			// This matches the previous vesting
 			let end_block = init_block + 4 * WEEKS;
@@ -1518,7 +1518,7 @@ fn ethereum_invalid_transaction() {
 }
 
 #[test]
-fn transfer_ed_0_substrate() {
+fn transfer_ed_0_axlib() {
 	ExtBuilder::default()
 		.with_balances(vec![
 			(AccountId::from(ALICE), (1 * UNIT) + (1 * WEI)),
@@ -1526,7 +1526,7 @@ fn transfer_ed_0_substrate() {
 		])
 		.build()
 		.execute_with(|| {
-			// Substrate transfer
+			// Axlib transfer
 			assert_ok!(Balances::transfer(
 				origin_of(AccountId::from(ALICE)),
 				AccountId::from(BOB),
@@ -1643,7 +1643,7 @@ fn root_can_change_default_xcm_vers() {
 			);
 
 			// Root sets the defaultXcm
-			assert_ok!(PolkadotXcm::force_default_xcm_version(
+			assert_ok!(AxiaXcm::force_default_xcm_version(
 				root_origin(),
 				Some(2)
 			));

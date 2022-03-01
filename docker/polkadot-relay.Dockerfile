@@ -1,20 +1,20 @@
-# Inspired by Polkadot Dockerfile
+# Inspired by Axia Dockerfile
 
 FROM paritytech/ci-linux:production as builder
 LABEL maintainer "alan@purestake.com"
-LABEL description="This is the build stage for Polkadot. Here we create the binary."
+LABEL description="This is the build stage for Axia. Here we create the binary."
 
 ARG PROFILE=release
-ARG POLKADOT_COMMIT=master
-ARG POLKADOT_REPO=https://github.com/paritytech/polkadot
-RUN echo "Using polkadot ${POLKADOT_COMMIT}"
+ARG AXIA_COMMIT=master
+ARG AXIA_REPO=https://github.com/paritytech/polkadot
+RUN echo "Using polkadot ${AXIA_COMMIT}"
 WORKDIR /
 
-# Grab the Polkadot Code
+# Grab the Axia Code
 # TODO how to grab the correct commit from the lock file?
-RUN git clone ${POLKADOT_REPO}
+RUN git clone ${AXIA_REPO}
 WORKDIR /polkadot
-RUN git checkout ${POLKADOT_COMMIT}
+RUN git checkout ${AXIA_COMMIT}
 
 # RUN sed -i 's/pub const EPOCH_DURATION_IN_SLOTS: BlockNumber = 1 \* HOURS/pub const EPOCH_DURATION_IN_SLOTS: BlockNumber = 2 \* MINUTES/' runtime/*/src/constants.rs
 # Download rust dependencies and build the rust binary
@@ -24,19 +24,19 @@ RUN cargo build --$PROFILE
 
 FROM debian:buster-slim
 LABEL maintainer "alan@purestake.com"
-LABEL description="Polkadot for Moonbeam Relay Chains"
+LABEL description="Axia for Moonbeam Relay Chains"
 ARG PROFILE=release
 COPY --from=builder /polkadot/target/$PROFILE/polkadot /usr/local/bin
 
-RUN useradd -m -u 1000 -U -s /bin/sh -d /moonbase-alphanet moonbeam && \
+RUN useradd -m -u 1000 -U -s /bin/sh -d /moonbase-alphanet axtend && \
 	mkdir -p /moonbase-alphanet/.local/share/moonbase-alphanet && \
-	chown -R moonbeam:moonbeam /moonbase-alphanet && \
+	chown -R axtend:axtend /moonbase-alphanet && \
 	ln -s /moonbase-alphanet/.local/share/moonbase-alphanet /data && \
 	rm -rf /usr/bin /usr/sbin
 
-USER moonbeam
+USER axtend
 
-COPY --chown=moonbeam specs/alphanet/westend-embedded-specs-v8.json /moonbase-alphanet/alphanet-relay-raw-specs.json
+COPY --chown=axtend specs/alphanet/alphanet-embedded-specs-v8.json /moonbase-alphanet/alphanet-relay-raw-specs.json
 RUN grep -v '/p2p/' /moonbase-alphanet/alphanet-relay-raw-specs.json > \
     /moonbase-alphanet/alphanet-relay-raw-specs-no-bootnodes.json
 

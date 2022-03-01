@@ -14,7 +14,7 @@ import {
   execFromTwoThirdsOfCouncil,
   execFromAllMembersOfTechCommittee,
 } from "../../util/governance";
-import { createBlockWithExtrinsic } from "../../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../../util/axlib-rpc";
 
 const keyring = new Keyring({ type: "ethereum" });
 const proposalHash = "0xf3d039875302d49d52fb1af6877a2c46bc55b004afb8130f94dd9d0489ca3185";

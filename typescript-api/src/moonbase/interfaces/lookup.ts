@@ -220,9 +220,9 @@ export default {
     },
   },
   /**
-   * Lookup32: cumulus_pallet_parachain_system::pallet::Event<T>
+   * Lookup32: cumulus_pallet_allychain_system::pallet::Event<T>
    */
-  CumulusPalletParachainSystemEvent: {
+  CumulusPalletAllychainSystemEvent: {
     _enum: {
       ValidationFunctionStored: "Null",
       ValidationFunctionApplied: "u32",
@@ -319,9 +319,9 @@ export default {
     },
   },
   /**
-   * Lookup47: parachain_staking::pallet::Event<T>
+   * Lookup47: allychain_staking::pallet::Event<T>
    */
-  ParachainStakingEvent: {
+  AllychainStakingEvent: {
     _enum: {
       NewRound: "(u32,u32,u32,u128)",
       JoinedCollatorCandidates: "(AccountId20,u128,u128)",
@@ -344,13 +344,13 @@ export default {
       DelegationRevoked: "(AccountId20,AccountId20,u128)",
       DelegationKicked: "(AccountId20,AccountId20,u128)",
       DelegatorExitCancelled: "AccountId20",
-      CancelledDelegationRequest: "(AccountId20,ParachainStakingDelegationRequest)",
-      Delegation: "(AccountId20,u128,AccountId20,ParachainStakingDelegatorAdded)",
+      CancelledDelegationRequest: "(AccountId20,AllychainStakingDelegationRequest)",
+      Delegation: "(AccountId20,u128,AccountId20,AllychainStakingDelegatorAdded)",
       DelegatorLeftCandidate: "(AccountId20,AccountId20,u128,u128)",
       Rewarded: "(AccountId20,u128)",
-      ReservedForParachainBond: "(AccountId20,u128)",
-      ParachainBondAccountSet: "(AccountId20,AccountId20)",
-      ParachainBondReservePercentSet: "(Percent,Percent)",
+      ReservedForAllychainBond: "(AccountId20,u128)",
+      AllychainBondAccountSet: "(AccountId20,AccountId20)",
+      AllychainBondReservePercentSet: "(Percent,Percent)",
       InflationSet: "(Perbill,Perbill,Perbill,Perbill,Perbill,Perbill)",
       StakeExpectationsSet: "(u128,u128,u128)",
       TotalSelectedSet: "(u32,u32)",
@@ -359,24 +359,24 @@ export default {
     },
   },
   /**
-   * Lookup49: parachain_staking::pallet::DelegationRequest<account::AccountId20, Balance>
+   * Lookup49: allychain_staking::pallet::DelegationRequest<account::AccountId20, Balance>
    */
-  ParachainStakingDelegationRequest: {
+  AllychainStakingDelegationRequest: {
     collator: "AccountId20",
     amount: "u128",
     whenExecutable: "u32",
-    action: "ParachainStakingDelegationChange",
+    action: "AllychainStakingDelegationChange",
   },
   /**
-   * Lookup50: parachain_staking::pallet::DelegationChange
+   * Lookup50: allychain_staking::pallet::DelegationChange
    */
-  ParachainStakingDelegationChange: {
+  AllychainStakingDelegationChange: {
     _enum: ["Revoke", "Decrease"],
   },
   /**
-   * Lookup51: parachain_staking::pallet::DelegatorAdded<B>
+   * Lookup51: allychain_staking::pallet::DelegatorAdded<B>
    */
-  ParachainStakingDelegatorAdded: {
+  AllychainStakingDelegatorAdded: {
     _enum: {
       AddedToTop: {
         newTotal: "u128",
@@ -815,7 +815,7 @@ export default {
    */
   XcmV1Junction: {
     _enum: {
-      Parachain: "Compact<u32>",
+      Allychain: "Compact<u32>",
       AccountId32: {
         network: "XcmV0JunctionNetworkId",
         id: "[u8;32]",
@@ -845,8 +845,8 @@ export default {
     _enum: {
       Any: "Null",
       Named: "Bytes",
-      Polkadot: "Null",
-      Kusama: "Null",
+      Axia: "Null",
+      AxiaTest: "Null",
     },
   },
   /**
@@ -1160,7 +1160,7 @@ export default {
   XcmV0Junction: {
     _enum: {
       Parent: "Null",
-      Parachain: "Compact<u32>",
+      Allychain: "Compact<u32>",
       AccountId32: {
         network: "XcmV0JunctionNetworkId",
         id: "[u8;32]",
@@ -1588,12 +1588,12 @@ export default {
     },
   },
   /**
-   * Lookup155: cumulus_pallet_parachain_system::pallet::Call<T>
+   * Lookup155: cumulus_pallet_allychain_system::pallet::Call<T>
    */
-  CumulusPalletParachainSystemCall: {
+  CumulusPalletAllychainSystemCall: {
     _enum: {
       set_validation_data: {
-        data: "CumulusPrimitivesParachainInherentParachainInherentData",
+        data: "CumulusPrimitivesAllychainInherentAllychainInherentData",
       },
       sudo_send_upward_message: {
         message: "Bytes",
@@ -1607,18 +1607,18 @@ export default {
     },
   },
   /**
-   * Lookup156: cumulus_primitives_parachain_inherent::ParachainInherentData
+   * Lookup156: cumulus_primitives_allychain_inherent::AllychainInherentData
    */
-  CumulusPrimitivesParachainInherentParachainInherentData: {
-    validationData: "PolkadotPrimitivesV1PersistedValidationData",
+  CumulusPrimitivesAllychainInherentAllychainInherentData: {
+    validationData: "AxiaPrimitivesV1PersistedValidationData",
     relayChainState: "SpTrieStorageProof",
-    downwardMessages: "Vec<PolkadotCorePrimitivesInboundDownwardMessage>",
-    horizontalMessages: "BTreeMap<u32, Vec<PolkadotCorePrimitivesInboundHrmpMessage>>",
+    downwardMessages: "Vec<AxiaCorePrimitivesInboundDownwardMessage>",
+    horizontalMessages: "BTreeMap<u32, Vec<AxiaCorePrimitivesInboundHrmpMessage>>",
   },
   /**
    * Lookup157: polkadot_primitives::v1::PersistedValidationData<primitive_types::H256, N>
    */
-  PolkadotPrimitivesV1PersistedValidationData: {
+  AxiaPrimitivesV1PersistedValidationData: {
     parentHead: "Bytes",
     relayParentNumber: "u32",
     relayParentStorageRoot: "H256",
@@ -1633,14 +1633,14 @@ export default {
   /**
    * Lookup161: polkadot_core_primitives::InboundDownwardMessage<BlockNumber>
    */
-  PolkadotCorePrimitivesInboundDownwardMessage: {
+  AxiaCorePrimitivesInboundDownwardMessage: {
     sentAt: "u32",
     msg: "Bytes",
   },
   /**
    * Lookup165: polkadot_core_primitives::InboundHrmpMessage<BlockNumber>
    */
-  PolkadotCorePrimitivesInboundHrmpMessage: {
+  AxiaCorePrimitivesInboundHrmpMessage: {
     sentAt: "u32",
     data: "Bytes",
   },
@@ -1748,7 +1748,7 @@ export default {
     value: "U256",
     input: "Bytes",
     accessList: "Vec<EthereumTransactionAccessListItem>",
-    oddYParity: "bool",
+    oddYAxia: "bool",
     r: "H256",
     s: "H256",
   },
@@ -1772,14 +1772,14 @@ export default {
     value: "U256",
     input: "Bytes",
     accessList: "Vec<EthereumTransactionAccessListItem>",
-    oddYParity: "bool",
+    oddYAxia: "bool",
     r: "H256",
     s: "H256",
   },
   /**
-   * Lookup182: parachain_staking::pallet::Call<T>
+   * Lookup182: allychain_staking::pallet::Call<T>
    */
-  ParachainStakingCall: {
+  AllychainStakingCall: {
     _enum: {
       hotfix_remove_delegation_requests: {
         delegators: "Vec<AccountId20>",
@@ -1788,18 +1788,18 @@ export default {
         candidates: "Vec<AccountId20>",
       },
       set_staking_expectations: {
-        expectations: "ParachainStakingInflationRangeU128",
+        expectations: "AllychainStakingInflationRangeU128",
       },
       set_inflation: {
-        schedule: "ParachainStakingInflationRangePerbill",
+        schedule: "AllychainStakingInflationRangePerbill",
       },
-      set_parachain_bond_account: {
+      set_allychain_bond_account: {
         _alias: {
           new_: "new",
         },
         new_: "AccountId20",
       },
-      set_parachain_bond_reserve_percent: {
+      set_allychain_bond_reserve_percent: {
         _alias: {
           new_: "new",
         },
@@ -1882,17 +1882,17 @@ export default {
     },
   },
   /**
-   * Lookup183: parachain_staking::inflation::Range<T>
+   * Lookup183: allychain_staking::inflation::Range<T>
    */
-  ParachainStakingInflationRangeU128: {
+  AllychainStakingInflationRangeU128: {
     min: "u128",
     ideal: "u128",
     max: "u128",
   },
   /**
-   * Lookup184: parachain_staking::inflation::Range<sp_arithmetic::per_things::Perbill>
+   * Lookup184: allychain_staking::inflation::Range<sp_arithmetic::per_things::Perbill>
    */
-  ParachainStakingInflationRangePerbill: {
+  AllychainStakingInflationRangePerbill: {
     min: "Perbill",
     ideal: "Perbill",
     max: "Perbill",
@@ -3045,7 +3045,7 @@ export default {
       __Unused25: "Null",
       CumulusXcm: "CumulusPalletXcmOrigin",
       __Unused27: "Null",
-      PolkadotXcm: "PalletXcmOrigin",
+      AxiaXcm: "PalletXcmOrigin",
     },
   },
   /**
@@ -3082,7 +3082,7 @@ export default {
   CumulusPalletXcmOrigin: {
     _enum: {
       Relay: "Null",
-      SiblingParachain: "u32",
+      SiblingAllychain: "u32",
     },
   },
   /**
@@ -3155,23 +3155,23 @@ export default {
   /**
    * Lookup305: polkadot_primitives::v1::UpgradeRestriction
    */
-  PolkadotPrimitivesV1UpgradeRestriction: {
+  AxiaPrimitivesV1UpgradeRestriction: {
     _enum: ["Present"],
   },
   /**
    * Lookup306:
-   * cumulus_pallet_parachain_system::relay_state_snapshot::MessagingStateSnapshot
+   * cumulus_pallet_allychain_system::relay_state_snapshot::MessagingStateSnapshot
    */
-  CumulusPalletParachainSystemRelayStateSnapshotMessagingStateSnapshot: {
+  CumulusPalletAllychainSystemRelayStateSnapshotMessagingStateSnapshot: {
     dmqMqcHead: "H256",
     relayDispatchQueueSize: "(u32,u32)",
-    ingressChannels: "Vec<(u32,PolkadotPrimitivesV1AbridgedHrmpChannel)>",
-    egressChannels: "Vec<(u32,PolkadotPrimitivesV1AbridgedHrmpChannel)>",
+    ingressChannels: "Vec<(u32,AxiaPrimitivesV1AbridgedHrmpChannel)>",
+    egressChannels: "Vec<(u32,AxiaPrimitivesV1AbridgedHrmpChannel)>",
   },
   /**
    * Lookup309: polkadot_primitives::v1::AbridgedHrmpChannel
    */
-  PolkadotPrimitivesV1AbridgedHrmpChannel: {
+  AxiaPrimitivesV1AbridgedHrmpChannel: {
     maxCapacity: "u32",
     maxTotalSize: "u32",
     maxMessageSize: "u32",
@@ -3182,7 +3182,7 @@ export default {
   /**
    * Lookup310: polkadot_primitives::v1::AbridgedHostConfiguration
    */
-  PolkadotPrimitivesV1AbridgedHostConfiguration: {
+  AxiaPrimitivesV1AbridgedHostConfiguration: {
     maxCodeSize: "u32",
     maxHeadDataSize: "u32",
     maxUpwardQueueCount: "u32",
@@ -3195,19 +3195,19 @@ export default {
   },
   /**
    * Lookup316:
-   * polkadot_core_primitives::OutboundHrmpMessage<polkadot_parachain::primitives::Id>
+   * polkadot_core_primitives::OutboundHrmpMessage<polkadot_allychain::primitives::Id>
    */
-  PolkadotCorePrimitivesOutboundHrmpMessage: {
+  AxiaCorePrimitivesOutboundHrmpMessage: {
     recipient: "u32",
     data: "Bytes",
   },
   /**
-   * Lookup317: cumulus_pallet_parachain_system::pallet::Error<T>
+   * Lookup317: cumulus_pallet_allychain_system::pallet::Error<T>
    */
-  CumulusPalletParachainSystemError: {
+  CumulusPalletAllychainSystemError: {
     _enum: [
       "OverlappingUpgrades",
-      "ProhibitedByPolkadot",
+      "ProhibitedByAxia",
       "TooBig",
       "ValidationDataNotAvailable",
       "HostConfigurationNotAvailable",
@@ -3320,103 +3320,103 @@ export default {
   },
   /**
    * Lookup341:
-   * parachain_staking::pallet::ParachainBondConfig[account::AccountId20](account::AccountId20)
+   * allychain_staking::pallet::AllychainBondConfig[account::AccountId20](account::AccountId20)
    */
-  ParachainStakingParachainBondConfig: {
+  AllychainStakingAllychainBondConfig: {
     account: "AccountId20",
     percent: "Percent",
   },
   /**
-   * Lookup342: parachain_staking::pallet::RoundInfo<BlockNumber>
+   * Lookup342: allychain_staking::pallet::RoundInfo<BlockNumber>
    */
-  ParachainStakingRoundInfo: {
+  AllychainStakingRoundInfo: {
     current: "u32",
     first: "u32",
     length: "u32",
   },
   /**
-   * Lookup343: parachain_staking::pallet::Nominator2<account::AccountId20, Balance>
+   * Lookup343: allychain_staking::pallet::Nominator2<account::AccountId20, Balance>
    */
-  ParachainStakingNominator2: {
-    delegations: "ParachainStakingSetOrderedSetBond",
-    revocations: "ParachainStakingSetOrderedSetAccountId20",
+  AllychainStakingNominator2: {
+    delegations: "AllychainStakingSetOrderedSetBond",
+    revocations: "AllychainStakingSetOrderedSetAccountId20",
     total: "u128",
     scheduledRevocationsCount: "u32",
     scheduledRevocationsTotal: "u128",
-    status: "ParachainStakingDelegatorStatus",
+    status: "AllychainStakingDelegatorStatus",
   },
   /**
    * Lookup344:
-   * parachain_staking::set::OrderedSet<parachain_staking::pallet::Bond<account::AccountId20,
+   * allychain_staking::set::OrderedSet<allychain_staking::pallet::Bond<account::AccountId20,
    * Balance>>
    */
-  ParachainStakingSetOrderedSetBond: "Vec<ParachainStakingBond>",
+  AllychainStakingSetOrderedSetBond: "Vec<AllychainStakingBond>",
   /**
-   * Lookup345: parachain_staking::pallet::Bond<account::AccountId20, Balance>
+   * Lookup345: allychain_staking::pallet::Bond<account::AccountId20, Balance>
    */
-  ParachainStakingBond: {
+  AllychainStakingBond: {
     owner: "AccountId20",
     amount: "u128",
   },
   /**
    * Lookup347:
-   * parachain_staking::set::OrderedSet[account::AccountId20](account::AccountId20)
+   * allychain_staking::set::OrderedSet[account::AccountId20](account::AccountId20)
    */
-  ParachainStakingSetOrderedSetAccountId20: "Vec<AccountId20>",
+  AllychainStakingSetOrderedSetAccountId20: "Vec<AccountId20>",
   /**
-   * Lookup348: parachain_staking::pallet::DelegatorStatus
+   * Lookup348: allychain_staking::pallet::DelegatorStatus
    */
-  ParachainStakingDelegatorStatus: {
+  AllychainStakingDelegatorStatus: {
     _enum: {
       Active: "Null",
       Leaving: "u32",
     },
   },
   /**
-   * Lookup349: parachain_staking::pallet::Delegator<account::AccountId20, Balance>
+   * Lookup349: allychain_staking::pallet::Delegator<account::AccountId20, Balance>
    */
-  ParachainStakingDelegator: {
+  AllychainStakingDelegator: {
     id: "AccountId20",
-    delegations: "ParachainStakingSetOrderedSetBond",
+    delegations: "AllychainStakingSetOrderedSetBond",
     total: "u128",
-    requests: "ParachainStakingPendingDelegationRequests",
-    status: "ParachainStakingDelegatorStatus",
+    requests: "AllychainStakingPendingDelegationRequests",
+    status: "AllychainStakingDelegatorStatus",
   },
   /**
    * Lookup350:
-   * parachain_staking::pallet::PendingDelegationRequests<account::AccountId20, Balance>
+   * allychain_staking::pallet::PendingDelegationRequests<account::AccountId20, Balance>
    */
-  ParachainStakingPendingDelegationRequests: {
+  AllychainStakingPendingDelegationRequests: {
     revocationsCount: "u32",
-    requests: "BTreeMap<AccountId20, ParachainStakingDelegationRequest>",
+    requests: "BTreeMap<AccountId20, AllychainStakingDelegationRequest>",
     lessTotal: "u128",
   },
   /**
    * Lookup354:
-   * parachain_staking::pallet::CollatorCandidate<account::AccountId20, Balance>
+   * allychain_staking::pallet::CollatorCandidate<account::AccountId20, Balance>
    */
-  ParachainStakingCollatorCandidate: {
+  AllychainStakingCollatorCandidate: {
     id: "AccountId20",
     bond: "u128",
-    delegators: "ParachainStakingSetOrderedSetAccountId20",
-    topDelegations: "Vec<ParachainStakingBond>",
-    bottomDelegations: "Vec<ParachainStakingBond>",
+    delegators: "AllychainStakingSetOrderedSetAccountId20",
+    topDelegations: "Vec<AllychainStakingBond>",
+    bottomDelegations: "Vec<AllychainStakingBond>",
     totalCounted: "u128",
     totalBacking: "u128",
-    request: "Option<ParachainStakingCandidateBondLessRequest>",
-    state: "ParachainStakingCollatorStatus",
+    request: "Option<AllychainStakingCandidateBondLessRequest>",
+    state: "AllychainStakingCollatorStatus",
   },
   /**
-   * Lookup356: parachain_staking::pallet::CandidateBondLessRequest<Balance>
+   * Lookup356: allychain_staking::pallet::CandidateBondLessRequest<Balance>
    */
-  ParachainStakingCandidateBondLessRequest: {
+  AllychainStakingCandidateBondLessRequest: {
     amount: "u128",
     whenExecutable: "u32",
   },
   /**
-   * Lookup357: parachain_staking::pallet::CollatorStatus
+   * Lookup357: allychain_staking::pallet::CollatorStatus
    */
-  ParachainStakingCollatorStatus: {
+  AllychainStakingCollatorStatus: {
     _enum: {
       Active: "Null",
       Idle: "Null",
@@ -3424,84 +3424,84 @@ export default {
     },
   },
   /**
-   * Lookup358: parachain_staking::pallet::CandidateMetadata<Balance>
+   * Lookup358: allychain_staking::pallet::CandidateMetadata<Balance>
    */
-  ParachainStakingCandidateMetadata: {
+  AllychainStakingCandidateMetadata: {
     bond: "u128",
     delegationCount: "u32",
     totalCounted: "u128",
     lowestTopDelegationAmount: "u128",
     highestBottomDelegationAmount: "u128",
     lowestBottomDelegationAmount: "u128",
-    topCapacity: "ParachainStakingCapacityStatus",
-    bottomCapacity: "ParachainStakingCapacityStatus",
-    request: "Option<ParachainStakingCandidateBondLessRequest>",
-    status: "ParachainStakingCollatorStatus",
+    topCapacity: "AllychainStakingCapacityStatus",
+    bottomCapacity: "AllychainStakingCapacityStatus",
+    request: "Option<AllychainStakingCandidateBondLessRequest>",
+    status: "AllychainStakingCollatorStatus",
   },
   /**
-   * Lookup359: parachain_staking::pallet::CapacityStatus
+   * Lookup359: allychain_staking::pallet::CapacityStatus
    */
-  ParachainStakingCapacityStatus: {
+  AllychainStakingCapacityStatus: {
     _enum: ["Full", "Empty", "Partial"],
   },
   /**
-   * Lookup360: parachain_staking::pallet::Delegations<account::AccountId20, Balance>
+   * Lookup360: allychain_staking::pallet::Delegations<account::AccountId20, Balance>
    */
-  ParachainStakingDelegations: {
-    delegations: "Vec<ParachainStakingBond>",
+  AllychainStakingDelegations: {
+    delegations: "Vec<AllychainStakingBond>",
     total: "u128",
   },
   /**
-   * Lookup361: parachain_staking::pallet::Collator2<account::AccountId20, Balance>
+   * Lookup361: allychain_staking::pallet::Collator2<account::AccountId20, Balance>
    */
-  ParachainStakingCollator2: {
+  AllychainStakingCollator2: {
     id: "AccountId20",
     bond: "u128",
-    nominators: "ParachainStakingSetOrderedSetAccountId20",
-    topNominators: "Vec<ParachainStakingBond>",
-    bottomNominators: "Vec<ParachainStakingBond>",
+    nominators: "AllychainStakingSetOrderedSetAccountId20",
+    topNominators: "Vec<AllychainStakingBond>",
+    bottomNominators: "Vec<AllychainStakingBond>",
     totalCounted: "u128",
     totalBacking: "u128",
-    state: "ParachainStakingCollatorStatus",
+    state: "AllychainStakingCollatorStatus",
   },
   /**
    * Lookup362:
-   * parachain_staking::pallet::ExitQ[account::AccountId20](account::AccountId20)
+   * allychain_staking::pallet::ExitQ[account::AccountId20](account::AccountId20)
    */
-  ParachainStakingExitQ: {
-    candidates: "ParachainStakingSetOrderedSetAccountId20",
-    nominatorsLeaving: "ParachainStakingSetOrderedSetAccountId20",
+  AllychainStakingExitQ: {
+    candidates: "AllychainStakingSetOrderedSetAccountId20",
+    nominatorsLeaving: "AllychainStakingSetOrderedSetAccountId20",
     candidateSchedule: "Vec<(AccountId20,u32)>",
     nominatorSchedule: "Vec<(AccountId20,Option<AccountId20>,u32)>",
   },
   /**
-   * Lookup368: parachain_staking::pallet::CollatorSnapshot<account::AccountId20, Balance>
+   * Lookup368: allychain_staking::pallet::CollatorSnapshot<account::AccountId20, Balance>
    */
-  ParachainStakingCollatorSnapshot: {
+  AllychainStakingCollatorSnapshot: {
     bond: "u128",
-    delegations: "Vec<ParachainStakingBond>",
+    delegations: "Vec<AllychainStakingBond>",
     total: "u128",
   },
   /**
-   * Lookup369: parachain_staking::pallet::DelayedPayout<Balance>
+   * Lookup369: allychain_staking::pallet::DelayedPayout<Balance>
    */
-  ParachainStakingDelayedPayout: {
+  AllychainStakingDelayedPayout: {
     roundIssuance: "u128",
     totalStakingReward: "u128",
     collatorCommission: "Perbill",
   },
   /**
-   * Lookup370: parachain_staking::inflation::InflationInfo<Balance>
+   * Lookup370: allychain_staking::inflation::InflationInfo<Balance>
    */
-  ParachainStakingInflationInflationInfo: {
-    expect: "ParachainStakingInflationRangeU128",
-    annual: "ParachainStakingInflationRangePerbill",
-    round: "ParachainStakingInflationRangePerbill",
+  AllychainStakingInflationInflationInfo: {
+    expect: "AllychainStakingInflationRangeU128",
+    annual: "AllychainStakingInflationRangePerbill",
+    round: "AllychainStakingInflationRangePerbill",
   },
   /**
-   * Lookup371: parachain_staking::pallet::Error<T>
+   * Lookup371: allychain_staking::pallet::Error<T>
    */
-  ParachainStakingError: {
+  AllychainStakingError: {
     _enum: [
       "DelegatorDNE",
       "DelegatorDNEinTopNorBottom",
@@ -3875,9 +3875,9 @@ export default {
     _enum: ["Ok", "Suspended"],
   },
   /**
-   * Lookup435: polkadot_parachain::primitives::XcmpMessageFormat
+   * Lookup435: polkadot_allychain::primitives::XcmpMessageFormat
    */
-  PolkadotParachainPrimitivesXcmpMessageFormat: {
+  AxiaAllychainPrimitivesXcmpMessageFormat: {
     _enum: ["ConcatenatedVersionedXcm", "ConcatenatedEncodedBlob", "Signals"],
   },
   /**

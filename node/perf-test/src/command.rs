@@ -20,7 +20,7 @@ use crate::{
 	PerfCmd,
 };
 
-use cumulus_primitives_parachain_inherent::{
+use cumulus_primitives_allychain_inherent::{
 	MockValidationDataInherentDataProvider, MockXcmConfig,
 };
 use ethereum::TransactionAction;
@@ -163,7 +163,7 @@ where
 					async move {
 						let time = sp_timestamp::InherentDataProvider::from_system_time();
 
-						let mocked_parachain = MockValidationDataInherentDataProvider {
+						let mocked_allychain = MockValidationDataInherentDataProvider {
 							current_para_block,
 							relay_offset: 1000,
 							relay_blocks_per_para_block: 2,
@@ -179,7 +179,7 @@ where
 
 						let author = nimbus_primitives::InherentDataProvider::<NimbusId>(author_id);
 
-						Ok((time, mocked_parachain, author))
+						Ok((time, mocked_allychain, author))
 					}
 				},
 			}),
@@ -193,7 +193,7 @@ where
 		service::rpc::spawn_essential_tasks(service::rpc::SpawnTasksParams {
 			task_manager: &task_manager,
 			client: client.clone(),
-			substrate_backend: backend.clone(),
+			axlib_backend: backend.clone(),
 			frontier_backend: frontier_backend.clone(),
 			filter_pool: filter_pool.clone(),
 			overrides: overrides.clone(),
@@ -467,8 +467,8 @@ impl PerfCmd {
 			RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
 		Executor: NativeExecutionDispatch + 'static,
 	{
-		// TODO: Joshy suggested looking at the substrate browser "test":
-		// <substrate_repo>/bin/node/browser-testing/src/lib.rs
+		// TODO: Joshy suggested looking at the axlib browser "test":
+		// <axlib_repo>/bin/node/browser-testing/src/lib.rs
 		let runner = TestContext::<RuntimeApi, Executor>::from_cmd(config, &self)?;
 
 		// create an empty block to warm the runtime cache...

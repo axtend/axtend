@@ -4,7 +4,7 @@ authors = ["PureStake"]
 build = "build.rs"
 description = "Moonbase Runtime"
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
 version = "0.8.4"
 
@@ -19,8 +19,8 @@ smallvec = "1.8.0"
 
 # Moonbeam
 account = { path = "../../primitives/account/", default-features = false }
-moonbeam-core-primitives = { path = "../../core-primitives", default-features = false }
-moonbeam-relay-encoder = { path = "../relay-encoder", default-features = false }
+axtend-core-primitives = { path = "../../core-primitives", default-features = false }
+axtend-relay-encoder = { path = "../relay-encoder", default-features = false }
 precompile-utils = { path = "../../precompiles/utils", default-features = false }
 runtime-common = { path = "../common", default-features = false, features = [
 	"xcm-support",
@@ -37,7 +37,7 @@ pallet-maintenance-mode = { path = "../../pallets/maintenance-mode", default-fea
 ] }
 pallet-migrations = { path = "../../pallets/migrations", default-features = false }
 pallet-proxy-genesis-companion = { path = "../../pallets/proxy-genesis-companion", default-features = false }
-parachain-staking = { path = "../../pallets/parachain-staking", default-features = false }
+allychain-staking = { path = "../../pallets/allychain-staking", default-features = false }
 xcm-transactor = { path = "../../pallets/xcm-transactor", default-features = false }
 
 # Moonbeam precompiles
@@ -46,18 +46,18 @@ pallet-author-mapping-precompiles = { path = "../../precompiles/author-mapping",
 pallet-democracy-precompiles = { path = "../../precompiles/pallet-democracy", default-features = false }
 pallet-evm-precompile-assets-erc20 = { path = "../../precompiles/assets-erc20", default-features = false }
 pallet-evm-precompile-balances-erc20 = { path = "../../precompiles/balances-erc20", default-features = false }
-parachain-staking-precompiles = { path = "../../precompiles/parachain-staking", default-features = false }
+allychain-staking-precompiles = { path = "../../precompiles/allychain-staking", default-features = false }
 relay-encoder-precompiles = { path = "../../precompiles/relay-encoder", default-features = false }
 xcm-transactor-precompiles = { path = "../../precompiles/xcm_transactor", default-features = false }
 xtokens-precompiles = { path = "../../precompiles/xtokens", default-features = false }
 
 # Moonbeam tracing
 evm-tracing-events = { path = "../../primitives/rpc/evm-tracing-events", optional = true, default-features = false }
-moonbeam-evm-tracer = { path = "../evm_tracer", optional = true, default-features = false }
-moonbeam-rpc-primitives-debug = { path = "../../primitives/rpc/debug", default-features = false }
-moonbeam-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool", default-features = false }
+axtend-evm-tracer = { path = "../evm_tracer", optional = true, default-features = false }
+axtend-rpc-primitives-debug = { path = "../../primitives/rpc/debug", default-features = false }
+axtend-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool", default-features = false }
 
-# Substrate
+# Axlib
 frame-executive = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 frame-support = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 frame-system = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
@@ -113,7 +113,7 @@ pallet-evm-precompile-simple = { git = "https://github.com/axtend/frontier", bra
 
 # Cumulus / Nimbus
 cumulus-pallet-dmp-queue = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
-cumulus-pallet-parachain-system = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
+cumulus-pallet-allychain-system = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 cumulus-pallet-xcm = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 cumulus-pallet-xcmp-queue = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
@@ -122,13 +122,13 @@ cumulus-primitives-utility = { git = "https://github.com/axtend/cumulus", branch
 nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "5f92d14", default-features = false }
 pallet-author-inherent = { git = "https://github.com/axtend/nimbus", branch = "5f92d14", default-features = false }
 pallet-author-slot-filter = { git = "https://github.com/axtend/nimbus", branch = "5f92d14", default-features = false }
-parachain-info = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
+allychain-info = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 
-# Polkadot / XCM 
+# Axia / XCM 
 orml-xtokens = { git = "https://github.com/axtend/open-runtime-module-library", branch = "7ba9fad", default-features = false }
 pallet-xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 polkadot-core-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
-polkadot-parachain = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
+polkadot-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm-builder = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm-executor = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
@@ -143,21 +143,21 @@ hex = "0.4"
 rlp = "0.5"
 sha3 = "0.9"
 
-cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
+cumulus-primitives-allychain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 
-polkadot-runtime-parachains = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+polkadot-runtime-allychains = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 xcm-simulator = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 
 [build-dependencies]
-substrate-wasm-builder = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+axlib-wasm-builder = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
 [features]
 default = ["std"]
 std = [
 	"account/std",
 	"cumulus-pallet-dmp-queue/std",
-	"cumulus-pallet-parachain-system/std",
+	"cumulus-pallet-allychain-system/std",
 	"cumulus-pallet-xcm/std",
 	"cumulus-pallet-xcmp-queue/std",
 	"cumulus-primitives-core/std",
@@ -171,10 +171,10 @@ std = [
 	"frame-support/std",
 	"frame-system-rpc-runtime-api/std",
 	"frame-system/std",
-	"moonbeam-core-primitives/std",
-	"moonbeam-evm-tracer/std",
-	"moonbeam-rpc-primitives-debug/std",
-	"moonbeam-rpc-primitives-txpool/std",
+	"axtend-core-primitives/std",
+	"axtend-evm-tracer/std",
+	"axtend-rpc-primitives-debug/std",
+	"axtend-rpc-primitives-txpool/std",
 	"nimbus-primitives/std",
 	"orml-xtokens/std",
 	"pallet-asset-manager/std",
@@ -209,9 +209,9 @@ std = [
 	"pallet-treasury/std",
 	"pallet-utility/std",
 	"pallet-xcm/std",
-	"parachain-info/std",
-	"parachain-staking-precompiles/std",
-	"parachain-staking/std",
+	"allychain-info/std",
+	"allychain-staking-precompiles/std",
+	"allychain-staking/std",
 	"parity-scale-codec/std",
 	"precompile-utils/std",
 	"runtime-common/std",
@@ -238,7 +238,7 @@ std = [
 ]
 
 # Must be enabled for tracing runtimes only
-evm-tracing = ["evm-tracing-events", "moonbeam-evm-tracer", "rlp", "sha3"]
+evm-tracing = ["evm-tracing-events", "axtend-evm-tracer", "rlp", "sha3"]
 
 # Allow to print logs details (no wasm:stripped)
 force-debug = ["sp-debug-derive/force-debug"]
@@ -266,7 +266,7 @@ runtime-benchmarks = [
 	"pallet-society/runtime-benchmarks",
 	"pallet-timestamp/runtime-benchmarks",
 	"pallet-xcm/runtime-benchmarks",
-	"parachain-staking/runtime-benchmarks",
+	"allychain-staking/runtime-benchmarks",
 	"sp-runtime/runtime-benchmarks",
 	"xcm-builder/runtime-benchmarks",
 	"xcm-transactor/runtime-benchmarks",
@@ -286,6 +286,6 @@ try-runtime = [
 	"pallet-scheduler/try-runtime",
 	"pallet-society/try-runtime",
 	"pallet-timestamp/try-runtime",
-	"parachain-staking/try-runtime",
+	"allychain-staking/try-runtime",
 	"runtime-common/try-runtime",
 ]

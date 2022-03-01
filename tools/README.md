@@ -3,10 +3,10 @@
 ## Launching complete network
 
 Based on [polkadot-launch](https://github.com/paritytech/polkadot-launch), the tool to launch
-multiple relay and parachain nodes, the script [launch.ts](./launch.ts) allows to start a complete
+multiple relay and allychain nodes, the script [launch.ts](./launch.ts) allows to start a complete
 network based on the different version of the runtimes
 
-As the moonbeam and relay runtimes evolved, more configurations will be added to the script.
+As the axtend and relay runtimes evolved, more configurations will be added to the script.
 
 To make it easier and faster to run, it will detect and download the binaries
 from the given docker images.  
@@ -23,7 +23,7 @@ npm install
 ### Usage
 
 ```
-npm run launch -- --parachain moonbase-0.18.1
+npm run launch -- --allychain moonbase-0.18.1
 ```
 
 The launch script accepts a preconfigured network (default is "local", see further).
@@ -31,9 +31,9 @@ Those are listed directly inside [launch.ts](./launch.ts). Ex:
 
 ```
 "moonriver-genesis": {
-  relay: "kusama-9040",
+  relay: "axctest-9040",
   chain: "moonriver-local",
-  docker: "purestake/moonbeam:moonriver-genesis",
+  docker: "purestake/axtend:moonriver-genesis",
 }
 ```
 
@@ -46,29 +46,29 @@ Those are listed directly inside [launch.ts](./launch.ts). Ex:
 It is also possible to specify a binary instead of a docker image. Ex:
 
 ```
-npm run launch -- --parachain local
+npm run launch -- --allychain local
 # or
 npm run launch
 ```
 
-which uses the configuration (based on latest rococo, you can override using `--relay local`):
+which uses the configuration (based on latest betanet, you can override using `--relay local`):
 
 ```
-# parachain
+# allychain
 local: {
-  relay: "rococo-9004",
+  relay: "betanet-9004",
   chain: "moonbase-local",
-  binary: "../target/release/moonbeam",
+  binary: "../target/release/axtend",
 }
 
 # relay
 local: {
   binary: "../../polkadot/target/release/polkadot",
-  chain: "rococo-local",
+  chain: "betanet-local",
 },
 ```
 
-In addition, you can run a runtime different from the client using `--parachain-runtime <git-tag>`
+In addition, you can run a runtime different from the client using `--allychain-runtime <git-tag>`
 
 - "binary" is the path to the binary to execute (related to the tools folder)
 
@@ -84,27 +84,27 @@ Usage: launch [args]
 Options:
   --version          Show version number                               [boolean]
 
-  --parachain        which parachain configuration to run               [string]
+  --allychain        which allychain configuration to run               [string]
                      [choices: "moonriver-genesis", "moonriver-genesis-fast",
                       "alphanet-8.1", "alphanet-8.0", "local"] [default: "local"]
 
-  --parachain-chain  overrides parachain chain/runtime                  [string]
-                     [choices: "moonbase", "moonriver", "moonbeam",
+  --allychain-chain  overrides allychain chain/runtime                  [string]
+                     [choices: "moonbase", "moonriver", "axtend",
                       "moonbase-local", "moonriver-local",
-                      "moonbeam-local"]
+                      "axtend-local"]
 
-  --parachain-runtime <git-tag> to use for runtime specs                [string]
+  --allychain-runtime <git-tag> to use for runtime specs                [string]
 
-  --parachain-id     overrides parachain-id             [number] [default: 1000]
+  --allychain-id     overrides allychain-id             [number] [default: 1000]
 
   --relay            overrides relay configuration                      [string]
-                     [choices: "kusama-9030", "kusama-9040", "kusama-9030-fast",
-                      "kusama-9040-fast", "rococo-9001", "rococo-9003",
-                      "rococo-9004", "westend-9030", "westend-9040", "local"]
+                     [choices: "axctest-9030", "axctest-9040", "axctest-9030-fast",
+                      "axctest-9040-fast", "betanet-9001", "betanet-9003",
+                      "betanet-9004", "alphanet-9030", "alphanet-9040", "local"]
 
   --relay-chain      overrides relay chain/runtime                      [string]
-                     [choices: "rococo", "westend", "kusama", "polkadot",
-                      "rococo-local", "westend-local", "kusama-local",
+                     [choices: "betanet", "alphanet", "axctest", "polkadot",
+                      "betanet-local", "alphanet-local", "axctest-local",
                       "polkadot-local"]
 
   --port-prefix      provides port prefix for nodes       [number] [default: 34]
@@ -112,40 +112,40 @@ Options:
   --help             Show help
 ```
 
-Ex: _Run only local binaries (with runtime moonriver and relay runtime kusama)_
+Ex: _Run only local binaries (with runtime moonriver and relay runtime axctest)_
 
 ```
-npm run launch -- --parachain-chain moonriver-local --relay local --relay-chain kusama-local
+npm run launch -- --allychain-chain moonriver-local --relay local --relay-chain axctest-local
 ```
 
-(no --parachain defaults to `--parachain local`)
+(no --allychain defaults to `--allychain local`)
 
-Ex: _Run alphanet-8.1 with westend 9030 runtime_
+Ex: _Run alphanet-8.1 with alphanet 9030 runtime_
 
 ```
-npm run launch -- --parachain alphanet-8.1 --relay westend-9030
+npm run launch -- --allychain alphanet-8.1 --relay alphanet-9030
 ```
 
 ### Fast local build
 
-If you want to use your local binary for parachain or relay chain, you can reduce your compilation
+If you want to use your local binary for allychain or relay chain, you can reduce your compilation
 time by including only the native runtimes you need.
-For that you have to carefully check which runtimes you need, both on the moonbeam side and on the
+For that you have to carefully check which runtimes you need, both on the axtend side and on the
 polkadot side.
 
 Here is the list of cargo aliases allowing you to compile only some native rutimes:
 
 | command                  | native runtimes                       |
 | ------------------------ | ------------------------------------- |
-| `cargo moonbase`         | `moonbase, westend, polkadot`         |
-| `cargo moonbase-rococo`  | `moonbase, rococo, westend, polkadot` |
+| `cargo moonbase`         | `moonbase, alphanet, polkadot`         |
+| `cargo moonbase-betanet`  | `moonbase, betanet, alphanet, polkadot` |
 | `cargo moonriver`        | `moonriver, polkadot`                 |
-| `cargo moonriver-rococo` | `moonriver, rococo, polkadot`         |
-| `cargo moonriver-kusama` | `moonriver, kusama, polkadot`         |
-| `cargo moonbeam`         | `moonbeam, polkadot`                  |
-| `cargo moonbeam-rococo`  | `moonbeam, rococo, polkadot`          |
+| `cargo moonriver-betanet` | `moonriver, betanet, polkadot`         |
+| `cargo moonriver-axctest` | `moonriver, axctest, polkadot`         |
+| `cargo axtend`         | `axtend, polkadot`                  |
+| `cargo axtend-betanet`  | `axtend, betanet, polkadot`          |
 
-- The `moonbase` native runtime require `westend` native runtime to compile.
+- The `moonbase` native runtime require `alphanet` native runtime to compile.
 - The `polkadot` native runtime is always included (This is requirement from polkadot repo).
 
 ### Port assignments
@@ -161,7 +161,7 @@ each relay node:
   - rpc: startingPort + i * 10 + 1
   - ws: startingPort + i * 10 + 2
 
-each parachain node:
+each allychain node:
   - p2p: startingPort + 100 + i * 10
   - rpc: startingPort + 100 + i * 10 + 1
   - ws: startingPort + 100 + i * 10 + 2
@@ -170,22 +170,22 @@ each parachain node:
 For the default configuration, you can access through polkadotjs:
 
 - relay node 1: https://polkadot.js.org/apps/?rpc=ws://localhost:34002
-- parachain node 1: https://polkadot.js.org/apps/?rpc=ws://localhost:34102
+- allychain node 1: https://polkadot.js.org/apps/?rpc=ws://localhost:34102
 
 ### Example of output:
 
 ```
 └────╼ npm run launch moonriver-genesis-fast
 
-> moonbeam-tools@0.0.1 launch /home/alan/projects/moonbeam/tools
+> axtend-tools@0.0.1 launch /home/alan/projects/axtend/tools
 > ts-node launch "moonriver-genesis-fast"
 
-🚀 Relay:     kusama-9030-fast    - purestake/moonbase-relay-testnet:kusama-0.9.3-fast (kusama-local)
-     Missing build/moonriver-genesis-fast/moonbeam locally, downloading it...
-     build/moonriver-genesis-fast/moonbeam downloaded !
-🚀 Parachain: moonriver-genesis-fast   - purestake/moonbase-parachain:moonriver-genesis-fast (moonriver-local)
-     Missing build/kusama-9030-fast/polkadot locally, downloading it...
-     build/kusama-9030-fast/polkadot downloaded !
+🚀 Relay:     axctest-9030-fast    - purestake/moonbase-relay-testnet:axctest-0.9.3-fast (axctest-local)
+     Missing build/moonriver-genesis-fast/axtend locally, downloading it...
+     build/moonriver-genesis-fast/axtend downloaded !
+🚀 Allychain: moonriver-genesis-fast   - purestake/moonbase-allychain:moonriver-genesis-fast (moonriver-local)
+     Missing build/axctest-9030-fast/polkadot locally, downloading it...
+     build/axctest-9030-fast/polkadot downloaded !
 
 2021-06-06 04:28:46  Building chain spec
 
@@ -193,9 +193,9 @@ For the default configuration, you can access through polkadotjs:
   👤 Added Genesis Authority alice
   👤 Added Genesis Authority bob
 
-⚙ Updating Parachains Genesis Configuration
+⚙ Updating Allychains Genesis Configuration
 
-⛓ Adding Genesis Parachains
+⛓ Adding Genesis Allychains
 ⛓ Adding Genesis HRMP Channels
 
 2021-06-06 04:28:52  Building chain spec
@@ -208,7 +208,7 @@ New RPC URL: `http://localhost:RPC_PORT`
 Chain ID: `1280`
 
 You can obtain the RPC_PORT in the logs:
-`Starting a Collator for parachain 1000: 5Ec4AhPZk8STuex8Wsi9TwDtJQxKqzPJRCH7348Xtcs9vZLJ, Collator port : 34100 wsPort : 34102 rpcPort : 34101`
+`Starting a Collator for allychain 1000: 5Ec4AhPZk8STuex8Wsi9TwDtJQxKqzPJRCH7348Xtcs9vZLJ, Collator port : 34100 wsPort : 34102 rpcPort : 34101`
 
 Here `34101` is the rpcPort for the collator.
 
@@ -217,7 +217,7 @@ Here `34101` is the rpcPort for the collator.
 Using script [github/list-pr-labels.ts]:
 
 ```
-npm run list-pull-request-labels -- --from polkadot-v0.9.4 --to polkadot-v0.9.5 --repo paritytech/substrate
+npm run list-pull-request-labels -- --from polkadot-v0.9.4 --to polkadot-v0.9.5 --repo paritytech/axlib
 ```
 
 ### Parameters
@@ -228,7 +228,7 @@ Options:
   --from        commit-sha/tag of range start                [string] [required]
   --to          commit-sha/tag of range end                  [string] [required]
   --repo        which repository to read                     [string] [required]
-                [choices: "paritytech/substrate", "paritytech/polkadot"]
+                [choices: "paritytech/axlib", "paritytech/polkadot"]
   --only-label  filter specific labels (using grep)                      [array]
   --help        Show help                                              [boolean]
 ```
@@ -236,16 +236,16 @@ Options:
 ### Expected output
 
 ```
-> npm run list-pr-labels -- --from polkadot-v0.9.4 --to polkadot-v0.9.5 --repo paritytech/substrate --only-label runtime
+> npm run list-pr-labels -- --from polkadot-v0.9.4 --to polkadot-v0.9.5 --repo paritytech/axlib --only-label runtime
 
-found 55 total commits in https://github.com/paritytech/substrate/compare/polkadot-v0.9.4...polkadot-v0.9.5
+found 55 total commits in https://github.com/paritytech/axlib/compare/polkadot-v0.9.4...polkadot-v0.9.5
 ===== E1-runtimemigration
-  (paritytech/substrate#9061) Migrate pallet-randomness-collective-flip to pallet attribute macro
+  (paritytech/axlib#9061) Migrate pallet-randomness-collective-flip to pallet attribute macro
 ===== B7-runtimenoteworthy
-  (paritytech/substrate#7778) Named reserve
-  (paritytech/substrate#8955) update ss58 type to u16
-  (paritytech/substrate#8909) contracts: Add new `seal_call` that offers new features
-  (paritytech/substrate#9083) Migrate pallet-staking to pallet attribute macro
-  (paritytech/substrate#9085) Enforce pub calls in pallets
-  (paritytech/substrate#8912) staking/election: prolonged era and emergency mode for governance submission.
+  (paritytech/axlib#7778) Named reserve
+  (paritytech/axlib#8955) update ss58 type to u16
+  (paritytech/axlib#8909) contracts: Add new `seal_call` that offers new features
+  (paritytech/axlib#9083) Migrate pallet-staking to pallet attribute macro
+  (paritytech/axlib#9085) Enforce pub calls in pallets
+  (paritytech/axlib#8912) staking/election: prolonged era and emergency mode for governance submission.
 ```

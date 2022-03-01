@@ -3,7 +3,7 @@ import Keyring from "@polkadot/keyring";
 
 import { ALITH, BOB_AUTHOR_ID } from "../../util/constants";
 import { describeDevMoonbeam } from "../../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../../util/axlib-rpc";
 import { ALITH_PRIVATE_KEY, BALTATHAR_PRIVATE_KEY } from "../../util/constants";
 
 export async function getMappingInfo(

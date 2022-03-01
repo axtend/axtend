@@ -13,7 +13,7 @@ rustc-hex = { version = "2.0.1", default-features = false }
 # Moonbeam
 precompile-utils = { path = "../utils", default-features = false }
 
-# Substrate
+# Axlib
 frame-support = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 frame-system = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 pallet-staking = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
@@ -38,7 +38,7 @@ hex-literal = "0.3.3"
 serde = "1.0.100"
 sha3 = "0.9"
 
-# Substrate
+# Axlib
 pallet-balances = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 pallet-timestamp = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 scale-info = { version = "1.0", default-features = false, features = [
@@ -47,7 +47,7 @@ scale-info = { version = "1.0", default-features = false, features = [
 sp-io = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 
 # Cumulus
-cumulus-pallet-parachain-system = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-pallet-allychain-system = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 
 [features]
 default = ["std"]

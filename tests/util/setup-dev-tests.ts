@@ -7,7 +7,7 @@ import { startMoonbeamDevNode } from "./dev-node";
 import {
   provideWeb3Api,
   provideEthersApi,
-  providePolkadotApi,
+  provideAxiaApi,
   EnhancedWeb3,
   customWeb3Request,
 } from "./providers";
@@ -26,7 +26,7 @@ export interface BlockCreation {
 export interface DevTestContext {
   createWeb3: (protocol?: "ws" | "http") => Promise<EnhancedWeb3>;
   createEthers: () => Promise<ethers.providers.JsonRpcProvider>;
-  createPolkadotApi: () => Promise<ApiPromise>;
+  createAxiaApi: () => Promise<ApiPromise>;
 
   createBlock: (options?: BlockCreation) => Promise<{
     txResults: JsonRpcResponse[];
@@ -66,7 +66,7 @@ export function describeDevMoonbeam(
     let context: InternalDevTestContext = { ethTransactionType } as InternalDevTestContext;
 
     // The currently running node for this describe
-    let moonbeamProcess: ChildProcess;
+    let axtendProcess: ChildProcess;
 
     // Making sure the Moonbeam node has started
     before("Starting Moonbeam Test Node", async function () {
@@ -79,7 +79,7 @@ export function describeDevMoonbeam(
             wsPort: 19933,
             rpcPort: 19932,
           };
-      moonbeamProcess = init.runningNode;
+      axtendProcess = init.runningNode;
       context.rpcPort = init.rpcPort;
 
       // Context is given prior to this assignement, so doing
@@ -87,7 +87,7 @@ export function describeDevMoonbeam(
 
       context._polkadotApis = [];
       context._web3Providers = [];
-      moonbeamProcess = init.runningNode;
+      axtendProcess = init.runningNode;
 
       context.createWeb3 = async (protocol: "ws" | "http" = "http") => {
         const provider =
@@ -98,8 +98,8 @@ export function describeDevMoonbeam(
         return provider;
       };
       context.createEthers = async () => provideEthersApi(init.rpcPort);
-      context.createPolkadotApi = async () => {
-        const apiPromise = await providePolkadotApi(init.wsPort);
+      context.createAxiaApi = async () => {
+        const apiPromise = await provideAxiaApi(init.wsPort);
         // We keep track of the polkadotApis to close them at the end of the test
         context._polkadotApis.push(apiPromise);
         await apiPromise.isReady;
@@ -112,7 +112,7 @@ export function describeDevMoonbeam(
         return apiPromise;
       };
 
-      context.polkadotApi = await context.createPolkadotApi();
+      context.polkadotApi = await context.createAxiaApi();
       context.web3 = await context.createWeb3();
       context.ethers = await context.createEthers();
 
@@ -140,11 +140,11 @@ export function describeDevMoonbeam(
       await Promise.all(context._web3Providers.map((p) => p.disconnect()));
       await Promise.all(context._polkadotApis.map((p) => p.disconnect()));
 
-      if (moonbeamProcess) {
+      if (axtendProcess) {
         await new Promise((resolve) => {
-          moonbeamProcess.once("exit", resolve);
-          moonbeamProcess.kill();
-          moonbeamProcess = null;
+          axtendProcess.once("exit", resolve);
+          axtendProcess.kill();
+          axtendProcess = null;
         });
       }
     });

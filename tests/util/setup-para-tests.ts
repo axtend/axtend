@@ -1,7 +1,7 @@
 import "@polkadot/api-augment";
 import { ApiPromise } from "@polkadot/api";
 import { ethers } from "ethers";
-import { provideWeb3Api, provideEthersApi, providePolkadotApi, EnhancedWeb3 } from "./providers";
+import { provideWeb3Api, provideEthersApi, provideAxiaApi, EnhancedWeb3 } from "./providers";
 import { DEBUG_MODE } from "./constants";
 import { HttpProvider } from "web3-core";
 import fs from "fs";
@@ -10,24 +10,24 @@ import {
   getRuntimeWasm,
   NodePorts,
   ParaTestOptions,
-  ParachainPorts,
-  startParachainNodes,
-  stopParachainNodes,
+  AllychainPorts,
+  startAllychainNodes,
+  stopAllychainNodes,
 } from "./para-node";
-import { KeyringPair } from "@substrate/txwrapper-core";
+import { KeyringPair } from "@axlib/txwrapper-core";
 import { sha256 } from "ethers/lib/utils";
 const debug = require("debug")("test:setup");
 
 export interface ParaTestContext {
   createWeb3: (protocol?: "ws" | "http") => Promise<EnhancedWeb3>;
   createEthers: () => Promise<ethers.providers.JsonRpcProvider>;
-  createPolkadotApiParachain: (parachainNumber) => Promise<ApiPromise>;
-  createPolkadotApiParachains: () => Promise<ApiPromise>;
-  createPolkadotApiRelaychains: () => Promise<ApiPromise>;
+  createAxiaApiAllychain: (allychainNumber) => Promise<ApiPromise>;
+  createAxiaApiAllychains: () => Promise<ApiPromise>;
+  createAxiaApiRelaychains: () => Promise<ApiPromise>;
   waitBlocks: (count: number) => Promise<number>; // return current block when the promise resolves
   upgradeRuntime: (
     from: KeyringPair,
-    runtimeName: "moonbase" | "moonriver" | "moonbeam",
+    runtimeName: "moonbase" | "moonriver" | "axtend",
     runtimeVersion: string,
     waitMigration?: boolean
   ) => Promise<number>;
@@ -39,18 +39,18 @@ export interface ParaTestContext {
   polkadotApiParaone: ApiPromise;
 }
 
-export interface ParachainApis {
-  parachainId: number;
+export interface AllychainApis {
+  allychainId: number;
   apis: ApiPromise[];
 }
 
 export interface InternalParaTestContext extends ParaTestContext {
-  _polkadotApiParachains: ParachainApis[];
+  _polkadotApiAllychains: AllychainApis[];
   _polkadotApiRelaychains: ApiPromise[];
   _web3Providers: HttpProvider[];
 }
 
-export function describeParachain(
+export function describeAllychain(
   title: string,
   options: ParaTestOptions,
   cb: (context: InternalParaTestContext) => void
@@ -68,11 +68,11 @@ export function describeParachain(
       this.timeout(300000);
       try {
         const init = !DEBUG_MODE
-          ? await startParachainNodes(options)
+          ? await startAllychainNodes(options)
           : {
               paraPorts: [
                 {
-                  parachainId: 1000,
+                  allychainId: 1000,
                   ports: [
                     {
                       p2pPort: 19931,
@@ -87,7 +87,7 @@ export function describeParachain(
         // Context is given prior to this assignement, so doing
         // context = init.context will fail because it replace the variable;
 
-        context._polkadotApiParachains = [];
+        context._polkadotApiAllychains = [];
         context._polkadotApiRelaychains = [];
         context._web3Providers = [];
 
@@ -100,29 +100,29 @@ export function describeParachain(
           return provider;
         };
         context.createEthers = async () => provideEthersApi(init.paraPorts[0].ports[0].rpcPort);
-        context.createPolkadotApiParachain = async (parachainNumber: number) => {
-          const promise = providePolkadotApi(init.paraPorts[parachainNumber].ports[0].wsPort);
-          context._polkadotApiParachains.push({
-            parachainId: init.paraPorts[parachainNumber].parachainId,
+        context.createAxiaApiAllychain = async (allychainNumber: number) => {
+          const promise = provideAxiaApi(init.paraPorts[allychainNumber].ports[0].wsPort);
+          context._polkadotApiAllychains.push({
+            allychainId: init.paraPorts[allychainNumber].allychainId,
             apis: [await promise],
           });
           return promise;
         };
-        context.createPolkadotApiParachains = async () => {
+        context.createAxiaApiAllychains = async () => {
           const apiPromises = await Promise.all(
-            init.paraPorts.map(async (parachain: ParachainPorts) => {
+            init.paraPorts.map(async (allychain: AllychainPorts) => {
               return {
-                parachainId: parachain.parachainId,
+                allychainId: allychain.allychainId,
                 apis: await Promise.all(
-                  parachain.ports.map(async (ports: NodePorts) => {
-                    return providePolkadotApi(ports.wsPort);
+                  allychain.ports.map(async (ports: NodePorts) => {
+                    return provideAxiaApi(ports.wsPort);
                   })
                 ),
               };
             })
           );
           // We keep track of the polkadotApis to close them at the end of the test
-          context._polkadotApiParachains = apiPromises;
+          context._polkadotApiAllychains = apiPromises;
           await Promise.all(
             apiPromises.map(async (promises) =>
               Promise.all(promises.apis.map((promise) => promise.isReady))
@@ -136,10 +136,10 @@ export function describeParachain(
 
           return apiPromises[0].apis[0];
         };
-        context.createPolkadotApiRelaychains = async () => {
+        context.createAxiaApiRelaychains = async () => {
           const apiPromises = await Promise.all(
             init.relayPorts.map(async (ports: NodePorts) => {
-              return await providePolkadotApi(ports.wsPort, true);
+              return await provideAxiaApi(ports.wsPort, true);
             })
           );
           // We keep track of the polkadotApis to close them at the end of the test
@@ -175,7 +175,7 @@ export function describeParachain(
           });
         };
 
-        context.polkadotApiParaone = await context.createPolkadotApiParachains();
+        context.polkadotApiParaone = await context.createAxiaApiAllychains();
         subBlocks(context.polkadotApiParaone);
 
         context.waitBlocks = async (count: number) => {
@@ -189,7 +189,7 @@ export function describeParachain(
 
         context.upgradeRuntime = async (
           from: KeyringPair,
-          runtimeName: "moonbase" | "moonriver" | "moonbeam",
+          runtimeName: "moonbase" | "moonriver" | "axtend",
           runtimeVersion: string,
           waitMigration: boolean = true
         ) => {
@@ -318,14 +318,14 @@ export function describeParachain(
     after(async function () {
       await Promise.all(context._web3Providers.map((p) => p.disconnect()));
       await Promise.all(
-        context._polkadotApiParachains.map(
+        context._polkadotApiAllychains.map(
           async (ps) => await Promise.all(ps.apis.map((p) => p.disconnect()))
         )
       );
       await Promise.all(context._polkadotApiRelaychains.map((p) => p.disconnect()));
 
       if (!DEBUG_MODE) {
-        await stopParachainNodes();
+        await stopAllychainNodes();
         await new Promise((resolve) => {
           // TODO: Replace Sleep by actually checking the process has ended
           setTimeout(resolve, 1000);

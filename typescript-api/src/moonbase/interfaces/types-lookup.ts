@@ -327,9 +327,9 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name CumulusPalletParachainSystemEvent (32)
+   * @name CumulusPalletAllychainSystemEvent (32)
    */
-  export interface CumulusPalletParachainSystemEvent extends Enum {
+  export interface CumulusPalletAllychainSystemEvent extends Enum {
     readonly isValidationFunctionStored: boolean;
     readonly isValidationFunctionApplied: boolean;
     readonly asValidationFunctionApplied: u32;
@@ -480,9 +480,9 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name ParachainStakingEvent (47)
+   * @name AllychainStakingEvent (47)
    */
-  export interface ParachainStakingEvent extends Enum {
+  export interface AllychainStakingEvent extends Enum {
     readonly isNewRound: boolean;
     readonly asNewRound: ITuple<[u32, u32, u32, u128]>;
     readonly isJoinedCollatorCandidates: boolean;
@@ -526,19 +526,19 @@ declare module "@polkadot/types/lookup" {
     readonly isDelegatorExitCancelled: boolean;
     readonly asDelegatorExitCancelled: AccountId20;
     readonly isCancelledDelegationRequest: boolean;
-    readonly asCancelledDelegationRequest: ITuple<[AccountId20, ParachainStakingDelegationRequest]>;
+    readonly asCancelledDelegationRequest: ITuple<[AccountId20, AllychainStakingDelegationRequest]>;
     readonly isDelegation: boolean;
-    readonly asDelegation: ITuple<[AccountId20, u128, AccountId20, ParachainStakingDelegatorAdded]>;
+    readonly asDelegation: ITuple<[AccountId20, u128, AccountId20, AllychainStakingDelegatorAdded]>;
     readonly isDelegatorLeftCandidate: boolean;
     readonly asDelegatorLeftCandidate: ITuple<[AccountId20, AccountId20, u128, u128]>;
     readonly isRewarded: boolean;
     readonly asRewarded: ITuple<[AccountId20, u128]>;
-    readonly isReservedForParachainBond: boolean;
-    readonly asReservedForParachainBond: ITuple<[AccountId20, u128]>;
-    readonly isParachainBondAccountSet: boolean;
-    readonly asParachainBondAccountSet: ITuple<[AccountId20, AccountId20]>;
-    readonly isParachainBondReservePercentSet: boolean;
-    readonly asParachainBondReservePercentSet: ITuple<[Percent, Percent]>;
+    readonly isReservedForAllychainBond: boolean;
+    readonly asReservedForAllychainBond: ITuple<[AccountId20, u128]>;
+    readonly isAllychainBondAccountSet: boolean;
+    readonly asAllychainBondAccountSet: ITuple<[AccountId20, AccountId20]>;
+    readonly isAllychainBondReservePercentSet: boolean;
+    readonly asAllychainBondReservePercentSet: ITuple<[Percent, Percent]>;
     readonly isInflationSet: boolean;
     readonly asInflationSet: ITuple<[Perbill, Perbill, Perbill, Perbill, Perbill, Perbill]>;
     readonly isStakeExpectationsSet: boolean;
@@ -575,9 +575,9 @@ declare module "@polkadot/types/lookup" {
       | "Delegation"
       | "DelegatorLeftCandidate"
       | "Rewarded"
-      | "ReservedForParachainBond"
-      | "ParachainBondAccountSet"
-      | "ParachainBondReservePercentSet"
+      | "ReservedForAllychainBond"
+      | "AllychainBondAccountSet"
+      | "AllychainBondReservePercentSet"
       | "InflationSet"
       | "StakeExpectationsSet"
       | "TotalSelectedSet"
@@ -586,28 +586,28 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name ParachainStakingDelegationRequest (49)
+   * @name AllychainStakingDelegationRequest (49)
    */
-  export interface ParachainStakingDelegationRequest extends Struct {
+  export interface AllychainStakingDelegationRequest extends Struct {
     readonly collator: AccountId20;
     readonly amount: u128;
     readonly whenExecutable: u32;
-    readonly action: ParachainStakingDelegationChange;
+    readonly action: AllychainStakingDelegationChange;
   }
 
   /**
-   * @name ParachainStakingDelegationChange (50)
+   * @name AllychainStakingDelegationChange (50)
    */
-  export interface ParachainStakingDelegationChange extends Enum {
+  export interface AllychainStakingDelegationChange extends Enum {
     readonly isRevoke: boolean;
     readonly isDecrease: boolean;
     readonly type: "Revoke" | "Decrease";
   }
 
   /**
-   * @name ParachainStakingDelegatorAdded (51)
+   * @name AllychainStakingDelegatorAdded (51)
    */
-  export interface ParachainStakingDelegatorAdded extends Enum {
+  export interface AllychainStakingDelegatorAdded extends Enum {
     readonly isAddedToTop: boolean;
     readonly asAddedToTop: {
       readonly newTotal: u128;
@@ -1305,8 +1305,8 @@ declare module "@polkadot/types/lookup" {
    * @name XcmV1Junction (86)
    */
   export interface XcmV1Junction extends Enum {
-    readonly isParachain: boolean;
-    readonly asParachain: Compact<u32>;
+    readonly isAllychain: boolean;
+    readonly asAllychain: Compact<u32>;
     readonly isAccountId32: boolean;
     readonly asAccountId32: {
       readonly network: XcmV0JunctionNetworkId;
@@ -1335,7 +1335,7 @@ declare module "@polkadot/types/lookup" {
       readonly part: XcmV0JunctionBodyPart;
     } & Struct;
     readonly type:
-      | "Parachain"
+      | "Allychain"
       | "AccountId32"
       | "AccountIndex64"
       | "AccountKey20"
@@ -1353,9 +1353,9 @@ declare module "@polkadot/types/lookup" {
     readonly isAny: boolean;
     readonly isNamed: boolean;
     readonly asNamed: Bytes;
-    readonly isPolkadot: boolean;
-    readonly isKusama: boolean;
-    readonly type: "Any" | "Named" | "Polkadot" | "Kusama";
+    readonly isAxia: boolean;
+    readonly isAxiaTest: boolean;
+    readonly type: "Any" | "Named" | "Axia" | "AxiaTest";
   }
 
   /**
@@ -1817,8 +1817,8 @@ declare module "@polkadot/types/lookup" {
    */
   export interface XcmV0Junction extends Enum {
     readonly isParent: boolean;
-    readonly isParachain: boolean;
-    readonly asParachain: Compact<u32>;
+    readonly isAllychain: boolean;
+    readonly asAllychain: Compact<u32>;
     readonly isAccountId32: boolean;
     readonly asAccountId32: {
       readonly network: XcmV0JunctionNetworkId;
@@ -1848,7 +1848,7 @@ declare module "@polkadot/types/lookup" {
     } & Struct;
     readonly type:
       | "Parent"
-      | "Parachain"
+      | "Allychain"
       | "AccountId32"
       | "AccountIndex64"
       | "AccountKey20"
@@ -2393,12 +2393,12 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name CumulusPalletParachainSystemCall (155)
+   * @name CumulusPalletAllychainSystemCall (155)
    */
-  export interface CumulusPalletParachainSystemCall extends Enum {
+  export interface CumulusPalletAllychainSystemCall extends Enum {
     readonly isSetValidationData: boolean;
     readonly asSetValidationData: {
-      readonly data: CumulusPrimitivesParachainInherentParachainInherentData;
+      readonly data: CumulusPrimitivesAllychainInherentAllychainInherentData;
     } & Struct;
     readonly isSudoSendUpwardMessage: boolean;
     readonly asSudoSendUpwardMessage: {
@@ -2420,19 +2420,19 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name CumulusPrimitivesParachainInherentParachainInherentData (156)
+   * @name CumulusPrimitivesAllychainInherentAllychainInherentData (156)
    */
-  export interface CumulusPrimitivesParachainInherentParachainInherentData extends Struct {
-    readonly validationData: PolkadotPrimitivesV1PersistedValidationData;
+  export interface CumulusPrimitivesAllychainInherentAllychainInherentData extends Struct {
+    readonly validationData: AxiaPrimitivesV1PersistedValidationData;
     readonly relayChainState: SpTrieStorageProof;
-    readonly downwardMessages: Vec<PolkadotCorePrimitivesInboundDownwardMessage>;
-    readonly horizontalMessages: BTreeMap<u32, Vec<PolkadotCorePrimitivesInboundHrmpMessage>>;
+    readonly downwardMessages: Vec<AxiaCorePrimitivesInboundDownwardMessage>;
+    readonly horizontalMessages: BTreeMap<u32, Vec<AxiaCorePrimitivesInboundHrmpMessage>>;
   }
 
   /**
-   * @name PolkadotPrimitivesV1PersistedValidationData (157)
+   * @name AxiaPrimitivesV1PersistedValidationData (157)
    */
-  export interface PolkadotPrimitivesV1PersistedValidationData extends Struct {
+  export interface AxiaPrimitivesV1PersistedValidationData extends Struct {
     readonly parentHead: Bytes;
     readonly relayParentNumber: u32;
     readonly relayParentStorageRoot: H256;
@@ -2447,17 +2447,17 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name PolkadotCorePrimitivesInboundDownwardMessage (161)
+   * @name AxiaCorePrimitivesInboundDownwardMessage (161)
    */
-  export interface PolkadotCorePrimitivesInboundDownwardMessage extends Struct {
+  export interface AxiaCorePrimitivesInboundDownwardMessage extends Struct {
     readonly sentAt: u32;
     readonly msg: Bytes;
   }
 
   /**
-   * @name PolkadotCorePrimitivesInboundHrmpMessage (165)
+   * @name AxiaCorePrimitivesInboundHrmpMessage (165)
    */
-  export interface PolkadotCorePrimitivesInboundHrmpMessage extends Struct {
+  export interface AxiaCorePrimitivesInboundHrmpMessage extends Struct {
     readonly sentAt: u32;
     readonly data: Bytes;
   }
@@ -2577,7 +2577,7 @@ declare module "@polkadot/types/lookup" {
     readonly value: U256;
     readonly input: Bytes;
     readonly accessList: Vec<EthereumTransactionAccessListItem>;
-    readonly oddYParity: bool;
+    readonly oddYAxia: bool;
     readonly r: H256;
     readonly s: H256;
   }
@@ -2603,15 +2603,15 @@ declare module "@polkadot/types/lookup" {
     readonly value: U256;
     readonly input: Bytes;
     readonly accessList: Vec<EthereumTransactionAccessListItem>;
-    readonly oddYParity: bool;
+    readonly oddYAxia: bool;
     readonly r: H256;
     readonly s: H256;
   }
 
   /**
-   * @name ParachainStakingCall (182)
+   * @name AllychainStakingCall (182)
    */
-  export interface ParachainStakingCall extends Enum {
+  export interface AllychainStakingCall extends Enum {
     readonly isHotfixRemoveDelegationRequests: boolean;
     readonly asHotfixRemoveDelegationRequests: {
       readonly delegators: Vec<AccountId20>;
@@ -2622,18 +2622,18 @@ declare module "@polkadot/types/lookup" {
     } & Struct;
     readonly isSetStakingExpectations: boolean;
     readonly asSetStakingExpectations: {
-      readonly expectations: ParachainStakingInflationRangeU128;
+      readonly expectations: AllychainStakingInflationRangeU128;
     } & Struct;
     readonly isSetInflation: boolean;
     readonly asSetInflation: {
-      readonly schedule: ParachainStakingInflationRangePerbill;
+      readonly schedule: AllychainStakingInflationRangePerbill;
     } & Struct;
-    readonly isSetParachainBondAccount: boolean;
-    readonly asSetParachainBondAccount: {
+    readonly isSetAllychainBondAccount: boolean;
+    readonly asSetAllychainBondAccount: {
       readonly new_: AccountId20;
     } & Struct;
-    readonly isSetParachainBondReservePercent: boolean;
-    readonly asSetParachainBondReservePercent: {
+    readonly isSetAllychainBondReservePercent: boolean;
+    readonly asSetAllychainBondReservePercent: {
       readonly new_: Percent;
     } & Struct;
     readonly isSetTotalSelected: boolean;
@@ -2723,8 +2723,8 @@ declare module "@polkadot/types/lookup" {
       | "HotfixUpdateCandidatePoolValue"
       | "SetStakingExpectations"
       | "SetInflation"
-      | "SetParachainBondAccount"
-      | "SetParachainBondReservePercent"
+      | "SetAllychainBondAccount"
+      | "SetAllychainBondReservePercent"
       | "SetTotalSelected"
       | "SetCollatorCommission"
       | "SetBlocksPerRound"
@@ -2750,18 +2750,18 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name ParachainStakingInflationRangeU128 (183)
+   * @name AllychainStakingInflationRangeU128 (183)
    */
-  export interface ParachainStakingInflationRangeU128 extends Struct {
+  export interface AllychainStakingInflationRangeU128 extends Struct {
     readonly min: u128;
     readonly ideal: u128;
     readonly max: u128;
   }
 
   /**
-   * @name ParachainStakingInflationRangePerbill (184)
+   * @name AllychainStakingInflationRangePerbill (184)
    */
-  export interface ParachainStakingInflationRangePerbill extends Struct {
+  export interface AllychainStakingInflationRangePerbill extends Struct {
     readonly min: Perbill;
     readonly ideal: Perbill;
     readonly max: Perbill;
@@ -4124,8 +4124,8 @@ declare module "@polkadot/types/lookup" {
     readonly asTechCommitteeCollective: PalletCollectiveRawOrigin;
     readonly isCumulusXcm: boolean;
     readonly asCumulusXcm: CumulusPalletXcmOrigin;
-    readonly isPolkadotXcm: boolean;
-    readonly asPolkadotXcm: PalletXcmOrigin;
+    readonly isAxiaXcm: boolean;
+    readonly asAxiaXcm: PalletXcmOrigin;
     readonly type:
       | "System"
       | "Void"
@@ -4133,7 +4133,7 @@ declare module "@polkadot/types/lookup" {
       | "CouncilCollective"
       | "TechCommitteeCollective"
       | "CumulusXcm"
-      | "PolkadotXcm";
+      | "AxiaXcm";
   }
 
   /**
@@ -4173,9 +4173,9 @@ declare module "@polkadot/types/lookup" {
    */
   export interface CumulusPalletXcmOrigin extends Enum {
     readonly isRelay: boolean;
-    readonly isSiblingParachain: boolean;
-    readonly asSiblingParachain: u32;
-    readonly type: "Relay" | "SiblingParachain";
+    readonly isSiblingAllychain: boolean;
+    readonly asSiblingAllychain: u32;
+    readonly type: "Relay" | "SiblingAllychain";
   }
 
   /**
@@ -4270,28 +4270,28 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name PolkadotPrimitivesV1UpgradeRestriction (305)
+   * @name AxiaPrimitivesV1UpgradeRestriction (305)
    */
-  export interface PolkadotPrimitivesV1UpgradeRestriction extends Enum {
+  export interface AxiaPrimitivesV1UpgradeRestriction extends Enum {
     readonly isPresent: boolean;
     readonly type: "Present";
   }
 
   /**
-   * @name CumulusPalletParachainSystemRelayStateSnapshotMessagingStateSnapshot (306)
+   * @name CumulusPalletAllychainSystemRelayStateSnapshotMessagingStateSnapshot (306)
    */
-  export interface CumulusPalletParachainSystemRelayStateSnapshotMessagingStateSnapshot
+  export interface CumulusPalletAllychainSystemRelayStateSnapshotMessagingStateSnapshot
     extends Struct {
     readonly dmqMqcHead: H256;
     readonly relayDispatchQueueSize: ITuple<[u32, u32]>;
-    readonly ingressChannels: Vec<ITuple<[u32, PolkadotPrimitivesV1AbridgedHrmpChannel]>>;
-    readonly egressChannels: Vec<ITuple<[u32, PolkadotPrimitivesV1AbridgedHrmpChannel]>>;
+    readonly ingressChannels: Vec<ITuple<[u32, AxiaPrimitivesV1AbridgedHrmpChannel]>>;
+    readonly egressChannels: Vec<ITuple<[u32, AxiaPrimitivesV1AbridgedHrmpChannel]>>;
   }
 
   /**
-   * @name PolkadotPrimitivesV1AbridgedHrmpChannel (309)
+   * @name AxiaPrimitivesV1AbridgedHrmpChannel (309)
    */
-  export interface PolkadotPrimitivesV1AbridgedHrmpChannel extends Struct {
+  export interface AxiaPrimitivesV1AbridgedHrmpChannel extends Struct {
     readonly maxCapacity: u32;
     readonly maxTotalSize: u32;
     readonly maxMessageSize: u32;
@@ -4301,9 +4301,9 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name PolkadotPrimitivesV1AbridgedHostConfiguration (310)
+   * @name AxiaPrimitivesV1AbridgedHostConfiguration (310)
    */
-  export interface PolkadotPrimitivesV1AbridgedHostConfiguration extends Struct {
+  export interface AxiaPrimitivesV1AbridgedHostConfiguration extends Struct {
     readonly maxCodeSize: u32;
     readonly maxHeadDataSize: u32;
     readonly maxUpwardQueueCount: u32;
@@ -4316,19 +4316,19 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name PolkadotCorePrimitivesOutboundHrmpMessage (316)
+   * @name AxiaCorePrimitivesOutboundHrmpMessage (316)
    */
-  export interface PolkadotCorePrimitivesOutboundHrmpMessage extends Struct {
+  export interface AxiaCorePrimitivesOutboundHrmpMessage extends Struct {
     readonly recipient: u32;
     readonly data: Bytes;
   }
 
   /**
-   * @name CumulusPalletParachainSystemError (317)
+   * @name CumulusPalletAllychainSystemError (317)
    */
-  export interface CumulusPalletParachainSystemError extends Enum {
+  export interface CumulusPalletAllychainSystemError extends Enum {
     readonly isOverlappingUpgrades: boolean;
-    readonly isProhibitedByPolkadot: boolean;
+    readonly isProhibitedByAxia: boolean;
     readonly isTooBig: boolean;
     readonly isValidationDataNotAvailable: boolean;
     readonly isHostConfigurationNotAvailable: boolean;
@@ -4337,7 +4337,7 @@ declare module "@polkadot/types/lookup" {
     readonly isUnauthorized: boolean;
     readonly type:
       | "OverlappingUpgrades"
-      | "ProhibitedByPolkadot"
+      | "ProhibitedByAxia"
       | "TooBig"
       | "ValidationDataNotAvailable"
       | "HostConfigurationNotAvailable"
@@ -4470,56 +4470,56 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name ParachainStakingParachainBondConfig (341)
+   * @name AllychainStakingAllychainBondConfig (341)
    */
-  export interface ParachainStakingParachainBondConfig extends Struct {
+  export interface AllychainStakingAllychainBondConfig extends Struct {
     readonly account: AccountId20;
     readonly percent: Percent;
   }
 
   /**
-   * @name ParachainStakingRoundInfo (342)
+   * @name AllychainStakingRoundInfo (342)
    */
-  export interface ParachainStakingRoundInfo extends Struct {
+  export interface AllychainStakingRoundInfo extends Struct {
     readonly current: u32;
     readonly first: u32;
     readonly length: u32;
   }
 
   /**
-   * @name ParachainStakingNominator2 (343)
+   * @name AllychainStakingNominator2 (343)
    */
-  export interface ParachainStakingNominator2 extends Struct {
-    readonly delegations: ParachainStakingSetOrderedSetBond;
-    readonly revocations: ParachainStakingSetOrderedSetAccountId20;
+  export interface AllychainStakingNominator2 extends Struct {
+    readonly delegations: AllychainStakingSetOrderedSetBond;
+    readonly revocations: AllychainStakingSetOrderedSetAccountId20;
     readonly total: u128;
     readonly scheduledRevocationsCount: u32;
     readonly scheduledRevocationsTotal: u128;
-    readonly status: ParachainStakingDelegatorStatus;
+    readonly status: AllychainStakingDelegatorStatus;
   }
 
   /**
-   * @name ParachainStakingSetOrderedSetBond (344)
+   * @name AllychainStakingSetOrderedSetBond (344)
    */
-  export interface ParachainStakingSetOrderedSetBond extends Vec<ParachainStakingBond> {}
+  export interface AllychainStakingSetOrderedSetBond extends Vec<AllychainStakingBond> {}
 
   /**
-   * @name ParachainStakingBond (345)
+   * @name AllychainStakingBond (345)
    */
-  export interface ParachainStakingBond extends Struct {
+  export interface AllychainStakingBond extends Struct {
     readonly owner: AccountId20;
     readonly amount: u128;
   }
 
   /**
-   * @name ParachainStakingSetOrderedSetAccountId20 (347)
+   * @name AllychainStakingSetOrderedSetAccountId20 (347)
    */
-  export interface ParachainStakingSetOrderedSetAccountId20 extends Vec<AccountId20> {}
+  export interface AllychainStakingSetOrderedSetAccountId20 extends Vec<AccountId20> {}
 
   /**
-   * @name ParachainStakingDelegatorStatus (348)
+   * @name AllychainStakingDelegatorStatus (348)
    */
-  export interface ParachainStakingDelegatorStatus extends Enum {
+  export interface AllychainStakingDelegatorStatus extends Enum {
     readonly isActive: boolean;
     readonly isLeaving: boolean;
     readonly asLeaving: u32;
@@ -4527,52 +4527,52 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name ParachainStakingDelegator (349)
+   * @name AllychainStakingDelegator (349)
    */
-  export interface ParachainStakingDelegator extends Struct {
+  export interface AllychainStakingDelegator extends Struct {
     readonly id: AccountId20;
-    readonly delegations: ParachainStakingSetOrderedSetBond;
+    readonly delegations: AllychainStakingSetOrderedSetBond;
     readonly total: u128;
-    readonly requests: ParachainStakingPendingDelegationRequests;
-    readonly status: ParachainStakingDelegatorStatus;
+    readonly requests: AllychainStakingPendingDelegationRequests;
+    readonly status: AllychainStakingDelegatorStatus;
   }
 
   /**
-   * @name ParachainStakingPendingDelegationRequests (350)
+   * @name AllychainStakingPendingDelegationRequests (350)
    */
-  export interface ParachainStakingPendingDelegationRequests extends Struct {
+  export interface AllychainStakingPendingDelegationRequests extends Struct {
     readonly revocationsCount: u32;
-    readonly requests: BTreeMap<AccountId20, ParachainStakingDelegationRequest>;
+    readonly requests: BTreeMap<AccountId20, AllychainStakingDelegationRequest>;
     readonly lessTotal: u128;
   }
 
   /**
-   * @name ParachainStakingCollatorCandidate (354)
+   * @name AllychainStakingCollatorCandidate (354)
    */
-  export interface ParachainStakingCollatorCandidate extends Struct {
+  export interface AllychainStakingCollatorCandidate extends Struct {
     readonly id: AccountId20;
     readonly bond: u128;
-    readonly delegators: ParachainStakingSetOrderedSetAccountId20;
-    readonly topDelegations: Vec<ParachainStakingBond>;
-    readonly bottomDelegations: Vec<ParachainStakingBond>;
+    readonly delegators: AllychainStakingSetOrderedSetAccountId20;
+    readonly topDelegations: Vec<AllychainStakingBond>;
+    readonly bottomDelegations: Vec<AllychainStakingBond>;
     readonly totalCounted: u128;
     readonly totalBacking: u128;
-    readonly request: Option<ParachainStakingCandidateBondLessRequest>;
-    readonly state: ParachainStakingCollatorStatus;
+    readonly request: Option<AllychainStakingCandidateBondLessRequest>;
+    readonly state: AllychainStakingCollatorStatus;
   }
 
   /**
-   * @name ParachainStakingCandidateBondLessRequest (356)
+   * @name AllychainStakingCandidateBondLessRequest (356)
    */
-  export interface ParachainStakingCandidateBondLessRequest extends Struct {
+  export interface AllychainStakingCandidateBondLessRequest extends Struct {
     readonly amount: u128;
     readonly whenExecutable: u32;
   }
 
   /**
-   * @name ParachainStakingCollatorStatus (357)
+   * @name AllychainStakingCollatorStatus (357)
    */
-  export interface ParachainStakingCollatorStatus extends Enum {
+  export interface AllychainStakingCollatorStatus extends Enum {
     readonly isActive: boolean;
     readonly isIdle: boolean;
     readonly isLeaving: boolean;
@@ -4581,25 +4581,25 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name ParachainStakingCandidateMetadata (358)
+   * @name AllychainStakingCandidateMetadata (358)
    */
-  export interface ParachainStakingCandidateMetadata extends Struct {
+  export interface AllychainStakingCandidateMetadata extends Struct {
     readonly bond: u128;
     readonly delegationCount: u32;
     readonly totalCounted: u128;
     readonly lowestTopDelegationAmount: u128;
     readonly highestBottomDelegationAmount: u128;
     readonly lowestBottomDelegationAmount: u128;
-    readonly topCapacity: ParachainStakingCapacityStatus;
-    readonly bottomCapacity: ParachainStakingCapacityStatus;
-    readonly request: Option<ParachainStakingCandidateBondLessRequest>;
-    readonly status: ParachainStakingCollatorStatus;
+    readonly topCapacity: AllychainStakingCapacityStatus;
+    readonly bottomCapacity: AllychainStakingCapacityStatus;
+    readonly request: Option<AllychainStakingCandidateBondLessRequest>;
+    readonly status: AllychainStakingCollatorStatus;
   }
 
   /**
-   * @name ParachainStakingCapacityStatus (359)
+   * @name AllychainStakingCapacityStatus (359)
    */
-  export interface ParachainStakingCapacityStatus extends Enum {
+  export interface AllychainStakingCapacityStatus extends Enum {
     readonly isFull: boolean;
     readonly isEmpty: boolean;
     readonly isPartial: boolean;
@@ -4607,68 +4607,68 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name ParachainStakingDelegations (360)
+   * @name AllychainStakingDelegations (360)
    */
-  export interface ParachainStakingDelegations extends Struct {
-    readonly delegations: Vec<ParachainStakingBond>;
+  export interface AllychainStakingDelegations extends Struct {
+    readonly delegations: Vec<AllychainStakingBond>;
     readonly total: u128;
   }
 
   /**
-   * @name ParachainStakingCollator2 (361)
+   * @name AllychainStakingCollator2 (361)
    */
-  export interface ParachainStakingCollator2 extends Struct {
+  export interface AllychainStakingCollator2 extends Struct {
     readonly id: AccountId20;
     readonly bond: u128;
-    readonly nominators: ParachainStakingSetOrderedSetAccountId20;
-    readonly topNominators: Vec<ParachainStakingBond>;
-    readonly bottomNominators: Vec<ParachainStakingBond>;
+    readonly nominators: AllychainStakingSetOrderedSetAccountId20;
+    readonly topNominators: Vec<AllychainStakingBond>;
+    readonly bottomNominators: Vec<AllychainStakingBond>;
     readonly totalCounted: u128;
     readonly totalBacking: u128;
-    readonly state: ParachainStakingCollatorStatus;
+    readonly state: AllychainStakingCollatorStatus;
   }
 
   /**
-   * @name ParachainStakingExitQ (362)
+   * @name AllychainStakingExitQ (362)
    */
-  export interface ParachainStakingExitQ extends Struct {
-    readonly candidates: ParachainStakingSetOrderedSetAccountId20;
-    readonly nominatorsLeaving: ParachainStakingSetOrderedSetAccountId20;
+  export interface AllychainStakingExitQ extends Struct {
+    readonly candidates: AllychainStakingSetOrderedSetAccountId20;
+    readonly nominatorsLeaving: AllychainStakingSetOrderedSetAccountId20;
     readonly candidateSchedule: Vec<ITuple<[AccountId20, u32]>>;
     readonly nominatorSchedule: Vec<ITuple<[AccountId20, Option<AccountId20>, u32]>>;
   }
 
   /**
-   * @name ParachainStakingCollatorSnapshot (368)
+   * @name AllychainStakingCollatorSnapshot (368)
    */
-  export interface ParachainStakingCollatorSnapshot extends Struct {
+  export interface AllychainStakingCollatorSnapshot extends Struct {
     readonly bond: u128;
-    readonly delegations: Vec<ParachainStakingBond>;
+    readonly delegations: Vec<AllychainStakingBond>;
     readonly total: u128;
   }
 
   /**
-   * @name ParachainStakingDelayedPayout (369)
+   * @name AllychainStakingDelayedPayout (369)
    */
-  export interface ParachainStakingDelayedPayout extends Struct {
+  export interface AllychainStakingDelayedPayout extends Struct {
     readonly roundIssuance: u128;
     readonly totalStakingReward: u128;
     readonly collatorCommission: Perbill;
   }
 
   /**
-   * @name ParachainStakingInflationInflationInfo (370)
+   * @name AllychainStakingInflationInflationInfo (370)
    */
-  export interface ParachainStakingInflationInflationInfo extends Struct {
-    readonly expect: ParachainStakingInflationRangeU128;
-    readonly annual: ParachainStakingInflationRangePerbill;
-    readonly round: ParachainStakingInflationRangePerbill;
+  export interface AllychainStakingInflationInflationInfo extends Struct {
+    readonly expect: AllychainStakingInflationRangeU128;
+    readonly annual: AllychainStakingInflationRangePerbill;
+    readonly round: AllychainStakingInflationRangePerbill;
   }
 
   /**
-   * @name ParachainStakingError (371)
+   * @name AllychainStakingError (371)
    */
-  export interface ParachainStakingError extends Enum {
+  export interface AllychainStakingError extends Enum {
     readonly isDelegatorDNE: boolean;
     readonly isDelegatorDNEinTopNorBottom: boolean;
     readonly isDelegatorDNEInDelegatorSet: boolean;
@@ -5204,9 +5204,9 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name PolkadotParachainPrimitivesXcmpMessageFormat (435)
+   * @name AxiaAllychainPrimitivesXcmpMessageFormat (435)
    */
-  export interface PolkadotParachainPrimitivesXcmpMessageFormat extends Enum {
+  export interface AxiaAllychainPrimitivesXcmpMessageFormat extends Enum {
     readonly isConcatenatedVersionedXcm: boolean;
     readonly isConcatenatedEncodedBlob: boolean;
     readonly isSignals: boolean;

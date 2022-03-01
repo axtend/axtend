@@ -16,7 +16,7 @@ import { describeDevMoonbeam, DevTestContext } from "../../util/setup-dev-tests"
 import { ApiTypes, SubmittableExtrinsic } from "@polkadot/api/types";
 
 import { blake2AsHex } from "@polkadot/util-crypto";
-import { createBlockWithExtrinsic } from "../../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../../util/axlib-rpc";
 import {
   callPrecompile,
   createContract,
@@ -101,7 +101,7 @@ describeDevMoonbeam("Democracy - genesis and preimage", (context) => {
   let genesisAccount: KeyringPair;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     iFace = await deployAndInterfaceContract(context, "Democracy");
@@ -111,17 +111,17 @@ describeDevMoonbeam("Democracy - genesis and preimage", (context) => {
     const referendumCount = await context.polkadotApi.query.democracy.referendumCount();
     expect(referendumCount.toHuman()).to.equal("0");
   });
-  it("should check initial state - 0x0 ParachainBondAccount", async function () {
+  it("should check initial state - 0x0 AllychainBondAccount", async function () {
     // referendumCount
-    const parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
+    const allychainBondInfo = await context.polkadotApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
   });
   it("notePreimage", async function () {
     // notePreimage
     const encodedHash = await notePreimagePrecompile(
       context,
       iFace,
-      context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+      context.polkadotApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
     );
 
     const preimageStatus = (await context.polkadotApi.query.democracy.preimages(
@@ -141,7 +141,7 @@ describeDevMoonbeam("Democracy - propose", (context) => {
   let encodedHash: `0x${string}`;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     iFace = await deployAndInterfaceContract(context, "Democracy");
@@ -150,7 +150,7 @@ describeDevMoonbeam("Democracy - propose", (context) => {
     encodedHash = await notePreimagePrecompile(
       context,
       iFace,
-      context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+      context.polkadotApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
     );
   });
   it("propose", async function () {
@@ -191,7 +191,7 @@ describeDevMoonbeam("Democracy - second proposal", (context) => {
   let launchPeriod;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -204,7 +204,7 @@ describeDevMoonbeam("Democracy - second proposal", (context) => {
     encodedHash = await notePreimagePrecompile(
       context,
       iFace,
-      context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+      context.polkadotApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
     );
 
     // propose
@@ -274,7 +274,7 @@ describeDevMoonbeam("Democracy - vote on referendum", (context) => {
   let enactmentPeriod, votingPeriod;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -290,7 +290,7 @@ describeDevMoonbeam("Democracy - vote on referendum", (context) => {
     encodedHash = await notePreimagePrecompile(
       context,
       iFace,
-      context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+      context.polkadotApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
     );
 
     // propose
@@ -356,8 +356,8 @@ describeDevMoonbeam("Democracy - vote on referendum", (context) => {
     for (let i = 0; i < Number(votingPeriod) + Number(enactmentPeriod) + 10; i++) {
       await context.createBlock();
     }
-    let parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
+    let allychainBondInfo = await context.polkadotApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
   });
 });
 
@@ -370,7 +370,7 @@ describeDevMoonbeam("Democracy - forget notePreimage", (context) => {
   let enactmentPeriod, votingPeriod;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -379,8 +379,8 @@ describeDevMoonbeam("Democracy - forget notePreimage", (context) => {
     // notePreimage
     // compute proposal hash but don't submit it
     const encodedProposal =
-      context.polkadotApi.tx.parachainStaking
-        .setParachainBondAccount(GENESIS_ACCOUNT)
+      context.polkadotApi.tx.allychainStaking
+        .setAllychainBondAccount(GENESIS_ACCOUNT)
         .method.toHex() || "";
     encodedHash = blake2AsHex(encodedProposal);
   });
@@ -441,7 +441,7 @@ describeDevMoonbeam("Democracy - forget notePreimage", (context) => {
       await context.createBlock();
     }
     // the enactement should fail
-    let parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
+    let allychainBondInfo = await context.polkadotApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
   });
 });

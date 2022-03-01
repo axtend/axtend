@@ -1,10 +1,10 @@
 [package]
-name = "moonbeam-evm-tracer"
+name = "axtend-evm-tracer"
 authors = ["PureStake"]
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
-repository = "https://github.com/PureStake/moonbeam/"
+repository = "https://github.com/PureStake/axtend/"
 version = "0.1.0"
 
 [dependencies]
@@ -13,9 +13,9 @@ version = "0.1.0"
 evm-tracing-events = { path = "../../primitives/rpc/evm-tracing-events", default-features = false, features = [
 	"evm-tracing",
 ] }
-moonbeam-primitives-ext = { path = "../../primitives/ext", default-features = false }
+axtend-primitives-ext = { path = "../../primitives/ext", default-features = false }
 
-# Substrate
+# Axlib
 codec = { package = "parity-scale-codec", version = "2.2", default-features = false }
 sp-core = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 sp-io = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
@@ -43,7 +43,7 @@ std = [
 	"evm/std",
 	"evm/with-serde",
 	"fp-evm/std",
-	"moonbeam-primitives-ext/std",
+	"axtend-primitives-ext/std",
 	"pallet-evm/std",
 	"sp-core/std",
 	"sp-runtime/std",

@@ -3,7 +3,7 @@ import { expect } from "chai";
 import child_process from "child_process";
 
 import { ALITH_PRIV_KEY } from "../../util/constants";
-import { describeParachain } from "../../util/setup-para-tests";
+import { describeAllychain } from "../../util/setup-para-tests";
 
 // This test will run on local until the new runtime is available
 
@@ -43,10 +43,10 @@ if (localVersion == alreadyReleased) {
 console.log(`Using base runtime ${baseRuntime}`);
 
 const RUNTIME_VERSION = "local";
-describeParachain(
+describeAllychain(
   `Runtime upgrade ${RUNTIME_VERSION}`,
   {
-    parachain: {
+    allychain: {
       chain: "moonbase-local",
       runtime: `runtime-${baseRuntime}`,
       binary: "local",

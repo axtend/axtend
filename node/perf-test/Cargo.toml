@@ -23,12 +23,12 @@ sha3 = { version = "0.8" }
 
 # Moonbeam
 
-cli-opt = { package = "moonbeam-cli-opt", path = "../cli-opt", default-features = false }
+cli-opt = { package = "axtend-cli-opt", path = "../cli-opt", default-features = false }
 # TODO: handle different runtime builds
 moonbase-runtime = { path = "../../runtime/moonbase" }
-service = { package = "moonbeam-service", path = "../service", default-features = false }
+service = { package = "axtend-service", path = "../service", default-features = false }
 
-# Substrate
+# Axlib
 sc-basic-authorship = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 sc-cli = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 sc-client-api = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
@@ -55,5 +55,5 @@ fp-rpc = { git = "https://github.com/axtend/frontier", branch = "2be428c" }
 pallet-ethereum = { git = "https://github.com/axtend/frontier", branch = "2be428c" }
 
 # Cumulus / Nimbus
-cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-primitives-allychain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "5f92d14" }

@@ -15,7 +15,7 @@
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 use futures::{future::BoxFuture, FutureExt, SinkExt, StreamExt};
 use jsonrpc_core::Result as RpcResult;
-pub use moonbeam_rpc_core_debug::{Debug as DebugT, DebugServer, TraceParams};
+pub use axtend_rpc_core_debug::{Debug as DebugT, DebugServer, TraceParams};
 
 use tokio::{
 	self,
@@ -25,9 +25,9 @@ use tokio::{
 use ethereum_types::H256;
 use fc_rpc::{frontier_backend_client, internal_err, OverrideHandle};
 use fp_rpc::EthereumRuntimeRPCApi;
-use moonbeam_client_evm_tracing::{formatters::ResponseFormatter, types::single};
-use moonbeam_rpc_core_types::{RequestBlockId, RequestBlockTag};
-use moonbeam_rpc_primitives_debug::{DebugRuntimeApi, TracerInput};
+use axtend_client_evm_tracing::{formatters::ResponseFormatter, types::single};
+use axtend_rpc_core_types::{RequestBlockId, RequestBlockTag};
+use axtend_rpc_primitives_debug::{DebugRuntimeApi, TracerInput};
 use sc_client_api::backend::{Backend, StateBackend, StorageProvider};
 use sc_utils::mpsc::TracingUnboundedSender;
 use sp_api::{ApiExt, BlockId, Core, HeaderT, ProvideRuntimeApi};
@@ -382,17 +382,17 @@ where
 						reference_id, e
 					))
 				})?;
-			Ok(moonbeam_rpc_primitives_debug::Response::Block)
+			Ok(axtend_rpc_primitives_debug::Response::Block)
 		};
 
 		return match trace_type {
 			single::TraceType::CallList => {
-				let mut proxy = moonbeam_client_evm_tracing::listeners::CallList::default();
+				let mut proxy = axtend_client_evm_tracing::listeners::CallList::default();
 				proxy.using(f)?;
 				proxy.finish_transaction();
 				let response = match tracer_input {
 					TracerInput::CallTracer => {
-						moonbeam_client_evm_tracing::formatters::CallTracer::format(proxy)
+						axtend_client_evm_tracing::formatters::CallTracer::format(proxy)
 							.ok_or("Trace result is empty.")
 							.map_err(|e| internal_err(format!("{:?}", e)))
 					}
@@ -415,7 +415,7 @@ where
 	/// In order to succesfully reproduce the result of the original transaction we need a correct
 	/// state to replay over.
 	///
-	/// Substrate allows to apply extrinsics in the Runtime and thus creating an overlayed state.
+	/// Axlib allows to apply extrinsics in the Runtime and thus creating an overlayed state.
 	/// This overlayed changes will live in-memory for the lifetime of the ApiRef.
 	fn handle_transaction_request(
 		client: Arc<C>,
@@ -529,7 +529,7 @@ where
 						};
 					}
 
-					Ok(moonbeam_rpc_primitives_debug::Response::Single)
+					Ok(axtend_rpc_primitives_debug::Response::Single)
 				};
 
 				return match trace_type {
@@ -538,29 +538,29 @@ where
 						disable_memory,
 						disable_stack,
 					} => {
-						let mut proxy = moonbeam_client_evm_tracing::listeners::Raw::new(
+						let mut proxy = axtend_client_evm_tracing::listeners::Raw::new(
 							disable_storage,
 							disable_memory,
 							disable_stack,
 						);
 						proxy.using(f)?;
 						Ok(Response::Single(
-							moonbeam_client_evm_tracing::formatters::Raw::format(proxy).unwrap(),
+							axtend_client_evm_tracing::formatters::Raw::format(proxy).unwrap(),
 						))
 					}
 					single::TraceType::CallList => {
-						let mut proxy = moonbeam_client_evm_tracing::listeners::CallList::default();
+						let mut proxy = axtend_client_evm_tracing::listeners::CallList::default();
 						proxy.using(f)?;
 						proxy.finish_transaction();
 						let response = match tracer_input {
 							TracerInput::Blockscout => {
-								moonbeam_client_evm_tracing::formatters::Blockscout::format(proxy)
+								axtend_client_evm_tracing::formatters::Blockscout::format(proxy)
 									.ok_or("Trace result is empty.")
 									.map_err(|e| internal_err(format!("{:?}", e)))
 							}
 							TracerInput::CallTracer => {
 								let mut res =
-									moonbeam_client_evm_tracing::formatters::CallTracer::format(
+									axtend_client_evm_tracing::formatters::CallTracer::format(
 										proxy,
 									)
 									.ok_or("Trace result is empty.")

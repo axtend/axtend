@@ -35,12 +35,12 @@ use pallet_asset_manager::{
 use pallet_author_mapping::{migrations::TwoXToBlake, Config as AuthorMappingConfig};
 use pallet_base_fee::Config as BaseFeeConfig;
 use pallet_migrations::{GetMigrations, Migration};
-use parachain_staking::{
+use allychain_staking::{
 	migrations::{
 		IncreaseMaxDelegationsPerCandidate, PatchIncorrectDelegationSums, PurgeStaleStorage,
 		SplitCandidateStateToDecreasePoV,
 	},
-	Config as ParachainStakingConfig,
+	Config as AllychainStakingConfig,
 };
 use sp_runtime::Permill;
 use sp_std::{marker::PhantomData, prelude::*};
@@ -53,10 +53,10 @@ use xcm_transactor::{migrations::MaxTransactWeight, Config as XcmTransactorConfi
 /// the "Migration" trait declared in the pallet-migrations crate.
 
 /// Patch delegations total mismatch
-pub struct ParachainStakingPatchIncorrectDelegationSums<T>(PhantomData<T>);
-impl<T: ParachainStakingConfig> Migration for ParachainStakingPatchIncorrectDelegationSums<T> {
+pub struct AllychainStakingPatchIncorrectDelegationSums<T>(PhantomData<T>);
+impl<T: AllychainStakingConfig> Migration for AllychainStakingPatchIncorrectDelegationSums<T> {
 	fn friendly_name(&self) -> &str {
-		"MM_Parachain_Staking_Patch_Incorrect_Delegation_Sums"
+		"MM_Allychain_Staking_Patch_Incorrect_Delegation_Sums"
 	}
 
 	fn migrate(&self, _available_weight: Weight) -> Weight {
@@ -77,10 +77,10 @@ impl<T: ParachainStakingConfig> Migration for ParachainStakingPatchIncorrectDele
 }
 
 /// Staking split candidate state
-pub struct ParachainStakingSplitCandidateState<T>(PhantomData<T>);
-impl<T: ParachainStakingConfig> Migration for ParachainStakingSplitCandidateState<T> {
+pub struct AllychainStakingSplitCandidateState<T>(PhantomData<T>);
+impl<T: AllychainStakingConfig> Migration for AllychainStakingSplitCandidateState<T> {
 	fn friendly_name(&self) -> &str {
-		"MM_Parachain_Staking_Split_Candidate_State"
+		"MM_Allychain_Staking_Split_Candidate_State"
 	}
 
 	fn migrate(&self, _available_weight: Weight) -> Weight {
@@ -101,12 +101,12 @@ impl<T: ParachainStakingConfig> Migration for ParachainStakingSplitCandidateStat
 }
 
 /// Staking increase max counted delegations per collator candidate
-pub struct ParachainStakingIncreaseMaxDelegationsPerCandidate<T>(PhantomData<T>);
-impl<T: ParachainStakingConfig> Migration
-	for ParachainStakingIncreaseMaxDelegationsPerCandidate<T>
+pub struct AllychainStakingIncreaseMaxDelegationsPerCandidate<T>(PhantomData<T>);
+impl<T: AllychainStakingConfig> Migration
+	for AllychainStakingIncreaseMaxDelegationsPerCandidate<T>
 {
 	fn friendly_name(&self) -> &str {
-		"MM_Parachain_Staking_IncreaseMaxDelegationsPerCandidate_v2"
+		"MM_Allychain_Staking_IncreaseMaxDelegationsPerCandidate_v2"
 	}
 
 	fn migrate(&self, _available_weight: Weight) -> Weight {
@@ -127,10 +127,10 @@ impl<T: ParachainStakingConfig> Migration
 }
 
 // /// Staking transition from automatic to manual exits, delay bond_{more, less} requests
-// pub struct ParachainStakingManualExits<T>(PhantomData<T>);
-// impl<T: ParachainStakingConfig> Migration for ParachainStakingManualExits<T> {
+// pub struct AllychainStakingManualExits<T>(PhantomData<T>);
+// impl<T: AllychainStakingConfig> Migration for AllychainStakingManualExits<T> {
 // 	fn friendly_name(&self) -> &str {
-// 		"MM_Parachain_Staking_ManualExits"
+// 		"MM_Allychain_Staking_ManualExits"
 // 	}
 
 // 	fn migrate(&self, _available_weight: Weight) -> Weight {
@@ -150,11 +150,11 @@ impl<T: ParachainStakingConfig> Migration
 // 	}
 // }
 
-/// A moonbeam migration wrapping the similarly named migration in parachain-staking
-pub struct ParachainStakingPurgeStaleStorage<T>(PhantomData<T>);
-impl<T: ParachainStakingConfig> Migration for ParachainStakingPurgeStaleStorage<T> {
+/// A axtend migration wrapping the similarly named migration in allychain-staking
+pub struct AllychainStakingPurgeStaleStorage<T>(PhantomData<T>);
+impl<T: AllychainStakingConfig> Migration for AllychainStakingPurgeStaleStorage<T> {
 	fn friendly_name(&self) -> &str {
-		"MM_Parachain_Staking_PurgeStaleStorage"
+		"MM_Allychain_Staking_PurgeStaleStorage"
 	}
 
 	fn migrate(&self, _available_weight: Weight) -> Weight {
@@ -174,7 +174,7 @@ impl<T: ParachainStakingConfig> Migration for ParachainStakingPurgeStaleStorage<
 	}
 }
 
-/// A moonbeam migration wrapping the similarly named migration in pallet-author-mapping
+/// A axtend migration wrapping the similarly named migration in pallet-author-mapping
 pub struct AuthorMappingTwoXToBlake<T>(PhantomData<T>);
 impl<T: AuthorMappingConfig> Migration for AuthorMappingTwoXToBlake<T> {
 	fn friendly_name(&self) -> &str {
@@ -505,7 +505,7 @@ pub struct CommonMigrations<Runtime, Council, Tech>(PhantomData<(Runtime, Counci
 impl<Runtime, Council, Tech> GetMigrations for CommonMigrations<Runtime, Council, Tech>
 where
 	Runtime: pallet_author_mapping::Config,
-	Runtime: parachain_staking::Config,
+	Runtime: allychain_staking::Config,
 	Runtime: pallet_scheduler::Config,
 	Runtime: pallet_base_fee::Config,
 	Council: GetStorageVersion + PalletInfoAccess + 'static,
@@ -516,16 +516,16 @@ where
 		// 	0: Default::default(),
 		// };
 
-		// let migration_parachain_staking_purge_stale_storage =
-		// 	ParachainStakingPurgeStaleStorage::<Runtime>(Default::default());
-		// let migration_parachain_staking_manual_exits =
-		// 	ParachainStakingManualExits::<Runtime>(Default::default());
-		// let migration_parachain_staking_increase_max_delegations_per_candidate =
-		// 	ParachainStakingIncreaseMaxDelegationsPerCandidate::<Runtime>(Default::default());
-		// let migration_parachain_staking_split_candidate_state =
-		// 	ParachainStakingSplitCandidateState::<Runtime>(Default::default());
-		let migration_parachain_staking_patch_incorrect_delegation_sums =
-			ParachainStakingPatchIncorrectDelegationSums::<Runtime>(Default::default());
+		// let migration_allychain_staking_purge_stale_storage =
+		// 	AllychainStakingPurgeStaleStorage::<Runtime>(Default::default());
+		// let migration_allychain_staking_manual_exits =
+		// 	AllychainStakingManualExits::<Runtime>(Default::default());
+		// let migration_allychain_staking_increase_max_delegations_per_candidate =
+		// 	AllychainStakingIncreaseMaxDelegationsPerCandidate::<Runtime>(Default::default());
+		// let migration_allychain_staking_split_candidate_state =
+		// 	AllychainStakingSplitCandidateState::<Runtime>(Default::default());
+		let migration_allychain_staking_patch_incorrect_delegation_sums =
+			AllychainStakingPatchIncorrectDelegationSums::<Runtime>(Default::default());
 
 		let migration_scheduler_v3 = SchedulerMigrationV3::<Runtime>(Default::default());
 
@@ -539,15 +539,15 @@ where
 			// Box::new(migration_author_mapping_twox_to_blake),
 			// completed in runtime 900
 			// completed in runtime 1000
-			// Box::new(migration_parachain_staking_purge_stale_storage),
+			// Box::new(migration_allychain_staking_purge_stale_storage),
 			// completed in runtime 1000
-			// Box::new(migration_parachain_staking_manual_exits),
+			// Box::new(migration_allychain_staking_manual_exits),
 			// completed in runtime 1101
-			// Box::new(migration_parachain_staking_increase_max_delegations_per_candidate),
+			// Box::new(migration_allychain_staking_increase_max_delegations_per_candidate),
 			// completed in runtime 1201
-			// Box::new(migration_parachain_staking_split_candidate_state),
+			// Box::new(migration_allychain_staking_split_candidate_state),
 			Box::new(migration_scheduler_v3),
-			Box::new(migration_parachain_staking_patch_incorrect_delegation_sums),
+			Box::new(migration_allychain_staking_patch_incorrect_delegation_sums),
 			Box::new(migration_base_fee),
 		]
 	}

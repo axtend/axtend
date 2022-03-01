@@ -5,7 +5,7 @@ import { BN, u8aToHex } from "@polkadot/util";
 
 import { ALITH_PRIV_KEY, RANDOM_PRIV_KEY } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { customWeb3Request } from "../util/providers";
 import type { XcmVersionedXcm } from "@polkadot/types/lookup";
 
@@ -25,13 +25,13 @@ const assetMetadata = {
   isFrozen: false,
 };
 
-const sourceLocation = { XCM: { parents: 1, interior: { X1: { Parachain: foreign_para_id } } } };
+const sourceLocation = { XCM: { parents: 1, interior: { X1: { Allychain: foreign_para_id } } } };
 const statemintLocation = {
   XCM: {
     parents: 1,
     interior: {
       X3: [
-        { Parachain: statemint_para_id },
+        { Allychain: statemint_para_id },
         { PalletInstance: statemint_assets_pallet_instance },
         { GeneralIndex: 0 },
       ],
@@ -44,7 +44,7 @@ const statemintLocationAssetOne = {
     parents: 1,
     interior: {
       X3: [
-        { Parachain: statemint_para_id },
+        { Allychain: statemint_para_id },
         { PalletInstance: statemint_assets_pallet_instance },
         { GeneralIndex: 1 },
       ],
@@ -107,14 +107,14 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     // Create a block in which the XCM will be executed
     await context.createBlock();
 
-    // Make sure the state has ALITH's foreign parachain tokens
-    let alith_dot_balance = (
+    // Make sure the state has ALITH's foreign allychain tokens
+    let alith_axc_balance = (
       (await context.polkadotApi.query.assets.account(assetId, alith.address)) as any
     )
       .unwrap()
       ["balance"].toBigInt();
 
-    expect(alith_dot_balance).to.eq(10n * FOREIGN_TOKEN);
+    expect(alith_axc_balance).to.eq(10n * FOREIGN_TOKEN);
   });
 });
 
@@ -172,7 +172,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     // we can receive the tokens on the assetId registed with the old prefix
 
     // Old prefix:
-    // Parachain(Statemint parachain)
+    // Allychain(Statemint allychain)
     // GeneralIndex(assetId being transferred)
     let xcmMessage = {
       V2: [
@@ -182,7 +182,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
               id: {
                 Concrete: {
                   parents: 1,
-                  interior: { X2: [{ Parachain: statemint_para_id }, { GeneralIndex: 0 }] },
+                  interior: { X2: [{ Allychain: statemint_para_id }, { GeneralIndex: 0 }] },
                 },
               },
               fun: { Fungible: new BN(10000000000000) },
@@ -196,7 +196,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
               id: {
                 Concrete: {
                   parents: new BN(1),
-                  interior: { X2: [{ Parachain: statemint_para_id }, { GeneralIndex: 0 }] },
+                  interior: { X2: [{ Allychain: statemint_para_id }, { GeneralIndex: 0 }] },
                 },
               },
               fun: { Fungible: new BN(10000000000000) },
@@ -236,14 +236,14 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     // Create a block in which the XCM will be executed
     await context.createBlock();
 
-    // Make sure the state has ALITH's foreign parachain tokens
-    let alith_dot_balance = (
+    // Make sure the state has ALITH's foreign allychain tokens
+    let alith_axc_balance = (
       (await context.polkadotApi.query.assets.account(assetId, alith.address)) as any
     )
       .unwrap()
       ["balance"].toBigInt();
 
-    expect(alith_dot_balance).to.eq(10n * FOREIGN_TOKEN);
+    expect(alith_axc_balance).to.eq(10n * FOREIGN_TOKEN);
   });
 });
 
@@ -300,7 +300,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     // we can receive the tokens on the assetId registed with the old prefix
 
     // New prefix:
-    // Parachain(Statemint parachain)
+    // Allychain(Statemint allychain)
     // PalletInstance(Statemint assets pallet instance)
     // GeneralIndex(assetId being transferred)
     let xcmMessage = {
@@ -313,7 +313,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
                   parents: 1,
                   interior: {
                     X3: [
-                      { Parachain: statemint_para_id },
+                      { Allychain: statemint_para_id },
                       { PalletInstance: statemint_assets_pallet_instance },
                       { GeneralIndex: 0 },
                     ],
@@ -333,7 +333,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
                   parents: new BN(1),
                   interior: {
                     X3: [
-                      { Parachain: statemint_para_id },
+                      { Allychain: statemint_para_id },
                       { PalletInstance: statemint_assets_pallet_instance },
                       { GeneralIndex: 0 },
                     ],
@@ -377,14 +377,14 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     // Create a block in which the XCM will be executed
     await context.createBlock();
 
-    // Make sure the state has ALITH's foreign parachain tokens
-    let alith_dot_balance = (
+    // Make sure the state has ALITH's foreign allychain tokens
+    let alith_axc_balance = (
       (await context.polkadotApi.query.assets.account(assetId, alith.address)) as any
     )
       .unwrap()
       ["balance"].toBigInt();
 
-    expect(alith_dot_balance).to.eq(10n * FOREIGN_TOKEN);
+    expect(alith_axc_balance).to.eq(10n * FOREIGN_TOKEN);
   });
 });
 
@@ -395,7 +395,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) =
   let transferredBalance;
   let sovereignAddress;
 
-  before("Should send DEV to the parachain sovereign", async function () {
+  before("Should send DEV to the allychain sovereign", async function () {
     const keyringEth = new Keyring({ type: "ethereum" });
     alith = keyringEth.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     random = keyringEth.addFromUri(RANDOM_PRIV_KEY, null, "ethereum");
@@ -407,7 +407,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) =
 
     transferredBalance = new BN(100000000000000);
 
-    // We first fund parachain 2000 sovreign account
+    // We first fund allychain 2000 sovreign account
     await createBlockWithExtrinsic(
       context,
       alith,
@@ -420,7 +420,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) =
   });
 
   it("Should receive MOVR from para Id 2000", async function () {
-    let ownParaId = (await context.polkadotApi.query.parachainInfo.parachainId()) as any;
+    let ownParaId = (await context.polkadotApi.query.allychainInfo.allychainId()) as any;
     // Get Pallet balances index
     const metadata = await context.polkadotApi.rpc.state.getMetadata();
     const balancesPalletIndex = (metadata.asLatest.toHuman().pallets as Array<any>).find(
@@ -442,7 +442,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) =
                 Concrete: {
                   parents: 1,
                   interior: {
-                    X2: [{ Parachain: ownParaId }, { PalletInstance: balancesPalletIndex }],
+                    X2: [{ Allychain: ownParaId }, { PalletInstance: balancesPalletIndex }],
                   },
                 },
               },
@@ -458,7 +458,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) =
                 Concrete: {
                   parents: 1,
                   interior: {
-                    X2: [{ Parachain: ownParaId }, { PalletInstance: balancesPalletIndex }],
+                    X2: [{ Allychain: ownParaId }, { PalletInstance: balancesPalletIndex }],
                   },
                 },
               },
@@ -523,7 +523,7 @@ describeDevMoonbeam(
     let transferredBalance;
     let sovereignAddress;
 
-    before("Should send DEV to the parachain sovereign", async function () {
+    before("Should send DEV to the allychain sovereign", async function () {
       const keyringEth = new Keyring({ type: "ethereum" });
       alith = keyringEth.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       random = keyringEth.addFromUri(RANDOM_PRIV_KEY, null, "ethereum");
@@ -535,7 +535,7 @@ describeDevMoonbeam(
 
       transferredBalance = new BN(100000000000000);
 
-      // We first fund parachain 2000 sovreign account
+      // We first fund allychain 2000 sovreign account
       await createBlockWithExtrinsic(
         context,
         alith,
@@ -548,7 +548,7 @@ describeDevMoonbeam(
     });
 
     it("Should receive MOVR from para Id 2000 with new reanchor logic", async function () {
-      let ownParaId = (await context.polkadotApi.query.parachainInfo.parachainId()) as any;
+      let ownParaId = (await context.polkadotApi.query.allychainInfo.allychainId()) as any;
       // Get Pallet balances index
       const metadata = await context.polkadotApi.rpc.state.getMetadata();
       const balancesPalletIndex = (metadata.asLatest.toHuman().pallets as Array<any>).find(
@@ -738,7 +738,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
               id: {
                 Concrete: {
                   parents: 1,
-                  interior: { X2: [{ Parachain: statemint_para_id }, { GeneralIndex: 0 }] },
+                  interior: { X2: [{ Allychain: statemint_para_id }, { GeneralIndex: 0 }] },
                 },
               },
               fun: { Fungible: new BN(10000000000000) },
@@ -747,7 +747,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
               id: {
                 Concrete: {
                   parents: 1,
-                  interior: { X2: [{ Parachain: statemint_para_id }, { GeneralIndex: 1 }] },
+                  interior: { X2: [{ Allychain: statemint_para_id }, { GeneralIndex: 1 }] },
                 },
               },
               fun: { Fungible: new BN(10000000000000) },
@@ -761,7 +761,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
               id: {
                 Concrete: {
                   parents: new BN(1),
-                  interior: { X2: [{ Parachain: statemint_para_id }, { GeneralIndex: 1 }] },
+                  interior: { X2: [{ Allychain: statemint_para_id }, { GeneralIndex: 1 }] },
                 },
               },
               fun: { Fungible: new BN(10000000000000) },
@@ -802,7 +802,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     // Create a block in which the XCM will be executed
     await context.createBlock();
 
-    // Make sure the state has ALITH's foreign parachain tokens
+    // Make sure the state has ALITH's foreign allychain tokens
     let alithAssetZeroBalance = (
       (await context.polkadotApi.query.assets.account(assetIdZero, alith.address)) as any
     )
@@ -861,7 +861,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
               id: {
                 Concrete: {
                   parents: 1,
-                  interior: { X2: [{ Parachain: statemint_para_id }, { GeneralIndex: 0 }] },
+                  interior: { X2: [{ Allychain: statemint_para_id }, { GeneralIndex: 0 }] },
                 },
               },
               fun: { Fungible: new BN(10000000000000) },
@@ -875,7 +875,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
               id: {
                 Concrete: {
                   parents: new BN(1),
-                  interior: { X2: [{ Parachain: statemint_para_id }, { GeneralIndex: 0 }] },
+                  interior: { X2: [{ Allychain: statemint_para_id }, { GeneralIndex: 0 }] },
                 },
               },
               fun: { Fungible: new BN(10000000000000) },
@@ -915,7 +915,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     // Create a block in which the XCM will be executed
     await context.createBlock();
 
-    // Make sure the state has ALITH's foreign parachain tokens
+    // Make sure the state has ALITH's foreign allychain tokens
     let alithAssetZeroBalance = (await context.polkadotApi.query.assets.account(
       assetIdZero,
       alith.address

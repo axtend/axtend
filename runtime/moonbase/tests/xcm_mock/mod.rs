@@ -1,26 +1,26 @@
-// Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// Copyright 2021 Axia Technologies (UK) Ltd.
+// This file is part of Axia.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Axia is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Axia is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axia.  If not, see <http://www.gnu.org/licenses/>.
 
-pub mod parachain;
+pub mod allychain;
 pub mod relay_chain;
 pub mod statemint_like;
 use cumulus_primitives_core::ParaId;
-use polkadot_parachain::primitives::AccountIdConversion;
+use polkadot_allychain::primitives::AccountIdConversion;
 use sp_runtime::AccountId32;
-use xcm_simulator::{decl_test_network, decl_test_parachain, decl_test_relay_chain};
+use xcm_simulator::{decl_test_network, decl_test_allychain, decl_test_relay_chain};
 
 use sp_core::{H160, U256};
 use std::{collections::BTreeMap, str::FromStr};
@@ -36,34 +36,34 @@ pub fn evm_account() -> H160 {
 	H160::from_str("1000000000000000000000000000000000000001").unwrap()
 }
 
-decl_test_parachain! {
+decl_test_allychain! {
 	pub struct ParaA {
-		Runtime = parachain::Runtime,
-		XcmpMessageHandler = parachain::MsgQueue,
-		DmpMessageHandler = parachain::MsgQueue,
+		Runtime = allychain::Runtime,
+		XcmpMessageHandler = allychain::MsgQueue,
+		DmpMessageHandler = allychain::MsgQueue,
 		new_ext = para_ext(1),
 	}
 }
 
-decl_test_parachain! {
+decl_test_allychain! {
 	pub struct ParaB {
-		Runtime = parachain::Runtime,
-		XcmpMessageHandler = parachain::MsgQueue,
-		DmpMessageHandler = parachain::MsgQueue,
+		Runtime = allychain::Runtime,
+		XcmpMessageHandler = allychain::MsgQueue,
+		DmpMessageHandler = allychain::MsgQueue,
 		new_ext = para_ext(2),
 	}
 }
 
-decl_test_parachain! {
+decl_test_allychain! {
 	pub struct ParaC {
-		Runtime = parachain::Runtime,
-		XcmpMessageHandler = parachain::MsgQueue,
-		DmpMessageHandler = parachain::MsgQueue,
+		Runtime = allychain::Runtime,
+		XcmpMessageHandler = allychain::MsgQueue,
+		DmpMessageHandler = allychain::MsgQueue,
 		new_ext = para_ext(3),
 	}
 }
 
-decl_test_parachain! {
+decl_test_allychain! {
 	pub struct Statemint {
 		Runtime = statemint_like::Runtime,
 		XcmpMessageHandler = statemint_like::MsgQueue,
@@ -83,7 +83,7 @@ decl_test_relay_chain! {
 decl_test_network! {
 	pub struct MockNet {
 		relay_chain = Relay,
-		parachains = vec![
+		allychains = vec![
 			(1, ParaA),
 			(2, ParaB),
 			(3, ParaC),
@@ -98,7 +98,7 @@ pub const INITIAL_EVM_BALANCE: u128 = 0;
 pub const INITIAL_EVM_NONCE: u32 = 1;
 
 pub fn para_ext(para_id: u32) -> sp_io::TestExternalities {
-	use parachain::{MsgQueue, Runtime, System};
+	use allychain::{MsgQueue, Runtime, System};
 
 	let mut t = frame_system::GenesisConfig::default()
 		.build_storage::<Runtime>()
@@ -185,11 +185,11 @@ pub type StatemintBalances = pallet_balances::Pallet<statemint_like::Runtime>;
 pub type StatemintChainPalletXcm = pallet_xcm::Pallet<statemint_like::Runtime>;
 pub type StatemintAssets = pallet_assets::Pallet<statemint_like::Runtime>;
 
-pub type ParachainPalletXcm = pallet_xcm::Pallet<parachain::Runtime>;
-pub type Assets = pallet_assets::Pallet<parachain::Runtime>;
-pub type Treasury = pallet_treasury::Pallet<parachain::Runtime>;
-pub type AssetManager = pallet_asset_manager::Pallet<parachain::Runtime>;
-pub type XTokens = orml_xtokens::Pallet<parachain::Runtime>;
+pub type AllychainPalletXcm = pallet_xcm::Pallet<allychain::Runtime>;
+pub type Assets = pallet_assets::Pallet<allychain::Runtime>;
+pub type Treasury = pallet_treasury::Pallet<allychain::Runtime>;
+pub type AssetManager = pallet_asset_manager::Pallet<allychain::Runtime>;
+pub type XTokens = orml_xtokens::Pallet<allychain::Runtime>;
 pub type RelayBalances = pallet_balances::Pallet<relay_chain::Runtime>;
-pub type ParaBalances = pallet_balances::Pallet<parachain::Runtime>;
-pub type XcmTransactor = xcm_transactor::Pallet<parachain::Runtime>;
+pub type ParaBalances = pallet_balances::Pallet<allychain::Runtime>;
+pub type XcmTransactor = xcm_transactor::Pallet<allychain::Runtime>;

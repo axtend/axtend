@@ -1,18 +1,18 @@
-// Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// Copyright 2021 Axia Technologies (UK) Ltd.
+// This file is part of Axia.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Axia is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Axia is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axia.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Relay chain runtime mock.
 
@@ -32,8 +32,8 @@ use sp_runtime::{
 
 use polkadot_core_primitives::BlockNumber as RelayBlockNumber;
 
-use polkadot_parachain::primitives::Id as ParaId;
-use polkadot_parachain::primitives::Sibling;
+use polkadot_allychain::primitives::Id as ParaId;
+use polkadot_allychain::primitives::Sibling;
 use sp_std::convert::TryFrom;
 use xcm::latest::prelude::*;
 use xcm::VersionedXcm;
@@ -42,7 +42,7 @@ use xcm_builder::{
 	AllowTopLevelPaidExecutionFrom, AllowUnpaidExecutionFrom, AsPrefixedGeneralIndex,
 	ConvertedConcreteAssetId, CurrencyAdapter, EnsureXcmOrigin, FixedRateOfFungible,
 	FixedWeightBounds, FungiblesAdapter, IsConcrete, LocationInverter, ParentAsSuperuser,
-	ParentIsPreset, RelayChainAsNative, SiblingParachainAsNative, SiblingParachainConvertsVia,
+	ParentIsPreset, RelayChainAsNative, SiblingAllychainAsNative, SiblingAllychainConvertsVia,
 	SignedAccountId32AsNative, SignedToAccountId32, SovereignSignedViaLocation, TakeWeightCredit,
 };
 use xcm_executor::{traits::JustTry, Config, XcmExecutor};
@@ -108,7 +108,7 @@ parameter_types! {
 	pub const ApprovalDeposit: Balance = 0;
 	pub const AssetsStringLimit: u32 = 50;
 	/// Key = 32 bytes, Value = 36 bytes (32+1+1+1+1)
-	// https://github.com/paritytech/substrate/blob/069917b/frame/assets/src/lib.rs#L257L271
+	// https://github.com/paritytech/axlib/blob/069917b/frame/assets/src/lib.rs#L257L271
 	pub const MetadataDepositBase: Balance = 0;
 	pub const MetadataDepositPerByte: Balance = 0;
 	pub const ExecutiveBody: BodyId = BodyId::Executive;
@@ -133,13 +133,13 @@ impl pallet_assets::Config for Runtime {
 }
 
 parameter_types! {
-	pub const KsmLocation: MultiLocation = MultiLocation::parent();
-	pub const RelayNetwork: NetworkId = NetworkId::Kusama;
+	pub const AxctLocation: MultiLocation = MultiLocation::parent();
+	pub const RelayNetwork: NetworkId = NetworkId::AxiaTest;
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
-	pub Ancestry: MultiLocation = Parachain(MsgQueue::parachain_id().into()).into();
+	pub Ancestry: MultiLocation = Allychain(MsgQueue::allychain_id().into()).into();
 	pub const Local: MultiLocation = Here.into();
-	pub CheckingAccount: AccountId = PolkadotXcm::check_account();
-	pub KsmPerSecond: (xcm::latest::prelude::AssetId, u128) = (Concrete(KsmLocation::get()), 1);
+	pub CheckingAccount: AccountId = AxiaXcm::check_account();
+	pub AxctPerSecond: (xcm::latest::prelude::AssetId, u128) = (Concrete(AxctLocation::get()), 1);
 }
 
 /// Type for specifying how a `MultiLocation` can be converted into an `AccountId`. This is used
@@ -148,8 +148,8 @@ parameter_types! {
 pub type LocationToAccountId = (
 	// The parent (Relay-chain) origin converts to the default `AccountId`.
 	ParentIsPreset<AccountId>,
-	// Sibling parachain origins convert to AccountId via the `ParaId::into`.
-	SiblingParachainConvertsVia<Sibling, AccountId>,
+	// Sibling allychain origins convert to AccountId via the `ParaId::into`.
+	SiblingAllychainConvertsVia<Sibling, AccountId>,
 	// Straight up local `AccountId32` origins just alias directly to `AccountId`.
 	AccountId32Aliases<RelayNetwork, AccountId>,
 );
@@ -159,7 +159,7 @@ pub type CurrencyTransactor = CurrencyAdapter<
 	// Use this currency:
 	Balances,
 	// Use this currency when it is a fungible asset matching the given location or name:
-	IsConcrete<KsmLocation>,
+	IsConcrete<AxctLocation>,
 	// Convert an XCM MultiLocation into a local account id:
 	LocationToAccountId,
 	// Our chain's account ID type (we can't get away without mentioning it explicitly):
@@ -203,9 +203,9 @@ pub type XcmOriginToTransactDispatchOrigin = (
 	// Native converter for Relay-chain (Parent) location; will convert to a `Relay` origin when
 	// recognised.
 	RelayChainAsNative<RelayChainOrigin, Origin>,
-	// Native converter for sibling Parachains; will convert to a `SiblingPara` origin when
+	// Native converter for sibling Allychains; will convert to a `SiblingPara` origin when
 	// recognised.
-	SiblingParachainAsNative<cumulus_pallet_xcm::Origin, Origin>,
+	SiblingAllychainAsNative<cumulus_pallet_xcm::Origin, Origin>,
 	// Superuser converter for the Relay-chain (Parent) location. This will allow it to issue a
 	// transaction from the Root origin.
 	ParentAsSuperuser<Origin>,
@@ -241,7 +241,7 @@ pub type Barrier = (
 	// Parent and its exec plurality get free execution
 	AllowUnpaidExecutionFrom<ParentOrParentsExecutivePlurality>,
 	// Expected responses are OK.
-	AllowKnownQueryResponses<PolkadotXcm>,
+	AllowKnownQueryResponses<AxiaXcm>,
 	// Subscriptions for version tracking are OK.
 	AllowSubscriptionsFrom<ParentOrSiblings>,
 );
@@ -257,17 +257,17 @@ impl Config for XcmConfig {
 	type LocationInverter = LocationInverter<Ancestry>;
 	type Barrier = Barrier;
 	type Weigher = FixedWeightBounds<UnitWeightCost, Call, MaxInstructions>;
-	type Trader = FixedRateOfFungible<KsmPerSecond, ()>;
-	type ResponseHandler = PolkadotXcm;
-	type AssetTrap = PolkadotXcm;
-	type AssetClaims = PolkadotXcm;
-	type SubscriptionService = PolkadotXcm;
+	type Trader = FixedRateOfFungible<AxctPerSecond, ()>;
+	type ResponseHandler = AxiaXcm;
+	type AssetTrap = AxiaXcm;
+	type AssetClaims = AxiaXcm;
+	type SubscriptionService = AxiaXcm;
 }
 
 /// No local origins on this chain are allowed to dispatch XCM sends/executions.
 pub type LocalOriginToLocation = SignedToAccountId32<Origin, AccountId, RelayNetwork>;
 
-pub type XcmRouter = super::ParachainXcmRouter<MsgQueue>;
+pub type XcmRouter = super::AllychainXcmRouter<MsgQueue>;
 
 impl pallet_xcm::Config for Runtime {
 	type Event = Event;
@@ -310,12 +310,12 @@ pub mod mock_msg_queue {
 	pub struct Pallet<T>(_);
 
 	#[pallet::storage]
-	#[pallet::getter(fn parachain_id)]
-	pub(super) type ParachainId<T: Config> = StorageValue<_, ParaId, ValueQuery>;
+	#[pallet::getter(fn allychain_id)]
+	pub(super) type AllychainId<T: Config> = StorageValue<_, ParaId, ValueQuery>;
 
 	impl<T: Config> Get<ParaId> for Pallet<T> {
 		fn get() -> ParaId {
-			Self::parachain_id()
+			Self::allychain_id()
 		}
 	}
 
@@ -345,7 +345,7 @@ pub mod mock_msg_queue {
 
 	impl<T: Config> Pallet<T> {
 		pub fn set_para_id(para_id: ParaId) {
-			ParachainId::<T>::put(para_id);
+			AllychainId::<T>::put(para_id);
 		}
 
 		fn handle_xcmp_message(
@@ -357,7 +357,7 @@ pub mod mock_msg_queue {
 			let hash = Encode::using_encoded(&xcm, T::Hashing::hash);
 			let (result, event) = match Xcm::<T::Call>::try_from(xcm) {
 				Ok(xcm) => {
-					let location = MultiLocation::new(1, Junctions::X1(Parachain(sender.into())));
+					let location = MultiLocation::new(1, Junctions::X1(Allychain(sender.into())));
 					match T::XcmExecutor::execute_xcm(location, xcm, max_weight) {
 						Outcome::Error(e) => (Err(e.clone()), Event::Fail(Some(hash), e)),
 						Outcome::Complete(w) => (Ok(w), Event::Success(Some(hash))),
@@ -489,7 +489,7 @@ construct_runtime!(
 	{
 		System: frame_system::{Pallet, Call, Storage, Config, Event<T>},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
-		PolkadotXcm: pallet_xcm::{Pallet, Call, Storage, Event<T>, Origin},
+		AxiaXcm: pallet_xcm::{Pallet, Call, Storage, Event<T>, Origin},
 		CumulusXcm: cumulus_pallet_xcm::{Pallet, Event<T>, Origin},
 		MsgQueue: mock_msg_queue::{Pallet, Storage, Event<T>},
 		Assets: pallet_assets::{Pallet, Storage, Event<T>},

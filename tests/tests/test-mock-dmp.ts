@@ -5,7 +5,7 @@ import { BN } from "@polkadot/util";
 
 import { ALITH_PRIV_KEY } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { customWeb3Request } from "../util/providers";
 
 // Twelve decimal places in the moonbase relay chain's token
@@ -14,8 +14,8 @@ const RELAY_TOKEN = 1_000_000_000_000n;
 const palletId = "0x6D6f646c617373746d6E67720000000000000000";
 
 const assetMetadata = {
-  name: "DOT",
-  symbol: "DOT",
+  name: "AXC",
+  symbol: "AXC",
   decimals: new BN(12),
   isFrozen: false,
 };
@@ -69,7 +69,7 @@ describeDevMoonbeam("Mock XCM - receive downward transfer", (context) => {
     expect(registeredAsset.owner.toHex()).to.eq(palletId.toLowerCase());
   });
 
-  it("Should receive a downward transfer of 10 DOTs to Alith", async function () {
+  it("Should receive a downward transfer of 10 AXCs to Alith", async function () {
     // Send RPC call to inject XCM message
     // You can provide a message, but if you don't a downward transfer is the default
     await customWeb3Request(context.web3, "xcm_injectDownwardMessage", [[]]);
@@ -77,13 +77,13 @@ describeDevMoonbeam("Mock XCM - receive downward transfer", (context) => {
     // Create a block in which the XCM will be executed
     await context.createBlock();
 
-    // Make sure the state has ALITH's to DOT tokens
-    let alith_dot_balance = (
+    // Make sure the state has ALITH's to AXC tokens
+    let alith_axc_balance = (
       (await context.polkadotApi.query.assets.account(assetId, alith.address)) as any
     )
       .unwrap()
       ["balance"].toBigInt();
 
-    expect(alith_dot_balance).to.eq(10n * RELAY_TOKEN);
+    expect(alith_axc_balance).to.eq(10n * RELAY_TOKEN);
   });
 });

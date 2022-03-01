@@ -1,12 +1,12 @@
 #/bin/sh
 
-POLKADOT_COMMIT=$(egrep -o '/polkadot.*#([^\"]*)' Cargo.lock | head -1 | sed 's/.*#//' |  cut -c1-8)
-DOCKER_TAG="purestake/moonbase-relay-testnet:sha-$POLKADOT_COMMIT"
+AXIA_COMMIT=$(egrep -o '/polkadot.*#([^\"]*)' Cargo.lock | head -1 | sed 's/.*#//' |  cut -c1-8)
+DOCKER_TAG="purestake/moonbase-relay-testnet:sha-$AXIA_COMMIT"
 
 # Build relay binary if needed
-POLKADOT_EXISTS=docker manifest inspect $DOCKER_TAG > /dev/null && "true" || "false"
-if [[ "$POLKADOT_EXISTS" == "false" ]]; then
-  # $POLKADOT_COMMIT is used to build the relay image
+AXIA_EXISTS=docker manifest inspect $DOCKER_TAG > /dev/null && "true" || "false"
+if [[ "$AXIA_EXISTS" == "false" ]]; then
+  # $AXIA_COMMIT is used to build the relay image
   ./scripts/build-alphanet-relay-image.sh
 fi
 

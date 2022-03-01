@@ -1,10 +1,10 @@
 [package]
-name = "moonbeam-primitives-ext"
+name = "axtend-primitives-ext"
 authors = ["PureStake"]
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
-repository = "https://github.com/PureStake/moonbeam/"
+repository = "https://github.com/PureStake/axtend/"
 version = "0.1.0"
 
 [dependencies]
@@ -13,7 +13,7 @@ ethereum-types = { version = "0.12.1", default-features = false }
 # Moonbeam
 evm-tracing-events = { path = "../rpc/evm-tracing-events", default-features = false }
 
-# Substrate
+# Axlib
 codec = { package = "parity-scale-codec", version = "2.2", default-features = false }
 sp-externalities = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 sp-runtime-interface = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }

@@ -1,10 +1,10 @@
 [package]
-name = "moonbeam-rpc-debug"
+name = "axtend-rpc-debug"
 authors = ["PureStake"]
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
-repository = "https://github.com/PureStake/moonbeam/"
+repository = "https://github.com/PureStake/axtend/"
 version = "0.1.0"
 
 [dependencies]
@@ -14,12 +14,12 @@ jsonrpc-core = "18.0.0"
 tokio = { version = "1.10", features = ["sync", "time"] }
 
 # Moonbeam
-moonbeam-client-evm-tracing = { path = "../../evm-tracing" }
-moonbeam-rpc-core-debug = { path = "../../rpc-core/debug" }
-moonbeam-rpc-core-types = { path = "../../rpc-core/types" }
-moonbeam-rpc-primitives-debug = { path = "../../../primitives/rpc/debug" }
+axtend-client-evm-tracing = { path = "../../evm-tracing" }
+axtend-rpc-core-debug = { path = "../../rpc-core/debug" }
+axtend-rpc-core-types = { path = "../../rpc-core/types" }
+axtend-rpc-primitives-debug = { path = "../../../primitives/rpc/debug" }
 
-# Substrate
+# Axlib
 sc-client-api = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 sc-utils = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 sp-api = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }

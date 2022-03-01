@@ -46,13 +46,13 @@ use ethereum_types::H256;
 use fc_rpc::{frontier_backend_client, internal_err, OverrideHandle};
 use fp_rpc::EthereumRuntimeRPCApi;
 
-use moonbeam_client_evm_tracing::{
+use axtend_client_evm_tracing::{
 	formatters::ResponseFormatter,
 	types::block::{self, TransactionTrace},
 };
-pub use moonbeam_rpc_core_trace::{FilterRequest, Trace as TraceT, TraceServer};
-use moonbeam_rpc_core_types::{RequestBlockId, RequestBlockTag};
-use moonbeam_rpc_primitives_debug::DebugRuntimeApi;
+pub use axtend_rpc_core_trace::{FilterRequest, Trace as TraceT, TraceServer};
+use axtend_rpc_core_types::{RequestBlockId, RequestBlockTag};
+use axtend_rpc_primitives_debug::DebugRuntimeApi;
 
 /// RPC handler. Will communicate with a `CacheTask` through a `CacheRequester`.
 pub struct Trace<B, C> {
@@ -119,7 +119,7 @@ where
 			)));
 		}
 
-		// Build a list of all the Substrate block hashes that need to be traced.
+		// Build a list of all the Axlib block hashes that need to be traced.
 		let mut block_hashes = vec![];
 		for block_height in block_heights {
 			if block_height == 0 {
@@ -581,7 +581,7 @@ where
 							.await
 							.map_err(|e| {
 								internal_err(format!(
-									"Tracing Substrate block {} panicked : {:?}",
+									"Tracing Axlib block {} panicked : {:?}",
 									block, e
 								))
 							})?
@@ -779,51 +779,51 @@ where
 	fn cache_block(
 		client: Arc<C>,
 		backend: Arc<BE>,
-		substrate_hash: H256,
+		axlib_hash: H256,
 		overrides: Arc<OverrideHandle<B>>,
 	) -> Result<Vec<TransactionTrace>> {
-		let substrate_block_id = BlockId::Hash(substrate_hash);
+		let axlib_block_id = BlockId::Hash(axlib_hash);
 
 		// Get Subtrate block data.
 		let api = client.runtime_api();
 		let block_header = client
-			.header(substrate_block_id)
+			.header(axlib_block_id)
 			.map_err(|e| {
 				internal_err(format!(
-					"Error when fetching substrate block {} header : {:?}",
-					substrate_hash, e
+					"Error when fetching axlib block {} header : {:?}",
+					axlib_hash, e
 				))
 			})?
 			.ok_or_else(|| {
-				internal_err(format!("Subtrate block {} don't exist", substrate_block_id))
+				internal_err(format!("Subtrate block {} don't exist", axlib_block_id))
 			})?;
 
 		let height = *block_header.number();
-		let substrate_parent_id = BlockId::<B>::Hash(*block_header.parent_hash());
+		let axlib_parent_id = BlockId::<B>::Hash(*block_header.parent_hash());
 
 		let schema = frontier_backend_client::onchain_storage_schema::<B, C, BE>(
 			client.as_ref(),
-			substrate_block_id,
+			axlib_block_id,
 		);
 
 		// Get Ethereum block data.
 		let (eth_block, eth_transactions) = match overrides.schemas.get(&schema) {
 			Some(schema) => match (
-				schema.current_block(&substrate_block_id),
-				schema.current_transaction_statuses(&substrate_block_id),
+				schema.current_block(&axlib_block_id),
+				schema.current_transaction_statuses(&axlib_block_id),
 			) {
 				(Some(a), Some(b)) => (a, b),
 				_ => {
 					return Err(internal_err(format!(
-						"Failed to get Ethereum block data for Substrate block {}",
-						substrate_block_id
+						"Failed to get Ethereum block data for Axlib block {}",
+						axlib_block_id
 					)))
 				}
 			},
 			_ => {
 				return Err(internal_err(format!(
 					"No storage override at {:?}",
-					substrate_block_id
+					axlib_block_id
 				)))
 			}
 		};
@@ -837,7 +837,7 @@ where
 		// Get extrinsics (containing Ethereum ones)
 		let extrinsics = backend
 			.blockchain()
-			.body(substrate_block_id)
+			.body(axlib_block_id)
 			.map_err(|e| {
 				internal_err(format!(
 					"Blockchain error when fetching extrinsics of block {} : {:?}",
@@ -853,11 +853,11 @@ where
 
 		// Trace the block.
 		let f = || -> Result<_> {
-			api.initialize_block(&substrate_parent_id, &block_header)
+			api.initialize_block(&axlib_parent_id, &block_header)
 				.map_err(|e| internal_err(format!("Runtime api access error: {:?}", e)))?;
 
 			let _result = api
-				.trace_block(&substrate_parent_id, extrinsics, eth_tx_hashes)
+				.trace_block(&axlib_parent_id, extrinsics, eth_tx_hashes)
 				.map_err(|e| {
 					internal_err(format!(
 						"Blockchain error when replaying block {} : {:?}",
@@ -875,13 +875,13 @@ where
 						height, e
 					))
 				})?;
-			Ok(moonbeam_rpc_primitives_debug::Response::Block)
+			Ok(axtend_rpc_primitives_debug::Response::Block)
 		};
 
-		let mut proxy = moonbeam_client_evm_tracing::listeners::CallList::default();
+		let mut proxy = axtend_client_evm_tracing::listeners::CallList::default();
 		proxy.using(f)?;
 		let mut traces: Vec<_> =
-			moonbeam_client_evm_tracing::formatters::TraceFilter::format(proxy).unwrap();
+			axtend_client_evm_tracing::formatters::TraceFilter::format(proxy).unwrap();
 		// Fill missing data.
 		for trace in traces.iter_mut() {
 			trace.block_hash = eth_block_hash;

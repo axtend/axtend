@@ -1,8 +1,8 @@
 [package]
-name = "moonbeam-service"
+name = "axtend-service"
 authors = ["PureStake"]
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
 version = "0.21.0"
 
@@ -29,24 +29,24 @@ tokio = { version = "1.13.0", features = ["macros", "sync"] }
 trie-root = "0.15.2"
 
 # Moonbeam
-cli-opt = { package = "moonbeam-cli-opt", path = "../cli-opt" }
+cli-opt = { package = "axtend-cli-opt", path = "../cli-opt" }
 manual-xcm-rpc = { path = "../../client/rpc/manual-xcm" }
-moonbeam-core-primitives = { path = "../../core-primitives" }
-moonbeam-finality-rpc = { path = "../../client/rpc/finality" }
-moonbeam-primitives-ext = { path = "../../primitives/ext" }
-moonbeam-rpc-debug = { path = "../../client/rpc/debug" }
-moonbeam-rpc-primitives-debug = { path = "../../primitives/rpc/debug" }
-moonbeam-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool" }
-moonbeam-rpc-trace = { path = "../../client/rpc/trace" }
-moonbeam-rpc-txpool = { path = "../../client/rpc/txpool" }
-parachain-staking = { path = "../../pallets/parachain-staking" }
+axtend-core-primitives = { path = "../../core-primitives" }
+axtend-finality-rpc = { path = "../../client/rpc/finality" }
+axtend-primitives-ext = { path = "../../primitives/ext" }
+axtend-rpc-debug = { path = "../../client/rpc/debug" }
+axtend-rpc-primitives-debug = { path = "../../primitives/rpc/debug" }
+axtend-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool" }
+axtend-rpc-trace = { path = "../../client/rpc/trace" }
+axtend-rpc-txpool = { path = "../../client/rpc/txpool" }
+allychain-staking = { path = "../../pallets/allychain-staking" }
 
 # Moonbeam runtimes
 moonbase-runtime = { path = "../../runtime/moonbase", optional = true }
-moonbeam-runtime = { path = "../../runtime/moonbeam", optional = true }
+axtend-runtime = { path = "../../runtime/axtend", optional = true }
 moonriver-runtime = { path = "../../runtime/moonriver", optional = true }
 
-# Substrate
+# Axlib
 frame-system-rpc-runtime-api = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 pallet-transaction-payment-rpc = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
@@ -88,8 +88,8 @@ sp-storage = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 sp-timestamp = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 sp-transaction-pool = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 sp-trie = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
-substrate-frame-rpc-system = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
-substrate-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+axlib-frame-rpc-system = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+axlib-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
 # Frontier
 fc-consensus = { git = "https://github.com/axtend/frontier", branch = "2be428c" }
@@ -112,7 +112,7 @@ cumulus-client-consensus-relay-chain = { git = "https://github.com/axtend/cumulu
 cumulus-client-network = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 cumulus-client-service = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
-cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
+cumulus-primitives-allychain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 cumulus-relay-chain-interface = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 cumulus-relay-chain-local = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
@@ -121,9 +121,9 @@ nimbus-consensus = { git = "https://github.com/axtend/nimbus", branch = "5f92d14
 nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "5f92d14" }
 pallet-author-inherent = { git = "https://github.com/axtend/nimbus", branch = "5f92d14" }
 
-# Polkadot
+# Axia
 polkadot-cli = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-parachain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+polkadot-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 polkadot-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 polkadot-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
@@ -137,36 +137,36 @@ assert_cmd = "0.12"
 nix = "0.17"
 rand = "0.7.3"
 
-# Polkadot dev-dependencies
+# Axia dev-dependencies
 polkadot-runtime-common = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 
-# Substrate dev-dependencies
+# Axlib dev-dependencies
 pallet-sudo = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
-substrate-test-client = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
-substrate-test-runtime-client = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+axlib-test-client = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+axlib-test-runtime-client = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
 [build-dependencies]
-substrate-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+axlib-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
 [features]
 default = [
-	"kusama-native",
+	"axctest-native",
 	"moonbase-native",
-	"moonbeam-native",
+	"axtend-native",
 	"moonriver-native",
-	"rococo-native",
-	"westend-native",
+	"betanet-native",
+	"alphanet-native",
 ]
 
-kusama-native = ["polkadot-cli/kusama-native", "polkadot-service/kusama-native"]
-rococo-native = ["polkadot-cli/rococo-native", "polkadot-service/rococo-native"]
-westend-native = [
-	"polkadot-cli/westend-native",
-	"polkadot-service/westend-native",
+axctest-native = ["polkadot-cli/axctest-native", "polkadot-service/axctest-native"]
+betanet-native = ["polkadot-cli/betanet-native", "polkadot-service/betanet-native"]
+alphanet-native = [
+	"polkadot-cli/alphanet-native",
+	"polkadot-service/alphanet-native",
 ]
 
-moonbase-native = ["moonbase-runtime", "westend-native"]
-moonbeam-native = ["moonbeam-runtime"]
+moonbase-native = ["moonbase-runtime", "alphanet-native"]
+axtend-native = ["axtend-runtime"]
 moonriver-native = ["moonriver-runtime"]
 
 test-spec = []
@@ -174,8 +174,8 @@ test-spec = []
 runtime-benchmarks = [
 	"moonbase-native",
 	"moonbase-runtime/runtime-benchmarks",
-	"moonbeam-native",
-	"moonbeam-runtime/runtime-benchmarks",
+	"axtend-native",
+	"axtend-runtime/runtime-benchmarks",
 	"moonriver-native",
 	"moonriver-runtime/runtime-benchmarks",
 	"pallet-ethereum/runtime-benchmarks",

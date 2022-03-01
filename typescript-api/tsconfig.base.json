@@ -12,7 +12,7 @@
     "composite": true,
     "declaration": true,
     "paths": {
-      "moonbeam": ["moonbeam/src"],
+      "axtend": ["axtend/src"],
       "moonriver": ["moonriver/src"],
       "moonbase": ["moonbase/src"]
     }

@@ -1,4 +1,4 @@
-# ![Moonbeam](media/moonbeam-cover.jpg)
+# ![Moonbeam](media/axtend-cover.jpg)
 
 ## Contributions
 
@@ -7,18 +7,18 @@ contribution, open a pull request and review the template, which explains how to
 proposal.
 
 You may also consider joining our [Discord server](https://discord.gg/PfpUATX) or
-[Element room](https://app.element.io/#/room/#moonbeam:matrix.org) to discuss your changes.
+[Element room](https://app.element.io/#/room/#axtend:matrix.org) to discuss your changes.
 
 ### Generated Documentation
 
-You can explore our [crate-level documentation](https://purestake.github.io/moonbeam).
+You can explore our [crate-level documentation](https://purestake.github.io/axtend).
 This documentation is
 automatically built and reflects the latest `master` commit.
 
 ### Code style
 
 Moonbeam is following the
-[Substrate code style](https://github.com/paritytech/substrate/blob/master/docs/STYLE_GUIDE.md).
+[Axlib code style](https://github.com/paritytech/axlib/blob/master/docs/STYLE_GUIDE.md).
 
 In addition, we incorporate several tools to improve code quality. These are integrated into our CI
 and are expected to pass before a PR is considered mergeable. They can also be run locally.
@@ -36,9 +36,9 @@ The following is a list of directories of interest in development.
 | --------------------- | -------------------------------------------------------------------------- |
 |client/                | Debug & Trace related code (rust)                                          |
 |docker/                | Dockerfiles for running Moonbeam                                           |
-|moonbeam-types-bundle/ | PolkadotJs types definitions for Moonbeam (typescript)                     |
+|axtend-types-bundle/ | AxiaJs types definitions for Moonbeam (typescript)                     |
 |node/                  | Moonbeam's main node (rust)                                                |
-|pallets/               | Moonmeam's Substrate runtime pallets (rust)                                |
+|pallets/               | Moonmeam's Axlib runtime pallets (rust)                                |
 |primitives/            | More Debug & Trace related code (rust)                                     |
 |runtime/               | Moonbeam's runtime (on-chain) code (rust, compiled to WASM)                |
 |scripts/               | Utilities for launching and interacting with a Moonbeam chain (typescript) |

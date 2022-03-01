@@ -38,8 +38,8 @@ import type {
   NimbusPrimitivesNimbusCryptoPublic,
   PalletDemocracyVoteAccountVote,
   PalletDemocracyVoteThreshold,
-  ParachainStakingDelegationRequest,
-  ParachainStakingDelegatorAdded,
+  AllychainStakingDelegationRequest,
+  AllychainStakingDelegatorAdded,
   SpRuntimeDispatchError,
   XcmTransactorRemoteTransactInfoWithMaxWeight,
   XcmV1MultiAsset,
@@ -572,7 +572,7 @@ declare module "@polkadot/api-base/types/events" {
        */
       [key: string]: AugmentedEvent<ApiType>;
     };
-    parachainStaking: {
+    allychainStaking: {
       /**
        * Set blocks per round [current_round, first_block, old, new,
        * new_per_round_inflation]
@@ -591,7 +591,7 @@ declare module "@polkadot/api-base/types/events" {
        */
       CancelledDelegationRequest: AugmentedEvent<
         ApiType,
-        [AccountId20, ParachainStakingDelegationRequest]
+        [AccountId20, AllychainStakingDelegationRequest]
       >;
       /**
        * Candidate
@@ -635,7 +635,7 @@ declare module "@polkadot/api-base/types/events" {
        */
       Delegation: AugmentedEvent<
         ApiType,
-        [AccountId20, u128, AccountId20, ParachainStakingDelegatorAdded]
+        [AccountId20, u128, AccountId20, AllychainStakingDelegatorAdded]
       >;
       DelegationDecreased: AugmentedEvent<ApiType, [AccountId20, AccountId20, u128, bool]>;
       /**
@@ -685,17 +685,17 @@ declare module "@polkadot/api-base/types/events" {
        */
       NewRound: AugmentedEvent<ApiType, [u32, u32, u32, u128]>;
       /**
-       * Account (re)set for parachain bond treasury [old, new]
+       * Account (re)set for allychain bond treasury [old, new]
        */
-      ParachainBondAccountSet: AugmentedEvent<ApiType, [AccountId20, AccountId20]>;
+      AllychainBondAccountSet: AugmentedEvent<ApiType, [AccountId20, AccountId20]>;
       /**
-       * Percent of inflation reserved for parachain bond (re)set [old, new]
+       * Percent of inflation reserved for allychain bond (re)set [old, new]
        */
-      ParachainBondReservePercentSet: AugmentedEvent<ApiType, [Percent, Percent]>;
+      AllychainBondReservePercentSet: AugmentedEvent<ApiType, [Percent, Percent]>;
       /**
-       * Transferred to account which holds funds reserved for parachain bond
+       * Transferred to account which holds funds reserved for allychain bond
        */
-      ReservedForParachainBond: AugmentedEvent<ApiType, [AccountId20, u128]>;
+      ReservedForAllychainBond: AugmentedEvent<ApiType, [AccountId20, u128]>;
       /**
        * Paid the account (delegator or collator) the balance as liquid rewards
        */
@@ -713,7 +713,7 @@ declare module "@polkadot/api-base/types/events" {
        */
       [key: string]: AugmentedEvent<ApiType>;
     };
-    parachainSystem: {
+    allychainSystem: {
       /**
        * Downward messages were processed using the given weight. [ weight_used,
        * result_mqc_head ]
@@ -1090,7 +1090,7 @@ declare module "@polkadot/api-base/types/events" {
        */
       UpwardMessageSent: AugmentedEvent<ApiType, [Option<H256>]>;
       /**
-       * An HRMP message was sent to a sibling parachain.
+       * An HRMP message was sent to a sibling allychain.
        */
       XcmpMessageSent: AugmentedEvent<ApiType, [Option<H256>]>;
       /**

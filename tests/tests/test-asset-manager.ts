@@ -5,32 +5,32 @@ import { KeyringPair } from "@polkadot/keyring/types";
 
 import { ALITH_PRIV_KEY } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { verifyLatestBlockFees } from "../util/block";
 
 const palletId = "0x6D6f646c617373746d6E67720000000000000000";
 
 const assetMetadata = {
-  name: "DOT",
-  symbol: "DOT",
+  name: "AXC",
+  symbol: "AXC",
   decimals: new BN(12),
   isFrozen: false,
 };
 const sourceLocation = { XCM: { parents: 1, interior: "Here" } };
-const newSourceLocation = { XCM: { parents: 1, interior: { X1: { Parachain: 1000 } } } };
+const newSourceLocation = { XCM: { parents: 1, interior: { X1: { Allychain: 1000 } } } };
 
 describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
   it("should be able to register an asset and set unit per sec", async function () {
     const keyringEth = new Keyring({ type: "ethereum" });
     const alith = keyringEth.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
-    const parachainOne = context.polkadotApi;
+    const allychainOne = context.polkadotApi;
     // registerAsset
     const { events: eventsRegister } = await createBlockWithExtrinsic(
       context,
       alith,
-      parachainOne.tx.sudo.sudo(
-        parachainOne.tx.assetManager.registerAsset(sourceLocation, assetMetadata, new BN(1), true)
+      allychainOne.tx.sudo.sudo(
+        allychainOne.tx.assetManager.registerAsset(sourceLocation, assetMetadata, new BN(1), true)
       )
     );
     // Look for assetId in events
@@ -46,15 +46,15 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       alith,
-      parachainOne.tx.sudo.sudo(
-        parachainOne.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 0, 0)
+      allychainOne.tx.sudo.sudo(
+        allychainOne.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 0, 0)
       )
     );
     expect(events[1].method.toString()).to.eq("UnitsPerSecondChanged");
     expect(events[4].method.toString()).to.eq("ExtrinsicSuccess");
 
     // check asset in storage
-    const registeredAsset = ((await parachainOne.query.assets.asset(assetId)) as any).unwrap();
+    const registeredAsset = ((await allychainOne.query.assets.asset(assetId)) as any).unwrap();
     expect(registeredAsset.owner.toString()).to.eq(palletId);
 
     await verifyLatestBlockFees(context, expect);
@@ -68,13 +68,13 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
     const keyringEth = new Keyring({ type: "ethereum" });
     alith = keyringEth.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
-    const parachainOne = context.polkadotApi;
+    const allychainOne = context.polkadotApi;
     // registerAsset
     const { events: eventsRegister } = await createBlockWithExtrinsic(
       context,
       alith,
-      parachainOne.tx.sudo.sudo(
-        parachainOne.tx.assetManager.registerAsset(sourceLocation, assetMetadata, new BN(1), true)
+      allychainOne.tx.sudo.sudo(
+        allychainOne.tx.assetManager.registerAsset(sourceLocation, assetMetadata, new BN(1), true)
       )
     );
 
@@ -89,15 +89,15 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       alith,
-      parachainOne.tx.sudo.sudo(
-        parachainOne.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 1, 0)
+      allychainOne.tx.sudo.sudo(
+        allychainOne.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 1, 0)
       )
     );
     expect(events[1].method.toString()).to.eq("UnitsPerSecondChanged");
     expect(events[4].method.toString()).to.eq("ExtrinsicSuccess");
 
     // check asset in storage
-    const registeredAsset = ((await parachainOne.query.assets.asset(assetId)) as any).unwrap();
+    const registeredAsset = ((await allychainOne.query.assets.asset(assetId)) as any).unwrap();
     expect(registeredAsset.owner.toString()).to.eq(palletId);
 
     await verifyLatestBlockFees(context, expect);
@@ -146,13 +146,13 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
     const keyringEth = new Keyring({ type: "ethereum" });
     alith = keyringEth.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
-    const parachainOne = context.polkadotApi;
+    const allychainOne = context.polkadotApi;
     // registerAsset
     const { events: eventsRegister } = await createBlockWithExtrinsic(
       context,
       alith,
-      parachainOne.tx.sudo.sudo(
-        parachainOne.tx.assetManager.registerAsset(sourceLocation, assetMetadata, new BN(1), true)
+      allychainOne.tx.sudo.sudo(
+        allychainOne.tx.assetManager.registerAsset(sourceLocation, assetMetadata, new BN(1), true)
       )
     );
 
@@ -167,15 +167,15 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       alith,
-      parachainOne.tx.sudo.sudo(
-        parachainOne.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 1, 0)
+      allychainOne.tx.sudo.sudo(
+        allychainOne.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 1, 0)
       )
     );
     expect(events[1].method.toString()).to.eq("UnitsPerSecondChanged");
     expect(events[4].method.toString()).to.eq("ExtrinsicSuccess");
 
     // check asset in storage
-    const registeredAsset = ((await parachainOne.query.assets.asset(assetId)) as any).unwrap();
+    const registeredAsset = ((await allychainOne.query.assets.asset(assetId)) as any).unwrap();
     expect(registeredAsset.owner.toString()).to.eq(palletId);
 
     await verifyLatestBlockFees(context, expect);

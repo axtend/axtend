@@ -20,7 +20,7 @@ use codec::{Decode, Encode, MaxEncodedLen};
 use cumulus_primitives_core::{
 	relay_chain::BlockNumber as RelayChainBlockNumber, PersistedValidationData,
 };
-use cumulus_primitives_parachain_inherent::ParachainInherentData;
+use cumulus_primitives_allychain_inherent::AllychainInherentData;
 use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 use frame_support::{
 	construct_runtime,
@@ -58,12 +58,12 @@ construct_runtime!(
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
 		Evm: pallet_evm::{Pallet, Call, Storage, Event<T>},
 		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent},
-		ParachainSystem: cumulus_pallet_parachain_system::{Pallet, Call, Storage, Inherent, Event<T>},
+		AllychainSystem: cumulus_pallet_allychain_system::{Pallet, Call, Storage, Inherent, Event<T>},
 		Crowdloan: pallet_crowdloan_rewards::{Pallet, Call, Storage, Event<T>},
 	}
 );
 
-// FRom https://github.com/PureStake/moonbeam/pull/518. Merge to common once is merged
+// FRom https://github.com/PureStake/axtend/pull/518. Merge to common once is merged
 #[derive(
 	Eq,
 	PartialEq,
@@ -118,11 +118,11 @@ impl From<TestAccount> for H160 {
 }
 
 parameter_types! {
-	pub ParachainId: cumulus_primitives_core::ParaId = 100.into();
+	pub AllychainId: cumulus_primitives_core::ParaId = 100.into();
 }
 
-impl cumulus_pallet_parachain_system::Config for Runtime {
-	type SelfParaId = ParachainId;
+impl cumulus_pallet_allychain_system::Config for Runtime {
+	type SelfParaId = AllychainId;
 	type Event = Event;
 	type OnSystemEvent = ();
 	type OutboundXcmpMessageSource = ();
@@ -159,7 +159,7 @@ impl frame_system::Config for Runtime {
 	type BlockWeights = ();
 	type BlockLength = ();
 	type SS58Prefix = SS58Prefix;
-	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
+	type OnSetCode = cumulus_pallet_allychain_system::AllychainSetCode<Self>;
 	type MaxConsumers = frame_support::traits::ConstU32<16>;
 }
 parameter_types! {
@@ -228,7 +228,7 @@ impl pallet_evm::Config for Runtime {
 	type ChainId = ();
 	type OnChargeTransaction = ();
 	type BlockGasLimit = ();
-	type BlockHashMapping = pallet_evm::SubstrateBlockHashMapping<Self>;
+	type BlockHashMapping = pallet_evm::AxlibBlockHashMapping<Self>;
 	type FindAuthor = ();
 }
 
@@ -266,7 +266,7 @@ impl pallet_crowdloan_rewards::Config for Runtime {
 
 	type VestingBlockNumber = cumulus_primitives_core::relay_chain::BlockNumber;
 	type VestingBlockProvider =
-		cumulus_pallet_parachain_system::RelaychainBlockNumberProvider<Self>;
+		cumulus_pallet_allychain_system::RelaychainBlockNumberProvider<Self>;
 	type WeightInfo = ();
 }
 pub(crate) struct ExtBuilder {
@@ -330,7 +330,7 @@ pub(crate) fn roll_to(n: u64) {
 		};
 		let inherent_data = {
 			let mut inherent_data = InherentData::default();
-			let system_inherent_data = ParachainInherentData {
+			let system_inherent_data = AllychainInherentData {
 				validation_data: vfp.clone(),
 				relay_chain_state,
 				downward_messages: Default::default(),
@@ -338,19 +338,19 @@ pub(crate) fn roll_to(n: u64) {
 			};
 			inherent_data
 				.put_data(
-					cumulus_primitives_parachain_inherent::INHERENT_IDENTIFIER,
+					cumulus_primitives_allychain_inherent::INHERENT_IDENTIFIER,
 					&system_inherent_data,
 				)
 				.expect("failed to put VFP inherent");
 			inherent_data
 		};
 
-		ParachainSystem::on_initialize(System::block_number());
-		ParachainSystem::create_inherent(&inherent_data)
+		AllychainSystem::on_initialize(System::block_number());
+		AllychainSystem::create_inherent(&inherent_data)
 			.expect("got an inherent")
 			.dispatch_bypass_filter(RawOrigin::None.into())
 			.expect("dispatch succeeded");
-		ParachainSystem::on_finalize(System::block_number());
+		AllychainSystem::on_finalize(System::block_number());
 
 		Balances::on_finalize(System::block_number());
 		System::on_finalize(System::block_number());

@@ -3,8 +3,8 @@ import { expect } from "chai";
 import { BN, hexToU8a } from "@polkadot/util";
 
 import { ALITH, ALITH_PRIV_KEY, BALTATHAR, BALTATHAR_PRIV_KEY } from "../util/constants";
-import { describeParachain } from "../util/setup-para-tests";
-import { createBlockWithExtrinsicParachain, logEvents, waitOneBlock } from "../util/substrate-rpc";
+import { describeAllychain } from "../util/setup-para-tests";
+import { createBlockWithExtrinsicAllychain, logEvents, waitOneBlock } from "../util/axlib-rpc";
 import { KeyringPair } from "@polkadot/keyring/types";
 import { ApiPromise } from "@polkadot/api";
 import { execFromTwoThirdsOfCouncil } from "../util/governance";
@@ -22,8 +22,8 @@ interface AssetMetadata {
   isFrozen: boolean;
 }
 const relayAssetMetadata: AssetMetadata = {
-  name: "DOT",
-  symbol: "DOT",
+  name: "AXC",
+  symbol: "AXC",
   decimals: new BN(12),
   isFrozen: false,
 };
@@ -42,53 +42,53 @@ interface SourceLocation {
 const sourceLocationRelay = { XCM: { parents: 1, interior: "Here" } };
 
 const execFromAllMembersOfTechCommittee = async <Call extends SubmittableExtrinsic<ApiTypes>>(
-  parachainApi: ApiPromise,
+  allychainApi: ApiPromise,
   polkadotCall: Call,
   key_1: KeyringPair,
   key_2: KeyringPair,
   index: Number
 ) => {
   let lengthBound = polkadotCall.encodedLength;
-  const { events: proposalEvents } = await createBlockWithExtrinsicParachain(
-    parachainApi,
+  const { events: proposalEvents } = await createBlockWithExtrinsicAllychain(
+    allychainApi,
     key_1,
-    parachainApi.tx.techCommitteeCollective.propose(2, polkadotCall, lengthBound)
+    allychainApi.tx.techCommitteeCollective.propose(2, polkadotCall, lengthBound)
   );
 
   const proposalHash = proposalEvents
     .find((e) => e.method.toString() == "Proposed")
     .data[2].toHex() as string;
 
-  await createBlockWithExtrinsicParachain(
-    parachainApi,
+  await createBlockWithExtrinsicAllychain(
+    allychainApi,
     key_1,
-    parachainApi.tx.techCommitteeCollective.vote(proposalHash, index, true)
+    allychainApi.tx.techCommitteeCollective.vote(proposalHash, index, true)
   );
 
-  await createBlockWithExtrinsicParachain(
-    parachainApi,
+  await createBlockWithExtrinsicAllychain(
+    allychainApi,
     key_2,
-    parachainApi.tx.techCommitteeCollective.vote(proposalHash, index, true)
+    allychainApi.tx.techCommitteeCollective.vote(proposalHash, index, true)
   );
 
-  await createBlockWithExtrinsicParachain(
-    parachainApi,
+  await createBlockWithExtrinsicAllychain(
+    allychainApi,
     key_2,
-    parachainApi.tx.techCommitteeCollective.close(proposalHash, index, 1_000_000_000, lengthBound)
+    allychainApi.tx.techCommitteeCollective.close(proposalHash, index, 1_000_000_000, lengthBound)
   );
 };
 
-async function registerAssetToParachain(
-  parachainApi: ApiPromise,
+async function registerAssetToAllychain(
+  allychainApi: ApiPromise,
   sudoKeyring: KeyringPair,
   assetLocation: SourceLocation = sourceLocationRelay,
   assetMetadata: AssetMetadata = relayAssetMetadata
 ) {
-  const { events: eventsRegister } = await createBlockWithExtrinsicParachain(
-    parachainApi,
+  const { events: eventsRegister } = await createBlockWithExtrinsicAllychain(
+    allychainApi,
     sudoKeyring,
-    parachainApi.tx.sudo.sudo(
-      parachainApi.tx.assetManager.registerAsset(assetLocation, assetMetadata, new BN(1), true)
+    allychainApi.tx.sudo.sudo(
+      allychainApi.tx.assetManager.registerAsset(assetLocation, assetMetadata, new BN(1), true)
     )
   );
   let assetId: string;
@@ -105,10 +105,10 @@ async function registerAssetToParachain(
   assetId = assetId.replace(/,/g, "");
 
   // setAssetUnitsPerSecond
-  const { events } = await createBlockWithExtrinsicParachain(
-    parachainApi,
+  const { events } = await createBlockWithExtrinsicAllychain(
+    allychainApi,
     sudoKeyring,
-    parachainApi.tx.sudo.sudo(parachainApi.tx.assetManager.setAssetUnitsPerSecond(assetLocation, 0))
+    allychainApi.tx.sudo.sudo(allychainApi.tx.assetManager.setAssetUnitsPerSecond(assetLocation, 0))
   );
   return { events, assetId };
 }
@@ -116,7 +116,7 @@ async function registerAssetToParachain(
 async function setDefaultVersionRelay(relayApi: ApiPromise, sudoKeyring: KeyringPair) {
   // Set supported version
   // Release-v0.9.12 does not have yet automatic versioning
-  const { events } = await createBlockWithExtrinsicParachain(
+  const { events } = await createBlockWithExtrinsicAllychain(
     relayApi,
     sudoKeyring,
     relayApi.tx.sudo.sudo(relayApi.tx.xcmPallet.forceDefaultXcmVersion(1))
@@ -124,7 +124,7 @@ async function setDefaultVersionRelay(relayApi: ApiPromise, sudoKeyring: Keyring
   return { events };
 }
 
-describeParachain(
+describeAllychain(
   "XCM - receive_relay_asset_from_relay",
   { chain: "moonbase-local" },
   (context) => {
@@ -134,25 +134,25 @@ describeParachain(
 
       const alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
-      const parachainOne = context.polkadotApiParaone;
+      const allychainOne = context.polkadotApiParaone;
       const relayOne = context._polkadotApiRelaychains[0];
 
       // Log events
-      logEvents(parachainOne, "PARA");
+      logEvents(allychainOne, "PARA");
 
       logEvents(relayOne, "RELAY");
 
       await new Promise((res) => setTimeout(res, 10000));
 
-      // PARACHAINS
+      // ALLYCHAINS
       // registerAsset
-      const { events, assetId } = await registerAssetToParachain(parachainOne, alith);
+      const { events, assetId } = await registerAssetToAllychain(allychainOne, alith);
 
       expect(events[1].toHuman().method).to.eq("UnitsPerSecondChanged");
       expect(events[4].toHuman().method).to.eq("ExtrinsicSuccess");
 
       // check asset in storage
-      const registeredAsset = await parachainOne.query.assets.asset(assetId);
+      const registeredAsset = await allychainOne.query.assets.asset(assetId);
       expect((registeredAsset.toHuman() as { owner: string }).owner).to.eq(palletId);
 
       // RELAYCHAIN
@@ -164,7 +164,7 @@ describeParachain(
       ).data.free;
 
       let reserveTrasnsferAssetsCall = relayOne.tx.xcmPallet.reserveTransferAssets(
-        { V1: { parents: new BN(0), interior: { X1: { Parachain: new BN(1000) } } } },
+        { V1: { parents: new BN(0), interior: { X1: { Allychain: new BN(1000) } } } },
         {
           V1: {
             parents: new BN(0),
@@ -179,7 +179,7 @@ describeParachain(
       // Fees
       const fee = (await reserveTrasnsferAssetsCall.paymentInfo(aliceRelay)).partialFee as any;
       // Trigger the transfer
-      const { events: eventsRelay } = await createBlockWithExtrinsicParachain(
+      const { events: eventsRelay } = await createBlockWithExtrinsicAllychain(
         relayOne,
         aliceRelay,
         reserveTrasnsferAssetsCall
@@ -189,8 +189,8 @@ describeParachain(
         BigInt(beforeAliceRelayBalance) - BigInt(fee) - BigInt(THOUSAND_UNITS);
       expect(eventsRelay[3].toHuman().method).to.eq("Attempted");
 
-      // Wait for parachain block to have been emited
-      await waitOneBlock(parachainOne, 2);
+      // Wait for allychain block to have been emited
+      await waitOneBlock(allychainOne, 2);
       // about 1k should have been substracted from AliceRelay
       let afterAliceRelayBalance = (
         (await relayOne.query.system.account(aliceRelay.address)) as any
@@ -200,42 +200,42 @@ describeParachain(
 
       // Alith asset balance should have been increased to 1000*e12
       expect(
-        ((await parachainOne.query.assets.account(assetId, ALITH)) as any).balance.toString()
+        ((await allychainOne.query.assets.account(assetId, ALITH)) as any).balance.toString()
       ).to.eq(BigInt(THOUSAND_UNITS).toString());
     });
   }
 );
 
-describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }, (context) => {
+describeAllychain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }, (context) => {
   let keyring: Keyring,
     aliceRelay: KeyringPair,
     alith: KeyringPair,
     baltathar: KeyringPair,
-    parachainOne: ApiPromise,
+    allychainOne: ApiPromise,
     relayOne: ApiPromise,
     assetId: string;
-  before("First send relay chain asset to parachain", async function () {
+  before("First send relay chain asset to allychain", async function () {
     keyring = new Keyring({ type: "sr25519" });
 
     // Setup Relaychain
     aliceRelay = keyring.addFromUri("//Alice");
     relayOne = context._polkadotApiRelaychains[0];
 
-    // Setup Parachain
+    // Setup Allychain
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-    parachainOne = context.polkadotApiParaone;
+    allychainOne = context.polkadotApiParaone;
 
     // Log events
-    logEvents(parachainOne, "PARA");
+    logEvents(allychainOne, "PARA");
 
     logEvents(relayOne, "RELAY");
 
     await new Promise((res) => setTimeout(res, 10000));
 
-    // PARACHAIN A
+    // ALLYCHAIN A
     // registerAsset
-    ({ assetId } = await registerAssetToParachain(parachainOne, alith));
+    ({ assetId } = await registerAssetToAllychain(allychainOne, alith));
 
     // RELAYCHAIN
     // Sets default xcm version to relay
@@ -245,7 +245,7 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
       .data.free;
 
     let reserveTrasnsferAssetsCall = relayOne.tx.xcmPallet.reserveTransferAssets(
-      { V1: { parents: new BN(0), interior: { X1: { Parachain: new BN(1000) } } } },
+      { V1: { parents: new BN(0), interior: { X1: { Allychain: new BN(1000) } } } },
       {
         V1: {
           parents: new BN(0),
@@ -264,10 +264,10 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
       BigInt(beforeAliceRelayBalance) - BigInt(fee) - BigInt(THOUSAND_UNITS);
 
     // Transfer 1000 units to para a baltathar
-    await createBlockWithExtrinsicParachain(relayOne, aliceRelay, reserveTrasnsferAssetsCall);
+    await createBlockWithExtrinsicAllychain(relayOne, aliceRelay, reserveTrasnsferAssetsCall);
 
-    // Wait for parachain block to have been emited
-    await waitOneBlock(parachainOne, 2);
+    // Wait for allychain block to have been emited
+    await waitOneBlock(allychainOne, 2);
 
     // about 1k should have been substracted from AliceRelay (plus fees)
     let afterAliceRelayBalance = ((await relayOne.query.system.account(aliceRelay.address)) as any)
@@ -276,19 +276,19 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
     expect(afterAliceRelayBalance.toString()).to.eq(expectedAfterRelayBalance.toString());
     // // BALTATHAR asset balance should have been increased to 1000*e12
     expect(
-      ((await parachainOne.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
+      ((await allychainOne.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
     ).to.eq(BigInt(THOUSAND_UNITS).toString());
   });
-  it("should be able to receive an asset in relaychain from parachain", async function () {
+  it("should be able to receive an asset in relaychain from allychain", async function () {
     // about 1k should have been substracted from AliceRelay (plus fees)
     let beforeAliceRelayBalance = ((await relayOne.query.system.account(aliceRelay.address)) as any)
       .data.free;
-    // PARACHAIN A
+    // ALLYCHAIN A
     // xToken transfer : sending 100 units back to relay
-    const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
-      parachainOne,
+    const { events: eventsTransfer } = await createBlockWithExtrinsicAllychain(
+      allychainOne,
       baltathar,
-      parachainOne.tx.xTokens.transfer(
+      allychainOne.tx.xTokens.transfer(
         { OtherReserve: assetId },
         new BN(HUNDRED_UNITS),
         {
@@ -316,50 +316,50 @@ describeParachain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
     ).to.eq(expectedAliceBalance.toString());
     // Baltathar should have 100 * 10^12 less
     expect(
-      ((await parachainOne.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
+      ((await allychainOne.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
     ).to.eq((BigInt(THOUSAND_UNITS) - BigInt(HUNDRED_UNITS)).toString());
   });
 });
 
-describeParachain(
-  "XCM - send_relay_asset_to_para_b - aka parachainTwo",
-  { chain: "moonbase-local", numberOfParachains: 2 },
+describeAllychain(
+  "XCM - send_relay_asset_to_para_b - aka allychainTwo",
+  { chain: "moonbase-local", numberOfAllychains: 2 },
   (context) => {
     let keyring: Keyring,
       aliceRelay: KeyringPair,
       alith: KeyringPair,
       baltathar: KeyringPair,
-      parachainOne: ApiPromise,
-      parachainTwo: ApiPromise,
+      allychainOne: ApiPromise,
+      allychainTwo: ApiPromise,
       relayOne: ApiPromise,
       assetId: string;
-    before("First send relay chain asset to parachain", async function () {
+    before("First send relay chain asset to allychain", async function () {
       keyring = new Keyring({ type: "sr25519" });
 
       // Setup Relaychain
       aliceRelay = keyring.addFromUri("//Alice");
       relayOne = context._polkadotApiRelaychains[0];
 
-      // Setup Parachains
+      // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-      parachainOne = context.polkadotApiParaone;
-      parachainTwo = context._polkadotApiParachains[1].apis[0];
+      allychainOne = context.polkadotApiParaone;
+      allychainTwo = context._polkadotApiAllychains[1].apis[0];
 
       // Log events
-      logEvents(parachainOne, "PARA A");
-      logEvents(parachainTwo, "PARA B");
+      logEvents(allychainOne, "PARA A");
+      logEvents(allychainTwo, "PARA B");
       logEvents(relayOne, "RELAY");
 
       await new Promise((res) => setTimeout(res, 2000));
 
-      // PARACHAIN A
+      // ALLYCHAIN A
       // registerAsset
-      ({ assetId } = await registerAssetToParachain(parachainOne, alith));
+      ({ assetId } = await registerAssetToAllychain(allychainOne, alith));
 
-      // PARACHAIN B
+      // ALLYCHAIN B
       // registerAsset
-      const { assetId: assetIdB } = await registerAssetToParachain(parachainTwo, alith);
+      const { assetId: assetIdB } = await registerAssetToAllychain(allychainTwo, alith);
 
       // They should have the same id
       expect(assetId).to.eq(assetIdB);
@@ -372,7 +372,7 @@ describeParachain(
       ).data.free;
 
       let reserveTrasnsferAssetsCall = relayOne.tx.xcmPallet.reserveTransferAssets(
-        { V1: { parents: new BN(0), interior: { X1: { Parachain: new BN(1000) } } } },
+        { V1: { parents: new BN(0), interior: { X1: { Allychain: new BN(1000) } } } },
         {
           V1: {
             parents: new BN(0),
@@ -392,10 +392,10 @@ describeParachain(
         BigInt(beforeAliceRelayBalance) - BigInt(fee) - BigInt(THOUSAND_UNITS);
 
       // Transfer 1000 units to para a baltathar
-      await createBlockWithExtrinsicParachain(relayOne, aliceRelay, reserveTrasnsferAssetsCall);
+      await createBlockWithExtrinsicAllychain(relayOne, aliceRelay, reserveTrasnsferAssetsCall);
 
-      // Wait for parachain block to have been emited
-      await waitOneBlock(parachainOne, 2);
+      // Wait for allychain block to have been emited
+      await waitOneBlock(allychainOne, 2);
 
       let afterAliceRelayBalance = (
         (await relayOne.query.system.account(aliceRelay.address)) as any
@@ -404,16 +404,16 @@ describeParachain(
       expect(afterAliceRelayBalance.toString()).to.eq(expectedAfterRelayBalance.toString());
 
       expect(
-        ((await parachainOne.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
+        ((await allychainOne.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
       ).to.eq(BigInt(THOUSAND_UNITS).toString());
     });
     it("should be able to receive a non-reserve asset in para b from para a", async function () {
-      // PARACHAIN A
-      // transfer 100 units to parachain B
-      const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
-        parachainOne,
+      // ALLYCHAIN A
+      // transfer 100 units to allychain B
+      const { events: eventsTransfer } = await createBlockWithExtrinsicAllychain(
+        allychainOne,
         baltathar,
-        parachainOne.tx.xTokens.transfer(
+        allychainOne.tx.xTokens.transfer(
           { OtherReserve: assetId },
           new BN(HUNDRED_UNITS),
           {
@@ -421,7 +421,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(2000) },
+                  { Allychain: new BN(2000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -431,7 +431,7 @@ describeParachain(
         )
       );
 
-      await waitOneBlock(parachainTwo, 3);
+      await waitOneBlock(allychainTwo, 3);
 
       // These are related to the operations in the relay
       // Constant, but we cannot easily take them
@@ -441,51 +441,51 @@ describeParachain(
       let expectedBaltatharParaTwoBalance = BigInt(HUNDRED_UNITS) - relayFees;
 
       expect(
-        ((await parachainOne.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
+        ((await allychainOne.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
       ).to.eq((BigInt(THOUSAND_UNITS) - BigInt(HUNDRED_UNITS)).toString());
       expect(
-        ((await parachainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
+        ((await allychainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
       ).to.eq(expectedBaltatharParaTwoBalance.toString());
     });
   }
 );
 
-describeParachain(
-  "XCM - send_para_a_asset_to_para_b - aka parachainTwo",
-  { chain: "moonbase-local", numberOfParachains: 2 },
+describeAllychain(
+  "XCM - send_para_a_asset_to_para_b - aka allychainTwo",
+  { chain: "moonbase-local", numberOfAllychains: 2 },
   (context) => {
     let keyring: Keyring,
       alith: KeyringPair,
       baltathar: KeyringPair,
-      parachainOne: ApiPromise,
-      parachainTwo: ApiPromise,
+      allychainOne: ApiPromise,
+      allychainTwo: ApiPromise,
       relayOne: ApiPromise,
       assetId: string,
       sourceLocationParaA: SourceLocation,
       initialBalance: number;
-    before("First send relay chain asset to parachain", async function () {
+    before("First send relay chain asset to allychain", async function () {
       keyring = new Keyring({ type: "ethereum" });
 
       // Setup Relaychain
       relayOne = context._polkadotApiRelaychains[0];
 
-      // Setup Parachains
+      // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-      parachainOne = context.polkadotApiParaone;
-      parachainTwo = context._polkadotApiParachains[1].apis[0];
+      allychainOne = context.polkadotApiParaone;
+      allychainTwo = context._polkadotApiAllychains[1].apis[0];
 
       // Log events
-      logEvents(parachainOne, "PARA A");
-      logEvents(parachainTwo, "PARA B");
+      logEvents(allychainOne, "PARA A");
+      logEvents(allychainTwo, "PARA B");
       logEvents(relayOne, "RELAY");
 
       initialBalance = Number(
-        ((await parachainOne.query.system.account(BALTATHAR)) as any).data.free
+        ((await allychainOne.query.system.account(BALTATHAR)) as any).data.free
       );
 
       // Get Pallet balances index
-      const metadata = await parachainOne.rpc.state.getMetadata();
+      const metadata = await allychainOne.rpc.state.getMetadata();
       const palletIndex = (metadata.asLatest.toHuman().pallets as Array<any>).find((pallet) => {
         return pallet.name === "Balances";
       }).index;
@@ -495,26 +495,26 @@ describeParachain(
       sourceLocationParaA = {
         XCM: {
           parents: 1,
-          interior: { X2: [{ Parachain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
+          interior: { X2: [{ Allychain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
         },
       };
 
-      // PARACHAIN B
+      // ALLYCHAIN B
       // registerAsset
-      ({ assetId } = await registerAssetToParachain(
-        parachainTwo,
+      ({ assetId } = await registerAssetToAllychain(
+        allychainTwo,
         alith,
         sourceLocationParaA,
         paraAssetMetadata
       ));
     });
     it("should be able to receive an asset in para b from para a", async function () {
-      // PARACHAIN A
-      // transfer 100 units to parachain B
-      const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
-        parachainOne,
+      // ALLYCHAIN A
+      // transfer 100 units to allychain B
+      const { events: eventsTransfer } = await createBlockWithExtrinsicAllychain(
+        allychainOne,
         baltathar,
-        parachainOne.tx.xTokens.transfer(
+        allychainOne.tx.xTokens.transfer(
           "SelfReserve",
           HUNDRED_UNITS_PARA,
           {
@@ -522,7 +522,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(2000) },
+                  { Allychain: new BN(2000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -536,60 +536,60 @@ describeParachain(
       expect(eventsTransfer[6].toHuman().method).to.eq("Transferred");
       expect(eventsTransfer[11].toHuman().method).to.eq("ExtrinsicSuccess");
 
-      await waitOneBlock(parachainTwo, 3);
+      await waitOneBlock(allychainTwo, 3);
 
       // Verify that difference is 100 units plus fees (less than 1% of 10^18)
       const targetBalance: number = Number(BigInt(BigInt(initialBalance) - HUNDRED_UNITS_PARA));
       const diff =
-        Number(((await parachainOne.query.system.account(BALTATHAR)) as any).data.free) -
+        Number(((await allychainOne.query.system.account(BALTATHAR)) as any).data.free) -
         targetBalance;
       expect(diff < 10000000000000000).to.eq(true);
 
       let expectedBaltatharParaTwoBalance = BigInt(HUNDRED_UNITS_PARA);
 
       expect(
-        ((await parachainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
+        ((await allychainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
       ).to.eq(expectedBaltatharParaTwoBalance.toString());
     });
   }
 );
 
-describeParachain(
-  "XCM - send_para_a_asset_to_para_b_and_back_to_para_a - aka parachainTwo",
-  { chain: "moonbase-local", numberOfParachains: 2 },
+describeAllychain(
+  "XCM - send_para_a_asset_to_para_b_and_back_to_para_a - aka allychainTwo",
+  { chain: "moonbase-local", numberOfAllychains: 2 },
   (context) => {
     let keyring: Keyring,
       alith: KeyringPair,
       baltathar: KeyringPair,
-      parachainOne: ApiPromise,
-      parachainTwo: ApiPromise,
+      allychainOne: ApiPromise,
+      allychainTwo: ApiPromise,
       relayOne: ApiPromise,
       assetId: string,
       sourceLocationParaA: SourceLocation,
       initialBalance: number;
-    before("First send relay chain asset to parachain", async function () {
+    before("First send relay chain asset to allychain", async function () {
       keyring = new Keyring({ type: "ethereum" });
 
       // Setup Relaychain
       relayOne = context._polkadotApiRelaychains[0];
 
-      // Setup Parachains
+      // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-      parachainOne = context.polkadotApiParaone;
-      parachainTwo = context._polkadotApiParachains[1].apis[0];
+      allychainOne = context.polkadotApiParaone;
+      allychainTwo = context._polkadotApiAllychains[1].apis[0];
 
       // Log events
-      logEvents(parachainOne, "PARA A");
-      logEvents(parachainTwo, "PARA B");
+      logEvents(allychainOne, "PARA A");
+      logEvents(allychainTwo, "PARA B");
       logEvents(relayOne, "RELAY");
 
       initialBalance = Number(
-        ((await parachainOne.query.system.account(BALTATHAR)) as any).data.free
+        ((await allychainOne.query.system.account(BALTATHAR)) as any).data.free
       );
 
       // Get Pallet balances index
-      const metadata = await parachainOne.rpc.state.getMetadata();
+      const metadata = await allychainOne.rpc.state.getMetadata();
       const palletIndex = (metadata.asLatest.toHuman().pallets as Array<any>).find((pallet) => {
         return pallet.name === "Balances";
       }).index;
@@ -599,25 +599,25 @@ describeParachain(
       sourceLocationParaA = {
         XCM: {
           parents: new BN(1),
-          interior: { X2: [{ Parachain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
+          interior: { X2: [{ Allychain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
         },
       };
 
-      // PARACHAIN B
+      // ALLYCHAIN B
       // registerAsset
-      ({ assetId } = await registerAssetToParachain(
-        parachainTwo,
+      ({ assetId } = await registerAssetToAllychain(
+        allychainTwo,
         alith,
         sourceLocationParaA,
         paraAssetMetadata
       ));
 
-      // PARACHAIN A
-      // transfer 100 units to parachain B
-      await createBlockWithExtrinsicParachain(
-        parachainOne,
+      // ALLYCHAIN A
+      // transfer 100 units to allychain B
+      await createBlockWithExtrinsicAllychain(
+        allychainOne,
         baltathar,
-        parachainOne.tx.xTokens.transfer(
+        allychainOne.tx.xTokens.transfer(
           "SelfReserve",
           HUNDRED_UNITS_PARA,
           {
@@ -625,7 +625,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(2000) },
+                  { Allychain: new BN(2000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -635,15 +635,15 @@ describeParachain(
         )
       );
 
-      await waitOneBlock(parachainTwo, 3);
+      await waitOneBlock(allychainTwo, 3);
     });
     it("should be able to receive an asset in para b from para a", async function () {
-      // PARACHAIN B
-      // transfer back 100 units to parachain A
-      const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
-        parachainTwo,
+      // ALLYCHAIN B
+      // transfer back 100 units to allychain A
+      const { events: eventsTransfer } = await createBlockWithExtrinsicAllychain(
+        allychainTwo,
         baltathar,
-        parachainTwo.tx.xTokens.transfer(
+        allychainTwo.tx.xTokens.transfer(
           { OtherReserve: assetId },
           HUNDRED_UNITS_PARA,
           {
@@ -651,7 +651,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(1000) },
+                  { Allychain: new BN(1000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -665,62 +665,62 @@ describeParachain(
       expect(eventsTransfer[3].toHuman().method).to.eq("Transferred");
       expect(eventsTransfer[8].toHuman().method).to.eq("ExtrinsicSuccess");
 
-      await waitOneBlock(parachainTwo, 3);
+      await waitOneBlock(allychainTwo, 3);
 
       const diff =
         initialBalance -
-        Number(((await parachainOne.query.system.account(BALTATHAR)) as any).data.free);
+        Number(((await allychainOne.query.system.account(BALTATHAR)) as any).data.free);
       // Verify that difference is fees (less than 1% of 10^18)
       expect(diff < 10000000000000000).to.eq(true);
 
       let expectedBaltatharParaTwoBalance = BigInt(0);
 
       expect(
-        ((await parachainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
+        ((await allychainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
       ).to.eq(expectedBaltatharParaTwoBalance.toString());
     });
   }
 );
 
-describeParachain(
+describeAllychain(
   "XCM - send_para_a_asset_from_para_b_to_para_c",
-  { chain: "moonbase-local", numberOfParachains: 3 },
+  { chain: "moonbase-local", numberOfAllychains: 3 },
   (context) => {
     let keyring: Keyring,
       alith: KeyringPair,
       baltathar: KeyringPair,
-      parachainOne: ApiPromise,
-      parachainTwo: ApiPromise,
-      parachainThree: ApiPromise,
+      allychainOne: ApiPromise,
+      allychainTwo: ApiPromise,
+      allychainThree: ApiPromise,
       relayOne: ApiPromise,
       assetId: string,
       sourceLocationParaA: SourceLocation,
       initialBalance: number;
-    before("First send relay chain asset to parachain", async function () {
+    before("First send relay chain asset to allychain", async function () {
       keyring = new Keyring({ type: "ethereum" });
 
       // Setup Relaychain
       relayOne = context._polkadotApiRelaychains[0];
 
-      // Setup Parachains
+      // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-      parachainOne = context.polkadotApiParaone;
-      parachainTwo = context._polkadotApiParachains[1].apis[0];
-      parachainThree = context._polkadotApiParachains[2].apis[0];
+      allychainOne = context.polkadotApiParaone;
+      allychainTwo = context._polkadotApiAllychains[1].apis[0];
+      allychainThree = context._polkadotApiAllychains[2].apis[0];
 
       // Log events
-      logEvents(parachainOne, "PARA A");
-      logEvents(parachainTwo, "PARA B");
-      logEvents(parachainThree, "PARA C");
+      logEvents(allychainOne, "PARA A");
+      logEvents(allychainTwo, "PARA B");
+      logEvents(allychainThree, "PARA C");
       logEvents(relayOne, "RELAY");
 
       initialBalance = Number(
-        ((await parachainOne.query.system.account(BALTATHAR)) as any).data.free
+        ((await allychainOne.query.system.account(BALTATHAR)) as any).data.free
       );
 
       // Get Pallet balances index
-      const metadata = await parachainOne.rpc.state.getMetadata();
+      const metadata = await allychainOne.rpc.state.getMetadata();
       const palletIndex = (metadata.asLatest.toHuman().pallets as Array<any>).find((pallet) => {
         return pallet.name === "Balances";
       }).index;
@@ -730,30 +730,30 @@ describeParachain(
       sourceLocationParaA = {
         XCM: {
           parents: new BN(1),
-          interior: { X2: [{ Parachain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
+          interior: { X2: [{ Allychain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
         },
       };
 
-      // PARACHAIN B
+      // ALLYCHAIN B
       // registerAsset
-      ({ assetId } = await registerAssetToParachain(
-        parachainTwo,
+      ({ assetId } = await registerAssetToAllychain(
+        allychainTwo,
         alith,
         sourceLocationParaA,
         paraAssetMetadata
       ));
 
-      // PARACHAIN C
+      // ALLYCHAIN C
       // registerAsset
-      await registerAssetToParachain(parachainThree, alith, sourceLocationParaA, paraAssetMetadata);
+      await registerAssetToAllychain(allychainThree, alith, sourceLocationParaA, paraAssetMetadata);
     });
     it("should be able to receive an asset back in para a from para b", async function () {
-      // PARACHAIN A
-      // transfer 100 units to parachain B
-      await createBlockWithExtrinsicParachain(
-        parachainOne,
+      // ALLYCHAIN A
+      // transfer 100 units to allychain B
+      await createBlockWithExtrinsicAllychain(
+        allychainOne,
         baltathar,
-        parachainOne.tx.xTokens.transfer(
+        allychainOne.tx.xTokens.transfer(
           "SelfReserve",
           HUNDRED_UNITS_PARA,
           {
@@ -761,7 +761,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(2000) },
+                  { Allychain: new BN(2000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -771,14 +771,14 @@ describeParachain(
         )
       );
 
-      await waitOneBlock(parachainTwo, 6);
+      await waitOneBlock(allychainTwo, 6);
 
-      // PARACHAIN B
-      // transfer 100 units to parachain C
-      const { events: eventsTransfer2 } = await createBlockWithExtrinsicParachain(
-        parachainTwo,
+      // ALLYCHAIN B
+      // transfer 100 units to allychain C
+      const { events: eventsTransfer2 } = await createBlockWithExtrinsicAllychain(
+        allychainTwo,
         baltathar,
-        parachainTwo.tx.xTokens.transfer(
+        allychainTwo.tx.xTokens.transfer(
           { OtherReserve: assetId },
           HUNDRED_UNITS_PARA,
           {
@@ -786,7 +786,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(3000) },
+                  { Allychain: new BN(3000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -800,26 +800,26 @@ describeParachain(
       expect(eventsTransfer2[3].toHuman().method).to.eq("Transferred");
       expect(eventsTransfer2[8].toHuman().method).to.eq("ExtrinsicSuccess");
 
-      await waitOneBlock(parachainThree, 3);
+      await waitOneBlock(allychainThree, 3);
       // Verify that difference is 100 units plus fees (less than 1% of 10^18)
       const targetBalance: number = Number(BigInt(BigInt(initialBalance) - HUNDRED_UNITS_PARA));
       let expectedBaltatharParaTwoBalance = BigInt(0);
       let paraAXcmFee = BigInt(400000000);
       const diff =
-        Number(((await parachainOne.query.system.account(BALTATHAR)) as any).data.free) -
+        Number(((await allychainOne.query.system.account(BALTATHAR)) as any).data.free) -
         targetBalance;
       expect(diff < 10000000000000000).to.eq(true);
       expect(
-        ((await parachainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
+        ((await allychainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
       ).to.eq(expectedBaltatharParaTwoBalance.toString());
       expect(
-        ((await parachainThree.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
+        ((await allychainThree.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
       ).to.eq((BigInt(HUNDRED_UNITS_PARA) - paraAXcmFee).toString());
     });
   }
 );
 
-describeParachain(
+describeAllychain(
   "XCM - receive_relay_asset_from_relay",
   { chain: "moonbase-local" },
   (context) => {
@@ -830,39 +830,39 @@ describeParachain(
       const alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       const baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
 
-      const parachainOne = context.polkadotApiParaone;
+      const allychainOne = context.polkadotApiParaone;
       const relayOne = context._polkadotApiRelaychains[0];
 
       // Log events
-      logEvents(parachainOne, "PARA");
+      logEvents(allychainOne, "PARA");
 
       logEvents(relayOne, "RELAY");
 
       await new Promise((res) => setTimeout(res, 10000));
 
-      // PARACHAINS
+      // ALLYCHAINS
       // registerAsset
-      const { events, assetId } = await registerAssetToParachain(parachainOne, alith);
+      const { events, assetId } = await registerAssetToAllychain(allychainOne, alith);
 
       expect(events[1].toHuman().method).to.eq("UnitsPerSecondChanged");
       expect(events[4].toHuman().method).to.eq("ExtrinsicSuccess");
 
       // check asset in storage
-      const registeredAsset = await parachainOne.query.assets.asset(assetId);
+      const registeredAsset = await allychainOne.query.assets.asset(assetId);
       expect((registeredAsset.toHuman() as { owner: string }).owner).to.eq(palletId);
 
-      // PARACHAIN
+      // ALLYCHAIN
       // go into Maintenance
       await execFromAllMembersOfTechCommittee(
-        parachainOne,
-        parachainOne.tx.maintenanceMode.enterMaintenanceMode(),
+        allychainOne,
+        allychainOne.tx.maintenanceMode.enterMaintenanceMode(),
         alith,
         baltathar,
         0
       );
 
       // Make sure we are on maintenance
-      expect(((await parachainOne.query.maintenanceMode.maintenanceMode()) as any).toHuman()).to.eq(
+      expect(((await allychainOne.query.maintenanceMode.maintenanceMode()) as any).toHuman()).to.eq(
         true
       );
 
@@ -870,11 +870,11 @@ describeParachain(
       // set default version
       await setDefaultVersionRelay(relayOne, aliceRelay);
       // Trigger the transfer
-      const { events: eventsRelay } = await createBlockWithExtrinsicParachain(
+      const { events: eventsRelay } = await createBlockWithExtrinsicAllychain(
         relayOne,
         aliceRelay,
         relayOne.tx.xcmPallet.reserveTransferAssets(
-          { V1: { parents: new BN(0), interior: { X1: { Parachain: new BN(1000) } } } },
+          { V1: { parents: new BN(0), interior: { X1: { Allychain: new BN(1000) } } } },
           {
             V1: {
               parents: new BN(0),
@@ -891,51 +891,51 @@ describeParachain(
       expect(eventsRelay[3].toHuman().method).to.eq("Attempted");
 
       // The DMP queue should queue up
-      // Wait for parachain block to have been emited
-      await waitOneBlock(parachainOne, 2);
+      // Wait for allychain block to have been emited
+      await waitOneBlock(allychainOne, 2);
 
       // Assert the DMP message arrived and got queued
-      expect(((await parachainOne.query.dmpQueue.pages(null)) as any).length).to.eq(1);
+      expect(((await allychainOne.query.dmpQueue.pages(null)) as any).length).to.eq(1);
 
       // Assert it did not get executed
       expect(
-        ((await parachainOne.query.assets.account(assetId, ALITH)) as any).balance.toString()
+        ((await allychainOne.query.assets.account(assetId, ALITH)) as any).balance.toString()
       ).to.eq(BigInt(0).toString());
 
-      // PARACHAIN
+      // ALLYCHAIN
       // get out of Maintenance
       await execFromAllMembersOfTechCommittee(
-        parachainOne,
-        parachainOne.tx.maintenanceMode.resumeNormalOperation(),
+        allychainOne,
+        allychainOne.tx.maintenanceMode.resumeNormalOperation(),
         alith,
         baltathar,
         1
       );
 
-      expect(((await parachainOne.query.maintenanceMode.maintenanceMode()) as any).toHuman()).to.eq(
+      expect(((await allychainOne.query.maintenanceMode.maintenanceMode()) as any).toHuman()).to.eq(
         false
       );
 
       // Assert the DMP message got executed
-      expect(((await parachainOne.query.dmpQueue.pages(null)) as any).length).to.eq(0);
+      expect(((await allychainOne.query.dmpQueue.pages(null)) as any).length).to.eq(0);
 
       // Alith asset balance should have been increased to 1000*e12 after messages is executed
       expect(
-        ((await parachainOne.query.assets.account(assetId, ALITH)) as any).balance.toString()
+        ((await allychainOne.query.assets.account(assetId, ALITH)) as any).balance.toString()
       ).to.eq(BigInt(THOUSAND_UNITS).toString());
     });
   }
 );
 
-describeParachain(
-  "XCM - send_para_a_asset_to_para_b - aka parachainTwo",
-  { chain: "moonbase-local", numberOfParachains: 2 },
+describeAllychain(
+  "XCM - send_para_a_asset_to_para_b - aka allychainTwo",
+  { chain: "moonbase-local", numberOfAllychains: 2 },
   (context) => {
     let keyring: Keyring,
       alith: KeyringPair,
       baltathar: KeyringPair,
-      parachainOne: ApiPromise,
-      parachainTwo: ApiPromise,
+      allychainOne: ApiPromise,
+      allychainTwo: ApiPromise,
       relayOne: ApiPromise,
       assetId: string,
       sourceLocationParaA: SourceLocation,
@@ -946,23 +946,23 @@ describeParachain(
       // Setup Relaychain
       relayOne = context._polkadotApiRelaychains[0];
 
-      // Setup Parachains
+      // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-      parachainOne = context.polkadotApiParaone;
-      parachainTwo = context._polkadotApiParachains[1].apis[0];
+      allychainOne = context.polkadotApiParaone;
+      allychainTwo = context._polkadotApiAllychains[1].apis[0];
 
       // Log events
-      logEvents(parachainOne, "PARA A");
-      logEvents(parachainTwo, "PARA B");
+      logEvents(allychainOne, "PARA A");
+      logEvents(allychainTwo, "PARA B");
       logEvents(relayOne, "RELAY");
 
       initialBalance = Number(
-        ((await parachainOne.query.system.account(BALTATHAR)) as any).data.free
+        ((await allychainOne.query.system.account(BALTATHAR)) as any).data.free
       );
 
       // Get Pallet balances index
-      const metadata = await parachainOne.rpc.state.getMetadata();
+      const metadata = await allychainOne.rpc.state.getMetadata();
       const palletIndex = (metadata.asLatest.toHuman().pallets as Array<any>).find((pallet) => {
         return pallet.name === "Balances";
       }).index;
@@ -972,41 +972,41 @@ describeParachain(
       sourceLocationParaA = {
         XCM: {
           parents: 1,
-          interior: { X2: [{ Parachain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
+          interior: { X2: [{ Allychain: new BN(1000) }, { Palletinstance: new BN(palletIndex) }] },
         },
       };
 
-      // PARACHAIN B
+      // ALLYCHAIN B
       // registerAsset
-      ({ assetId } = await registerAssetToParachain(
-        parachainTwo,
+      ({ assetId } = await registerAssetToAllychain(
+        allychainTwo,
         alith,
         sourceLocationParaA,
         paraAssetMetadata
       ));
     });
     it("should enqueue XCMP messages in maintenance and execute when normal", async function () {
-      // PARACHAIN B
+      // ALLYCHAIN B
       // go into Maintenance
       await execFromAllMembersOfTechCommittee(
-        parachainTwo,
-        parachainTwo.tx.maintenanceMode.enterMaintenanceMode(),
+        allychainTwo,
+        allychainTwo.tx.maintenanceMode.enterMaintenanceMode(),
         alith,
         baltathar,
         0
       );
 
       // Make sure we are on maintenance
-      expect(((await parachainTwo.query.maintenanceMode.maintenanceMode()) as any).toHuman()).to.eq(
+      expect(((await allychainTwo.query.maintenanceMode.maintenanceMode()) as any).toHuman()).to.eq(
         true
       );
 
-      // PARACHAIN A
-      // transfer 100 units to parachain B
-      const { events: eventsTransfer } = await createBlockWithExtrinsicParachain(
-        parachainOne,
+      // ALLYCHAIN A
+      // transfer 100 units to allychain B
+      const { events: eventsTransfer } = await createBlockWithExtrinsicAllychain(
+        allychainOne,
         baltathar,
-        parachainOne.tx.xTokens.transfer(
+        allychainOne.tx.xTokens.transfer(
           "SelfReserve",
           HUNDRED_UNITS_PARA,
           {
@@ -1014,7 +1014,7 @@ describeParachain(
               parents: new BN(1),
               interior: {
                 X2: [
-                  { Parachain: new BN(2000) },
+                  { Allychain: new BN(2000) },
                   { AccountKey20: { network: "Any", key: hexToU8a(BALTATHAR) } },
                 ],
               },
@@ -1028,9 +1028,9 @@ describeParachain(
       expect(eventsTransfer[6].toHuman().method).to.eq("Transferred");
       expect(eventsTransfer[11].toHuman().method).to.eq("ExtrinsicSuccess");
 
-      await waitOneBlock(parachainTwo, 3);
+      await waitOneBlock(allychainTwo, 3);
 
-      let queuedMessages = ((await parachainTwo.query.xcmpQueue.inboundXcmpStatus()) as any)[0][2]
+      let queuedMessages = ((await allychainTwo.query.xcmpQueue.inboundXcmpStatus()) as any)[0][2]
         .length;
 
       // Assert the XCMP message arrived and got queued. At least one (probably two for versioning)
@@ -1039,24 +1039,24 @@ describeParachain(
 
       // Assert it did not get executed
       expect(
-        ((await parachainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
+        ((await allychainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
       ).to.eq(BigInt(0).toString());
 
-      // PARACHAIN
+      // ALLYCHAIN
       // get out of Maintenance
       await execFromAllMembersOfTechCommittee(
-        parachainTwo,
-        parachainTwo.tx.maintenanceMode.resumeNormalOperation(),
+        allychainTwo,
+        allychainTwo.tx.maintenanceMode.resumeNormalOperation(),
         alith,
         baltathar,
         1
       );
 
-      expect(((await parachainOne.query.maintenanceMode.maintenanceMode()) as any).toHuman()).to.eq(
+      expect(((await allychainOne.query.maintenanceMode.maintenanceMode()) as any).toHuman()).to.eq(
         false
       );
 
-      queuedMessages = ((await parachainTwo.query.xcmpQueue.inboundXcmpStatus()) as any).toHuman()
+      queuedMessages = ((await allychainTwo.query.xcmpQueue.inboundXcmpStatus()) as any).toHuman()
         .length;
 
       // Now the messages should have executed
@@ -1066,7 +1066,7 @@ describeParachain(
 
       // Assert it did get executed
       expect(
-        ((await parachainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
+        ((await allychainTwo.query.assets.account(assetId, BALTATHAR)) as any).balance.toString()
       ).to.eq(expectedBaltatharParaTwoBalance.toString());
     });
   }

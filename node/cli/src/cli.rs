@@ -17,23 +17,23 @@
 //! Moonbeam CLI Library. Built with clap
 //!
 //! This module defines the Moonbeam node's Command Line Interface (CLI)
-//! It is built using clap and inherits behavior from Substrate's sc_cli crate.
+//! It is built using clap and inherits behavior from Axlib's sc_cli crate.
 
 use clap::Parser;
 use cli_opt::{account_key::GenerateAccountKey, EthApi, Sealing};
 use perf_test::PerfCmd;
-use sc_cli::{Error as CliError, SubstrateCli};
+use sc_cli::{Error as CliError, AxlibCli};
 use service::chain_spec;
 use std::path::PathBuf;
 
 /// Sub-commands supported by the collator.
 #[derive(Debug, clap::Subcommand)]
 pub enum Subcommand {
-	/// Export the genesis state of the parachain.
+	/// Export the genesis state of the allychain.
 	#[clap(name = "export-genesis-state")]
 	ExportGenesisState(ExportGenesisStateCommand),
 
-	/// Export the genesis wasm of the parachain.
+	/// Export the genesis wasm of the allychain.
 	#[clap(name = "export-genesis-wasm")]
 	ExportGenesisWasm(ExportGenesisWasmCommand),
 
@@ -94,16 +94,16 @@ pub struct BuildSpecCommand {
 	pub mnemonic: Option<String>,
 }
 
-/// Command for exporting the genesis state of the parachain
+/// Command for exporting the genesis state of the allychain
 #[derive(Debug, Parser)]
 pub struct ExportGenesisStateCommand {
 	/// Output file name or stdout if unspecified.
 	#[clap(parse(from_os_str))]
 	pub output: Option<PathBuf>,
 
-	/// Id of the parachain this state is for.
+	/// Id of the allychain this state is for.
 	#[clap(long)]
-	pub parachain_id: Option<u32>,
+	pub allychain_id: Option<u32>,
 
 	/// Write output in binary. Default is to write in hex.
 	#[clap(short, long)]
@@ -190,9 +190,9 @@ pub struct RunCmd {
 	#[clap(long = "force-moonriver")]
 	pub force_moonriver: bool,
 
-	/// Id of the parachain this collator collates for.
+	/// Id of the allychain this collator collates for.
 	#[clap(long)]
-	pub parachain_id: Option<u32>,
+	pub allychain_id: Option<u32>,
 
 	/// Maximum fee history cache size.
 	#[clap(long, default_value = "2048")]
@@ -217,7 +217,7 @@ pub enum KeyCmd {
 
 impl KeyCmd {
 	/// run the key subcommands
-	pub fn run<C: SubstrateCli>(&self, cli: &C) -> Result<(), CliError> {
+	pub fn run<C: AxlibCli>(&self, cli: &C) -> Result<(), CliError> {
 		match self {
 			KeyCmd::BaseCli(cmd) => cmd.run(cli),
 			KeyCmd::GenerateAccountKey(cmd) => {

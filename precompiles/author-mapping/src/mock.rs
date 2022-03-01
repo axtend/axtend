@@ -23,7 +23,7 @@ use frame_support::{
 };
 use frame_system::EnsureRoot;
 use pallet_evm::{
-	AddressMapping, EnsureAddressNever, EnsureAddressRoot, PrecompileSet, SubstrateBlockHashMapping,
+	AddressMapping, EnsureAddressNever, EnsureAddressRoot, PrecompileSet, AxlibBlockHashMapping,
 };
 use scale_info::TypeInfo;
 use serde::{Deserialize, Serialize};
@@ -181,7 +181,7 @@ impl pallet_evm::Config for Runtime {
 	type ChainId = ();
 	type OnChargeTransaction = ();
 	type BlockGasLimit = ();
-	type BlockHashMapping = SubstrateBlockHashMapping<Self>;
+	type BlockHashMapping = AxlibBlockHashMapping<Self>;
 	type FindAuthor = ();
 }
 

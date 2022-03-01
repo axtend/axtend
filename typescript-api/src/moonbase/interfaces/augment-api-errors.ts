@@ -532,7 +532,7 @@ declare module "@polkadot/api-base/types/errors" {
        */
       [key: string]: AugmentedError<ApiType>;
     };
-    parachainStaking: {
+    allychainStaking: {
       AlreadyActive: AugmentedError<ApiType>;
       AlreadyDelegatedCandidate: AugmentedError<ApiType>;
       AlreadyOffline: AugmentedError<ApiType>;
@@ -579,7 +579,7 @@ declare module "@polkadot/api-base/types/errors" {
        */
       [key: string]: AugmentedError<ApiType>;
     };
-    parachainSystem: {
+    allychainSystem: {
       /**
        * The inherent which supplies the host configuration did not run this block
        */
@@ -597,13 +597,13 @@ declare module "@polkadot/api-base/types/errors" {
        */
       OverlappingUpgrades: AugmentedError<ApiType>;
       /**
-       * Polkadot currently prohibits this parachain from upgrading its
+       * Axia currently prohibits this allychain from upgrading its
        * validation function
        */
-      ProhibitedByPolkadot: AugmentedError<ApiType>;
+      ProhibitedByAxia: AugmentedError<ApiType>;
       /**
        * The supplied validation function has compiled into a blob larger than
-       * Polkadot is willing to run
+       * Axia is willing to run
        */
       TooBig: AugmentedError<ApiType>;
       /**

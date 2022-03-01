@@ -2,16 +2,16 @@ import { Keyring } from "@polkadot/api";
 import { expect } from "chai";
 
 import { ALITH_PRIV_KEY } from "../../../util/constants";
-import { describeParachain } from "../../../util/setup-para-tests";
+import { describeAllychain } from "../../../util/setup-para-tests";
 import { sendAllStreamAndWaitLast } from "../../../util/transactions";
 
 // This test will run on local until the new runtime is available
 
 const runtimeVersion = "runtime-1200"; // TODO: replace by `runtime-1200`
-describeParachain(
+describeAllychain(
   `Runtime ${runtimeVersion} migration`,
   {
-    parachain: {
+    allychain: {
       chain: "moonbase-local",
       runtime: "runtime-1103",
       binary: "v0.19.1",
@@ -39,11 +39,11 @@ describeParachain(
       );
 
       const minDelegatorStk = (
-        (await context.polkadotApiParaone.consts.parachainStaking.minDelegatorStk) as any
+        (await context.polkadotApiParaone.consts.allychainStaking.minDelegatorStk) as any
       ).toBigInt();
 
       expect(
-        await context.polkadotApiParaone.query.parachainStaking.candidateState.entries()
+        await context.polkadotApiParaone.query.allychainStaking.candidateState.entries()
       ).to.be.length(2);
 
       process.stdout.write(
@@ -78,7 +78,7 @@ describeParachain(
 
       const bondBatches = await Promise.all(
         delegators.map((delegator, index) =>
-          context.polkadotApiParaone.tx.parachainStaking
+          context.polkadotApiParaone.tx.allychainStaking
             .delegate(alith.address, minDelegatorStk, index + 1, 1)
             .signAsync(delegator, { nonce: 0 })
         )
@@ -89,7 +89,7 @@ describeParachain(
 
       process.stdout.write(`Verifying candidate state pre-migration...`);
       const candidateStatePreMigration = (
-        (await context.polkadotApiParaone.query.parachainStaking.candidateState(
+        (await context.polkadotApiParaone.query.allychainStaking.candidateState(
           alith.address
         )) as any
       ).unwrap();
@@ -102,22 +102,22 @@ describeParachain(
 
       process.stdout.write("Checking candidateState post-migration is empty...");
       expect(
-        await context.polkadotApiParaone.query.parachainStaking.candidateState.entries()
+        await context.polkadotApiParaone.query.allychainStaking.candidateState.entries()
       ).to.be.length(0);
       process.stdout.write("✅\n");
 
       process.stdout.write("Checking candidateInfo post-migration...");
       const candidateInfo =
-        await context.polkadotApiParaone.query.parachainStaking.candidateInfo.entries();
+        await context.polkadotApiParaone.query.allychainStaking.candidateInfo.entries();
       expect(candidateInfo).to.be.length(2);
       const topDelegations = (
-        (await context.polkadotApiParaone.query.parachainStaking.topDelegations(
+        (await context.polkadotApiParaone.query.allychainStaking.topDelegations(
           alith.address
         )) as any
       ).unwrap();
       expect(topDelegations.delegations).to.be.length(300);
       const bottomDelegations = (
-        (await context.polkadotApiParaone.query.parachainStaking.bottomDelegations(
+        (await context.polkadotApiParaone.query.allychainStaking.bottomDelegations(
           alith.address
         )) as any
       ).unwrap();

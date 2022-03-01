@@ -2,9 +2,9 @@
 name = "account"
 authors = ["PureStake"]
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
-repository = "https://github.com/PureStake/moonbeam/"
+repository = "https://github.com/PureStake/axtend/"
 version = "0.1.1"
 
 [package.metadata.docs.rs]
@@ -23,7 +23,7 @@ serde = { version = "1.0.101", optional = true, default-features = false, featur
 ] }
 sha3 = { version = "0.9", default-features = false }
 
-# Substrate
+# Axlib
 parity-scale-codec = { version = "2.2", default-features = false, features = [
 	"derive",
 ] }

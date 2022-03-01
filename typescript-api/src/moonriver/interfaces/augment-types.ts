@@ -592,9 +592,9 @@ import type {
   InboundDownwardMessage,
   InboundHrmpMessage,
   InboundHrmpMessages,
-  IncomingParachain,
-  IncomingParachainDeploy,
-  IncomingParachainFixed,
+  IncomingAllychain,
+  IncomingAllychainDeploy,
+  IncomingAllychainFixed,
   InvalidDisputeStatementKind,
   LeasePeriod,
   LeasePeriodOf,
@@ -613,16 +613,16 @@ import type {
   ParaPastCodeMeta,
   ParaScheduling,
   ParaValidatorIndex,
-  ParachainDispatchOrigin,
-  ParachainInherentData,
-  ParachainProposal,
-  ParachainsInherentData,
+  AllychainDispatchOrigin,
+  AllychainInherentData,
+  AllychainProposal,
+  AllychainsInherentData,
   ParathreadClaim,
   ParathreadClaimQueue,
   ParathreadEntry,
   PersistedValidationData,
   QueuedParathread,
-  RegisteredParachainInfo,
+  RegisteredAllychainInfo,
   RelayBlockNumber,
   RelayChainBlockNumber,
   RelayChainHash,
@@ -662,7 +662,7 @@ import type {
   WinningData,
   WinningData10,
   WinningDataEntry,
-} from "@polkadot/types/interfaces/parachains";
+} from "@polkadot/types/interfaces/allychains";
 import type {
   FeeDetails,
   InclusionFee,
@@ -1570,9 +1570,9 @@ declare module "@polkadot/types/types/registry" {
     InboundStatus: InboundStatus;
     IncludedBlocks: IncludedBlocks;
     InclusionFee: InclusionFee;
-    IncomingParachain: IncomingParachain;
-    IncomingParachainDeploy: IncomingParachainDeploy;
-    IncomingParachainFixed: IncomingParachainFixed;
+    IncomingAllychain: IncomingAllychain;
+    IncomingAllychainDeploy: IncomingAllychainDeploy;
+    IncomingAllychainFixed: IncomingAllychainFixed;
     Index: Index;
     IndicesLookupSource: IndicesLookupSource;
     IndividualExposure: IndividualExposure;
@@ -1740,10 +1740,10 @@ declare module "@polkadot/types/types/registry" {
     PalletStorageMetadataLatest: PalletStorageMetadataLatest;
     PalletStorageMetadataV14: PalletStorageMetadataV14;
     PalletVersion: PalletVersion;
-    ParachainDispatchOrigin: ParachainDispatchOrigin;
-    ParachainInherentData: ParachainInherentData;
-    ParachainProposal: ParachainProposal;
-    ParachainsInherentData: ParachainsInherentData;
+    AllychainDispatchOrigin: AllychainDispatchOrigin;
+    AllychainInherentData: AllychainInherentData;
+    AllychainProposal: AllychainProposal;
+    AllychainsInherentData: AllychainsInherentData;
     ParaGenesisArgs: ParaGenesisArgs;
     ParaId: ParaId;
     ParaInfo: ParaInfo;
@@ -1832,7 +1832,7 @@ declare module "@polkadot/types/types/registry" {
     ReferendumInfoFinished: ReferendumInfoFinished;
     ReferendumInfoTo239: ReferendumInfoTo239;
     ReferendumStatus: ReferendumStatus;
-    RegisteredParachainInfo: RegisteredParachainInfo;
+    RegisteredAllychainInfo: RegisteredAllychainInfo;
     RegistrarIndex: RegistrarIndex;
     RegistrarInfo: RegistrarInfo;
     Registration: Registration;

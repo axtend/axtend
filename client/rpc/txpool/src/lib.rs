@@ -17,7 +17,7 @@
 use ethereum_types::{H160, H256, U256};
 use fc_rpc::{internal_err, public_key};
 use jsonrpc_core::Result as RpcResult;
-pub use moonbeam_rpc_core_txpool::{
+pub use axtend_rpc_core_txpool::{
 	GetT, Summary, Transaction, TransactionMap, TxPool as TxPoolT, TxPoolResult, TxPoolServer,
 };
 use sc_transaction_pool::{ChainApi, Pool};
@@ -30,7 +30,7 @@ use sp_runtime::traits::Block as BlockT;
 use std::collections::HashMap;
 use std::{marker::PhantomData, sync::Arc};
 
-use moonbeam_rpc_primitives_txpool::{
+use axtend_rpc_primitives_txpool::{
 	Transaction as TransactionV2, TxPoolResponse, TxPoolRuntimeApi,
 };
 

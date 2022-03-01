@@ -15,7 +15,7 @@
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 use bip39::{Language, Mnemonic, Seed};
 use log::debug;
-pub use moonbeam_core_primitives::AccountId;
+pub use axtend_core_primitives::AccountId;
 use sc_chain_spec::{ChainSpecExtension, ChainSpecGroup};
 use serde::{Deserialize, Serialize};
 use sha3::{Digest, Keccak256};
@@ -25,8 +25,8 @@ use tiny_hderive::bip32::ExtendedPrivKey;
 pub mod fake_spec;
 #[cfg(feature = "moonbase-native")]
 pub mod moonbase;
-#[cfg(feature = "moonbeam-native")]
-pub mod moonbeam;
+#[cfg(feature = "axtend-native")]
+pub mod axtend;
 #[cfg(feature = "moonriver-native")]
 pub mod moonriver;
 #[cfg(feature = "moonbase-native")]
@@ -52,14 +52,14 @@ pub mod moonriver {
 		panic!("moonriver runtime not enabled")
 	}
 }
-#[cfg(not(feature = "moonbeam-native"))]
-pub mod moonbeam {
+#[cfg(not(feature = "axtend-native"))]
+pub mod axtend {
 	pub type ChainSpec = crate::chain_spec::fake_spec::FakeSpec;
 	pub fn chain_spec_from_json_file(_: std::path::PathBuf) -> Result<ChainSpec, String> {
-		panic!("moonbeam runtime not enabled")
+		panic!("axtend runtime not enabled")
 	}
 	pub fn development_chain_spec(_: Option<String>, _: Option<u32>) -> ChainSpec {
-		panic!("moonbeam runtime not enabled")
+		panic!("axtend runtime not enabled")
 	}
 }
 
@@ -68,9 +68,9 @@ pub type RawChainSpec = sc_service::GenericChainSpec<(), Extensions>;
 #[derive(Default, Clone, Serialize, Deserialize, ChainSpecExtension, ChainSpecGroup)]
 #[serde(rename_all = "camelCase")]
 pub struct Extensions {
-	/// The relay chain of the Parachain.
+	/// The relay chain of the Allychain.
 	pub relay_chain: String,
-	/// The id of the Parachain.
+	/// The id of the Allychain.
 	pub para_id: u32,
 }
 
@@ -82,8 +82,8 @@ impl Extensions {
 }
 
 /// Helper function to derive `num_accounts` child pairs from mnemonics
-/// Substrate derive function cannot be used because the derivation is different than Ethereum's
-/// https://substrate.dev/rustdocs/v2.0.0/src/sp_core/ecdsa.rs.html#460-470
+/// Axlib derive function cannot be used because the derivation is different than Ethereum's
+/// https://axlib.dev/rustdocs/v2.0.0/src/sp_core/ecdsa.rs.html#460-470
 pub fn derive_bip44_pairs_from_mnemonic<TPublic: Public>(
 	mnemonic: &str,
 	num_accounts: u32,

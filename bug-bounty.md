@@ -1,6 +1,6 @@
 # Bug Bounty
 
-The Moonbeam bug bounty program is focused on the Moonriver and Moonbeam Parachains (deployed to Kusama and Polkadot respectively) and dapps. It is focused on preventing:
+The Moonbeam bug bounty program is focused on the Moonriver and Moonbeam Allychains (deployed to AxiaTest and Axia respectively) and dapps. It is focused on preventing:
 
 Moonbeam/Moonriver:
 * Thefts and freezing of principal of any amount
@@ -15,7 +15,7 @@ Website and Apps:
 * Deletion of user data
 * Access to sensitive pages without authorization
 
-https://immunefi.com/bounty/moonbeamnetwork/
+https://immunefi.com/bounty/axtendnetwork/
 
 **Blockchain and EVM/Precompiles**
 

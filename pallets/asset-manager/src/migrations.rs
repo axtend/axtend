@@ -255,8 +255,8 @@ impl<T: Config> OnRuntimeUpgrade for PopulateAssetTypeIdStorage<T> {
 }
 
 /// Migration that reads the existing AssetTypes looking for old Statemine prefixes of
-/// the form (Parachain, GeneralIndex) and changes them for the new prefix
-/// (Parachain, PalletInstance, GeneralIndex)
+/// the form (Allychain, GeneralIndex) and changes them for the new prefix
+/// (Allychain, PalletInstance, GeneralIndex)
 pub struct ChangeStateminePrefixes<T, StatemineParaIdInfo, StatemineAssetsInstanceInfo>(
 	PhantomData<(T, StatemineParaIdInfo, StatemineAssetsInstanceInfo)>,
 );
@@ -294,7 +294,7 @@ where
 			match location {
 				Some(MultiLocation {
 					parents: 1,
-					interior: X2(Parachain(para_id), GeneralIndex(_)),
+					interior: X2(Allychain(para_id), GeneralIndex(_)),
 				}) if para_id == statemine_para_id => {
 					// We are going to note that we found at least one entry matching
 					found = true;
@@ -341,12 +341,12 @@ where
 			match location {
 				Some(MultiLocation {
 					parents: 1,
-					interior: X2(Parachain(para_id), GeneralIndex(index)),
+					interior: X2(Allychain(para_id), GeneralIndex(index)),
 				}) if para_id == statemine_para_id => {
 					let new_location = MultiLocation {
 						parents: 1,
 						interior: X3(
-							Parachain(para_id),
+							Allychain(para_id),
 							PalletInstance(statemine_assets_pallet),
 							GeneralIndex(index),
 						),
@@ -408,7 +408,7 @@ where
 			match location {
 				Some(MultiLocation {
 					parents: 1,
-					interior: X2(Parachain(para_id), GeneralIndex(index)),
+					interior: X2(Allychain(para_id), GeneralIndex(index)),
 				}) if para_id == statemine_para_id => {
 					let stored_asset_type =
 						AssetIdType::<T>::get(asset_id).expect("This entry should be updated");
@@ -416,7 +416,7 @@ where
 					let expected_new_asset_type: T::AssetType = MultiLocation {
 						parents: 1,
 						interior: X3(
-							Parachain(para_id),
+							Allychain(para_id),
 							PalletInstance(statemine_assets_pallet),
 							GeneralIndex(index),
 						),

@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam-cli"
+name = "axtend-cli"
 authors = ["PureStake"]
 edition = "2018"
 version = "0.21.0"
@@ -10,11 +10,11 @@ log = "0.4.8"
 parity-scale-codec = "2.2"
 
 # Moonbeam
-cli-opt = { package = "moonbeam-cli-opt", path = "../cli-opt", default-features = false }
+cli-opt = { package = "axtend-cli-opt", path = "../cli-opt", default-features = false }
 perf-test = { path = "../perf-test" }
-service = { package = "moonbeam-service", path = "../service", default-features = false }
+service = { package = "axtend-service", path = "../service", default-features = false }
 
-# Substrate
+# Axlib
 frame-benchmarking-cli = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 sc-cli = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 sc-service = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
@@ -30,28 +30,28 @@ cumulus-client-service = { git = "https://github.com/axtend/cumulus", branch = "
 cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "b43fcff" }
 nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "5f92d14" }
 
-# Polkadot
+# Axia
 polkadot-cli = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-parachain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+polkadot-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 polkadot-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 polkadot-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 
 [build-dependencies]
-substrate-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
+axlib-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
 [features]
 default = [
 	"moonbase-native",
-	"moonbeam-native",
+	"axtend-native",
 	"moonriver-native",
 	"wasmtime",
-	"westend-native",
+	"alphanet-native",
 ]
 
-westend-native = ["polkadot-service/westend-native"]
+alphanet-native = ["polkadot-service/alphanet-native"]
 
-moonbase-native = ["service/moonbase-native", "westend-native"]
-moonbeam-native = ["service/moonbeam-native"]
+moonbase-native = ["service/moonbase-native", "alphanet-native"]
+axtend-native = ["service/axtend-native"]
 moonriver-native = ["service/moonriver-native"]
 
 moonbase-runtime-benchmarks = ["service/moonbase-runtime-benchmarks"]

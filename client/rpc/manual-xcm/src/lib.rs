@@ -22,22 +22,22 @@ use parity_scale_codec::Encode;
 use xcm::latest::prelude::*;
 
 /// This RPC interface is used to manually submit XCM messages that will be injected into a
-/// parachain-enabled runtime. This allows testing XCM logic in a controlled way in integration
+/// allychain-enabled runtime. This allows testing XCM logic in a controlled way in integration
 /// tests.
 #[rpc(server)]
 pub trait ManualXcmApi {
 	/// Inject a downward xcm message - A message that comes from the relay chain.
 	/// You may provide an arbitrary message, or if you provide an emtpy byte array,
-	/// Then a default message (DOT transfer down to ALITH) will be injected
+	/// Then a default message (AXC transfer down to ALITH) will be injected
 	#[rpc(name = "xcm_injectDownwardMessage")]
 	fn inject_downward_message(&self, message: Vec<u8>) -> BoxFuture<'static, RpcResult<()>>;
 
 	/// Inject an HRMP message - A message that comes from a dedicated channel to a sibling
-	/// parachain.
+	/// allychain.
 	///
-	/// Cumulus Parachain System seems to have a constraint that at most one hrmp message will be
+	/// Cumulus Allychain System seems to have a constraint that at most one hrmp message will be
 	/// sent on a channel per block. At least that's what this comment implies:
-	/// https://github.com/paritytech/cumulus/blob/c308c01b/pallets/parachain-system/src/lib.rs#L204
+	/// https://github.com/paritytech/cumulus/blob/c308c01b/pallets/allychain-system/src/lib.rs#L204
 	/// Neither this RPC, nor the mock inherent data provider make any attempt to enforce this
 	/// constraint. In fact, violating it may be useful for testing.
 	/// The method accepts a sending paraId and a bytearray representing an arbitrary message as
@@ -112,11 +112,11 @@ impl ManualXcmApi for ManualXcm {
 				mes.append(
 					&mut (xcm::VersionedXcm::<()>::V2(Xcm(vec![
 						ReserveAssetDeposited(
-							((Parent, Parachain(sender.into())), 10000000000000).into(),
+							((Parent, Allychain(sender.into())), 10000000000000).into(),
 						),
 						ClearOrigin,
 						BuyExecution {
-							fees: ((Parent, Parachain(sender.into())), 10000000000000).into(),
+							fees: ((Parent, Allychain(sender.into())), 10000000000000).into(),
 							weight_limit: Limited(4_000_000_000),
 						},
 						DepositAsset {

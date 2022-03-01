@@ -12,10 +12,10 @@ import {
 } from "./constants";
 const debug = require("debug")("test:para-node");
 
-export async function findAvailablePorts(parachainCount: number = 1) {
+export async function findAvailablePorts(allychainCount: number = 1) {
   // 2 nodes per prachain, and as many relaychain nodes
-  const relayCount = parachainCount + 1;
-  const paraNodeCount = parachainCount * 2; // 2 nodes each;
+  const relayCount = allychainCount + 1;
+  const paraNodeCount = allychainCount * 2; // 2 nodes each;
   const paraEmbeddedNodeCount = paraNodeCount; // 2 nodes each;
   const nodeCount = relayCount + paraNodeCount + paraEmbeddedNodeCount;
   const portCount = nodeCount * 3;
@@ -69,22 +69,22 @@ export type ParaSpecOpt = {
 };
 
 export type ParaTestOptions = {
-  parachain: (ParaRuntimeOpt | ParaSpecOpt) & {
-    chain: "moonbase-local" | "moonriver-local" | "moonbeam-local";
+  allychain: (ParaRuntimeOpt | ParaSpecOpt) & {
+    chain: "moonbase-local" | "moonriver-local" | "axtend-local";
     // specify the version of the binary using tag. Ex: "v0.18.1"
-    // "local" uses target/release/moonbeam binary
+    // "local" uses target/release/axtend binary
     binary?: "local" | string;
   };
   relaychain?: {
-    chain?: "rococo-local" | "westend-local" | "kusama-local" | "polkadot-local";
+    chain?: "betanet-local" | "alphanet-local" | "axctest-local" | "polkadot-local";
     // specify the version of the binary using tag. Ex: "v0.9.13"
     // "local" uses target/release/polkadot binary
     binary?: "local" | string;
   };
-  numberOfParachains?: number;
+  numberOfAllychains?: number;
 };
-export interface ParachainPorts {
-  parachainId: number;
+export interface AllychainPorts {
+  allychainId: number;
   ports: NodePorts[];
 }
 
@@ -100,7 +100,7 @@ const SPECS_DIRECTORY = "specs";
 
 // Downloads the runtime and return the filepath
 export async function getRuntimeWasm(
-  runtimeName: "moonbase" | "moonriver" | "moonbeam",
+  runtimeName: "moonbase" | "moonriver" | "axtend",
   runtimeTag: string
 ): Promise<string> {
   const runtimePath = path.join(RUNTIME_DIRECTORY, `${runtimeName}-${runtimeTag}.wasm`);
@@ -117,7 +117,7 @@ export async function getRuntimeWasm(
     console.log(`     Missing ${runtimePath} locally, downloading it...`);
     child_process.execSync(
       `mkdir -p ${path.dirname(runtimePath)} && ` +
-        `wget -q https://github.com/PureStake/moonbeam/releases/` +
+        `wget -q https://github.com/PureStake/axtend/releases/` +
         `download/${runtimeTag}/${runtimeName}-${runtimeTag}.wasm ` +
         `-O ${runtimePath}.bin`
     );
@@ -144,13 +144,13 @@ export async function getGithubReleaseBinary(url: string, binaryPath: string): P
 
 // Downloads the binary and return the filepath
 export async function getMoonbeamReleaseBinary(binaryTag: string): Promise<string> {
-  const binaryPath = path.join(BINARY_DIRECTORY, `moonbeam-${binaryTag}`);
+  const binaryPath = path.join(BINARY_DIRECTORY, `axtend-${binaryTag}`);
   return getGithubReleaseBinary(
-    `https://github.com/PureStake/moonbeam/releases/download/${binaryTag}/moonbeam`,
+    `https://github.com/PureStake/axtend/releases/download/${binaryTag}/axtend`,
     binaryPath
   );
 }
-export async function getPolkadotReleaseBinary(binaryTag: string): Promise<string> {
+export async function getAxiaReleaseBinary(binaryTag: string): Promise<string> {
   const binaryPath = path.join(BINARY_DIRECTORY, `polkadot-${binaryTag}`);
   return getGithubReleaseBinary(
     `https://github.com/paritytech/polkadot/releases/download/${binaryTag}/polkadot`,
@@ -166,26 +166,26 @@ export async function getMoonbeamDockerBinary(binaryTag: string): Promise<string
   }
   const sha8 = sha.slice(0, 8);
 
-  const binaryPath = path.join(BINARY_DIRECTORY, `moonbeam-${sha8}`);
+  const binaryPath = path.join(BINARY_DIRECTORY, `axtend-${sha8}`);
   if (!fs.existsSync(binaryPath)) {
     if (process.platform != "linux") {
       console.error(`docker binaries are only supported on linux.`);
       process.exit(1);
     }
-    const dockerImage = `purestake/moonbeam:sha-${sha8}`;
+    const dockerImage = `purestake/axtend:sha-${sha8}`;
 
     console.log(`     Missing ${binaryPath} locally, downloading it...`);
     child_process.execSync(`mkdir -p ${path.dirname(binaryPath)} && \
-        docker create --name moonbeam-tmp ${dockerImage} && \
-        docker cp moonbeam-tmp:/moonbeam/moonbeam ${binaryPath} && \
-        docker rm moonbeam-tmp`);
+        docker create --name axtend-tmp ${dockerImage} && \
+        docker cp axtend-tmp:/axtend/axtend ${binaryPath} && \
+        docker rm axtend-tmp`);
     console.log(`${binaryPath} downloaded !`);
   }
   return binaryPath;
 }
 
 export async function getRawSpecsFromTag(
-  runtimeName: "moonbase" | "moonriver" | "moonbeam",
+  runtimeName: "moonbase" | "moonriver" | "axtend",
   tag: string
 ) {
   const specPath = path.join(SPECS_DIRECTORY, `${runtimeName}-${tag}-raw-specs.json`);
@@ -202,7 +202,7 @@ export async function getRawSpecsFromTag(
 
 export async function generateRawSpecs(
   binaryPath: string,
-  runtimeName: "moonbase-local" | "moonriver-local" | "moonbeam-local"
+  runtimeName: "moonbase-local" | "moonriver-local" | "axtend-local"
 ) {
   const specPath = path.join(SPECS_DIRECTORY, `${runtimeName}-raw-specs.json`);
   if (!fs.existsSync(specPath)) {
@@ -217,12 +217,12 @@ export async function generateRawSpecs(
 // log listeners to kill at the end;
 const logListener = [];
 
-// This will start a parachain node, only 1 at a time (check every 100ms).
+// This will start a allychain node, only 1 at a time (check every 100ms).
 // This will prevent race condition on the findAvailablePorts which uses the PID of the process
-// Returns ports for the 3rd parachain node
-export async function startParachainNodes(options: ParaTestOptions): Promise<{
+// Returns ports for the 3rd allychain node
+export async function startAllychainNodes(options: ParaTestOptions): Promise<{
   relayPorts: NodePorts[];
-  paraPorts: ParachainPorts[];
+  paraPorts: AllychainPorts[];
 }> {
   while (nodeStarted) {
     // Wait 100ms to see if the node is free
@@ -230,22 +230,22 @@ export async function startParachainNodes(options: ParaTestOptions): Promise<{
       setTimeout(resolve, 100);
     });
   }
-  // For now we only support one, two or three parachains
-  const numberOfParachains = [1, 2, 3].includes(options.numberOfParachains)
-    ? options.numberOfParachains
+  // For now we only support one, two or three allychains
+  const numberOfAllychains = [1, 2, 3].includes(options.numberOfAllychains)
+    ? options.numberOfAllychains
     : 1;
-  const parachainArray = new Array(numberOfParachains).fill(0);
+  const allychainArray = new Array(numberOfAllychains).fill(0);
   nodeStarted = true;
   // Each node will have 3 ports.
-  // 2 parachains nodes per parachain.
-  // 2 ports set (para + relay) per parachain node.
+  // 2 allychains nodes per allychain.
+  // 2 ports set (para + relay) per allychain node.
   // n+1 relay node.
-  // So numberOfPorts =  3 * 2 * 2 * parachainCount
-  const ports = await findAvailablePorts(numberOfParachains);
+  // So numberOfPorts =  3 * 2 * 2 * allychainCount
+  const ports = await findAvailablePorts(numberOfAllychains);
 
-  //Build hrmpChannels, all connected to first parachain
+  //Build hrmpChannels, all connected to first allychain
   const hrmpChannels = [];
-  new Array(numberOfParachains - 1).fill(0).forEach((_, i) => {
+  new Array(numberOfAllychains - 1).fill(0).forEach((_, i) => {
     hrmpChannels.push({
       sender: 1000,
       recipient: 1000 * (i + 2),
@@ -260,23 +260,23 @@ export async function startParachainNodes(options: ParaTestOptions): Promise<{
     });
   });
 
-  const paraChain = options.parachain.chain || "moonbase-local";
+  const paraChain = options.allychain.chain || "moonbase-local";
   const paraBinary =
-    !options.parachain.binary || options.parachain.binary == "local"
+    !options.allychain.binary || options.allychain.binary == "local"
       ? BINARY_PATH
-      : await getMoonbeamReleaseBinary(options.parachain.binary);
+      : await getMoonbeamReleaseBinary(options.allychain.binary);
   const paraSpecs =
-    "spec" in options.parachain
-      ? options.parachain.spec
-      : !("runtime" in options.parachain) || options.parachain.runtime == "local"
+    "spec" in options.allychain
+      ? options.allychain.spec
+      : !("runtime" in options.allychain) || options.allychain.runtime == "local"
       ? await generateRawSpecs(paraBinary, paraChain)
-      : await getRawSpecsFromTag(paraChain.split("-")[0] as any, options.parachain.runtime);
+      : await getRawSpecsFromTag(paraChain.split("-")[0] as any, options.allychain.runtime);
 
-  const relayChain = options.relaychain?.chain || "rococo-local";
+  const relayChain = options.relaychain?.chain || "betanet-local";
   const relayBinary =
     !options?.relaychain?.binary || options?.relaychain?.binary == "local"
       ? RELAY_BINARY_PATH
-      : await getPolkadotReleaseBinary(options.relaychain.binary);
+      : await getAxiaReleaseBinary(options.relaychain.binary);
 
   const RELAY_GENESIS_PER_VERSION = {
     "v0.9.13": {
@@ -320,7 +320,7 @@ export async function startParachainNodes(options: ParaTestOptions): Promise<{
     relaychain: {
       bin: relayBinary,
       chain: relayChain,
-      nodes: new Array(numberOfParachains + 1).fill(0).map((_, i) => {
+      nodes: new Array(numberOfAllychains + 1).fill(0).map((_, i) => {
         return {
           name: RELAY_CHAIN_NODE_NAMES[i],
           port: ports[i].p2pPort,
@@ -330,15 +330,15 @@ export async function startParachainNodes(options: ParaTestOptions): Promise<{
       }),
       genesis,
     },
-    parachains: parachainArray.map((_, i) => {
+    allychains: allychainArray.map((_, i) => {
       return {
         bin: paraBinary,
         chain: paraSpecs,
         nodes: [
           {
-            port: ports[i * 4 + numberOfParachains + 1].p2pPort,
-            rpcPort: ports[i * 4 + numberOfParachains + 1].rpcPort,
-            wsPort: ports[i * 4 + numberOfParachains + 1].wsPort,
+            port: ports[i * 4 + numberOfAllychains + 1].p2pPort,
+            rpcPort: ports[i * 4 + numberOfAllychains + 1].rpcPort,
+            wsPort: ports[i * 4 + numberOfAllychains + 1].wsPort,
             name: "alice",
             flags: [
               "--log=info,rpc=info,evm=trace,ethereum=trace,author=trace",
@@ -353,15 +353,15 @@ export async function startParachainNodes(options: ParaTestOptions): Promise<{
               "--no-prometheus",
               "--no-telemetry",
               "--no-private-ipv4",
-              `--port=${ports[i * 4 + numberOfParachains + 2].p2pPort}`,
-              `--rpc-port=${ports[i * 4 + numberOfParachains + 2].rpcPort}`,
-              `--ws-port=${ports[i * 4 + numberOfParachains + 2].wsPort}`,
+              `--port=${ports[i * 4 + numberOfAllychains + 2].p2pPort}`,
+              `--rpc-port=${ports[i * 4 + numberOfAllychains + 2].rpcPort}`,
+              `--ws-port=${ports[i * 4 + numberOfAllychains + 2].wsPort}`,
             ],
           },
           {
-            port: ports[i * 4 + numberOfParachains + 3].p2pPort,
-            rpcPort: ports[i * 4 + numberOfParachains + 3].rpcPort,
-            wsPort: ports[i * 4 + numberOfParachains + 3].wsPort,
+            port: ports[i * 4 + numberOfAllychains + 3].p2pPort,
+            rpcPort: ports[i * 4 + numberOfAllychains + 3].rpcPort,
+            wsPort: ports[i * 4 + numberOfAllychains + 3].wsPort,
             name: "bob",
             flags: [
               "--log=info,rpc=info,evm=trace,ethereum=trace,author=trace",
@@ -376,15 +376,15 @@ export async function startParachainNodes(options: ParaTestOptions): Promise<{
               "--no-prometheus",
               "--no-telemetry",
               "--no-private-ipv4",
-              `--port=${ports[i * 4 + numberOfParachains + 4].p2pPort}`,
-              `--rpc-port=${ports[i * 4 + numberOfParachains + 4].rpcPort}`,
-              `--ws-port=${ports[i * 4 + numberOfParachains + 4].wsPort}`,
+              `--port=${ports[i * 4 + numberOfAllychains + 4].p2pPort}`,
+              `--rpc-port=${ports[i * 4 + numberOfAllychains + 4].rpcPort}`,
+              `--ws-port=${ports[i * 4 + numberOfAllychains + 4].wsPort}`,
             ],
           },
         ],
       };
     }),
-    simpleParachains: [],
+    simpleAllychains: [],
     hrmpChannels: hrmpChannels,
     finalization: true,
   };
@@ -412,13 +412,13 @@ export async function startParachainNodes(options: ParaTestOptions): Promise<{
   };
   const runPromise = run("", launchConfig);
   if (DISPLAY_LOG) {
-    new Array(numberOfParachains + 1).fill(0).forEach(async (_, i) => {
+    new Array(numberOfAllychains + 1).fill(0).forEach(async (_, i) => {
       listenTo(`${RELAY_CHAIN_NODE_NAMES[i]}.log`, `relay-${i}`);
     });
-    parachainArray.forEach(async (_, i) => {
-      const filenameNode1 = `${ports[i * 4 + numberOfParachains + 1].wsPort}.log`;
+    allychainArray.forEach(async (_, i) => {
+      const filenameNode1 = `${ports[i * 4 + numberOfAllychains + 1].wsPort}.log`;
       listenTo(filenameNode1, `para-${i}-0`);
-      const filenameNode2 = `${ports[i * 4 + numberOfParachains + 1].wsPort}.log`;
+      const filenameNode2 = `${ports[i * 4 + numberOfAllychains + 1].wsPort}.log`;
       listenTo(filenameNode2, `para-${i}-1`);
     });
   }
@@ -429,7 +429,7 @@ export async function startParachainNodes(options: ParaTestOptions): Promise<{
   ]);
 
   return {
-    relayPorts: new Array(numberOfParachains + 1).fill(0).map((_, i) => {
+    relayPorts: new Array(numberOfAllychains + 1).fill(0).map((_, i) => {
       return {
         p2pPort: ports[i].p2pPort,
         rpcPort: ports[i].rpcPort,
@@ -437,19 +437,19 @@ export async function startParachainNodes(options: ParaTestOptions): Promise<{
       };
     }),
 
-    paraPorts: parachainArray.map((_, i) => {
+    paraPorts: allychainArray.map((_, i) => {
       return {
-        parachainId: 1000 * (i + 1),
+        allychainId: 1000 * (i + 1),
         ports: [
           {
-            p2pPort: ports[i * 4 + numberOfParachains + 1].p2pPort,
-            rpcPort: ports[i * 4 + numberOfParachains + 1].rpcPort,
-            wsPort: ports[i * 4 + numberOfParachains + 1].wsPort,
+            p2pPort: ports[i * 4 + numberOfAllychains + 1].p2pPort,
+            rpcPort: ports[i * 4 + numberOfAllychains + 1].rpcPort,
+            wsPort: ports[i * 4 + numberOfAllychains + 1].wsPort,
           },
           {
-            p2pPort: ports[i * 4 + numberOfParachains + 3].p2pPort,
-            rpcPort: ports[i * 4 + numberOfParachains + 3].rpcPort,
-            wsPort: ports[i * 4 + numberOfParachains + 3].wsPort,
+            p2pPort: ports[i * 4 + numberOfAllychains + 3].p2pPort,
+            rpcPort: ports[i * 4 + numberOfAllychains + 3].rpcPort,
+            wsPort: ports[i * 4 + numberOfAllychains + 3].wsPort,
           },
         ],
       };
@@ -457,7 +457,7 @@ export async function startParachainNodes(options: ParaTestOptions): Promise<{
   };
 }
 
-export async function stopParachainNodes() {
+export async function stopAllychainNodes() {
   killAll();
   logListener.forEach((process) => {
     process.kill();

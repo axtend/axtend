@@ -184,7 +184,7 @@ declare module "@polkadot/api-base/types/consts" {
        */
       [key: string]: Codec;
     };
-    parachainStaking: {
+    allychainStaking: {
       /**
        * Number of rounds candidate requests to decrease self-bond must wait to
        * be executable
@@ -200,9 +200,9 @@ declare module "@polkadot/api-base/types/consts" {
        */
       defaultCollatorCommission: Perbill & AugmentedConst<ApiType>;
       /**
-       * Default percent of inflation set aside for parachain bond account
+       * Default percent of inflation set aside for allychain bond account
        */
-      defaultParachainBondReservePercent: Percent & AugmentedConst<ApiType>;
+      defaultAllychainBondReservePercent: Percent & AugmentedConst<ApiType>;
       /**
        * Number of rounds that delegation less requests must wait before executable
        */

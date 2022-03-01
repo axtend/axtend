@@ -16,8 +16,8 @@
 
 //! Moonriver Chain Specifications and utilities for building them.
 //!
-//! Learn more about Substrate chain specifications at
-//! https://substrate.dev/docs/en/knowledgebase/integrate/chain-spec
+//! Learn more about Axlib chain specifications at
+//! https://axlib.dev/docs/en/knowledgebase/integrate/chain-spec
 
 #[cfg(test)]
 use crate::chain_spec::{derive_bip44_pairs_from_mnemonic, get_account_id_from_pair};
@@ -27,7 +27,7 @@ use moonriver_runtime::{
 	currency::MOVR, AccountId, AuthorFilterConfig, AuthorMappingConfig, Balance, BalancesConfig,
 	CouncilCollectiveConfig, CrowdloanRewardsConfig, DemocracyConfig, EVMConfig,
 	EthereumChainIdConfig, EthereumConfig, GenesisAccount, GenesisConfig, InflationInfo,
-	MaintenanceModeConfig, ParachainInfoConfig, ParachainStakingConfig, PolkadotXcmConfig,
+	MaintenanceModeConfig, AllychainInfoConfig, AllychainStakingConfig, AxiaXcmConfig,
 	Precompiles, Range, SystemConfig, TechCommitteeCollectiveConfig, WASM_BINARY,
 };
 use nimbus_primitives::NimbusId;
@@ -37,7 +37,7 @@ use sp_core::ecdsa;
 use sp_runtime::Perbill;
 use std::str::FromStr;
 
-/// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
+/// Specialized `ChainSpec`. This is a specialization of the general Axlib ChainSpec type.
 pub type ChainSpec = sc_service::GenericChainSpec<GenesisConfig, Extensions>;
 
 /// Generate a chain spec for use with the development service.
@@ -96,13 +96,13 @@ pub fn development_chain_spec(mnemonic: Option<String>, num_accounts: Option<u32
 	)
 }
 
-/// Generate a default spec for the parachain service. Use this as a starting point when launching
+/// Generate a default spec for the allychain service. Use this as a starting point when launching
 /// a custom chain.
 pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 	ChainSpec::from_genesis(
 		// TODO Apps depends on this string to determine whether the chain is an ethereum compat
 		// or not. We should decide the proper strings, and update Apps accordingly.
-		// Or maybe Apps can be smart enough to say if the string contains "moonbeam" at all...
+		// Or maybe Apps can be smart enough to say if the string contains "axtend" at all...
 		"Moonriver Local Testnet",
 		"moonriver_local",
 		ChainType::Local,
@@ -162,15 +162,15 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 		),
 		// Extensions
 		Extensions {
-			relay_chain: "kusama-local".into(),
+			relay_chain: "axctest-local".into(),
 			para_id: para_id.into(),
 		},
 	)
 }
 
-pub fn moonbeam_inflation_config() -> InflationInfo<Balance> {
+pub fn axtend_inflation_config() -> InflationInfo<Balance> {
 	fn to_round_inflation(annual: Range<Perbill>) -> Range<Perbill> {
-		use parachain_staking::inflation::{perbill_annual_to_perbill_round, BLOCKS_PER_YEAR};
+		use allychain_staking::inflation::{perbill_annual_to_perbill_round, BLOCKS_PER_YEAR};
 		perbill_annual_to_perbill_round(
 			annual,
 			// rounds per year
@@ -227,8 +227,8 @@ pub fn testnet_genesis(
 		crowdloan_rewards: CrowdloanRewardsConfig {
 			funded_amount: crowdloan_fund_pot,
 		},
-		parachain_info: ParachainInfoConfig {
-			parachain_id: para_id,
+		allychain_info: AllychainInfoConfig {
+			allychain_id: para_id,
 		},
 		ethereum_chain_id: EthereumChainIdConfig { chain_id },
 		evm: EVMConfig {
@@ -251,14 +251,14 @@ pub fn testnet_genesis(
 		ethereum: EthereumConfig {},
 		base_fee: Default::default(),
 		democracy: DemocracyConfig::default(),
-		parachain_staking: ParachainStakingConfig {
+		allychain_staking: AllychainStakingConfig {
 			candidates: candidates
 				.iter()
 				.cloned()
 				.map(|(account, _, bond)| (account, bond))
 				.collect(),
 			delegations,
-			inflation_config: moonbeam_inflation_config(),
+			inflation_config: axtend_inflation_config(),
 		},
 		council_collective: CouncilCollectiveConfig {
 			phantom: Default::default(),
@@ -285,7 +285,7 @@ pub fn testnet_genesis(
 			start_in_maintenance_mode: false,
 		},
 		// This should initialize it to whatever we have set in the pallet
-		polkadot_xcm: PolkadotXcmConfig::default(),
+		polkadot_xcm: AxiaXcmConfig::default(),
 	}
 }
 

@@ -1,12 +1,12 @@
 import { expect } from "chai";
 
 import { ALITH } from "../../util/constants";
-import { describeParachain } from "../../util/setup-para-tests";
+import { describeAllychain } from "../../util/setup-para-tests";
 
-describeParachain(
+describeAllychain(
   "Balance genesis",
   {
-    parachain: {
+    allychain: {
       chain: "moonriver-local",
     },
   },

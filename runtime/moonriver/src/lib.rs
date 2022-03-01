@@ -29,7 +29,7 @@
 include!(concat!(env!("OUT_DIR"), "/wasm_binary.rs"));
 
 use account::AccountId20;
-use cumulus_pallet_parachain_system::RelaychainBlockNumberProvider;
+use cumulus_pallet_allychain_system::RelaychainBlockNumberProvider;
 use fp_rpc::TransactionStatus;
 use frame_support::{
 	construct_runtime, parameter_types,
@@ -46,11 +46,11 @@ use frame_support::{
 	PalletId,
 };
 use frame_system::{EnsureRoot, EnsureSigned};
-pub use moonbeam_core_primitives::{
+pub use axtend_core_primitives::{
 	AccountId, AccountIndex, Address, AssetId, Balance, BlockNumber, DigestItem, Hash, Header,
 	Index, Signature,
 };
-use moonbeam_rpc_primitives_txpool::TxPoolResponse;
+use axtend_rpc_primitives_txpool::TxPoolResponse;
 use pallet_balances::NegativeImbalance;
 use pallet_ethereum::Call::transact;
 use pallet_ethereum::Transaction as EthereumTransaction;
@@ -62,7 +62,7 @@ use pallet_evm::{
 };
 use pallet_evm_precompile_assets_erc20::AccountIdAssetIdConversion;
 use pallet_transaction_payment::{CurrencyAdapter, Multiplier, TargetedFeeAdjustment};
-pub use parachain_staking::{InflationInfo, Range};
+pub use allychain_staking::{InflationInfo, Range};
 use parity_scale_codec::{Decode, Encode, MaxEncodedLen};
 use scale_info::TypeInfo;
 use sp_api::impl_runtime_apis;
@@ -85,8 +85,8 @@ use xcm_builder::{
 	AccountKey20Aliases, AllowKnownQueryResponses, AllowSubscriptionsFrom,
 	AllowTopLevelPaidExecutionFrom, ConvertedConcreteAssetId,
 	CurrencyAdapter as XcmCurrencyAdapter, EnsureXcmOrigin, FixedWeightBounds, FungiblesAdapter,
-	LocationInverter, ParentIsPreset, RelayChainAsNative, SiblingParachainAsNative,
-	SiblingParachainConvertsVia, SignedAccountKey20AsNative, SovereignSignedViaLocation,
+	LocationInverter, ParentIsPreset, RelayChainAsNative, SiblingAllychainAsNative,
+	SiblingAllychainConvertsVia, SignedAccountKey20AsNative, SovereignSignedViaLocation,
 	TakeWeightCredit, UsingComponents,
 };
 
@@ -198,7 +198,7 @@ parameter_types! {
 	pub const BlockHashCount: BlockNumber = 256;
 	pub const Version: RuntimeVersion = VERSION;
 	/// We allow for one half second of compute with a 6 second average block time.
-	/// These values are dictated by Polkadot for the parachain.
+	/// These values are dictated by Axia for the allychain.
 	pub BlockWeights: frame_system::limits::BlockWeights = frame_system::limits::BlockWeights
 		::with_sensible_defaults(MAXIMUM_BLOCK_WEIGHT, NORMAL_DISPATCH_RATIO);
 	/// We allow for 5 MB blocks.
@@ -243,9 +243,9 @@ impl frame_system::Config for Runtime {
 	type DbWeight = RocksDbWeight;
 	type BaseCallFilter = MaintenanceMode;
 	type SystemWeightInfo = ();
-	/// This is used as an identifier of the chain. 42 is the generic substrate prefix.
+	/// This is used as an identifier of the chain. 42 is the generic axlib prefix.
 	type SS58Prefix = SS58Prefix;
-	type OnSetCode = cumulus_pallet_parachain_system::ParachainSetCode<Self>;
+	type OnSetCode = cumulus_pallet_allychain_system::AllychainSetCode<Self>;
 	type MaxConsumers = frame_support::traits::ConstU32<16>;
 }
 
@@ -253,7 +253,7 @@ impl pallet_utility::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 	type PalletsOrigin = OriginCaller;
-	type WeightInfo = pallet_utility::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_utility::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
@@ -265,7 +265,7 @@ impl pallet_timestamp::Config for Runtime {
 	type Moment = u64;
 	type OnTimestampSet = ();
 	type MinimumPeriod = MinimumPeriod;
-	type WeightInfo = pallet_timestamp::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_timestamp::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
@@ -285,7 +285,7 @@ impl pallet_balances::Config for Runtime {
 	type DustRemoval = ();
 	type ExistentialDeposit = ExistentialDeposit;
 	type AccountStore = System;
-	type WeightInfo = pallet_balances::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_balances::weights::AxlibWeight<Runtime>;
 }
 
 pub struct DealWithFees<R>(sp_std::marker::PhantomData<R>);
@@ -294,7 +294,7 @@ where
 	R: pallet_balances::Config + pallet_treasury::Config,
 	pallet_treasury::Pallet<R>: OnUnbalanced<NegativeImbalance<R>>,
 {
-	// this seems to be called for substrate-based transactions
+	// this seems to be called for axlib-based transactions
 	fn on_unbalanceds<B>(mut fees_then_tips: impl Iterator<Item = NegativeImbalance<R>>) {
 		if let Some(fees) = fees_then_tips.next() {
 			// for fees, 80% are burned, 20% to the treasury
@@ -465,7 +465,7 @@ impl pallet_scheduler::Config for Runtime {
 	type MaximumWeight = MaximumSchedulerWeight;
 	type ScheduleOrigin = EnsureRoot<AccountId>;
 	type MaxScheduledPerBlock = MaxScheduledPerBlock;
-	type WeightInfo = pallet_scheduler::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_scheduler::weights::AxlibWeight<Runtime>;
 	type OriginPrivilegeCmp = EqualPrivilegeOnly;
 	type PreimageProvider = ();
 	type NoPreimagePostponement = ();
@@ -500,7 +500,7 @@ impl pallet_collective::Config<CouncilInstance> for Runtime {
 	type MaxProposals = CouncilMaxProposals;
 	type MaxMembers = CouncilMaxMembers;
 	type DefaultVote = pallet_collective::MoreThanMajorityThenPrimeDefaultVote;
-	type WeightInfo = pallet_collective::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_collective::weights::AxlibWeight<Runtime>;
 }
 
 impl pallet_collective::Config<TechCommitteeInstance> for Runtime {
@@ -511,7 +511,7 @@ impl pallet_collective::Config<TechCommitteeInstance> for Runtime {
 	type MaxProposals = TechCommitteeMaxProposals;
 	type MaxMembers = TechCommitteeMaxMembers;
 	type DefaultVote = pallet_collective::MoreThanMajorityThenPrimeDefaultVote;
-	type WeightInfo = pallet_collective::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_collective::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
@@ -576,7 +576,7 @@ impl pallet_democracy::Config for Runtime {
 	type MaxVotes = MaxVotes;
 	type OperationalPreimageOrigin = pallet_collective::EnsureMember<AccountId, CouncilInstance>;
 	type PalletsOrigin = OriginCaller;
-	type WeightInfo = pallet_democracy::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_democracy::weights::AxlibWeight<Runtime>;
 	type MaxProposals = MaxProposals;
 }
 
@@ -614,7 +614,7 @@ impl pallet_treasury::Config for Runtime {
 	type Burn = ();
 	type BurnDestination = ();
 	type MaxApprovals = MaxApprovals;
-	type WeightInfo = pallet_treasury::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_treasury::weights::AxlibWeight<Runtime>;
 	type SpendFunds = ();
 	type ProposalBondMaximum = ();
 }
@@ -652,7 +652,7 @@ impl pallet_identity::Config for Runtime {
 	type Slashed = Treasury;
 	type ForceOrigin = IdentityForceOrigin;
 	type RegistrarOrigin = IdentityRegistrarOrigin;
-	type WeightInfo = pallet_identity::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_identity::weights::AxlibWeight<Runtime>;
 }
 
 pub struct TransactionConverter;
@@ -715,10 +715,10 @@ parameter_types! {
 	pub const ReservedDmpWeight: Weight = MAXIMUM_BLOCK_WEIGHT / 4;
 }
 
-impl cumulus_pallet_parachain_system::Config for Runtime {
+impl cumulus_pallet_allychain_system::Config for Runtime {
 	type Event = Event;
 	type OnSystemEvent = ();
-	type SelfParaId = ParachainInfo;
+	type SelfParaId = AllychainInfo;
 	type DmpMessageHandler = MaintenanceMode;
 	type ReservedDmpWeight = ReservedDmpWeight;
 	type OutboundXcmpMessageSource = XcmpQueue;
@@ -726,7 +726,7 @@ impl cumulus_pallet_parachain_system::Config for Runtime {
 	type ReservedXcmpWeight = ReservedXcmpWeight;
 }
 
-impl parachain_info::Config for Runtime {}
+impl allychain_info::Config for Runtime {}
 
 parameter_types! {
 	/// Minimum round length is 2 minutes (10 * 12 second block times)
@@ -755,8 +755,8 @@ parameter_types! {
 	pub const MaxDelegationsPerDelegator: u32 = 100;
 	/// Default fixed percent a collator takes off the top of due rewards
 	pub const DefaultCollatorCommission: Perbill = Perbill::from_percent(20);
-	/// Default percent of inflation set aside for parachain bond every round
-	pub const DefaultParachainBondReservePercent: Percent = Percent::from_percent(30);
+	/// Default percent of inflation set aside for allychain bond every round
+	pub const DefaultAllychainBondReservePercent: Percent = Percent::from_percent(30);
 	/// Minimum stake required to become a collator
 	pub const MinCollatorStk: u128 = 1000 * currency::MOVR * currency::SUPPLY_FACTOR;
 	/// Minimum stake required to be reserved to be a candidate
@@ -764,7 +764,7 @@ parameter_types! {
 	/// Minimum stake required to be reserved to be a delegator
 	pub const MinDelegatorStk: u128 = 5 * currency::MOVR * currency::SUPPLY_FACTOR;
 }
-impl parachain_staking::Config for Runtime {
+impl allychain_staking::Config for Runtime {
 	type Event = Event;
 	type Currency = Balances;
 	type MonetaryGovernanceOrigin = EnsureRoot<AccountId>;
@@ -781,25 +781,25 @@ impl parachain_staking::Config for Runtime {
 	type MaxBottomDelegationsPerCandidate = MaxBottomDelegationsPerCandidate;
 	type MaxDelegationsPerDelegator = MaxDelegationsPerDelegator;
 	type DefaultCollatorCommission = DefaultCollatorCommission;
-	type DefaultParachainBondReservePercent = DefaultParachainBondReservePercent;
+	type DefaultAllychainBondReservePercent = DefaultAllychainBondReservePercent;
 	type MinCollatorStk = MinCollatorStk;
 	type MinCandidateStk = MinCandidateStk;
 	type MinDelegation = MinDelegatorStk;
 	type MinDelegatorStk = MinDelegatorStk;
-	type WeightInfo = parachain_staking::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = allychain_staking::weights::AxlibWeight<Runtime>;
 }
 
 impl pallet_author_inherent::Config for Runtime {
 	type SlotBeacon = RelaychainBlockNumberProvider<Self>;
 	type AccountLookup = AuthorMapping;
-	type EventHandler = ParachainStaking;
+	type EventHandler = AllychainStaking;
 	type CanAuthor = AuthorFilter;
 }
 
 impl pallet_author_slot_filter::Config for Runtime {
 	type Event = Event;
 	type RandomnessSource = RandomnessCollectiveFlip;
-	type PotentialAuthors = ParachainStaking;
+	type PotentialAuthors = AllychainStaking;
 }
 
 parameter_types! {
@@ -826,8 +826,8 @@ impl pallet_crowdloan_rewards::Config for Runtime {
 	type SignatureNetworkIdentifier = SignatureNetworkIdentifier;
 	type VestingBlockNumber = cumulus_primitives_core::relay_chain::BlockNumber;
 	type VestingBlockProvider =
-		cumulus_pallet_parachain_system::RelaychainBlockNumberProvider<Self>;
-	type WeightInfo = pallet_crowdloan_rewards::weights::SubstrateWeight<Runtime>;
+		cumulus_pallet_allychain_system::RelaychainBlockNumberProvider<Self>;
+	type WeightInfo = pallet_crowdloan_rewards::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
@@ -839,7 +839,7 @@ impl pallet_author_mapping::Config for Runtime {
 	type Event = Event;
 	type DepositCurrency = Balances;
 	type DepositAmount = DepositAmount;
-	type WeightInfo = pallet_author_mapping::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_author_mapping::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
@@ -893,7 +893,7 @@ impl InstanceFilter<Call> for ProxyType {
 				matches!(
 					c,
 					Call::System(..)
-						| Call::Timestamp(..) | Call::ParachainStaking(..)
+						| Call::Timestamp(..) | Call::AllychainStaking(..)
 						| Call::Democracy(..) | Call::CouncilCollective(..)
 						| Call::Identity(..) | Call::TechCommitteeCollective(..)
 						| Call::Utility(..) | Call::Proxy(..)
@@ -910,7 +910,7 @@ impl InstanceFilter<Call> for ProxyType {
 			),
 			ProxyType::Staking => matches!(
 				c,
-				Call::ParachainStaking(..) | Call::Utility(..) | Call::AuthorMapping(..)
+				Call::AllychainStaking(..) | Call::Utility(..) | Call::AuthorMapping(..)
 			),
 			ProxyType::CancelProxy => matches!(
 				c,
@@ -939,7 +939,7 @@ impl pallet_proxy::Config for Runtime {
 	type ProxyDepositBase = ProxyDepositBase;
 	type ProxyDepositFactor = ProxyDepositFactor;
 	type MaxProxies = MaxProxies;
-	type WeightInfo = pallet_proxy::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_proxy::weights::AxlibWeight<Runtime>;
 	type MaxPending = MaxPending;
 	type CallHasher = BlakeTwo256;
 	type AnnouncementDepositBase = AnnouncementDepositBase;
@@ -964,11 +964,11 @@ impl pallet_migrations::Config for Runtime {
 
 parameter_types! {
 	// The network Id of the relay
-	pub const RelayNetwork: NetworkId = NetworkId::Kusama;
+	pub const RelayNetwork: NetworkId = NetworkId::AxiaTest;
 	// The relay chain Origin type
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 	// The ancestry, defines the multilocation describing this consensus system
-	pub Ancestry: MultiLocation = Parachain(ParachainInfo::parachain_id().into()).into();
+	pub Ancestry: MultiLocation = Allychain(AllychainInfo::allychain_id().into()).into();
 	// Old Self Reserve location, defines the multilocation identifiying the self-reserve currency
 	// This is used to match it against our Balances pallet when we receive such a MultiLocation
 	// (Parent, Self Para Id, Self Balances pallet index)
@@ -976,7 +976,7 @@ parameter_types! {
 	pub OldAnchoringSelfReserve: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X2(
-			Parachain(ParachainInfo::parachain_id().into()),
+			Allychain(AllychainInfo::allychain_id().into()),
 			PalletInstance(<Balances as PalletInfoAccess>::index() as u8)
 		)
 	};
@@ -1005,8 +1005,8 @@ parameter_types! {
 pub type LocationToAccountId = (
 	// The parent (Relay-chain) origin converts to the default `AccountId`.
 	ParentIsPreset<AccountId>,
-	// Sibling parachain origins convert to AccountId via the `ParaId::into`.
-	SiblingParachainConvertsVia<polkadot_parachain::primitives::Sibling, AccountId>,
+	// Sibling allychain origins convert to AccountId via the `ParaId::into`.
+	SiblingAllychainConvertsVia<polkadot_allychain::primitives::Sibling, AccountId>,
 	// If we receive a MultiLocation of type AccountKey20, just generate a native account
 	AccountKey20Aliases<RelayNetwork, AccountId>,
 );
@@ -1065,9 +1065,9 @@ pub type XcmOriginToTransactDispatchOrigin = (
 	// Native converter for Relay-chain (Parent) location; will converts to a `Relay` origin when
 	// recognised.
 	RelayChainAsNative<RelayChainOrigin, Origin>,
-	// Native converter for sibling Parachains; will convert to a `SiblingPara` origin when
+	// Native converter for sibling Allychains; will convert to a `SiblingPara` origin when
 	// recognised.
-	SiblingParachainAsNative<cumulus_pallet_xcm::Origin, Origin>,
+	SiblingAllychainAsNative<cumulus_pallet_xcm::Origin, Origin>,
 	// Xcm origins can be represented natively under the Xcm pallet's Xcm origin.
 	pallet_xcm::XcmPassthrough<Origin>,
 	// Xcm Origins defined by a Multilocation of type AccountKey20 can be converted to a 20 byte-
@@ -1089,7 +1089,7 @@ pub type XcmBarrier = (
 	TakeWeightCredit,
 	AllowTopLevelPaidExecutionFrom<Everything>,
 	// Expected responses are OK.
-	AllowKnownQueryResponses<PolkadotXcm>,
+	AllowKnownQueryResponses<AxiaXcm>,
 	// Subscriptions for version tracking are OK.
 	AllowSubscriptionsFrom<Everything>,
 );
@@ -1151,10 +1151,10 @@ impl xcm_executor::Config for XcmExecutorConfig {
 		>,
 		FirstAssetTrader<AssetType, AssetManager, XcmFeesToAccount>,
 	);
-	type ResponseHandler = PolkadotXcm;
-	type SubscriptionService = PolkadotXcm;
-	type AssetTrap = PolkadotXcm;
-	type AssetClaims = PolkadotXcm;
+	type ResponseHandler = AxiaXcm;
+	type SubscriptionService = AxiaXcm;
+	type AssetTrap = AxiaXcm;
+	type AssetClaims = AxiaXcm;
 }
 
 type XcmExecutor = xcm_executor::XcmExecutor<XcmExecutorConfig>;
@@ -1170,7 +1170,7 @@ pub type LocalOriginToLocation = SignedToAccountId20<Origin, AccountId, RelayNet
 /// queues.
 pub type XcmRouter = (
 	// Two routers - use UMP to communicate with the relay chain:
-	cumulus_primitives_utility::ParentAsUmp<ParachainSystem, PolkadotXcm>,
+	cumulus_primitives_utility::ParentAsUmp<AllychainSystem, AxiaXcm>,
 	// ..and XCMP to communicate with the sibling chains.
 	XcmpQueue,
 );
@@ -1200,8 +1200,8 @@ impl cumulus_pallet_xcm::Config for Runtime {
 impl cumulus_pallet_xcmp_queue::Config for Runtime {
 	type Event = Event;
 	type XcmExecutor = XcmExecutor;
-	type ChannelInfo = ParachainSystem;
-	type VersionWrapper = PolkadotXcm;
+	type ChannelInfo = AllychainSystem;
+	type VersionWrapper = AxiaXcm;
 	type ExecuteOverweightOrigin = EnsureRoot<AccountId>;
 	type ControllerOrigin = EnsureRoot<AccountId>;
 	type ControllerOriginConverter = XcmOriginToTransactDispatchOrigin;
@@ -1245,13 +1245,13 @@ impl pallet_assets::Config for Runtime {
 	type Freezer = ();
 	type Extra = ();
 	type AssetAccountDeposit = AssetAccountDeposit;
-	type WeightInfo = pallet_assets::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_assets::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
-	// Statemine ParaId in kusama
+	// Statemine ParaId in axctest
 	pub StatemineParaId: u32 = 1000;
-	// Assets Pallet instance in Statemine kusama
+	// Assets Pallet instance in Statemine axctest
 	pub StatemineAssetPalletInstance: u8 = 50;
 }
 
@@ -1274,11 +1274,11 @@ impl From<MultiLocation> for AssetType {
 			// We map the previous location to the new one so that the assetId is well retrieved
 			MultiLocation {
 				parents: 1,
-				interior: X2(Parachain(id), GeneralIndex(index)),
+				interior: X2(Allychain(id), GeneralIndex(index)),
 			} if id == StatemineParaId::get() => Self::Xcm(MultiLocation {
 				parents: 1,
 				interior: X3(
-					Parachain(id),
+					Allychain(id),
 					PalletInstance(StatemineAssetPalletInstance::get()),
 					GeneralIndex(index),
 				),
@@ -1368,7 +1368,7 @@ impl pallet_asset_manager::Config for Runtime {
 	type AssetType = AssetType;
 	type AssetRegistrar = AssetRegistrar;
 	type AssetModifierOrigin = EnsureRoot<AccountId>;
-	type WeightInfo = pallet_asset_manager::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_asset_manager::weights::AxlibWeight<Runtime>;
 }
 
 // Instruct how to go from an H160 to an AssetID
@@ -1449,7 +1449,7 @@ parameter_types! {
 	pub SelfLocation: MultiLocation = MultiLocation {
 		parents:1,
 		interior: Junctions::X1(
-			Parachain(ParachainInfo::get().into())
+			Allychain(AllychainInfo::get().into())
 		)
 	};
 }
@@ -1490,9 +1490,9 @@ impl TryFrom<u8> for Transactors {
 impl UtilityEncodeCall for Transactors {
 	fn encode_call(self, call: UtilityAvailableCalls) -> Vec<u8> {
 		match self {
-			// Shall we use westend for moonbase? The tests are probably based on rococo
-			// but moonbase-alpha is attached to westend-runtime I think
-			Transactors::Relay => moonbeam_relay_encoder::kusama::KusamaEncoder.encode_call(call),
+			// Shall we use alphanet for moonbase? The tests are probably based on betanet
+			// but moonbase-alpha is attached to alphanet-runtime I think
+			Transactors::Relay => axtend_relay_encoder::axctest::AxiaTestEncoder.encode_call(call),
 		}
 	}
 }
@@ -1521,7 +1521,7 @@ impl xcm_transactor::Config for Runtime {
 	type LocationInverter = LocationInverter<Ancestry>;
 	type BaseXcmWeight = BaseXcmWeight;
 	type AssetTransactor = AssetTransactors;
-	type WeightInfo = xcm_transactor::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = xcm_transactor::weights::AxlibWeight<Runtime>;
 }
 
 /// Maintenance mode Call filter
@@ -1536,8 +1536,8 @@ impl Contains<Call> for MaintenanceFilter {
 			Call::EVM(_) => false,
 			Call::Identity(_) => false,
 			Call::XTokens(_) => false,
-			Call::ParachainStaking(_) => false,
-			Call::PolkadotXcm(_) => false,
+			Call::AllychainStaking(_) => false,
+			Call::AxiaXcm(_) => false,
 			Call::Treasury(_) => false,
 			Call::XcmTransactor(_) => false,
 			_ => true,
@@ -1564,7 +1564,7 @@ impl Contains<Call> for NormalFilter {
 			},
 			// We just want to enable this in case of live chains, since the default version
 			// is populated at genesis
-			Call::PolkadotXcm(method) => match method {
+			Call::AxiaXcm(method) => match method {
 				pallet_xcm::Call::force_default_xcm_version { .. } => true,
 				_ => false,
 			},
@@ -1673,17 +1673,17 @@ construct_runtime! {
 	{
 		// System support stuff.
 		System: frame_system::{Pallet, Call, Storage, Config, Event<T>} = 0,
-		ParachainSystem: cumulus_pallet_parachain_system::{Pallet, Call, Storage, Inherent, Event<T>} = 1,
+		AllychainSystem: cumulus_pallet_allychain_system::{Pallet, Call, Storage, Inherent, Event<T>} = 1,
 		RandomnessCollectiveFlip: pallet_randomness_collective_flip::{Pallet, Storage} = 2,
 		Timestamp: pallet_timestamp::{Pallet, Call, Storage, Inherent} = 3,
-		ParachainInfo: parachain_info::{Pallet, Storage, Config} = 4,
+		AllychainInfo: allychain_info::{Pallet, Storage, Config} = 4,
 
 		// Monetary stuff.
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>} = 10,
 		TransactionPayment: pallet_transaction_payment::{Pallet, Storage} = 11,
 
 		// Consensus support.
-		ParachainStaking: parachain_staking::{Pallet, Call, Storage, Event<T>, Config<T>} = 20,
+		AllychainStaking: allychain_staking::{Pallet, Call, Storage, Event<T>, Config<T>} = 20,
 		AuthorInherent: pallet_author_inherent::{Pallet, Call, Storage, Inherent} = 21,
 		AuthorFilter: pallet_author_slot_filter::{Pallet, Call, Storage, Event, Config} = 22,
 		AuthorMapping: pallet_author_mapping::{Pallet, Call, Config<T>, Storage, Event<T>} = 23,
@@ -1724,7 +1724,7 @@ construct_runtime! {
 		XcmpQueue: cumulus_pallet_xcmp_queue::{Pallet, Storage, Event<T>} = 100,
 		CumulusXcm: cumulus_pallet_xcm::{Pallet, Event<T>, Origin} = 101,
 		DmpQueue: cumulus_pallet_dmp_queue::{Pallet, Call, Storage, Event<T>} = 102,
-		PolkadotXcm: pallet_xcm::{Pallet, Storage, Call, Event<T>, Origin, Config} = 103,
+		AxiaXcm: pallet_xcm::{Pallet, Storage, Call, Event<T>, Origin, Config} = 103,
 		Assets: pallet_assets::{Pallet, Call, Storage, Event<T>} = 104,
 		AssetManager: pallet_asset_manager::{Pallet, Call, Storage, Event<T>} = 105,
 		XTokens: orml_xtokens::{Pallet, Call, Storage, Event<T>} = 106,
@@ -1786,9 +1786,9 @@ runtime_common::impl_runtime_apis_plus_common! {
 				return InvalidTransaction::Call.into();
 			}
 
-			// This runtime uses Substrate's pallet transaction payment. This
-			// makes the chain feel like a standard Substrate chain when submitting
-			// frame transactions and using Substrate ecosystem tools. It has the downside that
+			// This runtime uses Axlib's pallet transaction payment. This
+			// makes the chain feel like a standard Axlib chain when submitting
+			// frame transactions and using Axlib ecosystem tools. It has the downside that
 			// transaction are not prioritized by gas_price. The following code reprioritizes
 			// transactions to overcome this.
 			//
@@ -1852,13 +1852,13 @@ runtime_common::impl_runtime_apis_plus_common! {
 	}
 }
 
-// Check the timestamp and parachain inherents
+// Check the timestamp and allychain inherents
 struct CheckInherents;
 
-impl cumulus_pallet_parachain_system::CheckInherents<Block> for CheckInherents {
+impl cumulus_pallet_allychain_system::CheckInherents<Block> for CheckInherents {
 	fn check_inherents(
 		block: &Block,
-		relay_state_proof: &cumulus_pallet_parachain_system::RelayChainStateProof,
+		relay_state_proof: &cumulus_pallet_allychain_system::RelayChainStateProof,
 	) -> sp_inherents::CheckInherentsResult {
 		let relay_chain_slot = relay_state_proof
 			.read_slot()
@@ -1877,7 +1877,7 @@ impl cumulus_pallet_parachain_system::CheckInherents<Block> for CheckInherents {
 }
 
 // Nimbus's Executive wrapper allows relay validators to verify the seal digest
-cumulus_pallet_parachain_system::register_validate_block!(
+cumulus_pallet_allychain_system::register_validate_block!(
 	Runtime = Runtime,
 	BlockExecutor = pallet_author_inherent::BlockExecutor::<Runtime, Executive>,
 	CheckInherents = CheckInherents,
@@ -1900,7 +1900,7 @@ mod tests {
 		);
 		assert!(std::mem::size_of::<pallet_evm::Call<Runtime>>() <= CALL_ALIGN as usize);
 		assert!(std::mem::size_of::<pallet_ethereum::Call<Runtime>>() <= CALL_ALIGN as usize);
-		assert!(std::mem::size_of::<parachain_staking::Call<Runtime>>() <= CALL_ALIGN as usize);
+		assert!(std::mem::size_of::<allychain_staking::Call<Runtime>>() <= CALL_ALIGN as usize);
 		assert!(
 			std::mem::size_of::<pallet_author_inherent::Call<Runtime>>() <= CALL_ALIGN as usize
 		);
@@ -1975,7 +1975,7 @@ mod tests {
 	}
 
 	#[test]
-	// Required migration is parachain_staking::migrations::IncreaseMaxTopDelegationsPerCandidate
+	// Required migration is allychain_staking::migrations::IncreaseMaxTopDelegationsPerCandidate
 	// Purpose of this test is to remind of required migration if constant is ever changed
 	fn updating_maximum_delegators_per_candidate_requires_configuring_required_migration() {
 		assert_eq!(MaxTopDelegationsPerCandidate::get(), 300);

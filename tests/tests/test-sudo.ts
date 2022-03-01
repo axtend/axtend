@@ -11,13 +11,13 @@ import {
   ALITH,
 } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { verifyLatestBlockFees } from "../util/block";
 import { createTransfer } from "../util/transactions";
 
-describeDevMoonbeam("Sudo - successful setParachainBondAccount", (context) => {
+describeDevMoonbeam("Sudo - successful setAllychainBondAccount", (context) => {
   let alith: KeyringPair;
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
@@ -26,16 +26,16 @@ describeDevMoonbeam("Sudo - successful setParachainBondAccount", (context) => {
       context,
       alith,
       context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.polkadotApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
       )
     );
-    //check parachainBondInfo
-    const parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
-    expect(parachainBondInfo.toHuman()["percent"]).to.equal("30.00%");
+    //check allychainBondInfo
+    const allychainBondInfo = await context.polkadotApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
+    expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
     //check events
     expect(events.length).to.eq(5);
-    expect(context.polkadotApi.events.parachainStaking.ParachainBondAccountSet.is(events[1] as any))
+    expect(context.polkadotApi.events.allychainStaking.AllychainBondAccountSet.is(events[1] as any))
       .to.be.true;
     expect(context.polkadotApi.events.balances.Deposit.is(events[3] as any)).to.be.true;
     expect(context.polkadotApi.events.system.ExtrinsicSuccess.is(events[4] as any)).to.be.true;
@@ -47,7 +47,7 @@ describeDevMoonbeam("Sudo - successful setParachainBondAccount", (context) => {
 });
 describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
   let alith: KeyringPair;
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     const initBalance = await context.web3.eth.getBalance(ALITH);
@@ -75,7 +75,7 @@ describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
         context,
         alith,
         context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+          context.polkadotApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
         )
       );
     } catch (e) {
@@ -84,14 +84,14 @@ describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
           "to pay some fees , e.g. account balance too low"
       );
     }
-    //check parachainBondInfo
-    const parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
+    //check allychainBondInfo
+    const allychainBondInfo = await context.polkadotApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
   });
 });
 describeDevMoonbeam("Sudo - Only sudo account", (context) => {
   let genesisAccount: KeyringPair;
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
   });
@@ -100,13 +100,13 @@ describeDevMoonbeam("Sudo - Only sudo account", (context) => {
       context,
       genesisAccount,
       context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.polkadotApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
       )
     );
-    //check parachainBondInfo
-    const parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
-    expect(parachainBondInfo.toHuman()["percent"]).to.equal("30.00%");
+    //check allychainBondInfo
+    const allychainBondInfo = await context.polkadotApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
+    expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
     //check events
     expect(events.length === 6).to.be.true;
     expect(context.polkadotApi.events.system.NewAccount.is(events[2] as any)).to.be.true;
@@ -122,7 +122,7 @@ describeDevMoonbeam("Sudo - Only sudo account", (context) => {
 
 describeDevMoonbeam("Sudo - Only sudo account - test gas", (context) => {
   let alith: KeyringPair;
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
@@ -131,7 +131,7 @@ describeDevMoonbeam("Sudo - Only sudo account - test gas", (context) => {
       context,
       alith,
       context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.polkadotApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
       )
     );
 

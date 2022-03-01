@@ -31,14 +31,14 @@ async function main() {
   const template = `
   - [ ] Create a PR that increment spec version (like #1051)
   - [ ] Cleanup previous migrations (only for major release,
-  https://github.com/PureStake/moonbeam/blob/master/runtime/common/src/migrations.rs)
+  https://github.com/PureStake/axtend/blob/master/runtime/common/src/migrations.rs)
   - [ ] Get that PR approved and merged
   - [ ] Tag master with runtime-${newVersion} and push to github
   - [ ] Start the github action Publish Runtime Draft
   with runtime-${previousVersion} => runtime-${newVersion}
   - [ ] Review the generated Draft and clean a bit the messages if needed (keep it draft)
-  - [ ] Create the tracing runtime on moonbeam-runtime-overrides
-  (see https://github.com/PureStake/moonbeam-runtime-overrides/blob/master/README.md)
+  - [ ] Create the tracing runtime on axtend-runtime-overrides
+  (see https://github.com/PureStake/axtend-runtime-overrides/blob/master/README.md)
   - [ ] Add new substitute in stagenet configuration 
   - [ ] Upgrade stagenet
   - [ ] Add new substitute in alphanet configuration 

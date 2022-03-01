@@ -36,7 +36,7 @@ use sp_runtime::{
 };
 use xcm::latest::{
 	Error as XcmError,
-	Junction::{AccountKey20, GeneralIndex, PalletInstance, Parachain},
+	Junction::{AccountKey20, GeneralIndex, PalletInstance, Allychain},
 	Junctions, MultiAsset, MultiLocation, NetworkId, Result as XcmResult, SendResult, SendXcm, Xcm,
 };
 
@@ -71,7 +71,7 @@ construct_runtime!(
 	}
 );
 
-// FRom https://github.com/PureStake/moonbeam/pull/518. Merge to common once is merged
+// FRom https://github.com/PureStake/axtend/pull/518. Merge to common once is merged
 #[derive(
 	Eq,
 	PartialEq,
@@ -163,7 +163,7 @@ impl sp_runtime::traits::Convert<TestAccount, MultiLocation> for AccountIdToMult
 pub type AssetId = u128;
 
 parameter_types! {
-	pub ParachainId: cumulus_primitives_core::ParaId = 100.into();
+	pub AllychainId: cumulus_primitives_core::ParaId = 100.into();
 }
 
 parameter_types! {
@@ -261,7 +261,7 @@ parameter_types! {
 	pub const PrecompilesValue: TestPrecompiles<Runtime> = TestPrecompiles(PhantomData);
 }
 
-/// A mapping function that converts Ethereum gas to Substrate weight
+/// A mapping function that converts Ethereum gas to Axlib weight
 /// We are mocking this 1-1 to test db read charges too
 pub struct MockGasWeightMapping;
 impl GasWeightMapping for MockGasWeightMapping {
@@ -287,7 +287,7 @@ impl pallet_evm::Config for Runtime {
 	type ChainId = ();
 	type OnChargeTransaction = ();
 	type BlockGasLimit = ();
-	type BlockHashMapping = pallet_evm::SubstrateBlockHashMapping<Self>;
+	type BlockHashMapping = pallet_evm::AxlibBlockHashMapping<Self>;
 	type FindAuthor = ();
 }
 
@@ -361,17 +361,17 @@ pub enum CurrencyId {
 }
 
 parameter_types! {
-	pub Ancestry: MultiLocation = Parachain(ParachainId::get().into()).into();
+	pub Ancestry: MultiLocation = Allychain(AllychainId::get().into()).into();
 
 	pub const BaseXcmWeight: Weight = 1000;
-	pub const RelayNetwork: NetworkId = NetworkId::Polkadot;
+	pub const RelayNetwork: NetworkId = NetworkId::Axia;
 
-	pub SelfLocation: MultiLocation = (1, Junctions::X1(Parachain(ParachainId::get().into()))).into();
+	pub SelfLocation: MultiLocation = (1, Junctions::X1(Allychain(AllychainId::get().into()))).into();
 
 	pub SelfReserve: MultiLocation = (
 		1,
 		Junctions::X2(
-			Parachain(ParachainId::get().into()),
+			Allychain(AllychainId::get().into()),
 			PalletInstance(<Runtime as frame_system::Config>::PalletInfo::index::<Balances>().unwrap() as u8)
 		)).into();
 	pub MaxInstructions: u32 = 100;
@@ -487,7 +487,7 @@ impl sp_runtime::traits::Convert<CurrencyId, Option<MultiLocation>> for Currency
 				} else {
 					Some(MultiLocation::new(
 						1,
-						Junctions::X2(Parachain(2), GeneralIndex(asset)),
+						Junctions::X2(Allychain(2), GeneralIndex(asset)),
 					))
 				}
 			}

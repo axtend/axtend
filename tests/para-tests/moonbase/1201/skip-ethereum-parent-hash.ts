@@ -9,15 +9,15 @@ import {
   TEST_ACCOUNT,
 } from "../../../util/constants";
 import { customWeb3Request } from "../../../util/providers";
-import { describeParachain } from "../../../util/setup-para-tests";
+import { describeAllychain } from "../../../util/setup-para-tests";
 import { createTransfer } from "../../../util/transactions";
 
 // Same test as 1200 but with the fix for the parentHash
 const runtimeVersion = "runtime-1201";
-describeParachain(
+describeAllychain(
   `Runtime ${runtimeVersion} migration`,
   {
-    parachain: {
+    allychain: {
       chain: "moonbase-local",
       runtime: "runtime-1103",
       binary: "v0.19.1",

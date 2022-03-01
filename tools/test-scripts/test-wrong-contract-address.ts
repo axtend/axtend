@@ -37,7 +37,7 @@ export async function customWeb3Request(web3: Web3, method: string, params: any[
   });
 }
 
-// Script meant to be used against a running ganache-cli node with `ganache-cli --seed moonbeam`
+// Script meant to be used against a running ganache-cli node with `ganache-cli --seed axtend`
 async function testGanache() {
   const web3 = new Web3(new Web3.providers.HttpProvider(ganacheUrl)); // with ganache
 
@@ -72,9 +72,9 @@ async function testGanache() {
   console.log(createReceipt);
 }
 
-// Script meant to be used against a running moonbeam dev instance
+// Script meant to be used against a running axtend dev instance
 async function testMoonbeamDev() {
-  const web3 = new Web3(`ws://localhost:9944`); // with moonbeam dev
+  const web3 = new Web3(`ws://localhost:9944`); // with axtend dev
 
   //call
   const resp = await customWeb3Request(web3, "eth_call", [

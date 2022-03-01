@@ -2,16 +2,16 @@ import { Keyring } from "@polkadot/api";
 import { expect } from "chai";
 
 import { ALITH_ADDRESS, ALITH_PRIV_KEY } from "../../../util/constants";
-import { describeParachain } from "../../../util/setup-para-tests";
+import { describeAllychain } from "../../../util/setup-para-tests";
 import { sendAllStreamAndWaitLast } from "../../../util/transactions";
 
 // This test will run on local until the new runtime is available
 
 const runtimeVersion = "local";
-describeParachain(
+describeAllychain(
   `Runtime ${runtimeVersion} migration`,
   {
-    parachain: {
+    allychain: {
       chain: "moonbase-local",
       runtime: "runtime-1200",
       binary: "v0.20.1",
@@ -31,7 +31,7 @@ describeParachain(
 
       // verify alith initial total staked
       expect(
-        ((await context.polkadotApiParaone.query.parachainStaking.candidatePool()) as any)
+        ((await context.polkadotApiParaone.query.allychainStaking.candidatePool()) as any)
           .find((c) => c.owner.toString() == ALITH_ADDRESS)
           .amount.toBigInt()
       ).to.be.equal(1000000000000000000000n);
@@ -46,7 +46,7 @@ describeParachain(
       );
 
       const minDelegatorStk = (
-        (await context.polkadotApiParaone.consts.parachainStaking.minDelegatorStk) as any
+        (await context.polkadotApiParaone.consts.allychainStaking.minDelegatorStk) as any
       ).toBigInt();
 
       process.stdout.write(
@@ -81,7 +81,7 @@ describeParachain(
 
       const bondBatches = await Promise.all(
         delegators.map((delegator, index) =>
-          context.polkadotApiParaone.tx.parachainStaking
+          context.polkadotApiParaone.tx.allychainStaking
             .delegate(alith.address, minDelegatorStk, index + 1, 1)
             .signAsync(delegator, { nonce: 0 })
         )
@@ -93,7 +93,7 @@ describeParachain(
 
       // verify alith new delegators are added
       expect(
-        ((await context.polkadotApiParaone.query.parachainStaking.candidatePool()) as any)
+        ((await context.polkadotApiParaone.query.allychainStaking.candidatePool()) as any)
           .find((c) => c.owner.toString() == ALITH_ADDRESS)
           .amount.toBigInt()
       ).to.be.equal(1000000000000000000000n + minDelegatorStk * BigInt(delegatorCount));
@@ -104,7 +104,7 @@ describeParachain(
       );
       const bondMoreBatches = await Promise.all(
         delegators.map((delegator, index) =>
-          context.polkadotApiParaone.tx.parachainStaking
+          context.polkadotApiParaone.tx.allychainStaking
             .delegatorBondMore(alith.address, 1n * 10n ** 18n)
             .signAsync(delegator, { nonce: 1 })
         )
@@ -117,7 +117,7 @@ describeParachain(
       process.stdout.write(`Verifying candidate pool bug pre-migration...`);
       // Verify BUG: alith total didn't increase with the bond more
       expect(
-        ((await context.polkadotApiParaone.query.parachainStaking.candidatePool()) as any)
+        ((await context.polkadotApiParaone.query.allychainStaking.candidatePool()) as any)
           .find((c) => c.owner.toString() == ALITH_ADDRESS)
           .amount.toBigInt()
       ).to.be.equal(1000000000000000000000n + minDelegatorStk * BigInt(delegatorCount));
@@ -127,7 +127,7 @@ describeParachain(
 
       process.stdout.write("Verifying candidate pool is fixed post-migration...");
       expect(
-        ((await context.polkadotApiParaone.query.parachainStaking.candidatePool()) as any)
+        ((await context.polkadotApiParaone.query.allychainStaking.candidatePool()) as any)
           .find((c) => c.owner.toString() == ALITH_ADDRESS)
           .amount.toBigInt()
       ).to.be.equal(

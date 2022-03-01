@@ -35,7 +35,7 @@ pub use serde::{de::DeserializeOwned, Deserialize, Serialize};
 /// The account type to be used in Moonbeam. It is a wrapper for 20 fixed bytes. We prefer to use
 /// a dedicated type to prevent using arbitrary 20 byte arrays were AccountIds are expected. With
 /// the introduction of the `scale-info` crate this benefit extends even to non-Rust tools like
-/// Polkadot JS.
+/// Axia JS.
 
 #[derive(
 	Eq, PartialEq, Copy, Clone, Encode, Decode, TypeInfo, MaxEncodedLen, Default, PartialOrd, Ord,

@@ -1,8 +1,8 @@
 [package]
-name = "moonbeam-cli-opt"
+name = "axtend-cli-opt"
 authors = ["PureStake"]
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
 version = "0.21.0"
 
@@ -17,5 +17,5 @@ tiny-hderive = "0.3.0"
 # Moonbeam
 account = { path = "../../primitives/account" }
 
-# Substrate
+# Axlib
 sp-runtime = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }

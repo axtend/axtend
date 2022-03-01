@@ -898,14 +898,14 @@ fn junction_decoder_works() {
 	let mut gm = Gasometer::new(None);
 	let gm = &mut gm;
 
-	let writer_output = EvmDataWriter::new().write(Junction::Parachain(0)).build();
+	let writer_output = EvmDataWriter::new().write(Junction::Allychain(0)).build();
 
 	let mut reader = EvmDataReader::new(&writer_output);
 	let parsed: Junction = reader
 		.read::<Junction>(gm)
 		.expect("to correctly parse Junctions");
 
-	assert_eq!(parsed, Junction::Parachain(0));
+	assert_eq!(parsed, Junction::Allychain(0));
 
 	let writer_output = EvmDataWriter::new()
 		.write(Junction::AccountId32 {
@@ -986,13 +986,13 @@ fn network_id_decoder_works() {
 	);
 
 	assert_eq!(
-		network_id_from_bytes(gm, network_id_to_bytes(NetworkId::Kusama)),
-		Ok(NetworkId::Kusama)
+		network_id_from_bytes(gm, network_id_to_bytes(NetworkId::AxiaTest)),
+		Ok(NetworkId::AxiaTest)
 	);
 
 	assert_eq!(
-		network_id_from_bytes(gm, network_id_to_bytes(NetworkId::Polkadot)),
-		Ok(NetworkId::Polkadot)
+		network_id_from_bytes(gm, network_id_to_bytes(NetworkId::Axia)),
+		Ok(NetworkId::Axia)
 	);
 }
 

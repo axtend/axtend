@@ -30,13 +30,13 @@ async function main() {
   - [ ] Start the github action Publish Binary Draft with ${previousVersion} => ${newVersion}
   (master branch)
   - [ ] Review the generated Draft and clean a bit the messages if needed (keep it draft)
-  - [ ] Update moonbeam-networks stagenet (moonsama/moonlama) config.json to include sha-xxxxx
+  - [ ] Update axtend-networks stagenet (moonsama/moonlama) config.json to include sha-xxxxx
   (matching your ${newVersion} tag) and increase the config version + 1
   - [ ] Test the new client on stagenet (moonsama/moonlama)
   - [ ] Publish the client release draft
   - [ ] When everything is ok, publish the new docker image: start github action Publish Docker
   with ${newVersion}
-  - [ ] Publish the new tracing image: on repo moonbeam-runtime-overrides, start github action
+  - [ ] Publish the new tracing image: on repo axtend-runtime-overrides, start github action
   Publish Docker with ${newVersion} and master
   `;
 

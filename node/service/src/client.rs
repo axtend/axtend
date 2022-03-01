@@ -13,7 +13,7 @@
 
 // You should have received a copy of the GNU General Public License
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
-pub use moonbeam_core_primitives::{AccountId, Balance, Block, BlockNumber, Hash, Header, Index};
+pub use axtend_core_primitives::{AccountId, Balance, Block, BlockNumber, Hash, Header, Index};
 use sc_client_api::{Backend as BackendT, BlockchainEvents, KeyIterator};
 use sp_api::{CallApiAt, NumberFor, ProvideRuntimeApi};
 use sp_blockchain::HeaderBackend;
@@ -34,15 +34,15 @@ pub trait RuntimeApiCollection:
 	sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block>
 	+ sp_api::ApiExt<Block>
 	+ sp_block_builder::BlockBuilder<Block>
-	+ substrate_frame_rpc_system::AccountNonceApi<Block, AccountId, Index>
+	+ axlib_frame_rpc_system::AccountNonceApi<Block, AccountId, Index>
 	+ pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance>
 	+ sp_api::Metadata<Block>
 	+ sp_offchain::OffchainWorkerApi<Block>
 	+ sp_session::SessionKeys<Block>
 	+ fp_rpc::ConvertTransactionRuntimeApi<Block>
 	+ fp_rpc::EthereumRuntimeRPCApi<Block>
-	+ moonbeam_rpc_primitives_debug::DebugRuntimeApi<Block>
-	+ moonbeam_rpc_primitives_txpool::TxPoolRuntimeApi<Block>
+	+ axtend_rpc_primitives_debug::DebugRuntimeApi<Block>
+	+ axtend_rpc_primitives_txpool::TxPoolRuntimeApi<Block>
 	+ nimbus_primitives::NimbusApi<Block>
 	+ nimbus_primitives::AuthorFilterAPI<Block, nimbus_primitives::NimbusId>
 	+ cumulus_primitives_core::CollectCollationInfo<Block>
@@ -56,15 +56,15 @@ where
 	Api: sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block>
 		+ sp_api::ApiExt<Block>
 		+ sp_block_builder::BlockBuilder<Block>
-		+ substrate_frame_rpc_system::AccountNonceApi<Block, AccountId, Index>
+		+ axlib_frame_rpc_system::AccountNonceApi<Block, AccountId, Index>
 		+ pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance>
 		+ sp_api::Metadata<Block>
 		+ sp_offchain::OffchainWorkerApi<Block>
 		+ sp_session::SessionKeys<Block>
 		+ fp_rpc::ConvertTransactionRuntimeApi<Block>
 		+ fp_rpc::EthereumRuntimeRPCApi<Block>
-		+ moonbeam_rpc_primitives_debug::DebugRuntimeApi<Block>
-		+ moonbeam_rpc_primitives_txpool::TxPoolRuntimeApi<Block>
+		+ axtend_rpc_primitives_debug::DebugRuntimeApi<Block>
+		+ axtend_rpc_primitives_txpool::TxPoolRuntimeApi<Block>
 		+ nimbus_primitives::NimbusApi<Block>
 		+ nimbus_primitives::AuthorFilterAPI<Block, nimbus_primitives::NimbusId>
 		+ cumulus_primitives_core::CollectCollationInfo<Block>,
@@ -149,20 +149,20 @@ pub trait ClientHandle {
 /// A client instance of Moonbeam.
 #[derive(Clone)]
 pub enum Client {
-	#[cfg(feature = "moonbeam-native")]
-	Moonbeam(Arc<crate::FullClient<moonbeam_runtime::RuntimeApi, crate::MoonbeamExecutor>>),
+	#[cfg(feature = "axtend-native")]
+	Moonbeam(Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::MoonbeamExecutor>>),
 	#[cfg(feature = "moonriver-native")]
 	Moonriver(Arc<crate::FullClient<moonriver_runtime::RuntimeApi, crate::MoonriverExecutor>>),
 	#[cfg(feature = "moonbase-native")]
 	Moonbase(Arc<crate::FullClient<moonbase_runtime::RuntimeApi, crate::MoonbaseExecutor>>),
 }
 
-#[cfg(feature = "moonbeam-native")]
-impl From<Arc<crate::FullClient<moonbeam_runtime::RuntimeApi, crate::MoonbeamExecutor>>>
+#[cfg(feature = "axtend-native")]
+impl From<Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::MoonbeamExecutor>>>
 	for Client
 {
 	fn from(
-		client: Arc<crate::FullClient<moonbeam_runtime::RuntimeApi, crate::MoonbeamExecutor>>,
+		client: Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::MoonbeamExecutor>>,
 	) -> Self {
 		Self::Moonbeam(client)
 	}
@@ -193,7 +193,7 @@ impl From<Arc<crate::FullClient<moonbase_runtime::RuntimeApi, crate::MoonbaseExe
 impl ClientHandle for Client {
 	fn execute_with<T: ExecuteWithClient>(&self, t: T) -> T::Output {
 		match self {
-			#[cfg(feature = "moonbeam-native")]
+			#[cfg(feature = "axtend-native")]
 			Self::Moonbeam(client) => T::execute_with_client::<_, _, crate::FullBackend>(t, client.clone()),
 			#[cfg(feature = "moonriver-native")]
 			Self::Moonriver(client) => T::execute_with_client::<_, _, crate::FullBackend>(t, client.clone()),
@@ -206,7 +206,7 @@ impl ClientHandle for Client {
 macro_rules! match_client {
 	($self:ident, $method:ident($($param:ident),*)) => {
 		match $self {
-			#[cfg(feature = "moonbeam-native")]
+			#[cfg(feature = "axtend-native")]
 			Self::Moonbeam(client) => client.$method($($param),*),
 			#[cfg(feature = "moonriver-native")]
 			Self::Moonriver(client) => client.$method($($param),*),

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Substrate EVM tracing.
+//! Axlib EVM tracing.
 //!
 //! The purpose of this crate is enable tracing the EVM opcode execution and will be used by
 //! both Dapp developers - to get a granular view on their transactions - and indexers to access
@@ -59,7 +59,7 @@ pub mod tracer {
 	impl EvmTracer {
 		pub fn new() -> Self {
 			Self {
-				step_event_filter: moonbeam_primitives_ext::moonbeam_ext::step_event_filter(),
+				step_event_filter: axtend_primitives_ext::axtend_ext::step_event_filter(),
 			}
 		}
 
@@ -84,7 +84,7 @@ pub mod tracer {
 		}
 
 		pub fn emit_new() {
-			moonbeam_primitives_ext::moonbeam_ext::call_list_new();
+			axtend_primitives_ext::axtend_ext::call_list_new();
 		}
 	}
 
@@ -93,7 +93,7 @@ pub mod tracer {
 		fn event(&mut self, event: evm::tracing::Event) {
 			let event: EvmEvent = event.into();
 			let message = event.encode();
-			moonbeam_primitives_ext::moonbeam_ext::evm_event(message);
+			axtend_primitives_ext::axtend_ext::evm_event(message);
 		}
 	}
 
@@ -102,7 +102,7 @@ pub mod tracer {
 		fn event(&mut self, event: evm_gasometer::tracing::Event) {
 			let event: GasometerEvent = event.into();
 			let message = event.encode();
-			moonbeam_primitives_ext::moonbeam_ext::gasometer_event(message);
+			axtend_primitives_ext::axtend_ext::gasometer_event(message);
 		}
 	}
 
@@ -111,7 +111,7 @@ pub mod tracer {
 		fn event(&mut self, event: evm_runtime::tracing::Event) {
 			let event = RuntimeEvent::from_evm_event(event, self.step_event_filter);
 			let message = event.encode();
-			moonbeam_primitives_ext::moonbeam_ext::runtime_event(message);
+			axtend_primitives_ext::axtend_ext::runtime_event(message);
 		}
 	}
 }

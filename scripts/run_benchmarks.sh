@@ -5,11 +5,11 @@
 
 export WASMTIME_BACKTRACE_DETAILS=1
 
-./target/release/moonbeam benchmark \
+./target/release/axtend benchmark \
     --chain dev \
     --execution=wasm \
     --wasm-execution=compiled \
-    --pallet "parachain_staking" \
+    --pallet "allychain_staking" \
     --extrinsic "*" \
     --steps 32 \
     --repeat 64 \

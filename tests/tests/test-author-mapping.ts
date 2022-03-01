@@ -12,7 +12,7 @@ import {
   DEFAULT_GENESIS_STAKING,
 } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 
 const aliceAuthorId = "0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d";
 const bobAuthorId = "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
@@ -166,7 +166,7 @@ describeDevMoonbeam("Author Mapping - Fail without deposit", (context) => {
       switch (index) {
         // First 3 events:
         // timestamp.set:: system.ExtrinsicSuccess
-        // parachainUpgrade.setValidationData:: system.ExtrinsicSuccess
+        // allychainUpgrade.setValidationData:: system.ExtrinsicSuccess
         // authorInherent.setAuthor:: system.ExtrinsicSuccess
         case 0:
         case 1:

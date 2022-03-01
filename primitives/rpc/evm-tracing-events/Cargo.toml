@@ -2,15 +2,15 @@
 name = "evm-tracing-events"
 authors = ["PureStake"]
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
-repository = "https://github.com/PureStake/moonbeam/"
+repository = "https://github.com/PureStake/axtend/"
 version = "0.1.0"
 
 [dependencies]
 environmental = { version = "1.1.2", default-features = false }
 
-# Substrate
+# Axlib
 codec = { package = "parity-scale-codec", version = "2.2", default-features = false }
 sp-runtime-interface = { git = "https://github.com/axtend/axlib", branch = "c92f69d", default-features = false }
 

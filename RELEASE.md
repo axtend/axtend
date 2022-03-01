@@ -16,7 +16,7 @@
 - [ ] Documentation/Website/Tutorials have been updated
 - [ ] Runtime version has been updated
 - [ ] Tests are passing on StageNet
-- [ ] Ensure Type changes are reflected into PolkadotJs
+- [ ] Ensure Type changes are reflected into AxiaJs
 
 ### Release Workflow
 
