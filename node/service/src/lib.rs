@@ -22,27 +22,28 @@
 //! Full Service: A complete allychain node including the pool, rpc, network, embedded relay chain
 //! Dev Service: A leaner service without the relay chain backing.
 
+#[cfg(feature = "axtend-native")]
+pub use axtend_runtime;
 use cli_opt::{EthApi as EthApiCmd, RpcConfig};
 use fc_consensus::FrontierBlockImport;
 use fc_rpc_core::types::{FeeHistoryCache, FilterPool};
 use futures::StreamExt;
 #[cfg(feature = "moonbase-native")]
 pub use moonbase_runtime;
-#[cfg(feature = "axtend-native")]
-pub use axtend_runtime;
 #[cfg(feature = "moonriver-native")]
 pub use moonriver_runtime;
 use std::{collections::BTreeMap, sync::Mutex, time::Duration};
 pub mod rpc;
+use axlib_prometheus_endpoint::Registry;
 use cumulus_client_consensus_common::AllychainConsensus;
 use cumulus_client_network::BlockAnnounceValidator;
 use cumulus_client_service::{
 	prepare_node_config, start_collator, start_full_node, StartCollatorParams, StartFullNodeParams,
 };
-use cumulus_primitives_core::ParaId;
 use cumulus_primitives_allychain_inherent::{
 	MockValidationDataInherentDataProvider, MockXcmConfig,
 };
+use cumulus_primitives_core::ParaId;
 use cumulus_relay_chain_interface::RelayChainInterface;
 use cumulus_relay_chain_local::build_relay_chain_interface;
 use nimbus_consensus::NimbusManualSealConsensusDataProvider;
@@ -59,7 +60,6 @@ use sp_api::ConstructRuntimeApi;
 use sp_blockchain::HeaderBackend;
 use sp_keystore::SyncCryptoStorePtr;
 use std::sync::Arc;
-use axlib_prometheus_endpoint::Registry;
 
 pub use client::*;
 pub mod chain_spec;
@@ -72,7 +72,7 @@ type MaybeSelectChain = Option<sc_consensus::LongestChain<FullBackend, Block>>;
 
 pub type HostFunctions = (
 	frame_benchmarking::benchmarking::HostFunctions,
-	axtend_primitives_ext::axtend_ext::HostFunctions,
+	axtend_primitives_ext::moonbeam_ext::HostFunctions,
 );
 
 #[cfg(feature = "axtend-native")]
