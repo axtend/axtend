@@ -1,4 +1,4 @@
-import { RegistryTypes } from "@polkadot/types/types";
+import { RegistryTypes } from "@axia/types/types";
 import fs from "fs";
 import { moonbeamDefinitions } from ".";
 

@@ -1,4 +1,4 @@
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 import { expect } from "chai";
 import { ALITH, ALITH_PRIV_KEY } from "../util/constants";
 
@@ -18,7 +18,7 @@ describeDevMoonbeam("Pallet EVM transfer - no sudo", (context) => {
     ({ events } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.evm.call(
+      context.axiaApi.tx.evm.call(
         ALITH,
         TEST_ACCOUNT,
         "0x0",
@@ -46,8 +46,8 @@ describeDevMoonbeam("Pallet EVM transfer - with sudo", (context) => {
     ({ events } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.evm.call(
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.evm.call(
           ALITH,
           TEST_ACCOUNT,
           "0x0",

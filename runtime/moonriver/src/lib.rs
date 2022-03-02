@@ -401,7 +401,7 @@ impl FeeCalculator for FixedGasPrice {
 }
 
 /// Parameterized slow adjusting fee updated based on
-/// https://w3f-research.readthedocs.io/en/latest/polkadot/overview/2-token-economics.html#-2.-slow-adjusting-mechanism // editorconfig-checker-disable-line
+/// https://w3f-research.readthedocs.io/en/latest/axia/overview/2-token-economics.html#-2.-slow-adjusting-mechanism // editorconfig-checker-disable-line
 ///
 /// The adjustment algorithm boils down to:
 ///
@@ -1006,7 +1006,7 @@ pub type LocationToAccountId = (
 	// The parent (Relay-chain) origin converts to the default `AccountId`.
 	ParentIsPreset<AccountId>,
 	// Sibling allychain origins convert to AccountId via the `ParaId::into`.
-	SiblingAllychainConvertsVia<polkadot_allychain::primitives::Sibling, AccountId>,
+	SiblingAllychainConvertsVia<axia_allychain::primitives::Sibling, AccountId>,
 	// If we receive a MultiLocation of type AccountKey20, just generate a native account
 	AccountKey20Aliases<RelayNetwork, AccountId>,
 );

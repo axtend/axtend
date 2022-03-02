@@ -5,15 +5,15 @@ import { getCommitAndLabels } from "./github-utils";
 async function printInfo(octokit: Octokit, previousVersion: string, nextVersion: string) {
   const owners = {
     axlib: "paritytech",
-    polkadot: "paritytech",
+    axia: "paritytech",
     cumulus: "paritytech",
     nimbus: "purestake",
   };
   const prefixes = {
-    axlib: "polkadot-",
-    polkadot: "release-",
-    cumulus: "polkadot-",
-    nimbus: "axtend-polkadot-",
+    axlib: "axia-",
+    axia: "release-",
+    cumulus: "axia-",
+    nimbus: "axtend-axia-",
   };
   console.log(`# Description\n`);
   console.log(`This ticket is automatically generated using\n`);

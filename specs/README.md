@@ -22,6 +22,6 @@ it is convenient to "bake" specs for popular networks into the node.
 ## Relay chain specs
 
 Because Moonbase networks are allychains, each network instance requires both a allychain and a
-relay chain spec. For popular relay chains like axctest and polkadot, we rely on the specs being
+relay chain spec. For popular relay chains like axctest and axia, we rely on the specs being
 already included with Axia. For smaller relay chains, like the one that exists solely to support
 moonbase alpha, we also bake the relay spec into the moonbase binary.

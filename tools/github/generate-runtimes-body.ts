@@ -4,7 +4,7 @@ import { readFileSync } from "fs";
 import yargs from "yargs";
 import path from "path";
 import { getCommitAndLabels, getCompareLink } from "./github-utils";
-import { blake2AsHex } from "@polkadot/util-crypto";
+import { blake2AsHex } from "@axia/util-crypto";
 
 const RUNTIME_CHANGES_LABEL = "B7-runtimenoteworthy";
 // `AllychainSystem` is pallet index 6. `authorize_upgrade` is extrinsic index 2.
@@ -88,7 +88,7 @@ async function main() {
     getRuntimeInfo(argv["srtool-report-folder"], runtimeName)
   );
 
-  const moduleLinks = ["axlib", "polkadot", "cumulus", "frontier"].map((repoName) => ({
+  const moduleLinks = ["axlib", "axia", "cumulus", "frontier"].map((repoName) => ({
     name: repoName,
     link: getCompareLink(repoName, previousTag, newTag),
   }));

@@ -6,14 +6,14 @@ if [[ -z "$1" ]]; then
 fi
 
 NEW_BRANCH=$1
-BASE_BRANCH=${2:-"axtend-polkadot-v0.9.17"}
+BASE_BRANCH=${2:-"axtend-axia-v0.9.17"}
 
 mkdir -p scripts/tmp
 cd scripts/tmp
 
 REPOS=(
   axlib
-  polkadot
+  axia
   cumulus
   nimbus
   open-runtime-module-library

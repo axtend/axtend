@@ -16,7 +16,7 @@
 
 use crowdloan_rewards_precompiles::CrowdloanRewardsWrapper;
 use fp_evm::Context;
-use axtend_relay_encoder::polkadot::AxiaEncoder;
+use axtend_relay_encoder::axia::AxiaEncoder;
 use pallet_author_mapping_precompiles::AuthorMappingWrapper;
 use pallet_evm::{AddressMapping, Precompile, PrecompileResult, PrecompileSet};
 use pallet_evm_precompile_assets_erc20::Erc20AssetsPrecompileSet;

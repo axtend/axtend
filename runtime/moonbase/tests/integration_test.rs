@@ -71,7 +71,7 @@ fn verify_pallet_prefixes() {
 		);
 	}
 	// TODO: use StorageInfoTrait from https://github.com/paritytech/axlib/pull/9246
-	// This is now available with polkadot-v0.9.9 dependencies
+	// This is now available with axia-v0.9.9 dependencies
 	is_pallet_prefix::<moonbase_runtime::System>("System");
 	is_pallet_prefix::<moonbase_runtime::Utility>("Utility");
 	is_pallet_prefix::<moonbase_runtime::RandomnessCollectiveFlip>("RandomnessCollectiveFlip");

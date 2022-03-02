@@ -1,7 +1,7 @@
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 import { expect } from "chai";
-import { BN, bnToHex } from "@polkadot/util";
-import { KeyringPair } from "@polkadot/keyring/types";
+import { BN, bnToHex } from "@axia/util";
+import { KeyringPair } from "@axia/keyring/types";
 
 import { ALITH_PRIV_KEY } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
@@ -24,7 +24,7 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
     const keyringEth = new Keyring({ type: "ethereum" });
     const alith = keyringEth.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
-    const allychainOne = context.polkadotApi;
+    const allychainOne = context.axiaApi;
     // registerAsset
     const { events: eventsRegister } = await createBlockWithExtrinsic(
       context,
@@ -68,7 +68,7 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
     const keyringEth = new Keyring({ type: "ethereum" });
     alith = keyringEth.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
-    const allychainOne = context.polkadotApi;
+    const allychainOne = context.axiaApi;
     // registerAsset
     const { events: eventsRegister } = await createBlockWithExtrinsic(
       context,
@@ -108,29 +108,29 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
     await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.assetManager.changeExistingAssetType(assetId, newSourceLocation, 1)
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.assetManager.changeExistingAssetType(assetId, newSourceLocation, 1)
       )
     );
 
     // asset_type
-    let assetType = (await context.polkadotApi.query.assetManager.assetIdType(assetId)) as Object;
+    let assetType = (await context.axiaApi.query.assetManager.assetIdType(assetId)) as Object;
 
     // assetId
     let id = (
-      (await context.polkadotApi.query.assetManager.assetTypeId(newSourceLocation)) as any
+      (await context.axiaApi.query.assetManager.assetTypeId(newSourceLocation)) as any
     ).unwrap();
 
     // asset units per second changed
     let assetUnitsPerSecond = (
-      (await context.polkadotApi.query.assetManager.assetTypeUnitsPerSecond(
+      (await context.axiaApi.query.assetManager.assetTypeUnitsPerSecond(
         newSourceLocation
       )) as any
     ).unwrap();
 
     // Supported assets
     let supportedAssets =
-      (await context.polkadotApi.query.assetManager.supportedFeePaymentAssets()) as any;
+      (await context.axiaApi.query.assetManager.supportedFeePaymentAssets()) as any;
 
     expect(assetUnitsPerSecond.toString()).to.eq(new BN(1).toString());
     expect(assetType.toString()).to.eq(JSON.stringify(newSourceLocation).toLowerCase());
@@ -146,7 +146,7 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
     const keyringEth = new Keyring({ type: "ethereum" });
     alith = keyringEth.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
-    const allychainOne = context.polkadotApi;
+    const allychainOne = context.axiaApi;
     // registerAsset
     const { events: eventsRegister } = await createBlockWithExtrinsic(
       context,
@@ -186,24 +186,24 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
     await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.assetManager.removeSupportedAsset(sourceLocation, 1)
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.assetManager.removeSupportedAsset(sourceLocation, 1)
       )
     );
 
     // assetId
     let id = (
-      (await context.polkadotApi.query.assetManager.assetTypeId(sourceLocation)) as any
+      (await context.axiaApi.query.assetManager.assetTypeId(sourceLocation)) as any
     ).unwrap();
 
     // asset units per second removed
-    let assetUnitsPerSecond = (await context.polkadotApi.query.assetManager.assetTypeUnitsPerSecond(
+    let assetUnitsPerSecond = (await context.axiaApi.query.assetManager.assetTypeUnitsPerSecond(
       sourceLocation
     )) as any;
 
     // Supported assets should be 0
     let supportedAssets =
-      (await context.polkadotApi.query.assetManager.supportedFeePaymentAssets()) as any;
+      (await context.axiaApi.query.assetManager.supportedFeePaymentAssets()) as any;
 
     expect(assetUnitsPerSecond.isNone).to.eq(true);
     expect(bnToHex(id)).to.eq(assetId);

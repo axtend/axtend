@@ -1,25 +1,25 @@
 // Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Axia.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Axia is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Axia is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axia.  If not, see <http://www.gnu.org/licenses/>.
 
 pub mod parachain;
 pub mod relay_chain;
 pub mod statemint_like;
 
 use cumulus_primitives_core::ParaId;
-use polkadot_parachain::primitives::AccountIdConversion;
+use axia_parachain::primitives::AccountIdConversion;
 use sp_runtime::AccountId32;
 use xcm_simulator::{decl_test_network, decl_test_parachain, decl_test_relay_chain};
 

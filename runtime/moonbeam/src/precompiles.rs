@@ -16,7 +16,7 @@
 
 use crowdloan_rewards_precompiles::CrowdloanRewardsWrapper;
 use fp_evm::Context;
-use moonbeam_relay_encoder::polkadot::PolkadotEncoder;
+use moonbeam_relay_encoder::axia::AxiaEncoder;
 use pallet_author_mapping_precompiles::AuthorMappingWrapper;
 use pallet_evm::{AddressMapping, Precompile, PrecompileResult, PrecompileSet};
 use pallet_evm_precompile_assets_erc20::Erc20AssetsPrecompileSet;
@@ -102,7 +102,7 @@ where
 	Erc20BalancesPrecompile<R, NativeErc20Metadata>: Precompile,
 	Erc20AssetsPrecompileSet<R>: PrecompileSet,
 	XtokensWrapper<R>: Precompile,
-	RelayEncoderWrapper<R, PolkadotEncoder>: Precompile,
+	RelayEncoderWrapper<R, AxiaEncoder>: Precompile,
 	XcmTransactorWrapper<R>: Precompile,
 	AuthorMappingWrapper<R>: Precompile,
 	R: pallet_evm::Config,
@@ -151,7 +151,7 @@ where
 			a if a == hash(2052) => Some(XtokensWrapper::<R>::execute(
 				input, target_gas, context, is_static,
 			)),
-			a if a == hash(2053) => Some(RelayEncoderWrapper::<R, PolkadotEncoder>::execute(
+			a if a == hash(2053) => Some(RelayEncoderWrapper::<R, AxiaEncoder>::execute(
 				input, target_gas, context, is_static,
 			)),
 			a if a == hash(2054) => Some(XcmTransactorWrapper::<R>::execute(

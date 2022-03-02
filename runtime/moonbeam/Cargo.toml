@@ -118,11 +118,11 @@ pallet-author-inherent = { git = "https://github.com/axtend/nimbus", branch = "5
 pallet-author-slot-filter = { git = "https://github.com/axtend/nimbus", branch = "5f92d14", default-features = false }
 parachain-info = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 
-# Polkadot / XCM
+# Axia / XCM
 orml-xtokens = { git = "https://github.com/axtend/open-runtime-module-library", branch = "7ba9fad", default-features = false }
 pallet-xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
-polkadot-core-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
-polkadot-parachain = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
+axia-core-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
+axia-parachain = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm-builder = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm-executor = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
@@ -140,7 +140,7 @@ sha3 = "0.9"
 cumulus-primitives-parachain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 
-polkadot-runtime-parachains = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-runtime-parachains = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 xcm-simulator = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 
 [build-dependencies]

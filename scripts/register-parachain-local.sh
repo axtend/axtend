@@ -13,8 +13,8 @@ GENESIS=$(eval echo "\$${NETWORK^^}_GENESIS")
 TMP_FOLDER=$(eval echo "\$${NETWORK^^}_TMP_FOLDER")
 PARACHAIN_ID=$(eval echo "\$${NETWORK^^}_PARACHAIN_ID")
 
-if [ -z "$ROCOCO_SUDO_SEED" ]; then
-    echo "Missing \$ROCOCO_SUDO_SEED"
+if [ -z "$BETANET_SUDO_SEED" ]; then
+    echo "Missing \$BETANET_SUDO_SEED"
     exit 1
 fi
 
@@ -39,9 +39,9 @@ echo -n "\",\"parachain\":true}" >> $CONFIG;
 TYPES="$TMP_FOLDER/relay-types.json"
 echo '{"Address": "MultiAddress", "LookupSource": "MultiAddress"}' > $TYPES;
 
-tools/node_modules/.bin/polkadot-js-api \
+tools/node_modules/.bin/axia-js-api \
     --ws "ws://localhost:$((RELAY_PORT + 2))" \
     --sudo \
-    --seed "$ROCOCO_SUDO_SEED" \
+    --seed "$BETANET_SUDO_SEED" \
     --params $(pwd)/$CONFIG \
     tx.parasSudoWrapper.sudoScheduleParaInitialize

@@ -55,7 +55,7 @@ async function main() {
       },
       repo: {
         type: "string",
-        choices: ["paritytech/axlib", "paritytech/polkadot", "paritytech/cumulus"],
+        choices: ["paritytech/axlib", "paritytech/axia", "paritytech/cumulus"],
         describe: "which repository to read",
       },
       "only-label": {

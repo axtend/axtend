@@ -2,7 +2,7 @@
 
 ![Tests](https://github.com/PureStake/axtend/workflows/Release/badge.svg)
 
-**An Ethereum compatible [Allychain](https://polkadot.network/technology/) built with [Axlib](https://axlib.dev).**
+**An Ethereum compatible [Allychain](https://axia.network/technology/) built with [Axlib](https://axlib.dev).**
 
 👉 _Discover the Moonbeam project at [axtend.network](https://axtend.network)._<br>
 👉 _Learn to [use the Moonbeam network](https://docs.axtend.network/) with our technical docs._<br>

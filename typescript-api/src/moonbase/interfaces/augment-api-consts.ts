@@ -1,10 +1,10 @@
-// Auto-generated via `yarn polkadot-types-from-chain`, do not edit
+// Auto-generated via `yarn axia-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { ApiTypes } from "@polkadot/api-base/types";
-import type { Bytes, Vec, bool, u128, u16, u32, u64, u8 } from "@polkadot/types-codec";
-import type { Codec } from "@polkadot/types-codec/types";
-import type { Perbill, Percent, Permill } from "@polkadot/types/interfaces/runtime";
+import type { ApiTypes } from "@axia/api-base/types";
+import type { Bytes, Vec, bool, u128, u16, u32, u64, u8 } from "@axia/types-codec";
+import type { Codec } from "@axia/types-codec/types";
+import type { Perbill, Percent, Permill } from "@axia/types/interfaces/runtime";
 import type {
   FrameSupportPalletId,
   FrameSupportWeightsRuntimeDbWeight,
@@ -13,9 +13,9 @@ import type {
   FrameSystemLimitsBlockWeights,
   SpVersionRuntimeVersion,
   XcmV1MultiLocation,
-} from "@polkadot/types/lookup";
+} from "@axia/types/lookup";
 
-declare module "@polkadot/api-base/types/consts" {
+declare module "@axia/api-base/types/consts" {
   export interface AugmentedConsts<ApiType extends ApiTypes> {
     assets: {
       /**

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 import { TREASURY_ACCOUNT } from "../util/constants";
 import { describeDevMoonbeamAllEthTxTypes } from "../util/setup-dev-tests";
 import { createTransfer } from "../util/transactions";

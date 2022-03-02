@@ -25,8 +25,8 @@ const SELECTORS = {
 const GAS_PRICE = "0x" + (1_000_000_000).toString(16);
 
 async function getBalance(context, blockHeight, address) {
-  const blockHash = await context.polkadotApi.rpc.chain.getBlockHash(blockHeight);
-  const account = await context.polkadotApi.query.system.account.at(blockHash, address);
+  const blockHash = await context.axiaApi.rpc.chain.getBlockHash(blockHeight);
+  const account = await context.axiaApi.query.system.account.at(blockHash, address);
   return account.data.free;
 }
 
@@ -109,7 +109,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
       },
     ]);
 
-    const amount = await context.polkadotApi.query.balances.totalIssuance();
+    const amount = await context.axiaApi.query.balances.totalIssuance();
     const amount_hex = "0x" + amount.toHex().slice(2).padStart(64, "0");
 
     expect(tx_call.result).equals(amount_hex);

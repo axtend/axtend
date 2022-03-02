@@ -1,4 +1,4 @@
-import { Keyring } from "@polkadot/api";
+import { Keyring } from "@axia/api";
 import { expect } from "chai";
 
 import { ALITH_PRIV_KEY } from "../../../util/constants";
@@ -39,11 +39,11 @@ describeAllychain(
       );
 
       const minDelegatorStk = (
-        (await context.polkadotApiParaone.consts.allychainStaking.minDelegatorStk) as any
+        (await context.axiaApiParaone.consts.allychainStaking.minDelegatorStk) as any
       ).toBigInt();
 
       expect(
-        await context.polkadotApiParaone.query.allychainStaking.candidateState.entries()
+        await context.axiaApiParaone.query.allychainStaking.candidateState.entries()
       ).to.be.length(2);
 
       process.stdout.write(
@@ -53,18 +53,18 @@ describeAllychain(
       );
 
       let alithNonce = (
-        await context.polkadotApiParaone.rpc.system.accountNextIndex(alith.address)
+        await context.axiaApiParaone.rpc.system.accountNextIndex(alith.address)
       ).toNumber();
       const transferTxs = await Promise.all(
         delegators.map(async (delegator) => {
-          return context.polkadotApiParaone.tx.balances.transfer(
+          return context.axiaApiParaone.tx.balances.transfer(
             delegator.address,
             minDelegatorStk + 1n * 10n ** 18n
           );
         })
       );
-      await sendAllStreamAndWaitLast(context.polkadotApiParaone, [
-        await context.polkadotApiParaone.tx.utility
+      await sendAllStreamAndWaitLast(context.axiaApiParaone, [
+        await context.axiaApiParaone.tx.utility
           .batchAll(transferTxs)
           .signAsync(alith, { nonce: alithNonce++ }),
       ]);
@@ -78,18 +78,18 @@ describeAllychain(
 
       const bondBatches = await Promise.all(
         delegators.map((delegator, index) =>
-          context.polkadotApiParaone.tx.allychainStaking
+          context.axiaApiParaone.tx.allychainStaking
             .delegate(alith.address, minDelegatorStk, index + 1, 1)
             .signAsync(delegator, { nonce: 0 })
         )
       );
-      await sendAllStreamAndWaitLast(context.polkadotApiParaone, bondBatches);
+      await sendAllStreamAndWaitLast(context.axiaApiParaone, bondBatches);
       await context.waitBlocks(1);
       process.stdout.write(`✅: ${bondBatches.length} extrinsics\n`);
 
       process.stdout.write(`Verifying candidate state pre-migration...`);
       const candidateStatePreMigration = (
-        (await context.polkadotApiParaone.query.allychainStaking.candidateState(
+        (await context.axiaApiParaone.query.allychainStaking.candidateState(
           alith.address
         )) as any
       ).unwrap();
@@ -102,22 +102,22 @@ describeAllychain(
 
       process.stdout.write("Checking candidateState post-migration is empty...");
       expect(
-        await context.polkadotApiParaone.query.allychainStaking.candidateState.entries()
+        await context.axiaApiParaone.query.allychainStaking.candidateState.entries()
       ).to.be.length(0);
       process.stdout.write("✅\n");
 
       process.stdout.write("Checking candidateInfo post-migration...");
       const candidateInfo =
-        await context.polkadotApiParaone.query.allychainStaking.candidateInfo.entries();
+        await context.axiaApiParaone.query.allychainStaking.candidateInfo.entries();
       expect(candidateInfo).to.be.length(2);
       const topDelegations = (
-        (await context.polkadotApiParaone.query.allychainStaking.topDelegations(
+        (await context.axiaApiParaone.query.allychainStaking.topDelegations(
           alith.address
         )) as any
       ).unwrap();
       expect(topDelegations.delegations).to.be.length(300);
       const bottomDelegations = (
-        (await context.polkadotApiParaone.query.allychainStaking.bottomDelegations(
+        (await context.axiaApiParaone.query.allychainStaking.bottomDelegations(
           alith.address
         )) as any
       ).unwrap();

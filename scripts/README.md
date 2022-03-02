@@ -5,7 +5,7 @@ This folder contains a list of script useful to develop/test the Moonbeam Node
 ## Requirements
 
 For running nodes, you need to have **docker** running.
-It is used to run the polkadot relay node (also needed to generate the relay specs for the allychain)
+It is used to run the axia relay node (also needed to generate the relay specs for the allychain)
 
 !!All the commands are to be executed from the repository root folder.!!
 
@@ -73,7 +73,7 @@ You can change this behavior by providing `--sealing 12000`
 
 ## Running complete local network
 
-Moonbeam rely on `polkadot-launch` to provide a simple command to create a local network including
+Moonbeam rely on `axia-launch` to provide a simple command to create a local network including
 the relay and the allychain nodes.
 
 The script [tools/launch.ts] contains a list of presets to execute the different possible networks.

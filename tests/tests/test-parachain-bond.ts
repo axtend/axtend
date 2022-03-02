@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { Keyring } from "@polkadot/api";
-import { KeyringPair } from "@polkadot/keyring/types";
+import { Keyring } from "@axia/api";
+import { KeyringPair } from "@axia/keyring/types";
 import {
   GENESIS_ACCOUNT,
   ALITH_PRIV_KEY,
@@ -20,18 +20,18 @@ describeDevMoonbeam("Staking - Parachain Bond - genesis and setParachainBondAcco
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
   it("should have right parachain bond in genesis", async function () {
-    const parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
+    const parachainBondInfo = await context.axiaApi.query.parachainStaking.parachainBondInfo();
     expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
     expect(parachainBondInfo.toHuman()["percent"]).to.equal("30.00%");
   });
 
   it("should be able set the parachain bond with sudo", async function () {
     // should be able to register the genesis account for reward
-    await context.polkadotApi.tx.sudo
-      .sudo(context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT))
+    await context.axiaApi.tx.sudo
+      .sudo(context.axiaApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT))
       .signAndSend(sudoAccount);
     await context.createBlock();
-    const parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
+    const parachainBondInfo = await context.axiaApi.query.parachainStaking.parachainBondInfo();
     expect(parachainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
     expect(parachainBondInfo.toHuman()["percent"]).to.equal("30.00%");
   });
@@ -52,13 +52,13 @@ describeDevMoonbeam("Staking - Parachain Bond - no sudo on setParachainBondAccou
       await createBlockWithExtrinsic(
         context,
         genesisAccount,
-        context.polkadotApi.tx.authorMapping.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.axiaApi.tx.authorMapping.setParachainBondAccount(GENESIS_ACCOUNT)
       );
     } catch (e) {
       // NB: This test used to check events for ExtrinsicFailed,
       // but now the api prevents the call from happening
       expect(e.toString().substring(0, 90)).to.eq(
-        "TypeError: context.polkadotApi.tx.authorMapping.setParachainBondAccount is not a function"
+        "TypeError: context.axiaApi.tx.authorMapping.setParachainBondAccount is not a function"
       );
     }
   });
@@ -74,11 +74,11 @@ describeDevMoonbeam("Staking - Parachain Bond - setParachainBondReservePercent",
 
   it("should be able set the parachain bond reserve percent with sudo", async function () {
     // should be able to register the genesis account
-    await context.polkadotApi.tx.sudo
-      .sudo(context.polkadotApi.tx.parachainStaking.setParachainBondReservePercent(TWENTY_PERCENT))
+    await context.axiaApi.tx.sudo
+      .sudo(context.axiaApi.tx.parachainStaking.setParachainBondReservePercent(TWENTY_PERCENT))
       .signAndSend(sudoAccount);
     await context.createBlock();
-    const parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
+    const parachainBondInfo = await context.axiaApi.query.parachainStaking.parachainBondInfo();
     expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
     expect(parachainBondInfo.toHuman()["percent"]).to.equal(TWENTY_PERCENT_STRING);
   });
@@ -99,13 +99,13 @@ describeDevMoonbeam(
         await createBlockWithExtrinsic(
           context,
           genesisAccount,
-          context.polkadotApi.tx.authorMapping.setParachainBondReservePercent(TWENTY_PERCENT)
+          context.axiaApi.tx.authorMapping.setParachainBondReservePercent(TWENTY_PERCENT)
         );
       } catch (e) {
         // NB: This test used to check events for ExtrinsicFailed,
         // but now the api prevents the call from happening
         expect(e.toString().substring(0, 88)).to.eq(
-          "TypeError: context.polkadotApi.tx.authorMapping.setParachainBondReservePercent is not a "
+          "TypeError: context.axiaApi.tx.authorMapping.setParachainBondReservePercent is not a "
         );
       }
     });

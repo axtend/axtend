@@ -3,9 +3,9 @@ import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
 import { ethers } from "ethers";
 import { getCompiled } from "../../util/contracts";
 import { createContract, createTransaction } from "../../util/transactions";
-import { Keyring } from "@polkadot/api";
-import { randomAsHex } from "@polkadot/util-crypto";
-import { u8aToHex } from "@polkadot/util";
+import { Keyring } from "@axia/api";
+import { randomAsHex } from "@axia/util-crypto";
+import { u8aToHex } from "@axia/util";
 
 import {
   GENESIS_ACCOUNT,
@@ -19,7 +19,7 @@ async function getMappingInfo(
   context,
   authorId: string
 ): Promise<{ account: string; deposit: BigInt }> {
-  const mapping = await context.polkadotApi.query.authorMapping.mappingWithDeposit(authorId);
+  const mapping = await context.axiaApi.query.authorMapping.mappingWithDeposit(authorId);
   if (mapping.isSome) {
     return {
       account: mapping.unwrap().account.toString(),
@@ -90,7 +90,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - author mapping", (context) => {
     secondMappingAccount = await mappingKeyRing.addFromUri(seed2, null, "sr25519");
 
     // Add association
-    await context.polkadotApi.tx.authorMapping
+    await context.axiaApi.tx.authorMapping
       .addAssociation(firstMappingAccount.publicKey)
       .signAndSend(genesisAccount);
     await context.createBlock();
@@ -161,7 +161,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - author mapping", (context) => {
     mappingAccount = await mappingKeyRing.addFromUri(seed, null, "sr25519");
 
     // Add association
-    await context.polkadotApi.tx.authorMapping
+    await context.axiaApi.tx.authorMapping
       .addAssociation(mappingAccount.publicKey)
       .signAndSend(genesisAccount);
     await context.createBlock();

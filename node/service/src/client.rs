@@ -26,7 +26,7 @@ use sp_runtime::{
 use sp_storage::{ChildInfo, StorageData, StorageKey};
 use std::sync::Arc;
 
-/// A set of APIs that polkadot-like runtimes must implement.
+/// A set of APIs that axia-like runtimes must implement.
 ///
 /// This trait has no methods or associated type. It is a concise marker for all the trait bounds
 /// that it contains.

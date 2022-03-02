@@ -2,7 +2,7 @@
   "name": "@axtend/api-augment",
   "version": "0.0.1",
   "private": true,
-  "description": "Moonbeam types augment for @polkadot/api",
+  "description": "Moonbeam types augment for @axia/api",
   "author": "PureStake",
   "license": "GPL-3.0-only",
   "repository": {
@@ -21,13 +21,13 @@
     "load:meta:moonriver": "curl -s -H \"Content-Type: application/json\" -d '{\"id\":\"1\", \"jsonrpc\":\"2.0\", \"method\": \"state_getMetadata\", \"params\":[]}' https://rpc.api.moonriver.axtend.network > metadata-moonriver.json",
     "load:meta:axtend": "curl -s -H \"Content-Type: application/json\" -d '{\"id\":\"1\", \"jsonrpc\":\"2.0\", \"method\": \"state_getMetadata\", \"params\":[]}' https://rpc.api.axtend.network > metadata-axtend.json",
     "generate:defs": "npm run generate:defs:moonbase && npm run generate:defs:moonriver && npm run generate:defs:axtend",
-    "generate:defs:moonbase": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package @axtend/api-augment/moonbase/interfaces --input ./src/moonbase/interfaces --endpoint ./metadata-moonbase.json",
-    "generate:defs:moonriver": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package @axtend/api-augment/moonriver/interfaces --input ./src/moonriver/interfaces --endpoint ./metadata-moonriver.json",
-    "generate:defs:axtend": "ts-node --skip-project node_modules/.bin/polkadot-types-from-defs --package @axtend/api-augment/axtend/interfaces --input ./src/axtend/interfaces --endpoint ./metadata-axtend.json",
+    "generate:defs:moonbase": "ts-node --skip-project node_modules/.bin/axia-types-from-defs --package @axtend/api-augment/moonbase/interfaces --input ./src/moonbase/interfaces --endpoint ./metadata-moonbase.json",
+    "generate:defs:moonriver": "ts-node --skip-project node_modules/.bin/axia-types-from-defs --package @axtend/api-augment/moonriver/interfaces --input ./src/moonriver/interfaces --endpoint ./metadata-moonriver.json",
+    "generate:defs:axtend": "ts-node --skip-project node_modules/.bin/axia-types-from-defs --package @axtend/api-augment/axtend/interfaces --input ./src/axtend/interfaces --endpoint ./metadata-axtend.json",
     "generate:meta": "npm run generate:meta:moonbase && npm run generate:meta:moonriver && npm run generate:meta:axtend",
-    "generate:meta:moonbase": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --endpoint ./metadata-moonbase.json --output ./src/moonbase/interfaces",
-    "generate:meta:moonriver": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --endpoint ./metadata-moonriver.json --output ./src/moonriver/interfaces",
-    "generate:meta:axtend": "ts-node --skip-project node_modules/.bin/polkadot-types-from-chain --endpoint ./metadata-axtend.json --output ./src/axtend/interfaces",
+    "generate:meta:moonbase": "ts-node --skip-project node_modules/.bin/axia-types-from-chain --endpoint ./metadata-moonbase.json --output ./src/moonbase/interfaces",
+    "generate:meta:moonriver": "ts-node --skip-project node_modules/.bin/axia-types-from-chain --endpoint ./metadata-moonriver.json --output ./src/moonriver/interfaces",
+    "generate:meta:axtend": "ts-node --skip-project node_modules/.bin/axia-types-from-chain --endpoint ./metadata-axtend.json --output ./src/axtend/interfaces",
     "prebuild": "rimraf build",
     "build": "tsc -b --verbose",
     "postbuild": "node ./scripts/postbuild.js",
@@ -64,7 +64,7 @@
     "axtend",
     "moonriver",
     "types",
-    "polkadot",
+    "axia",
     "api"
   ],
   "prettier": {
@@ -72,10 +72,10 @@
     "jsdocSingleLineComment": false
   },
   "dependencies": {
-    "@polkadot/api": "^7.9.1"
+    "@axia/api": "^7.9.1"
   },
   "devDependencies": {
-    "@polkadot/typegen": "^7.9.1",
+    "@axia/typegen": "^7.9.1",
     "prettier": "^2.5.1",
     "prettier-plugin-jsdoc": "^0.3.30",
     "rimraf": "^3.0.2",

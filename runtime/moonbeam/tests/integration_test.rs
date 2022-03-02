@@ -31,7 +31,7 @@ use frame_support::{
 };
 use moonbeam_runtime::{
 	currency::GLMR, AccountId, Balances, BaseFee, BlockWeights, Call, CrowdloanRewards, CurrencyId,
-	Event, ParachainStaking, PolkadotXcm, Precompiles, Runtime, System, XTokens, XcmTransactor,
+	Event, ParachainStaking, AxiaXcm, Precompiles, Runtime, System, XTokens, XcmTransactor,
 };
 use nimbus_primitives::NimbusId;
 use pallet_evm::PrecompileSet;
@@ -1279,7 +1279,7 @@ fn root_can_change_default_xcm_vers() {
 			);
 
 			// Root sets the defaultXcm
-			assert_ok!(PolkadotXcm::force_default_xcm_version(
+			assert_ok!(AxiaXcm::force_default_xcm_version(
 				root_origin(),
 				Some(2)
 			));
@@ -1784,7 +1784,7 @@ fn make_sure_axia_xcm_cannot_be_called() {
 			.to_vec()
 			.into();
 			assert_noop!(
-				Call::PolkadotXcm(pallet_xcm::Call::<Runtime>::reserve_transfer_assets {
+				Call::AxiaXcm(pallet_xcm::Call::<Runtime>::reserve_transfer_assets {
 					dest: Box::new(VersionedMultiLocation::V1(dest.clone())),
 					beneficiary: Box::new(VersionedMultiLocation::V1(dest)),
 					assets: Box::new(VersionedMultiAssets::V1(multiassets)),

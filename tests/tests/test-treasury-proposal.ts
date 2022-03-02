@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 import {
   ALITH_PRIV_KEY,
   BALTATHAR,
@@ -16,16 +16,16 @@ describeDevMoonbeam("Treasury proposal #1", (context) => {
     const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
 
     // Ethan submit a treasurery proposal
-    await context.polkadotApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
+    await context.axiaApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
     await context.createBlock();
 
     // Verify that the proposal is submitted
-    let proposalCount = await context.polkadotApi.query.treasury.proposalCount();
+    let proposalCount = await context.axiaApi.query.treasury.proposalCount();
     expect(proposalCount.toHuman() === "1").to.equal(true, "new proposal should have been added");
 
     // Try to approve the proposal directly (must be fail)
-    await context.polkadotApi.tx.treasury.approveProposal(0).signAndSend(ethan);
-    let approvals = (await context.polkadotApi.query.treasury.approvals()) as any;
+    await context.axiaApi.tx.treasury.approveProposal(0).signAndSend(ethan);
+    let approvals = (await context.axiaApi.query.treasury.approvals()) as any;
     expect(approvals.length).to.equal(0, "No proposal must have been approved");
   });
 });
@@ -36,16 +36,16 @@ describeDevMoonbeam("Treasury proposal #2", (context) => {
     const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
 
     // Ethan submit a treasurery proposal
-    await context.polkadotApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
+    await context.axiaApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
     await context.createBlock();
 
     // Verify that the proposal is submitted
-    let proposalCount = await context.polkadotApi.query.treasury.proposalCount();
+    let proposalCount = await context.axiaApi.query.treasury.proposalCount();
     expect(proposalCount.toHuman() === "1").to.equal(true, "new proposal should have been added");
 
     // Try to reject the proposal directly (must be fail)
-    await context.polkadotApi.tx.treasury.rejectProposal(0).signAndSend(ethan);
-    expect(await context.polkadotApi.query.treasury.proposals(0)).not.equal(
+    await context.axiaApi.tx.treasury.rejectProposal(0).signAndSend(ethan);
+    expect(await context.axiaApi.query.treasury.proposals(0)).not.equal(
       null,
       "The proposal should not have been deleted"
     );
@@ -59,22 +59,22 @@ describeDevMoonbeam("Treasury proposal #3", (context) => {
     const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
 
     // Ethan submit a treasurery proposal
-    await context.polkadotApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
+    await context.axiaApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
     await context.createBlock();
 
     // Verify that the proposal is submitted
-    let proposalCount = await context.polkadotApi.query.treasury.proposalCount();
+    let proposalCount = await context.axiaApi.query.treasury.proposalCount();
     expect(proposalCount.toHuman() === "1").to.equal(true, "new proposal should have been added");
 
     // A council member attempts to approve the proposal on behalf of the council
     // (must fail because there is not a quorum)
-    await context.polkadotApi.tx.councilCollective
-      .propose(1, context.polkadotApi.tx.treasury.approveProposal(0), 1_000)
+    await context.axiaApi.tx.councilCollective
+      .propose(1, context.axiaApi.tx.treasury.approveProposal(0), 1_000)
       .signAndSend(charleth);
     await context.createBlock();
 
     // Verify that the proposal is not deleted
-    expect(await context.polkadotApi.query.treasury.proposals(0)).not.equal(
+    expect(await context.axiaApi.query.treasury.proposals(0)).not.equal(
       null,
       "The proposal must not have been deleted"
     );
@@ -88,22 +88,22 @@ describeDevMoonbeam("Treasury proposal #4", (context) => {
     const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
 
     // Ethan submit a treasurery proposal
-    await context.polkadotApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
+    await context.axiaApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
     await context.createBlock();
 
     // Verify that the proposal is submitted
-    let proposalCount = await context.polkadotApi.query.treasury.proposalCount();
+    let proposalCount = await context.axiaApi.query.treasury.proposalCount();
     expect(proposalCount.toHuman() === "1").to.equal(true, "new proposal should have been added");
 
     // A council member attempts to reject the proposal on behalf of the council
     // (must fail because there is not a quorum)
-    await context.polkadotApi.tx.councilCollective
-      .propose(1, context.polkadotApi.tx.treasury.rejectProposal(0), 1_000)
+    await context.axiaApi.tx.councilCollective
+      .propose(1, context.axiaApi.tx.treasury.rejectProposal(0), 1_000)
       .signAndSend(charleth);
     await context.createBlock();
 
     // Verify that the proposal is not approved
-    let approvals = (await context.polkadotApi.query.treasury.approvals()) as any;
+    let approvals = (await context.axiaApi.query.treasury.approvals()) as any;
     expect(approvals.length).to.equal(0, "No proposal should have been approved");
   });
 });
@@ -115,21 +115,21 @@ describeDevMoonbeam("Treasury proposal #5", (context) => {
     const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
 
     // Ethan submit a treasurery proposal
-    await context.polkadotApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
+    await context.axiaApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
     await context.createBlock();
 
     // Verify that the proposal is submitted
-    let proposalCount = await context.polkadotApi.query.treasury.proposalCount();
+    let proposalCount = await context.axiaApi.query.treasury.proposalCount();
     expect(proposalCount.toHuman() === "1").to.equal(true, "new proposal should have been added");
 
     // Root approve the proposal directly
-    await context.polkadotApi.tx.sudo
-      .sudo(context.polkadotApi.tx.treasury.approveProposal(0))
+    await context.axiaApi.tx.sudo
+      .sudo(context.axiaApi.tx.treasury.approveProposal(0))
       .signAndSend(alith);
     await context.createBlock();
 
     // Verify that the proposal is approved
-    let approvals = (await context.polkadotApi.query.treasury.approvals()) as any;
+    let approvals = (await context.axiaApi.query.treasury.approvals()) as any;
     expect(approvals.length).to.equal(1, "One proposal should have been approved");
   });
 });
@@ -141,21 +141,21 @@ describeDevMoonbeam("Treasury proposal #6", (context) => {
     const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
 
     // Ethan submit a treasurery proposal
-    await context.polkadotApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
+    await context.axiaApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
     await context.createBlock();
 
     // Verify that the proposal is submitted
-    let proposalCount = await context.polkadotApi.query.treasury.proposalCount();
+    let proposalCount = await context.axiaApi.query.treasury.proposalCount();
     expect(proposalCount.toHuman() === "1").to.equal(true, "new proposal should have been added");
 
     // Root approve the proposal directly
-    await context.polkadotApi.tx.sudo
-      .sudo(context.polkadotApi.tx.treasury.rejectProposal(0))
+    await context.axiaApi.tx.sudo
+      .sudo(context.axiaApi.tx.treasury.rejectProposal(0))
       .signAndSend(alith);
     await context.createBlock();
 
     // Verify that the proposal is deleted
-    expect(await (await context.polkadotApi.query.treasury.proposals(0)).toHuman()).to.equal(
+    expect(await (await context.axiaApi.query.treasury.proposals(0)).toHuman()).to.equal(
       null,
       "The proposal must have been deleted"
     );
@@ -174,20 +174,20 @@ describeDevMoonbeam("Treasury proposal #7", (context) => {
     const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
 
     // Ethan submit a treasurery proposal
-    await context.polkadotApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
+    await context.axiaApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
     await context.createBlock();
 
     // Verify that the proposal is submitted
-    let proposalCount = (await context.polkadotApi.query.treasury.proposalCount()) as any;
+    let proposalCount = (await context.axiaApi.query.treasury.proposalCount()) as any;
     expect(proposalCount.toBigInt()).to.equal(1n, "new proposal should have been added");
 
     // Charleth submit the proposal to the council (and therefore implicitly votes for)
     const { events: proposalEvents } = await createBlockWithExtrinsic(
       context,
       charleth,
-      context.polkadotApi.tx.councilCollective.propose(
+      context.axiaApi.tx.councilCollective.propose(
         2,
-        context.polkadotApi.tx.treasury.approveProposal(0),
+        context.axiaApi.tx.treasury.approveProposal(0),
         1_000
       )
     );
@@ -196,19 +196,19 @@ describeDevMoonbeam("Treasury proposal #7", (context) => {
       .data[2].toHex() as string;
 
     // Charleth & Dorothy vote for this proposal and close it
-    await context.polkadotApi.tx.councilCollective
+    await context.axiaApi.tx.councilCollective
       .vote(proposalHash, 0, true)
       .signAndSend(charleth);
-    await context.polkadotApi.tx.councilCollective.vote(proposalHash, 0, true).signAndSend(dorothy);
+    await context.axiaApi.tx.councilCollective.vote(proposalHash, 0, true).signAndSend(dorothy);
     await context.createBlock();
     await context.createBlock();
-    await context.polkadotApi.tx.councilCollective
+    await context.axiaApi.tx.councilCollective
       .close(proposalHash, 0, 800_000_000, 1_000)
       .signAndSend(dorothy);
     await context.createBlock();
 
     // Verify that the proposal is approved
-    let approvals = (await context.polkadotApi.query.treasury.approvals()) as any;
+    let approvals = (await context.axiaApi.query.treasury.approvals()) as any;
     expect(approvals.length).to.equal(1, "one proposal should have been approved");
   });
 });
@@ -221,11 +221,11 @@ describeDevMoonbeam("Treasury proposal #8", (context) => {
     const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
 
     // Ethan submit a treasurery proposal
-    await context.polkadotApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
+    await context.axiaApi.tx.treasury.proposeSpend(10, BALTATHAR).signAndSend(ethan);
     await context.createBlock();
 
     // Verify that the proposal is submitted
-    let proposalCount = (await context.polkadotApi.query.treasury.proposalCount()) as any;
+    let proposalCount = (await context.axiaApi.query.treasury.proposalCount()) as any;
     expect(proposalCount.toBigInt()).to.equal(1n, "new proposal should have been added");
 
     // Charleth proposed that the council reject the treasury proposal
@@ -233,9 +233,9 @@ describeDevMoonbeam("Treasury proposal #8", (context) => {
     const { events: rejectEvents } = await createBlockWithExtrinsic(
       context,
       charleth,
-      context.polkadotApi.tx.councilCollective.propose(
+      context.axiaApi.tx.councilCollective.propose(
         2,
-        context.polkadotApi.tx.treasury.rejectProposal(0),
+        context.axiaApi.tx.treasury.rejectProposal(0),
         1_000
       )
     );
@@ -245,10 +245,10 @@ describeDevMoonbeam("Treasury proposal #8", (context) => {
 
     // Charleth & Dorothy vote for against proposal and close it
     await Promise.all([
-      context.polkadotApi.tx.councilCollective
+      context.axiaApi.tx.councilCollective
         .vote(councilProposalHash, 0, true)
         .signAndSend(charleth),
-      context.polkadotApi.tx.councilCollective
+      context.axiaApi.tx.councilCollective
         .vote(councilProposalHash, 0, true)
         .signAndSend(dorothy),
     ]);
@@ -257,13 +257,13 @@ describeDevMoonbeam("Treasury proposal #8", (context) => {
     const { events: closeEvents } = await createBlockWithExtrinsic(
       context,
       dorothy,
-      context.polkadotApi.tx.councilCollective.close(councilProposalHash, 0, 800_000_000, 1_000)
+      context.axiaApi.tx.councilCollective.close(councilProposalHash, 0, 800_000_000, 1_000)
     );
     // method: 'Rejected', section: 'treasury', index: '0x1103',
     expect(closeEvents.map((e) => e.index.toHuman())).to.contain("0x1103");
 
     // Verify that the proposal is deleted
-    expect((await context.polkadotApi.query.treasury.proposals(0)).toHuman()).to.equal(
+    expect((await context.axiaApi.query.treasury.proposals(0)).toHuman()).to.equal(
       null,
       "The proposal must have been deleted"
     );

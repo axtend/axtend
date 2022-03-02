@@ -84,7 +84,7 @@ impl sc_service::ChainSpec for FakeSpec {
 		todo!()
 	}
 
-	fn cloned_box(&self) -> Box<dyn polkadot_service::ChainSpec> {
+	fn cloned_box(&self) -> Box<dyn axia_service::ChainSpec> {
 		todo!()
 	}
 

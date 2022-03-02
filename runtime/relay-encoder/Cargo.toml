@@ -31,7 +31,7 @@ pallet-proxy = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 pallet-utility = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
 
 axctest-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 betanet-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 alphanet-runtime = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 

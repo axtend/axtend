@@ -1,7 +1,7 @@
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 import { expect } from "chai";
-import { BN, hexToU8a } from "@polkadot/util";
-import { KeyringPair } from "@polkadot/keyring/types";
+import { BN, hexToU8a } from "@axia/util";
+import { KeyringPair } from "@axia/keyring/types";
 import {
   ALITH,
   ALITH_PRIV_KEY,
@@ -45,7 +45,7 @@ describeDevMoonbeam("Pallet Maintenance Mode - normal call shouldnt work", (cont
     ({ events } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+      context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
     ));
   });
 
@@ -63,15 +63,15 @@ describeDevMoonbeam("Pallet Maintenance Mode - with sudo shouldn't work", (conte
     ({ events } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
       )
     ));
   });
 
   it("shouldn't succeed with sudo", async function () {
     expect(events[3].toHuman().method).to.eq("ExtrinsicSuccess");
-    expect((await context.polkadotApi.query.maintenanceMode.maintenanceMode()).toHuman()).to.equal(
+    expect((await context.axiaApi.query.maintenanceMode.maintenanceMode()).toHuman()).to.equal(
       false
     );
   });
@@ -84,13 +84,13 @@ describeDevMoonbeam("Pallet Maintenance Mode - with council should work", (conte
     // go into Maintenance
     ({ events } = await execFromAllMembersOfTechCommittee(
       context,
-      context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+      context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
     ));
   });
 
   it("should succeed with council", async function () {
     expect(events[3].toHuman().method).to.eq("EnteredMaintenanceMode");
-    expect((await context.polkadotApi.query.maintenanceMode.maintenanceMode()).toHuman()).to.equal(
+    expect((await context.axiaApi.query.maintenanceMode.maintenanceMode()).toHuman()).to.equal(
       true
     );
   });
@@ -102,18 +102,18 @@ describeDevMoonbeam("Pallet Maintenance Mode - exit mode", (context) => {
     // go into Maintenance
     await execFromAllMembersOfTechCommittee(
       context,
-      context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+      context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
     );
     // exit maintenance
     ({ events } = await execFromAllMembersOfTechCommittee(
       context,
-      context.polkadotApi.tx.maintenanceMode.resumeNormalOperation()
+      context.axiaApi.tx.maintenanceMode.resumeNormalOperation()
     ));
   });
 
   it("should succeed with council", async function () {
     expect(events[3].toHuman().method).to.eq("NormalOperationResumed");
-    expect((await context.polkadotApi.query.maintenanceMode.maintenanceMode()).toHuman()).to.equal(
+    expect((await context.axiaApi.query.maintenanceMode.maintenanceMode()).toHuman()).to.equal(
       false
     );
   });
@@ -125,12 +125,12 @@ describeDevMoonbeam(
       // go into Maintenance
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
       );
       // exit maintenance
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.resumeNormalOperation()
+        context.axiaApi.tx.maintenanceMode.resumeNormalOperation()
       );
 
       //try transfer
@@ -153,18 +153,18 @@ describeDevMoonbeam("Pallet Maintenance Mode - normal exit call shouldnt work", 
     // go into Maintenance
     await execFromAllMembersOfTechCommittee(
       context,
-      context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+      context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
     );
     // and try to turn it off
     await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.maintenanceMode.resumeNormalOperation()
+      context.axiaApi.tx.maintenanceMode.resumeNormalOperation()
     );
   });
 
   it("should fail without sudo", async function () {
-    expect((await context.polkadotApi.query.maintenanceMode.maintenanceMode()).toHuman()).to.equal(
+    expect((await context.axiaApi.query.maintenanceMode.maintenanceMode()).toHuman()).to.equal(
       true
     );
   });
@@ -181,7 +181,7 @@ describeDevMoonbeam(
 
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
       );
 
       await context.createBlock({
@@ -205,14 +205,14 @@ describeDevMoonbeam(
 
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
       );
 
       ({ events } = await createBlockWithExtrinsic(
         context,
         alith,
-        context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.evm.call(
+        context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.evm.call(
             ALITH,
             TEST_ACCOUNT,
             "0x0",
@@ -248,25 +248,25 @@ describeDevMoonbeam(
       // turn maintenance on
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
       );
 
       //init
-      await context.polkadotApi.tx.sudo
+      await context.axiaApi.tx.sudo
         .sudo(
-          context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+          context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
             [relayChainAddress, GENESIS_ACCOUNT, 3_000_000n * GLMR],
           ])
         )
         .signAndSend(alith);
       await context.createBlock();
 
-      let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+      let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
       // Complete initialization
-      await context.polkadotApi.tx.sudo
+      await context.axiaApi.tx.sudo
         .sudo(
-          context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+          context.axiaApi.tx.crowdloanRewards.completeInitialization(
             initBlock.toBigInt() + VESTING_PERIOD
           )
         )
@@ -279,7 +279,7 @@ describeDevMoonbeam(
         await createBlockWithExtrinsic(
           context,
           genesisAccount,
-          context.polkadotApi.tx.crowdloanRewards.claim()
+          context.axiaApi.tx.crowdloanRewards.claim()
         );
       });
       expect(error).to.eq("Error: 1010: Invalid Transaction: Transaction call is not expected");
@@ -298,21 +298,21 @@ describeDevMoonbeam(
       // turn maintenance on
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
       );
 
       // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
       // And we need relay tokens for issuing a transaction to be executed in the relay
-      const balance = context.polkadotApi.createType("Balance", 100000000000000);
-      const assetBalance = context.polkadotApi.createType("PalletAssetsAssetAccount", {
+      const balance = context.axiaApi.createType("Balance", 100000000000000);
+      const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
         balance: balance,
       });
 
-      assetId = context.polkadotApi.createType(
+      assetId = context.axiaApi.createType(
         "u128",
         new BN("42259045809535163221576417993425387648")
       );
-      const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+      const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
         supply: balance,
       });
 
@@ -324,7 +324,7 @@ describeDevMoonbeam(
         await createBlockWithExtrinsic(
           context,
           sudoAccount,
-          context.polkadotApi.tx.assets.transfer(assetId, BALTATHAR, 1000)
+          context.axiaApi.tx.assets.transfer(assetId, BALTATHAR, 1000)
         );
       });
       expect(error).to.eq("Error: 1010: Invalid Transaction: Transaction call is not expected");
@@ -345,7 +345,7 @@ describeDevMoonbeam(
       // turn maintenance on
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
       );
     });
 
@@ -354,7 +354,7 @@ describeDevMoonbeam(
         await createBlockWithExtrinsic(
           context,
           baltathar,
-          context.polkadotApi.tx.xTokens.transfer(
+          context.axiaApi.tx.xTokens.transfer(
             "SelfReserve", //enum
             new BN(HUNDRED_UNITS),
             {
@@ -388,7 +388,7 @@ describeDevMoonbeam(
       // turn maintenance on
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
       );
     });
 
@@ -396,9 +396,9 @@ describeDevMoonbeam(
       await createBlockWithExtrinsic(
         context,
         sudoAccount,
-        context.polkadotApi.tx.sudo.sudo(context.polkadotApi.tx.xcmTransactor.register(ALITH, 0))
+        context.axiaApi.tx.sudo.sudo(context.axiaApi.tx.xcmTransactor.register(ALITH, 0))
       );
-      const resp = await context.polkadotApi.query.xcmTransactor.indexToAccount(0);
+      const resp = await context.axiaApi.query.xcmTransactor.indexToAccount(0);
       expect(resp.toString()).to.eq(ALITH);
     });
   }
@@ -415,7 +415,7 @@ describeDevMoonbeam(
       // turn maintenance on
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
       );
     });
 
@@ -424,7 +424,7 @@ describeDevMoonbeam(
         await createBlockWithExtrinsic(
           context,
           sudoAccount,
-          context.polkadotApi.tx.xcmTransactor.transactThroughDerivative(
+          context.axiaApi.tx.xcmTransactor.transactThroughDerivative(
             "Relay",
             0,
             "SelfReserve",
@@ -459,8 +459,8 @@ describeDevMoonbeam(
       const { events: eventsRegister } = await createBlockWithExtrinsic(
         context,
         sudoAccount,
-        context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.assetManager.registerAsset(
+        context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.assetManager.registerAsset(
             sourceLocation,
             assetMetadata,
             new BN(1),
@@ -480,8 +480,8 @@ describeDevMoonbeam(
       const { events } = await createBlockWithExtrinsic(
         context,
         sudoAccount,
-        context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 0, 0)
+        context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 0, 0)
         )
       );
       expect(events[1].method.toString()).to.eq("UnitsPerSecondChanged");
@@ -490,7 +490,7 @@ describeDevMoonbeam(
       // turn maintenance on
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
       );
     });
 
@@ -503,7 +503,7 @@ describeDevMoonbeam(
       await context.createBlock();
 
       // Make sure the state does not have ALITH's AXC tokens
-      let alithBalance = (await context.polkadotApi.query.assets.account(assetId, ALITH)) as any;
+      let alithBalance = (await context.axiaApi.query.assets.account(assetId, ALITH)) as any;
 
       // Alith balance is 0
       expect(alithBalance.isNone).to.eq(true);
@@ -511,14 +511,14 @@ describeDevMoonbeam(
       // turn maintenance off
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.resumeNormalOperation()
+        context.axiaApi.tx.maintenanceMode.resumeNormalOperation()
       );
 
       // Create a block in which the XCM will be executed
       await context.createBlock();
 
       // Make sure the state has ALITH's to AXC tokens
-      alithBalance = ((await context.polkadotApi.query.assets.account(assetId, ALITH)) as any)
+      alithBalance = ((await context.axiaApi.query.assets.account(assetId, ALITH)) as any)
         .unwrap()
         ["balance"].toBigInt();
 
@@ -553,8 +553,8 @@ describeDevMoonbeam(
       const { events: eventsRegister } = await createBlockWithExtrinsic(
         context,
         sudoAccount,
-        context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.assetManager.registerAsset(
+        context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.assetManager.registerAsset(
             sourceLocation,
             assetMetadata,
             new BN(1),
@@ -574,8 +574,8 @@ describeDevMoonbeam(
       const { events } = await createBlockWithExtrinsic(
         context,
         sudoAccount,
-        context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 0, 0)
+        context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 0, 0)
         )
       );
       expect(events[1].method.toString()).to.eq("UnitsPerSecondChanged");
@@ -584,7 +584,7 @@ describeDevMoonbeam(
       // turn maintenance on
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.enterMaintenanceMode()
+        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
       );
     });
 
@@ -597,14 +597,14 @@ describeDevMoonbeam(
       await context.createBlock();
 
       // Make sure the state does not have ALITH's foreign asset tokens
-      let alithBalance = (await context.polkadotApi.query.assets.account(assetId, ALITH)) as any;
+      let alithBalance = (await context.axiaApi.query.assets.account(assetId, ALITH)) as any;
       // Alith balance is 0
       expect(alithBalance.isNone).to.eq(true);
 
       // turn maintenance off
       await execFromAllMembersOfTechCommittee(
         context,
-        context.polkadotApi.tx.maintenanceMode.resumeNormalOperation()
+        context.axiaApi.tx.maintenanceMode.resumeNormalOperation()
       );
 
       // Create a block in which the XCM will be executed
@@ -612,7 +612,7 @@ describeDevMoonbeam(
 
       // Make sure the state has ALITH's to foreign assets tokens
       alithBalance = (
-        (await context.polkadotApi.query.assets.account(assetId, ALITH)) as any
+        (await context.axiaApi.query.assets.account(assetId, ALITH)) as any
       ).unwrap()["balance"];
 
       expect(alithBalance.toBigInt()).to.eq(BigInt(10000000000000));

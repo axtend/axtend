@@ -1,9 +1,9 @@
-// Auto-generated via `yarn polkadot-types-from-chain`, do not edit
+// Auto-generated via `yarn axia-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { ApiTypes } from "@polkadot/api-base/types";
+import type { ApiTypes } from "@axia/api-base/types";
 
-declare module "@polkadot/api-base/types/errors" {
+declare module "@axia/api-base/types/errors" {
   export interface AugmentedErrors<ApiType extends ApiTypes> {
     assetManager: {
       AssetAlreadyExists: AugmentedError<ApiType>;
@@ -597,13 +597,13 @@ declare module "@polkadot/api-base/types/errors" {
        */
       OverlappingUpgrades: AugmentedError<ApiType>;
       /**
-       * Polkadot currently prohibits this parachain from upgrading its
+       * Axia currently prohibits this parachain from upgrading its
        * validation function
        */
-      ProhibitedByPolkadot: AugmentedError<ApiType>;
+      ProhibitedByAxia: AugmentedError<ApiType>;
       /**
        * The supplied validation function has compiled into a blob larger than
-       * Polkadot is willing to run
+       * Axia is willing to run
        */
       TooBig: AugmentedError<ApiType>;
       /**
@@ -619,7 +619,7 @@ declare module "@polkadot/api-base/types/errors" {
        */
       [key: string]: AugmentedError<ApiType>;
     };
-    polkadotXcm: {
+    axiaXcm: {
       /**
        * The location is invalid since it already has a subscription from us.
        */

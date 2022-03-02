@@ -1,14 +1,14 @@
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 import { expect } from "chai";
-import { BN, hexToU8a } from "@polkadot/util";
+import { BN, hexToU8a } from "@axia/util";
 
 import { ALITH, ALITH_PRIV_KEY, BALTATHAR, BALTATHAR_PRIV_KEY } from "../util/constants";
 import { describeAllychain } from "../util/setup-para-tests";
 import { createBlockWithExtrinsicAllychain, logEvents, waitOneBlock } from "../util/axlib-rpc";
-import { KeyringPair } from "@polkadot/keyring/types";
-import { ApiPromise } from "@polkadot/api";
+import { KeyringPair } from "@axia/keyring/types";
+import { ApiPromise } from "@axia/api";
 import { execFromTwoThirdsOfCouncil } from "../util/governance";
-import { ApiTypes, SubmittableExtrinsic } from "@polkadot/api/types";
+import { ApiTypes, SubmittableExtrinsic } from "@axia/api/types";
 
 const palletId = "0x6D6f646c617373746d6E67720000000000000000";
 const HUNDRED_UNITS = 100000000000000;
@@ -43,16 +43,16 @@ const sourceLocationRelay = { XCM: { parents: 1, interior: "Here" } };
 
 const execFromAllMembersOfTechCommittee = async <Call extends SubmittableExtrinsic<ApiTypes>>(
   allychainApi: ApiPromise,
-  polkadotCall: Call,
+  axiaCall: Call,
   key_1: KeyringPair,
   key_2: KeyringPair,
   index: Number
 ) => {
-  let lengthBound = polkadotCall.encodedLength;
+  let lengthBound = axiaCall.encodedLength;
   const { events: proposalEvents } = await createBlockWithExtrinsicAllychain(
     allychainApi,
     key_1,
-    allychainApi.tx.techCommitteeCollective.propose(2, polkadotCall, lengthBound)
+    allychainApi.tx.techCommitteeCollective.propose(2, axiaCall, lengthBound)
   );
 
   const proposalHash = proposalEvents
@@ -134,8 +134,8 @@ describeAllychain(
 
       const alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
-      const allychainOne = context.polkadotApiParaone;
-      const relayOne = context._polkadotApiRelaychains[0];
+      const allychainOne = context.axiaApiParaone;
+      const relayOne = context._axiaApiRelaychains[0];
 
       // Log events
       logEvents(allychainOne, "PARA");
@@ -219,12 +219,12 @@ describeAllychain("XCM - send_relay_asset_to_relay", { chain: "moonbase-local" }
 
     // Setup Relaychain
     aliceRelay = keyring.addFromUri("//Alice");
-    relayOne = context._polkadotApiRelaychains[0];
+    relayOne = context._axiaApiRelaychains[0];
 
     // Setup Allychain
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-    allychainOne = context.polkadotApiParaone;
+    allychainOne = context.axiaApiParaone;
 
     // Log events
     logEvents(allychainOne, "PARA");
@@ -338,13 +338,13 @@ describeAllychain(
 
       // Setup Relaychain
       aliceRelay = keyring.addFromUri("//Alice");
-      relayOne = context._polkadotApiRelaychains[0];
+      relayOne = context._axiaApiRelaychains[0];
 
       // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-      allychainOne = context.polkadotApiParaone;
-      allychainTwo = context._polkadotApiAllychains[1].apis[0];
+      allychainOne = context.axiaApiParaone;
+      allychainTwo = context._axiaApiAllychains[1].apis[0];
 
       // Log events
       logEvents(allychainOne, "PARA A");
@@ -467,13 +467,13 @@ describeAllychain(
       keyring = new Keyring({ type: "ethereum" });
 
       // Setup Relaychain
-      relayOne = context._polkadotApiRelaychains[0];
+      relayOne = context._axiaApiRelaychains[0];
 
       // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-      allychainOne = context.polkadotApiParaone;
-      allychainTwo = context._polkadotApiAllychains[1].apis[0];
+      allychainOne = context.axiaApiParaone;
+      allychainTwo = context._axiaApiAllychains[1].apis[0];
 
       // Log events
       logEvents(allychainOne, "PARA A");
@@ -571,13 +571,13 @@ describeAllychain(
       keyring = new Keyring({ type: "ethereum" });
 
       // Setup Relaychain
-      relayOne = context._polkadotApiRelaychains[0];
+      relayOne = context._axiaApiRelaychains[0];
 
       // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-      allychainOne = context.polkadotApiParaone;
-      allychainTwo = context._polkadotApiAllychains[1].apis[0];
+      allychainOne = context.axiaApiParaone;
+      allychainTwo = context._axiaApiAllychains[1].apis[0];
 
       // Log events
       logEvents(allychainOne, "PARA A");
@@ -700,14 +700,14 @@ describeAllychain(
       keyring = new Keyring({ type: "ethereum" });
 
       // Setup Relaychain
-      relayOne = context._polkadotApiRelaychains[0];
+      relayOne = context._axiaApiRelaychains[0];
 
       // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-      allychainOne = context.polkadotApiParaone;
-      allychainTwo = context._polkadotApiAllychains[1].apis[0];
-      allychainThree = context._polkadotApiAllychains[2].apis[0];
+      allychainOne = context.axiaApiParaone;
+      allychainTwo = context._axiaApiAllychains[1].apis[0];
+      allychainThree = context._axiaApiAllychains[2].apis[0];
 
       // Log events
       logEvents(allychainOne, "PARA A");
@@ -830,8 +830,8 @@ describeAllychain(
       const alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       const baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
 
-      const allychainOne = context.polkadotApiParaone;
-      const relayOne = context._polkadotApiRelaychains[0];
+      const allychainOne = context.axiaApiParaone;
+      const relayOne = context._axiaApiRelaychains[0];
 
       // Log events
       logEvents(allychainOne, "PARA");
@@ -944,13 +944,13 @@ describeAllychain(
       keyring = new Keyring({ type: "ethereum" });
 
       // Setup Relaychain
-      relayOne = context._polkadotApiRelaychains[0];
+      relayOne = context._axiaApiRelaychains[0];
 
       // Setup Allychains
       alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-      allychainOne = context.polkadotApiParaone;
-      allychainTwo = context._polkadotApiAllychains[1].apis[0];
+      allychainOne = context.axiaApiParaone;
+      allychainTwo = context._axiaApiAllychains[1].apis[0];
 
       // Log events
       logEvents(allychainOne, "PARA A");

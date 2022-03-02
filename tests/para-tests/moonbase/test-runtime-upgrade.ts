@@ -1,4 +1,4 @@
-import { Keyring } from "@polkadot/api";
+import { Keyring } from "@axia/api";
 import { expect } from "chai";
 import child_process from "child_process";
 
@@ -64,7 +64,7 @@ describeAllychain(
       const alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
       const currentVersion = await (
-        (await context.polkadotApiParaone.query.system.lastRuntimeUpgrade()) as any
+        (await context.axiaApiParaone.query.system.lastRuntimeUpgrade()) as any
       ).unwrap();
       expect(currentVersion.toJSON()).to.deep.equal({
         specVersion: Number(baseRuntime),
@@ -79,7 +79,7 @@ describeAllychain(
 
       process.stdout.write(`Checking on-chain runtime version ${localVersion}...`);
       expect(
-        await (await context.polkadotApiParaone.query.system.lastRuntimeUpgrade()).toJSON()
+        await (await context.axiaApiParaone.query.system.lastRuntimeUpgrade()).toJSON()
       ).to.deep.equal({
         specVersion: Number(localVersion),
         specName: "moonbase",

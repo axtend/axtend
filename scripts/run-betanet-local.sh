@@ -7,7 +7,7 @@
 # 43 for http
 # 44 for ws
 #
-# Allychain port (XX+1)000
+# Parachain port (XX+1)000
 # 52 for p2p
 # 53 for http
 # 54 for ws
@@ -41,7 +41,7 @@ echo "relay ${RELAY_INDEX} - p2p-port: $((RELAY_PORT)), \
 http-port: $((RELAY_PORT + 1)) , ws-port: $((RELAY_PORT + 2))"
 
 if [ -z "$AXIA_VERSION" ]; then
-  AXIA_VERSION="sha-`egrep -o '/polkadot.*#([^\"]*)' Cargo.lock | \
+  AXIA_VERSION="sha-`egrep -o '/axia.*#([^\"]*)' Cargo.lock | \
     head -1 | sed 's/.*#//' |  cut -c1-8`"
 fi
 
@@ -54,7 +54,7 @@ docker run \
   -p $((RELAY_PORT + 1)):$((RELAY_PORT + 1)) \
   -p $((RELAY_PORT + 2)):$((RELAY_PORT + 2)) \
   -it purestake/moonbase-relay-testnet:$AXIA_VERSION \
-    /usr/local/bin/polkadot \
+    /usr/local/bin/axia \
       --chain betanet-local \
       --${WELL_KNOWN_USERS[$RELAY_INDEX]} \
       --node-key ${COMMON_NODE_KEYS[$RELAY_INDEX]} \

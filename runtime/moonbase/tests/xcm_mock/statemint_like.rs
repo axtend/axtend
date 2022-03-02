@@ -30,10 +30,10 @@ use sp_runtime::{
 	AccountId32,
 };
 
-use polkadot_core_primitives::BlockNumber as RelayBlockNumber;
+use axia_core_primitives::BlockNumber as RelayBlockNumber;
 
-use polkadot_allychain::primitives::Id as ParaId;
-use polkadot_allychain::primitives::Sibling;
+use axia_allychain::primitives::Id as ParaId;
+use axia_allychain::primitives::Sibling;
 use sp_std::convert::TryFrom;
 use xcm::latest::prelude::*;
 use xcm::VersionedXcm;

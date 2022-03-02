@@ -1,4 +1,4 @@
-// Auto-generated via `yarn polkadot-types-from-defs`, do not edit
+// Auto-generated via `yarn axia-types-from-defs`, do not edit
 /* eslint-disable */
 
 /* eslint-disable sort-keys */
@@ -851,8 +851,8 @@ export default {
     _enum: {
       Any: "Null",
       Named: "Bytes",
-      Polkadot: "Null",
-      Kusama: "Null",
+      Axia: "Null",
+      AxiaTest: "Null",
     },
   },
   /**
@@ -1484,18 +1484,18 @@ export default {
     ],
   },
   /**
-   * Lookup148: polkadot_primitives::v1::PersistedValidationData<primitive_types::H256, N>
+   * Lookup148: axia_primitives::v1::PersistedValidationData<primitive_types::H256, N>
    */
-  PolkadotPrimitivesV1PersistedValidationData: {
+  AxiaPrimitivesV1PersistedValidationData: {
     parentHead: "Bytes",
     relayParentNumber: "u32",
     relayParentStorageRoot: "H256",
     maxPovSize: "u32",
   },
   /**
-   * Lookup151: polkadot_primitives::v1::UpgradeRestriction
+   * Lookup151: axia_primitives::v1::UpgradeRestriction
    */
-  PolkadotPrimitivesV1UpgradeRestriction: {
+  AxiaPrimitivesV1UpgradeRestriction: {
     _enum: ["Present"],
   },
   /**
@@ -1505,13 +1505,13 @@ export default {
   CumulusPalletParachainSystemRelayStateSnapshotMessagingStateSnapshot: {
     dmqMqcHead: "H256",
     relayDispatchQueueSize: "(u32,u32)",
-    ingressChannels: "Vec<(u32,PolkadotPrimitivesV1AbridgedHrmpChannel)>",
-    egressChannels: "Vec<(u32,PolkadotPrimitivesV1AbridgedHrmpChannel)>",
+    ingressChannels: "Vec<(u32,AxiaPrimitivesV1AbridgedHrmpChannel)>",
+    egressChannels: "Vec<(u32,AxiaPrimitivesV1AbridgedHrmpChannel)>",
   },
   /**
-   * Lookup156: polkadot_primitives::v1::AbridgedHrmpChannel
+   * Lookup156: axia_primitives::v1::AbridgedHrmpChannel
    */
-  PolkadotPrimitivesV1AbridgedHrmpChannel: {
+  AxiaPrimitivesV1AbridgedHrmpChannel: {
     maxCapacity: "u32",
     maxTotalSize: "u32",
     maxMessageSize: "u32",
@@ -1520,9 +1520,9 @@ export default {
     mqcHead: "Option<H256>",
   },
   /**
-   * Lookup157: polkadot_primitives::v1::AbridgedHostConfiguration
+   * Lookup157: axia_primitives::v1::AbridgedHostConfiguration
    */
-  PolkadotPrimitivesV1AbridgedHostConfiguration: {
+  AxiaPrimitivesV1AbridgedHostConfiguration: {
     maxCodeSize: "u32",
     maxHeadDataSize: "u32",
     maxUpwardQueueCount: "u32",
@@ -1535,9 +1535,9 @@ export default {
   },
   /**
    * Lookup163:
-   * polkadot_core_primitives::OutboundHrmpMessage<polkadot_parachain::primitives::Id>
+   * axia_core_primitives::OutboundHrmpMessage<axia_parachain::primitives::Id>
    */
-  PolkadotCorePrimitivesOutboundHrmpMessage: {
+  AxiaCorePrimitivesOutboundHrmpMessage: {
     recipient: "u32",
     data: "Bytes",
   },
@@ -1564,10 +1564,10 @@ export default {
    * Lookup165: cumulus_primitives_parachain_inherent::ParachainInherentData
    */
   CumulusPrimitivesParachainInherentParachainInherentData: {
-    validationData: "PolkadotPrimitivesV1PersistedValidationData",
+    validationData: "AxiaPrimitivesV1PersistedValidationData",
     relayChainState: "SpTrieStorageProof",
-    downwardMessages: "Vec<PolkadotCorePrimitivesInboundDownwardMessage>",
-    horizontalMessages: "BTreeMap<u32, Vec<PolkadotCorePrimitivesInboundHrmpMessage>>",
+    downwardMessages: "Vec<AxiaCorePrimitivesInboundDownwardMessage>",
+    horizontalMessages: "BTreeMap<u32, Vec<AxiaCorePrimitivesInboundHrmpMessage>>",
   },
   /**
    * Lookup166: sp_trie::storage_proof::StorageProof
@@ -1576,16 +1576,16 @@ export default {
     trieNodes: "Vec<Bytes>",
   },
   /**
-   * Lookup168: polkadot_core_primitives::InboundDownwardMessage<BlockNumber>
+   * Lookup168: axia_core_primitives::InboundDownwardMessage<BlockNumber>
    */
-  PolkadotCorePrimitivesInboundDownwardMessage: {
+  AxiaCorePrimitivesInboundDownwardMessage: {
     sentAt: "u32",
     msg: "Bytes",
   },
   /**
-   * Lookup171: polkadot_core_primitives::InboundHrmpMessage<BlockNumber>
+   * Lookup171: axia_core_primitives::InboundHrmpMessage<BlockNumber>
    */
-  PolkadotCorePrimitivesInboundHrmpMessage: {
+  AxiaCorePrimitivesInboundHrmpMessage: {
     sentAt: "u32",
     data: "Bytes",
   },
@@ -1595,7 +1595,7 @@ export default {
   CumulusPalletParachainSystemError: {
     _enum: [
       "OverlappingUpgrades",
-      "ProhibitedByPolkadot",
+      "ProhibitedByAxia",
       "TooBig",
       "ValidationDataNotAvailable",
       "HostConfigurationNotAvailable",
@@ -3450,7 +3450,7 @@ export default {
       __Unused100: "Null",
       CumulusXcm: "CumulusPalletXcmOrigin",
       __Unused102: "Null",
-      PolkadotXcm: "PalletXcmOrigin",
+      AxiaXcm: "PalletXcmOrigin",
     },
   },
   /**
@@ -3900,9 +3900,9 @@ export default {
     _enum: ["Ok", "Suspended"],
   },
   /**
-   * Lookup431: polkadot_parachain::primitives::XcmpMessageFormat
+   * Lookup431: axia_parachain::primitives::XcmpMessageFormat
    */
-  PolkadotParachainPrimitivesXcmpMessageFormat: {
+  AxiaParachainPrimitivesXcmpMessageFormat: {
     _enum: ["ConcatenatedVersionedXcm", "ConcatenatedEncodedBlob", "Signals"],
   },
   /**

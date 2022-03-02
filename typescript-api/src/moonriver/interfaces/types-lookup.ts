@@ -1,8 +1,8 @@
-// Auto-generated via `yarn polkadot-types-from-defs`, do not edit
+// Auto-generated via `yarn axia-types-from-defs`, do not edit
 /* eslint-disable */
 
-declare module "@polkadot/types/lookup" {
-  import type { Data } from "@polkadot/types";
+declare module "@axia/types/lookup" {
+  import type { Data } from "@axia/types";
   import type {
     BTreeMap,
     Bytes,
@@ -23,9 +23,9 @@ declare module "@polkadot/types/lookup" {
     u32,
     u64,
     u8,
-  } from "@polkadot/types-codec";
-  import type { ITuple } from "@polkadot/types-codec/types";
-  import type { Vote } from "@polkadot/types/interfaces/elections";
+  } from "@axia/types-codec";
+  import type { ITuple } from "@axia/types-codec/types";
+  import type { Vote } from "@axia/types/interfaces/elections";
   import type {
     AccountId20,
     Call,
@@ -34,8 +34,8 @@ declare module "@polkadot/types/lookup" {
     Perbill,
     Percent,
     Permill,
-  } from "@polkadot/types/interfaces/runtime";
-  import type { Event } from "@polkadot/types/interfaces/system";
+  } from "@axia/types/interfaces/runtime";
+  import type { Event } from "@axia/types/interfaces/system";
 
   /**
    * @name FrameSystemAccountInfo (3)

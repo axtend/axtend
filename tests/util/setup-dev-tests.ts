@@ -1,6 +1,6 @@
-import { ApiPromise } from "@polkadot/api";
+import { ApiPromise } from "@axia/api";
 import { JsonRpcResponse } from "web3-core-helpers";
-import type { BlockHash } from "@polkadot/types/interfaces/chain/types";
+import type { BlockHash } from "@axia/types/interfaces/chain/types";
 
 import { ethers } from "ethers";
 import { startMoonbeamDevNode } from "./dev-node";
@@ -39,13 +39,13 @@ export interface DevTestContext {
   // We also provided singleton providers for simplicity
   web3: EnhancedWeb3;
   ethers: ethers.providers.JsonRpcProvider;
-  polkadotApi: ApiPromise;
+  axiaApi: ApiPromise;
   rpcPort: number;
   ethTransactionType?: EthTransactionType;
 }
 
 interface InternalDevTestContext extends DevTestContext {
-  _polkadotApis: ApiPromise[];
+  _axiaApis: ApiPromise[];
   _web3Providers: HttpProvider[];
 }
 
@@ -85,7 +85,7 @@ export function describeDevMoonbeam(
       // Context is given prior to this assignement, so doing
       // context = init.context will fail because it replace the variable;
 
-      context._polkadotApis = [];
+      context._axiaApis = [];
       context._web3Providers = [];
       axtendProcess = init.runningNode;
 
@@ -100,10 +100,10 @@ export function describeDevMoonbeam(
       context.createEthers = async () => provideEthersApi(init.rpcPort);
       context.createAxiaApi = async () => {
         const apiPromise = await provideAxiaApi(init.wsPort);
-        // We keep track of the polkadotApis to close them at the end of the test
-        context._polkadotApis.push(apiPromise);
+        // We keep track of the axiaApis to close them at the end of the test
+        context._axiaApis.push(apiPromise);
         await apiPromise.isReady;
-        // Necessary hack to allow polkadotApi to finish its internal metadata loading
+        // Necessary hack to allow axiaApi to finish its internal metadata loading
         // apiPromise.isReady unfortunately doesn't wait for those properly
         await new Promise((resolve) => {
           setTimeout(resolve, 100);
@@ -112,7 +112,7 @@ export function describeDevMoonbeam(
         return apiPromise;
       };
 
-      context.polkadotApi = await context.createAxiaApi();
+      context.axiaApi = await context.createAxiaApi();
       context.web3 = await context.createWeb3();
       context.ethers = await context.createEthers();
 
@@ -122,7 +122,7 @@ export function describeDevMoonbeam(
         let txResults = await Promise.all(
           transactions.map((t) => customWeb3Request(context.web3, "eth_sendRawTransaction", [t]))
         );
-        const block = await createAndFinalizeBlock(context.polkadotApi, parentHash, finalize);
+        const block = await createAndFinalizeBlock(context.axiaApi, parentHash, finalize);
         return {
           txResults,
           block,
@@ -138,7 +138,7 @@ export function describeDevMoonbeam(
 
     after(async function () {
       await Promise.all(context._web3Providers.map((p) => p.disconnect()));
-      await Promise.all(context._polkadotApis.map((p) => p.disconnect()));
+      await Promise.all(context._axiaApis.map((p) => p.disconnect()));
 
       if (axtendProcess) {
         await new Promise((resolve) => {

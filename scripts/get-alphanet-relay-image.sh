@@ -1,6 +1,6 @@
 #/bin/sh
 
-AXIA_COMMIT=$(egrep -o '/polkadot.*#([^\"]*)' Cargo.lock | head -1 | sed 's/.*#//' |  cut -c1-8)
+AXIA_COMMIT=$(egrep -o '/axia.*#([^\"]*)' Cargo.lock | head -1 | sed 's/.*#//' |  cut -c1-8)
 DOCKER_TAG="purestake/moonbase-relay-testnet:sha-$AXIA_COMMIT"
 
 # Build relay binary if needed
@@ -12,5 +12,5 @@ fi
 
 # Get relay binary
 docker create -ti --name dummy $DOCKER_TAG bash
-docker cp dummy:/usr/local/bin/polkadot target/release/polkadot
+docker cp dummy:/usr/local/bin/axia target/release/axia
 docker rm -f dummy

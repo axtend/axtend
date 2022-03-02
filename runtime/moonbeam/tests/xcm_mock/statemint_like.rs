@@ -1,18 +1,18 @@
 // Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Axia.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Axia is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Axia is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axia.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Relay chain runtime mock.
 
@@ -30,10 +30,10 @@ use sp_runtime::{
 	AccountId32,
 };
 
-use polkadot_core_primitives::BlockNumber as RelayBlockNumber;
+use axia_core_primitives::BlockNumber as RelayBlockNumber;
 
-use polkadot_parachain::primitives::Id as ParaId;
-use polkadot_parachain::primitives::Sibling;
+use axia_parachain::primitives::Id as ParaId;
+use axia_parachain::primitives::Sibling;
 use sp_std::convert::TryFrom;
 use xcm::latest::prelude::*;
 use xcm::VersionedXcm;
@@ -134,11 +134,11 @@ impl pallet_assets::Config for Runtime {
 
 parameter_types! {
 	pub const KsmLocation: MultiLocation = MultiLocation::parent();
-	pub const RelayNetwork: NetworkId = NetworkId::Kusama;
+	pub const RelayNetwork: NetworkId = NetworkId::AxiaTest;
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 	pub Ancestry: MultiLocation = Parachain(MsgQueue::parachain_id().into()).into();
 	pub const Local: MultiLocation = Here.into();
-	pub CheckingAccount: AccountId = PolkadotXcm::check_account();
+	pub CheckingAccount: AccountId = AxiaXcm::check_account();
 	pub KsmPerSecond: (xcm::latest::prelude::AssetId, u128) = (Concrete(KsmLocation::get()), 1);
 }
 
@@ -241,7 +241,7 @@ pub type Barrier = (
 	// Parent and its exec plurality get free execution
 	AllowUnpaidExecutionFrom<ParentOrParentsExecutivePlurality>,
 	// Expected responses are OK.
-	AllowKnownQueryResponses<PolkadotXcm>,
+	AllowKnownQueryResponses<AxiaXcm>,
 	// Subscriptions for version tracking are OK.
 	AllowSubscriptionsFrom<ParentOrSiblings>,
 );
@@ -258,10 +258,10 @@ impl Config for XcmConfig {
 	type Barrier = Barrier;
 	type Weigher = FixedWeightBounds<UnitWeightCost, Call, MaxInstructions>;
 	type Trader = FixedRateOfFungible<KsmPerSecond, ()>;
-	type ResponseHandler = PolkadotXcm;
-	type AssetTrap = PolkadotXcm;
-	type AssetClaims = PolkadotXcm;
-	type SubscriptionService = PolkadotXcm;
+	type ResponseHandler = AxiaXcm;
+	type AssetTrap = AxiaXcm;
+	type AssetClaims = AxiaXcm;
+	type SubscriptionService = AxiaXcm;
 }
 
 /// No local origins on this chain are allowed to dispatch XCM sends/executions.
@@ -489,7 +489,7 @@ construct_runtime!(
 	{
 		System: frame_system::{Pallet, Call, Storage, Config, Event<T>},
 		Balances: pallet_balances::{Pallet, Call, Storage, Config<T>, Event<T>},
-		PolkadotXcm: pallet_xcm::{Pallet, Call, Storage, Event<T>, Origin},
+		AxiaXcm: pallet_xcm::{Pallet, Call, Storage, Event<T>, Origin},
 		CumulusXcm: cumulus_pallet_xcm::{Pallet, Event<T>, Origin},
 		MsgQueue: mock_msg_queue::{Pallet, Storage, Event<T>},
 		Assets: pallet_assets::{Pallet, Storage, Event<T>},

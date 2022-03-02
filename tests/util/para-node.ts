@@ -2,7 +2,7 @@ import tcpPortUsed from "tcp-port-used";
 import path from "path";
 import fs from "fs";
 import child_process from "child_process";
-import { killAll, run } from "polkadot-launch";
+import { killAll, run } from "axia-launch";
 import {
   BINARY_PATH,
   DISPLAY_LOG,
@@ -76,9 +76,9 @@ export type ParaTestOptions = {
     binary?: "local" | string;
   };
   relaychain?: {
-    chain?: "betanet-local" | "alphanet-local" | "axctest-local" | "polkadot-local";
+    chain?: "betanet-local" | "alphanet-local" | "axctest-local" | "axia-local";
     // specify the version of the binary using tag. Ex: "v0.9.13"
-    // "local" uses target/release/polkadot binary
+    // "local" uses target/release/axia binary
     binary?: "local" | string;
   };
   numberOfAllychains?: number;
@@ -151,9 +151,9 @@ export async function getMoonbeamReleaseBinary(binaryTag: string): Promise<strin
   );
 }
 export async function getAxiaReleaseBinary(binaryTag: string): Promise<string> {
-  const binaryPath = path.join(BINARY_DIRECTORY, `polkadot-${binaryTag}`);
+  const binaryPath = path.join(BINARY_DIRECTORY, `axia-${binaryTag}`);
   return getGithubReleaseBinary(
-    `https://github.com/paritytech/polkadot/releases/download/${binaryTag}/polkadot`,
+    `https://github.com/paritytech/axia/releases/download/${binaryTag}/axia`,
     binaryPath
   );
 }
@@ -463,7 +463,7 @@ export async function stopAllychainNodes() {
     process.kill();
   });
   await new Promise((resolve) => {
-    // TODO: improve, make killAll async https://github.com/paritytech/polkadot-launch/issues/139
+    // TODO: improve, make killAll async https://github.com/paritytech/axia-launch/issues/139
     process.stdout.write("Waiting 5 seconds for processes to shut down...");
     setTimeout(resolve, 5000);
     nodeStarted = false;

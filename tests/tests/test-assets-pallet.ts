@@ -1,6 +1,6 @@
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 import { expect } from "chai";
-import { BN } from "@polkadot/util";
+import { BN } from "@axia/util";
 import { ALITH, ALITH_PRIV_KEY, BALTATHAR } from "../util/constants";
 
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
@@ -17,16 +17,16 @@ describeDevMoonbeam("Pallet Assets Pallet - assets transfer", (context) => {
 
     // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
     // And we need relay tokens for issuing a transaction to be executed in the relay
-    const balance = context.polkadotApi.createType("Balance", 100000000000000);
-    const assetBalance = context.polkadotApi.createType("PalletAssetsAssetAccount", {
+    const balance = context.axiaApi.createType("Balance", 100000000000000);
+    const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
       balance: balance,
     });
 
-    assetId = context.polkadotApi.createType(
+    assetId = context.axiaApi.createType(
       "u128",
       new BN("42259045809535163221576417993425387648")
     );
-    const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+    const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
       supply: balance,
     });
 
@@ -35,13 +35,13 @@ describeDevMoonbeam("Pallet Assets Pallet - assets transfer", (context) => {
     await createBlockWithExtrinsic(
       context,
       sudoAccount,
-      context.polkadotApi.tx.assets.transfer(assetId, BALTATHAR, 1000)
+      context.axiaApi.tx.assets.transfer(assetId, BALTATHAR, 1000)
     );
   });
 
   it("should query asset balance", async function () {
     // Baltathar balance is 1000
-    let baltatharBalance = (await context.polkadotApi.query.assets.account(
+    let baltatharBalance = (await context.axiaApi.query.assets.account(
       assetId,
       BALTATHAR
     )) as any;

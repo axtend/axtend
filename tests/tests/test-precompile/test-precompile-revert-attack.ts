@@ -19,7 +19,7 @@ import {
   createContractExecution,
   GENESIS_TRANSACTION,
 } from "../../util/transactions";
-import { numberToHex } from "@polkadot/util";
+import { numberToHex } from "@axia/util";
 
 describeDevMoonbeamAllEthTxTypes(
   "Precompiles - test revert attack on state modifier",
@@ -53,7 +53,7 @@ describeDevMoonbeamAllEthTxTypes(
       expect(receipt.status).to.eq(false);
 
       // Delegation shouldn't have passed
-      const nominatorsAfter = await context.polkadotApi.query.allychainStaking.delegatorState(
+      const nominatorsAfter = await context.axiaApi.query.allychainStaking.delegatorState(
         GENESIS_ACCOUNT
       );
       expect(nominatorsAfter.toHuman()).to.eq(null);

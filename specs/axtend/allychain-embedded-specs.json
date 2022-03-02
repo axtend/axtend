@@ -13,7 +13,7 @@
     "/dns4/para-axtend-boot-1.a.axtend.network/tcp/30333/p2p/12D3KooWDFNoNDWKmCpYyyCKHbVFmYF7jBYAKwK1idPqHocSnhvU"
   ],
   "telemetryEndpoints": [
-    ["/dns/telemetry.polkadot.io/tcp/443/x-parity-wss/%2Fsubmit%2F", 0]
+    ["/dns/telemetry.axia.io/tcp/443/x-parity-wss/%2Fsubmit%2F", 0]
   ],
   "protocolId": null,
   "properties": {
@@ -21,7 +21,7 @@
     "tokenDecimals": 18,
     "tokenSymbol": "GLMR"
   },
-  "relayChain": "polkadot",
+  "relayChain": "axia",
   "paraId": 2004,
   "consensusEngine": null,
   "codeSubstitutes": {},

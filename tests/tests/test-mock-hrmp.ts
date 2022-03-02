@@ -1,15 +1,15 @@
-import Keyring from "@polkadot/keyring";
-import { KeyringPair } from "@polkadot/keyring/types";
+import Keyring from "@axia/keyring";
+import { KeyringPair } from "@axia/keyring/types";
 import { expect } from "chai";
-import { BN, u8aToHex } from "@polkadot/util";
+import { BN, u8aToHex } from "@axia/util";
 
 import { ALITH_PRIV_KEY, RANDOM_PRIV_KEY } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
 import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { customWeb3Request } from "../util/providers";
-import type { XcmVersionedXcm } from "@polkadot/types/lookup";
+import type { XcmVersionedXcm } from "@axia/types/lookup";
 
-import { ParaId, XcmpMessageFormat } from "@polkadot/types/interfaces";
+import { ParaId, XcmpMessageFormat } from "@axia/types/interfaces";
 
 const FOREIGN_TOKEN = 1_000_000_000_000n;
 
@@ -64,8 +64,8 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     const { events: eventsRegister } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.assetManager.registerAsset(
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.assetManager.registerAsset(
           sourceLocation,
           assetMetadata,
           new BN(1),
@@ -85,8 +85,8 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 0, 0)
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 0, 0)
       )
     );
     expect(events[1].method.toString()).to.eq("UnitsPerSecondChanged");
@@ -94,7 +94,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
 
     // check asset in storage
     const registeredAsset = (
-      (await context.polkadotApi.query.assets.asset(assetId)) as any
+      (await context.axiaApi.query.assets.asset(assetId)) as any
     ).unwrap();
     expect(registeredAsset.owner.toHex()).to.eq(palletId.toLowerCase());
   });
@@ -109,7 +109,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
 
     // Make sure the state has ALITH's foreign allychain tokens
     let alith_axc_balance = (
-      (await context.polkadotApi.query.assets.account(assetId, alith.address)) as any
+      (await context.axiaApi.query.assets.account(assetId, alith.address)) as any
     )
       .unwrap()
       ["balance"].toBigInt();
@@ -131,8 +131,8 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     const { events: eventsRegister } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.assetManager.registerAsset(
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.assetManager.registerAsset(
           statemintLocation,
           assetMetadata,
           new BN(1),
@@ -152,8 +152,8 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.assetManager.setAssetUnitsPerSecond(statemintLocation, 0, 0)
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.assetManager.setAssetUnitsPerSecond(statemintLocation, 0, 0)
       )
     );
     expect(events[1].method.toString()).to.eq("UnitsPerSecondChanged");
@@ -161,7 +161,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
 
     // check asset in storage
     const registeredAsset = (
-      (await context.polkadotApi.query.assets.asset(assetId)) as any
+      (await context.axiaApi.query.assets.asset(assetId)) as any
     ).unwrap();
     expect(registeredAsset.owner.toHex()).to.eq(palletId.toLowerCase());
   });
@@ -216,11 +216,11 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
         },
       ],
     };
-    const xcmpFormat: XcmpMessageFormat = context.polkadotApi.createType(
+    const xcmpFormat: XcmpMessageFormat = context.axiaApi.createType(
       "XcmpMessageFormat",
       "ConcatenatedVersionedXcm"
     ) as any;
-    const receivedMessage: XcmVersionedXcm = context.polkadotApi.createType(
+    const receivedMessage: XcmVersionedXcm = context.axiaApi.createType(
       "XcmVersionedXcm",
       xcmMessage
     ) as any;
@@ -238,7 +238,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
 
     // Make sure the state has ALITH's foreign allychain tokens
     let alith_axc_balance = (
-      (await context.polkadotApi.query.assets.account(assetId, alith.address)) as any
+      (await context.axiaApi.query.assets.account(assetId, alith.address)) as any
     )
       .unwrap()
       ["balance"].toBigInt();
@@ -259,8 +259,8 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     const { events: eventsRegister } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.assetManager.registerAsset(
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.assetManager.registerAsset(
           statemintLocation,
           assetMetadata,
           new BN(1),
@@ -280,8 +280,8 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.assetManager.setAssetUnitsPerSecond(statemintLocation, 0, 0)
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.assetManager.setAssetUnitsPerSecond(statemintLocation, 0, 0)
       )
     );
     expect(events[1].method.toString()).to.eq("UnitsPerSecondChanged");
@@ -289,7 +289,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
 
     // check asset in storage
     const registeredAsset = (
-      (await context.polkadotApi.query.assets.asset(assetId)) as any
+      (await context.axiaApi.query.assets.asset(assetId)) as any
     ).unwrap();
     expect(registeredAsset.owner.toHex()).to.eq(palletId.toLowerCase());
   });
@@ -357,11 +357,11 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
         },
       ],
     };
-    const xcmpFormat: XcmpMessageFormat = context.polkadotApi.createType(
+    const xcmpFormat: XcmpMessageFormat = context.axiaApi.createType(
       "XcmpMessageFormat",
       "ConcatenatedVersionedXcm"
     ) as any;
-    const receivedMessage: XcmVersionedXcm = context.polkadotApi.createType(
+    const receivedMessage: XcmVersionedXcm = context.axiaApi.createType(
       "XcmVersionedXcm",
       xcmMessage
     ) as any;
@@ -379,7 +379,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
 
     // Make sure the state has ALITH's foreign allychain tokens
     let alith_axc_balance = (
-      (await context.polkadotApi.query.assets.account(assetId, alith.address)) as any
+      (await context.axiaApi.query.assets.account(assetId, alith.address)) as any
     )
       .unwrap()
       ["balance"].toBigInt();
@@ -400,7 +400,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) =
     alith = keyringEth.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     random = keyringEth.addFromUri(RANDOM_PRIV_KEY, null, "ethereum");
 
-    paraId = context.polkadotApi.createType("ParaId", 2000) as any;
+    paraId = context.axiaApi.createType("ParaId", 2000) as any;
     sovereignAddress = u8aToHex(
       new Uint8Array([...new TextEncoder().encode("sibl"), ...paraId.toU8a()])
     ).padEnd(42, "0");
@@ -411,18 +411,18 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) =
     await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.balances.transfer(sovereignAddress, transferredBalance)
+      context.axiaApi.tx.balances.transfer(sovereignAddress, transferredBalance)
     );
     let balance = (
-      (await context.polkadotApi.query.system.account(sovereignAddress)) as any
+      (await context.axiaApi.query.system.account(sovereignAddress)) as any
     ).data.free.toBigInt();
     expect(balance.toString()).to.eq(transferredBalance.toString());
   });
 
   it("Should receive MOVR from para Id 2000", async function () {
-    let ownParaId = (await context.polkadotApi.query.allychainInfo.allychainId()) as any;
+    let ownParaId = (await context.axiaApi.query.allychainInfo.allychainId()) as any;
     // Get Pallet balances index
-    const metadata = await context.polkadotApi.rpc.state.getMetadata();
+    const metadata = await context.axiaApi.rpc.state.getMetadata();
     const balancesPalletIndex = (metadata.asLatest.toHuman().pallets as Array<any>).find(
       (pallet) => {
         return pallet.name === "Balances";
@@ -479,11 +479,11 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) =
         },
       ],
     };
-    const xcmpFormat: XcmpMessageFormat = context.polkadotApi.createType(
+    const xcmpFormat: XcmpMessageFormat = context.axiaApi.createType(
       "XcmpMessageFormat",
       "ConcatenatedVersionedXcm"
     ) as any;
-    const receivedMessage: XcmVersionedXcm = context.polkadotApi.createType(
+    const receivedMessage: XcmVersionedXcm = context.axiaApi.createType(
       "XcmVersionedXcm",
       xcmMessage
     ) as any;
@@ -499,7 +499,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) =
 
     // We should expect sovereign balance to be 0, since we have transferred the full amount
     let balance = (
-      (await context.polkadotApi.query.system.account(sovereignAddress)) as any
+      (await context.axiaApi.query.system.account(sovereignAddress)) as any
     ).data.free.toBigInt();
     expect(balance.toString()).to.eq(0n.toString());
 
@@ -507,7 +507,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) =
     // but 20000000000000 have been deducted
     // for weight payment
     let randomBalance = (
-      (await context.polkadotApi.query.system.account(random.address)) as any
+      (await context.axiaApi.query.system.account(random.address)) as any
     ).data.free.toBigInt();
     let expectedRandomBalance = 80000000000000n;
     expect(randomBalance.toString()).to.eq(expectedRandomBalance.toString());
@@ -528,7 +528,7 @@ describeDevMoonbeam(
       alith = keyringEth.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       random = keyringEth.addFromUri(RANDOM_PRIV_KEY, null, "ethereum");
 
-      paraId = context.polkadotApi.createType("ParaId", 2000) as any;
+      paraId = context.axiaApi.createType("ParaId", 2000) as any;
       sovereignAddress = u8aToHex(
         new Uint8Array([...new TextEncoder().encode("sibl"), ...paraId.toU8a()])
       ).padEnd(42, "0");
@@ -539,18 +539,18 @@ describeDevMoonbeam(
       await createBlockWithExtrinsic(
         context,
         alith,
-        context.polkadotApi.tx.balances.transfer(sovereignAddress, transferredBalance)
+        context.axiaApi.tx.balances.transfer(sovereignAddress, transferredBalance)
       );
       let balance = (
-        (await context.polkadotApi.query.system.account(sovereignAddress)) as any
+        (await context.axiaApi.query.system.account(sovereignAddress)) as any
       ).data.free.toBigInt();
       expect(balance.toString()).to.eq(transferredBalance.toString());
     });
 
     it("Should receive MOVR from para Id 2000 with new reanchor logic", async function () {
-      let ownParaId = (await context.polkadotApi.query.allychainInfo.allychainId()) as any;
+      let ownParaId = (await context.axiaApi.query.allychainInfo.allychainId()) as any;
       // Get Pallet balances index
-      const metadata = await context.polkadotApi.rpc.state.getMetadata();
+      const metadata = await context.axiaApi.rpc.state.getMetadata();
       const balancesPalletIndex = (metadata.asLatest.toHuman().pallets as Array<any>).find(
         (pallet) => {
           return pallet.name === "Balances";
@@ -609,11 +609,11 @@ describeDevMoonbeam(
           },
         ],
       };
-      const xcmpFormat: XcmpMessageFormat = context.polkadotApi.createType(
+      const xcmpFormat: XcmpMessageFormat = context.axiaApi.createType(
         "XcmpMessageFormat",
         "ConcatenatedVersionedXcm"
       ) as any;
-      const receivedMessage: XcmVersionedXcm = context.polkadotApi.createType(
+      const receivedMessage: XcmVersionedXcm = context.axiaApi.createType(
         "XcmVersionedXcm",
         xcmMessage
       ) as any;
@@ -629,7 +629,7 @@ describeDevMoonbeam(
 
       // We should expect sovereign balance to be 0, since we have transferred the full amount
       let balance = (
-        (await context.polkadotApi.query.system.account(sovereignAddress)) as any
+        (await context.axiaApi.query.system.account(sovereignAddress)) as any
       ).data.free.toBigInt();
       expect(balance.toString()).to.eq(0n.toString());
 
@@ -637,7 +637,7 @@ describeDevMoonbeam(
       // but 20000000000000 have been deducted
       // for weight payment
       let randomBalance = (
-        (await context.polkadotApi.query.system.account(random.address)) as any
+        (await context.axiaApi.query.system.account(random.address)) as any
       ).data.free.toBigInt();
       let expectedRandomBalance = 80000000000000n;
       expect(randomBalance.toString()).to.eq(expectedRandomBalance.toString());
@@ -661,8 +661,8 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
       const { events: eventsRegisterZero } = await createBlockWithExtrinsic(
         context,
         alith,
-        context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.assetManager.registerAsset(
+        context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.assetManager.registerAsset(
             statemintLocation,
             assetMetadata,
             new BN(1),
@@ -683,8 +683,8 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
       const { events: eventsRegisterOne } = await createBlockWithExtrinsic(
         context,
         alith,
-        context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.assetManager.registerAsset(
+        context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.assetManager.registerAsset(
             statemintLocationAssetOne,
             assetMetadata,
             new BN(1),
@@ -704,8 +704,8 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
       const { events } = await createBlockWithExtrinsic(
         context,
         alith,
-        context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.assetManager.setAssetUnitsPerSecond(
+        context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.assetManager.setAssetUnitsPerSecond(
             statemintLocationAssetOne,
             0,
             0
@@ -717,11 +717,11 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
 
       // check assets in storage
       const registeredAssetZero = (
-        (await context.polkadotApi.query.assets.asset(assetIdZero)) as any
+        (await context.axiaApi.query.assets.asset(assetIdZero)) as any
       ).unwrap();
       expect(registeredAssetZero.owner.toHex()).to.eq(palletId.toLowerCase());
       const registeredAssetOne = (
-        (await context.polkadotApi.query.assets.asset(assetIdZero)) as any
+        (await context.axiaApi.query.assets.asset(assetIdZero)) as any
       ).unwrap();
       expect(registeredAssetOne.owner.toHex()).to.eq(palletId.toLowerCase());
     }
@@ -782,11 +782,11 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
       ],
     };
 
-    const xcmpFormat: XcmpMessageFormat = context.polkadotApi.createType(
+    const xcmpFormat: XcmpMessageFormat = context.axiaApi.createType(
       "XcmpMessageFormat",
       "ConcatenatedVersionedXcm"
     ) as any;
-    const receivedMessage: XcmVersionedXcm = context.polkadotApi.createType(
+    const receivedMessage: XcmVersionedXcm = context.axiaApi.createType(
       "XcmVersionedXcm",
       xcmMessage
     ) as any;
@@ -804,7 +804,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
 
     // Make sure the state has ALITH's foreign allychain tokens
     let alithAssetZeroBalance = (
-      (await context.polkadotApi.query.assets.account(assetIdZero, alith.address)) as any
+      (await context.axiaApi.query.assets.account(assetIdZero, alith.address)) as any
     )
       .unwrap()
       ["balance"].toBigInt();
@@ -826,8 +826,8 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     const { events: eventsRegisterZero } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.assetManager.registerAsset(
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.assetManager.registerAsset(
           statemintLocation,
           assetMetadata,
           new BN(1),
@@ -845,7 +845,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
 
     // check assets in storage
     const registeredAssetZero = (
-      (await context.polkadotApi.query.assets.asset(assetIdZero)) as any
+      (await context.axiaApi.query.assets.asset(assetIdZero)) as any
     ).unwrap();
     expect(registeredAssetZero.owner.toHex()).to.eq(palletId.toLowerCase());
   });
@@ -895,11 +895,11 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
         },
       ],
     };
-    const xcmpFormat: XcmpMessageFormat = context.polkadotApi.createType(
+    const xcmpFormat: XcmpMessageFormat = context.axiaApi.createType(
       "XcmpMessageFormat",
       "ConcatenatedVersionedXcm"
     ) as any;
-    const receivedMessage: XcmVersionedXcm = context.polkadotApi.createType(
+    const receivedMessage: XcmVersionedXcm = context.axiaApi.createType(
       "XcmVersionedXcm",
       xcmMessage
     ) as any;
@@ -916,7 +916,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     await context.createBlock();
 
     // Make sure the state has ALITH's foreign allychain tokens
-    let alithAssetZeroBalance = (await context.polkadotApi.query.assets.account(
+    let alithAssetZeroBalance = (await context.axiaApi.query.assets.account(
       assetIdZero,
       alith.address
     )) as any;

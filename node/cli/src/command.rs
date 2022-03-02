@@ -22,9 +22,9 @@ use cumulus_client_service::genesis::generate_genesis_block;
 use cumulus_primitives_core::ParaId;
 use log::info;
 use parity_scale_codec::Encode;
-use polkadot_allychain::primitives::AccountIdConversion;
+use axia_allychain::primitives::AccountIdConversion;
 #[cfg(feature = "alphanet-native")]
-use polkadot_service::AlphanetChainSpec;
+use axia_service::AlphanetChainSpec;
 use sc_cli::{
 	ChainSpec, CliConfiguration, DefaultConfigurationValues, ImportParams, KeystoreParams,
 	NetworkParams, Result, RuntimeVersion, SharedParams, AxlibCli,
@@ -183,13 +183,13 @@ impl AxlibCli for RelayChainCli {
 			)?)),
 			// If we are not using a axtend-centric pre-baked relay spec, then fall back to the
 			// Axia service to interpret the id.
-			_ => polkadot_cli::Cli::from_iter([RelayChainCli::executable_name()].iter())
+			_ => axia_cli::Cli::from_iter([RelayChainCli::executable_name()].iter())
 				.load_spec(id),
 		}
 	}
 
 	fn native_runtime_version(chain_spec: &Box<dyn ChainSpec>) -> &'static RuntimeVersion {
-		polkadot_cli::Cli::native_runtime_version(chain_spec)
+		axia_cli::Cli::native_runtime_version(chain_spec)
 	}
 }
 
@@ -321,21 +321,21 @@ pub fn run() -> Result<()> {
 					return cmd.base.run(config.database);
 				}
 
-				let polkadot_cli = RelayChainCli::new(
+				let axia_cli = RelayChainCli::new(
 					&config,
 					[RelayChainCli::executable_name().to_string()]
 						.iter()
 						.chain(cli.relaychain_args.iter()),
 				);
 
-				let polkadot_config = AxlibCli::create_configuration(
-					&polkadot_cli,
-					&polkadot_cli,
+				let axia_config = AxlibCli::create_configuration(
+					&axia_cli,
+					&axia_cli,
 					config.tokio_handle.clone(),
 				)
 				.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
-				cmd.run(config, polkadot_config)
+				cmd.run(config, axia_config)
 			})
 		}
 		Some(Subcommand::Revert(cmd)) => {
@@ -643,7 +643,7 @@ pub fn run() -> Result<()> {
 					};
 				}
 
-				let polkadot_cli = RelayChainCli::new(
+				let axia_cli = RelayChainCli::new(
 					&config,
 					[RelayChainCli::executable_name().to_string()]
 						.iter()
@@ -651,7 +651,7 @@ pub fn run() -> Result<()> {
 				);
 
 				let allychain_account =
-					AccountIdConversion::<polkadot_primitives::v0::AccountId>::into_account(&id);
+					AccountIdConversion::<axia_primitives::v0::AccountId>::into_account(&id);
 
 				let state_version =
 					RelayChainCli::native_runtime_version(&config.chain_spec).state_version();
@@ -680,8 +680,8 @@ pub fn run() -> Result<()> {
 				};
 
 				let tokio_handle = config.tokio_handle.clone();
-				let polkadot_config =
-					AxlibCli::create_configuration(&polkadot_cli, &polkadot_cli, tokio_handle)
+				let axia_config =
+					AxlibCli::create_configuration(&axia_cli, &axia_cli, tokio_handle)
 						.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
 				info!("Allychain id: {:?}", id);
@@ -693,7 +693,7 @@ pub fn run() -> Result<()> {
 					spec if spec.is_moonriver() => service::start_node::<
 						service::moonriver_runtime::RuntimeApi,
 						service::MoonriverExecutor,
-					>(config, polkadot_config, id, rpc_config)
+					>(config, axia_config, id, rpc_config)
 					.await
 					.map(|r| r.0)
 					.map_err(Into::into),
@@ -701,7 +701,7 @@ pub fn run() -> Result<()> {
 					spec if spec.is_axtend() => service::start_node::<
 						service::axtend_runtime::RuntimeApi,
 						service::MoonbeamExecutor,
-					>(config, polkadot_config, id, rpc_config)
+					>(config, axia_config, id, rpc_config)
 					.await
 					.map(|r| r.0)
 					.map_err(Into::into),
@@ -709,7 +709,7 @@ pub fn run() -> Result<()> {
 					_ => service::start_node::<
 						service::moonbase_runtime::RuntimeApi,
 						service::MoonbaseExecutor,
-					>(config, polkadot_config, id, rpc_config)
+					>(config, axia_config, id, rpc_config)
 					.await
 					.map(|r| r.0)
 					.map_err(Into::into),

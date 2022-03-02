@@ -2,7 +2,7 @@ axlib
 c92f69db6dd96a90eed90a44539deb615eaf7319
 c92f69d
 
-polkadot
+axia
 66cb46bb3a7bd7295d1eb39a391559bc6efb2a22
 66cb46b
 
@@ -10,12 +10,12 @@ cumulus
 b43fcfff1df6bad837b98e5862e60367b9bc92e0
 b43fcff
 
-        polkadot 66cb46bb3a7bd7295d1eb39a391559bc6efb2a22
+        axia 66cb46bb3a7bd7295d1eb39a391559bc6efb2a22
         axlib c92f69db6dd96a90eed90a44539deb615eaf7319
 
 nimbus
 5f92d14
-polkadot 66cb46bb3a7bd7295d1eb39a391559bc6efb2a22
+axia 66cb46bb3a7bd7295d1eb39a391559bc6efb2a22
 axlib c92f69db6dd96a90eed90a44539deb615eaf7319
 
 frontier

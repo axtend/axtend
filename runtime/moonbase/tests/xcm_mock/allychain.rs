@@ -34,8 +34,8 @@ use sp_runtime::{
 use sp_std::{convert::TryFrom, prelude::*};
 use xcm::{latest::prelude::*, Version as XcmVersion, VersionedXcm};
 
-use polkadot_core_primitives::BlockNumber as RelayBlockNumber;
-use polkadot_allychain::primitives::{Id as ParaId, Sibling};
+use axia_core_primitives::BlockNumber as RelayBlockNumber;
+use axia_allychain::primitives::{Id as ParaId, Sibling};
 use xcm::latest::{
 	AssetId as XcmAssetId, Error as XcmError, ExecuteXcm,
 	Junction::{PalletInstance, Allychain},

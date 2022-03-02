@@ -1,9 +1,9 @@
-// Auto-generated via `yarn polkadot-types-from-chain`, do not edit
+// Auto-generated via `yarn axia-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { ApiTypes } from "@polkadot/api-base/types";
+import type { ApiTypes } from "@axia/api-base/types";
 
-declare module "@polkadot/api-base/types/errors" {
+declare module "@axia/api-base/types/errors" {
   export interface AugmentedErrors<ApiType extends ApiTypes> {
     assetManager: {
       AssetAlreadyExists: AugmentedError<ApiType>;
@@ -619,7 +619,7 @@ declare module "@polkadot/api-base/types/errors" {
        */
       [key: string]: AugmentedError<ApiType>;
     };
-    polkadotXcm: {
+    axiaXcm: {
       /**
        * The location is invalid since it already has a subscription from us.
        */

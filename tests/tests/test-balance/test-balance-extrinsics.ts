@@ -11,9 +11,9 @@ describeDevMoonbeamAllEthTxTypes("Balance extrinsics", (context) => {
       transactions: [await createTransfer(context, testAddress, 512)],
     });
 
-    const blockHash = await context.polkadotApi.rpc.chain.getBlockHash(1);
-    const signedBlock = await context.polkadotApi.rpc.chain.getBlock(blockHash);
-    const allRecords = (await context.polkadotApi.query.system.events.at(
+    const blockHash = await context.axiaApi.rpc.chain.getBlockHash(1);
+    const signedBlock = await context.axiaApi.rpc.chain.getBlock(blockHash);
+    const allRecords = (await context.axiaApi.query.system.events.at(
       signedBlock.block.header.hash
     )) as any;
 
@@ -34,7 +34,7 @@ describeDevMoonbeamAllEthTxTypes("Balance extrinsics", (context) => {
         case 1:
         case 2:
           expect(
-            events.length === 1 && context.polkadotApi.events.system.ExtrinsicSuccess.is(events[0])
+            events.length === 1 && context.axiaApi.events.system.ExtrinsicSuccess.is(events[0])
           ).to.be.true;
           break;
         // Fourth event: ethereum.transact:: system.NewAccount, balances.Endowed, (?),
@@ -42,15 +42,15 @@ describeDevMoonbeamAllEthTxTypes("Balance extrinsics", (context) => {
         case 3:
           expect(section === "ethereum" && method === "transact").to.be.true;
           expect(events.length).to.eq(11);
-          expect(context.polkadotApi.events.system.NewAccount.is(events[1])).to.be.true;
-          expect(context.polkadotApi.events.balances.Endowed.is(events[2])).to.be.true;
-          expect(context.polkadotApi.events.balances.Transfer.is(events[3])).to.be.true;
+          expect(context.axiaApi.events.system.NewAccount.is(events[1])).to.be.true;
+          expect(context.axiaApi.events.balances.Endowed.is(events[2])).to.be.true;
+          expect(context.axiaApi.events.balances.Transfer.is(events[3])).to.be.true;
           expect(events[3].data[0].toString()).to.eq(GENESIS_ACCOUNT);
           // TODO: what event was inserted here?
-          expect(context.polkadotApi.events.balances.Endowed.is(events[7])).to.be.true; // treasury
-          expect(context.polkadotApi.events.treasury.Deposit.is(events[8])).to.be.true;
-          expect(context.polkadotApi.events.ethereum.Executed.is(events[9])).to.be.true;
-          expect(context.polkadotApi.events.system.ExtrinsicSuccess.is(events[10])).to.be.true;
+          expect(context.axiaApi.events.balances.Endowed.is(events[7])).to.be.true; // treasury
+          expect(context.axiaApi.events.treasury.Deposit.is(events[8])).to.be.true;
+          expect(context.axiaApi.events.ethereum.Executed.is(events[9])).to.be.true;
+          expect(context.axiaApi.events.system.ExtrinsicSuccess.is(events[10])).to.be.true;
           break;
         default:
           throw new Error(`Unexpected extrinsic`);

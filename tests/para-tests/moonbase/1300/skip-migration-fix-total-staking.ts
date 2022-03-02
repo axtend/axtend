@@ -1,4 +1,4 @@
-import { Keyring } from "@polkadot/api";
+import { Keyring } from "@axia/api";
 import { expect } from "chai";
 
 import { ALITH_ADDRESS, ALITH_PRIV_KEY } from "../../../util/constants";
@@ -31,7 +31,7 @@ describeAllychain(
 
       // verify alith initial total staked
       expect(
-        ((await context.polkadotApiParaone.query.allychainStaking.candidatePool()) as any)
+        ((await context.axiaApiParaone.query.allychainStaking.candidatePool()) as any)
           .find((c) => c.owner.toString() == ALITH_ADDRESS)
           .amount.toBigInt()
       ).to.be.equal(1000000000000000000000n);
@@ -46,7 +46,7 @@ describeAllychain(
       );
 
       const minDelegatorStk = (
-        (await context.polkadotApiParaone.consts.allychainStaking.minDelegatorStk) as any
+        (await context.axiaApiParaone.consts.allychainStaking.minDelegatorStk) as any
       ).toBigInt();
 
       process.stdout.write(
@@ -56,18 +56,18 @@ describeAllychain(
       );
 
       let alithNonce = (
-        await context.polkadotApiParaone.rpc.system.accountNextIndex(alith.address)
+        await context.axiaApiParaone.rpc.system.accountNextIndex(alith.address)
       ).toNumber();
       const transferTxs = await Promise.all(
         delegators.map(async (delegator) => {
-          return context.polkadotApiParaone.tx.balances.transfer(
+          return context.axiaApiParaone.tx.balances.transfer(
             delegator.address,
             minDelegatorStk + 2n * 10n ** 18n
           );
         })
       );
-      await sendAllStreamAndWaitLast(context.polkadotApiParaone, [
-        await context.polkadotApiParaone.tx.utility
+      await sendAllStreamAndWaitLast(context.axiaApiParaone, [
+        await context.axiaApiParaone.tx.utility
           .batchAll(transferTxs)
           .signAsync(alith, { nonce: alithNonce++ }),
       ]);
@@ -81,19 +81,19 @@ describeAllychain(
 
       const bondBatches = await Promise.all(
         delegators.map((delegator, index) =>
-          context.polkadotApiParaone.tx.allychainStaking
+          context.axiaApiParaone.tx.allychainStaking
             .delegate(alith.address, minDelegatorStk, index + 1, 1)
             .signAsync(delegator, { nonce: 0 })
         )
       );
 
-      await sendAllStreamAndWaitLast(context.polkadotApiParaone, bondBatches);
+      await sendAllStreamAndWaitLast(context.axiaApiParaone, bondBatches);
       await context.waitBlocks(1);
       process.stdout.write(`✅: ${bondBatches.length} extrinsics\n`);
 
       // verify alith new delegators are added
       expect(
-        ((await context.polkadotApiParaone.query.allychainStaking.candidatePool()) as any)
+        ((await context.axiaApiParaone.query.allychainStaking.candidatePool()) as any)
           .find((c) => c.owner.toString() == ALITH_ADDRESS)
           .amount.toBigInt()
       ).to.be.equal(1000000000000000000000n + minDelegatorStk * BigInt(delegatorCount));
@@ -104,20 +104,20 @@ describeAllychain(
       );
       const bondMoreBatches = await Promise.all(
         delegators.map((delegator, index) =>
-          context.polkadotApiParaone.tx.allychainStaking
+          context.axiaApiParaone.tx.allychainStaking
             .delegatorBondMore(alith.address, 1n * 10n ** 18n)
             .signAsync(delegator, { nonce: 1 })
         )
       );
 
-      await sendAllStreamAndWaitLast(context.polkadotApiParaone, bondMoreBatches);
+      await sendAllStreamAndWaitLast(context.axiaApiParaone, bondMoreBatches);
       await context.waitBlocks(1);
       process.stdout.write(`✅: ${bondMoreBatches.length} extrinsics\n`);
 
       process.stdout.write(`Verifying candidate pool bug pre-migration...`);
       // Verify BUG: alith total didn't increase with the bond more
       expect(
-        ((await context.polkadotApiParaone.query.allychainStaking.candidatePool()) as any)
+        ((await context.axiaApiParaone.query.allychainStaking.candidatePool()) as any)
           .find((c) => c.owner.toString() == ALITH_ADDRESS)
           .amount.toBigInt()
       ).to.be.equal(1000000000000000000000n + minDelegatorStk * BigInt(delegatorCount));
@@ -127,7 +127,7 @@ describeAllychain(
 
       process.stdout.write("Verifying candidate pool is fixed post-migration...");
       expect(
-        ((await context.polkadotApiParaone.query.allychainStaking.candidatePool()) as any)
+        ((await context.axiaApiParaone.query.allychainStaking.candidatePool()) as any)
           .find((c) => c.owner.toString() == ALITH_ADDRESS)
           .amount.toBigInt()
       ).to.be.equal(

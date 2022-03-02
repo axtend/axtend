@@ -1,4 +1,4 @@
-// Auto-generated via `yarn polkadot-types-from-defs`, do not edit
+// Auto-generated via `yarn axia-types-from-defs`, do not edit
 /* eslint-disable */
 
 /* eslint-disable sort-keys */
@@ -1484,7 +1484,7 @@ export default {
     ],
   },
   /**
-   * Lookup148: polkadot_primitives::v1::PersistedValidationData<primitive_types::H256, N>
+   * Lookup148: axia_primitives::v1::PersistedValidationData<primitive_types::H256, N>
    */
   AxiaPrimitivesV1PersistedValidationData: {
     parentHead: "Bytes",
@@ -1493,7 +1493,7 @@ export default {
     maxPovSize: "u32",
   },
   /**
-   * Lookup151: polkadot_primitives::v1::UpgradeRestriction
+   * Lookup151: axia_primitives::v1::UpgradeRestriction
    */
   AxiaPrimitivesV1UpgradeRestriction: {
     _enum: ["Present"],
@@ -1509,7 +1509,7 @@ export default {
     egressChannels: "Vec<(u32,AxiaPrimitivesV1AbridgedHrmpChannel)>",
   },
   /**
-   * Lookup156: polkadot_primitives::v1::AbridgedHrmpChannel
+   * Lookup156: axia_primitives::v1::AbridgedHrmpChannel
    */
   AxiaPrimitivesV1AbridgedHrmpChannel: {
     maxCapacity: "u32",
@@ -1520,7 +1520,7 @@ export default {
     mqcHead: "Option<H256>",
   },
   /**
-   * Lookup157: polkadot_primitives::v1::AbridgedHostConfiguration
+   * Lookup157: axia_primitives::v1::AbridgedHostConfiguration
    */
   AxiaPrimitivesV1AbridgedHostConfiguration: {
     maxCodeSize: "u32",
@@ -1535,7 +1535,7 @@ export default {
   },
   /**
    * Lookup163:
-   * polkadot_core_primitives::OutboundHrmpMessage<polkadot_allychain::primitives::Id>
+   * axia_core_primitives::OutboundHrmpMessage<axia_allychain::primitives::Id>
    */
   AxiaCorePrimitivesOutboundHrmpMessage: {
     recipient: "u32",
@@ -1576,14 +1576,14 @@ export default {
     trieNodes: "Vec<Bytes>",
   },
   /**
-   * Lookup168: polkadot_core_primitives::InboundDownwardMessage<BlockNumber>
+   * Lookup168: axia_core_primitives::InboundDownwardMessage<BlockNumber>
    */
   AxiaCorePrimitivesInboundDownwardMessage: {
     sentAt: "u32",
     msg: "Bytes",
   },
   /**
-   * Lookup171: polkadot_core_primitives::InboundHrmpMessage<BlockNumber>
+   * Lookup171: axia_core_primitives::InboundHrmpMessage<BlockNumber>
    */
   AxiaCorePrimitivesInboundHrmpMessage: {
     sentAt: "u32",
@@ -3900,7 +3900,7 @@ export default {
     _enum: ["Ok", "Suspended"],
   },
   /**
-   * Lookup431: polkadot_allychain::primitives::XcmpMessageFormat
+   * Lookup431: axia_allychain::primitives::XcmpMessageFormat
    */
   AxiaAllychainPrimitivesXcmpMessageFormat: {
     _enum: ["ConcatenatedVersionedXcm", "ConcatenatedEncodedBlob", "Signals"],

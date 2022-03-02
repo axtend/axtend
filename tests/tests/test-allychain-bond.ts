@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { Keyring } from "@polkadot/api";
-import { KeyringPair } from "@polkadot/keyring/types";
+import { Keyring } from "@axia/api";
+import { KeyringPair } from "@axia/keyring/types";
 import {
   GENESIS_ACCOUNT,
   ALITH_PRIV_KEY,
@@ -20,18 +20,18 @@ describeDevMoonbeam("Staking - Allychain Bond - genesis and setAllychainBondAcco
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
   it("should have right allychain bond in genesis", async function () {
-    const allychainBondInfo = await context.polkadotApi.query.allychainStaking.allychainBondInfo();
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
     expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
     expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
   });
 
   it("should be able set the allychain bond with sudo", async function () {
     // should be able to register the genesis account for reward
-    await context.polkadotApi.tx.sudo
-      .sudo(context.polkadotApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT))
+    await context.axiaApi.tx.sudo
+      .sudo(context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT))
       .signAndSend(sudoAccount);
     await context.createBlock();
-    const allychainBondInfo = await context.polkadotApi.query.allychainStaking.allychainBondInfo();
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
     expect(allychainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
     expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
   });
@@ -52,13 +52,13 @@ describeDevMoonbeam("Staking - Allychain Bond - no sudo on setAllychainBondAccou
       await createBlockWithExtrinsic(
         context,
         genesisAccount,
-        context.polkadotApi.tx.authorMapping.setAllychainBondAccount(GENESIS_ACCOUNT)
+        context.axiaApi.tx.authorMapping.setAllychainBondAccount(GENESIS_ACCOUNT)
       );
     } catch (e) {
       // NB: This test used to check events for ExtrinsicFailed,
       // but now the api prevents the call from happening
       expect(e.toString().substring(0, 90)).to.eq(
-        "TypeError: context.polkadotApi.tx.authorMapping.setAllychainBondAccount is not a function"
+        "TypeError: context.axiaApi.tx.authorMapping.setAllychainBondAccount is not a function"
       );
     }
   });
@@ -74,11 +74,11 @@ describeDevMoonbeam("Staking - Allychain Bond - setAllychainBondReservePercent",
 
   it("should be able set the allychain bond reserve percent with sudo", async function () {
     // should be able to register the genesis account
-    await context.polkadotApi.tx.sudo
-      .sudo(context.polkadotApi.tx.allychainStaking.setAllychainBondReservePercent(TWENTY_PERCENT))
+    await context.axiaApi.tx.sudo
+      .sudo(context.axiaApi.tx.allychainStaking.setAllychainBondReservePercent(TWENTY_PERCENT))
       .signAndSend(sudoAccount);
     await context.createBlock();
-    const allychainBondInfo = await context.polkadotApi.query.allychainStaking.allychainBondInfo();
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
     expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
     expect(allychainBondInfo.toHuman()["percent"]).to.equal(TWENTY_PERCENT_STRING);
   });
@@ -99,13 +99,13 @@ describeDevMoonbeam(
         await createBlockWithExtrinsic(
           context,
           genesisAccount,
-          context.polkadotApi.tx.authorMapping.setAllychainBondReservePercent(TWENTY_PERCENT)
+          context.axiaApi.tx.authorMapping.setAllychainBondReservePercent(TWENTY_PERCENT)
         );
       } catch (e) {
         // NB: This test used to check events for ExtrinsicFailed,
         // but now the api prevents the call from happening
         expect(e.toString().substring(0, 88)).to.eq(
-          "TypeError: context.polkadotApi.tx.authorMapping.setAllychainBondReservePercent is not a "
+          "TypeError: context.axiaApi.tx.authorMapping.setAllychainBondReservePercent is not a "
         );
       }
     });

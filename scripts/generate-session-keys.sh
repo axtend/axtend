@@ -1,6 +1,6 @@
 
-# AXIA_BINARY='../polkadot/target/release/polkadot'
-AXIA_BINARY='docker run parity/polkadot:v0.9.1'
+# AXIA_BINARY='../axia/target/release/axia'
+AXIA_BINARY='docker run parity/axia:v0.9.1'
 
 if [ -z "$MNEMONIC" ]; then
   MNEMONIC=`$AXIA_BINARY key generate -w 24 --output-type Json | jq -r '.secretPhrase'`

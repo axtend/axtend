@@ -6,7 +6,7 @@ import {
   DefinitionRpcSub,
   RegistryTypes,
   OverrideVersionedType,
-} from "@polkadot/types/types";
+} from "@axia/types/types";
 
 // override types for specific pallets
 export const moduleDefinitions: Record<string, OverrideModuleType> = {

@@ -122,10 +122,10 @@ nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "5f92d1
 pallet-author-inherent = { git = "https://github.com/axtend/nimbus", branch = "5f92d14" }
 
 # Axia
-polkadot-cli = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
-polkadot-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-cli = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-service = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 
 # Benchmarking
@@ -138,7 +138,7 @@ nix = "0.17"
 rand = "0.7.3"
 
 # Axia dev-dependencies
-polkadot-runtime-common = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-runtime-common = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 
 # Axlib dev-dependencies
 pallet-sudo = { git = "https://github.com/axtend/axlib", branch = "c92f69d" }
@@ -158,11 +158,11 @@ default = [
 	"alphanet-native",
 ]
 
-axctest-native = ["polkadot-cli/axctest-native", "polkadot-service/axctest-native"]
-betanet-native = ["polkadot-cli/betanet-native", "polkadot-service/betanet-native"]
+axctest-native = ["axia-cli/axctest-native", "axia-service/axctest-native"]
+betanet-native = ["axia-cli/betanet-native", "axia-service/betanet-native"]
 alphanet-native = [
-	"polkadot-cli/alphanet-native",
-	"polkadot-service/alphanet-native",
+	"axia-cli/alphanet-native",
+	"axia-service/alphanet-native",
 ]
 
 moonbase-native = ["moonbase-runtime", "alphanet-native"]

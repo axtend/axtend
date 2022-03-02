@@ -7,7 +7,7 @@
     "/dns4/mtla-moonbase-alpha-boot-0.a.moonbase.moonbeam.network/tcp/30333/p2p/12D3KooWLkGLsJMmQDCXDitJn6y6ZTPXqmcQ7bkMDKpsx6YWiZDD"
   ],
   "telemetryEndpoints": [
-    ["/dns/telemetry.polkadot.io/tcp/443/x-parity-wss/%2Fsubmit%2F", 0]
+    ["/dns/telemetry.axia.io/tcp/443/x-parity-wss/%2Fsubmit%2F", 0]
   ],
   "protocolId": null,
   "properties": {
@@ -15,7 +15,7 @@
     "tokenSymbol": "DEV",
     "SS58Prefix": 1287
   },
-  "relayChain": "westend_moonbase_relay_testnet",
+  "relayChain": "alphanet_moonbase_relay_testnet",
   "paraId": 1000,
   "consensusEngine": null,
   "genesis": {

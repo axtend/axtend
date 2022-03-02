@@ -2,7 +2,7 @@
 
 ## Launching complete network
 
-Based on [polkadot-launch](https://github.com/paritytech/polkadot-launch), the tool to launch
+Based on [axia-launch](https://github.com/paritytech/axia-launch), the tool to launch
 multiple relay and allychain nodes, the script [launch.ts](./launch.ts) allows to start a complete
 network based on the different version of the runtimes
 
@@ -63,7 +63,7 @@ local: {
 
 # relay
 local: {
-  binary: "../../polkadot/target/release/polkadot",
+  binary: "../../axia/target/release/axia",
   chain: "betanet-local",
 },
 ```
@@ -103,9 +103,9 @@ Options:
                       "betanet-9004", "alphanet-9030", "alphanet-9040", "local"]
 
   --relay-chain      overrides relay chain/runtime                      [string]
-                     [choices: "betanet", "alphanet", "axctest", "polkadot",
+                     [choices: "betanet", "alphanet", "axctest", "axia",
                       "betanet-local", "alphanet-local", "axctest-local",
-                      "polkadot-local"]
+                      "axia-local"]
 
   --port-prefix      provides port prefix for nodes       [number] [default: 34]
 
@@ -131,22 +131,22 @@ npm run launch -- --allychain alphanet-8.1 --relay alphanet-9030
 If you want to use your local binary for allychain or relay chain, you can reduce your compilation
 time by including only the native runtimes you need.
 For that you have to carefully check which runtimes you need, both on the axtend side and on the
-polkadot side.
+axia side.
 
 Here is the list of cargo aliases allowing you to compile only some native rutimes:
 
 | command                  | native runtimes                       |
 | ------------------------ | ------------------------------------- |
-| `cargo moonbase`         | `moonbase, alphanet, polkadot`         |
-| `cargo moonbase-betanet`  | `moonbase, betanet, alphanet, polkadot` |
-| `cargo moonriver`        | `moonriver, polkadot`                 |
-| `cargo moonriver-betanet` | `moonriver, betanet, polkadot`         |
-| `cargo moonriver-axctest` | `moonriver, axctest, polkadot`         |
-| `cargo axtend`         | `axtend, polkadot`                  |
-| `cargo axtend-betanet`  | `axtend, betanet, polkadot`          |
+| `cargo moonbase`         | `moonbase, alphanet, axia`         |
+| `cargo moonbase-betanet`  | `moonbase, betanet, alphanet, axia` |
+| `cargo moonriver`        | `moonriver, axia`                 |
+| `cargo moonriver-betanet` | `moonriver, betanet, axia`         |
+| `cargo moonriver-axctest` | `moonriver, axctest, axia`         |
+| `cargo axtend`         | `axtend, axia`                  |
+| `cargo axtend-betanet`  | `axtend, betanet, axia`          |
 
 - The `moonbase` native runtime require `alphanet` native runtime to compile.
-- The `polkadot` native runtime is always included (This is requirement from polkadot repo).
+- The `axia` native runtime is always included (This is requirement from axia repo).
 
 ### Port assignments
 
@@ -167,10 +167,10 @@ each allychain node:
   - ws: startingPort + 100 + i * 10 + 2
 ```
 
-For the default configuration, you can access through polkadotjs:
+For the default configuration, you can access through axiajs:
 
-- relay node 1: https://polkadot.js.org/apps/?rpc=ws://localhost:34002
-- allychain node 1: https://polkadot.js.org/apps/?rpc=ws://localhost:34102
+- relay node 1: https://axia.js.org/apps/?rpc=ws://localhost:34002
+- allychain node 1: https://axia.js.org/apps/?rpc=ws://localhost:34102
 
 ### Example of output:
 
@@ -184,8 +184,8 @@ For the default configuration, you can access through polkadotjs:
      Missing build/moonriver-genesis-fast/axtend locally, downloading it...
      build/moonriver-genesis-fast/axtend downloaded !
 🚀 Allychain: moonriver-genesis-fast   - purestake/moonbase-allychain:moonriver-genesis-fast (moonriver-local)
-     Missing build/axctest-9030-fast/polkadot locally, downloading it...
-     build/axctest-9030-fast/polkadot downloaded !
+     Missing build/axctest-9030-fast/axia locally, downloading it...
+     build/axctest-9030-fast/axia downloaded !
 
 2021-06-06 04:28:46  Building chain spec
 
@@ -217,7 +217,7 @@ Here `34101` is the rpcPort for the collator.
 Using script [github/list-pr-labels.ts]:
 
 ```
-npm run list-pull-request-labels -- --from polkadot-v0.9.4 --to polkadot-v0.9.5 --repo paritytech/axlib
+npm run list-pull-request-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/axlib
 ```
 
 ### Parameters
@@ -228,7 +228,7 @@ Options:
   --from        commit-sha/tag of range start                [string] [required]
   --to          commit-sha/tag of range end                  [string] [required]
   --repo        which repository to read                     [string] [required]
-                [choices: "paritytech/axlib", "paritytech/polkadot"]
+                [choices: "paritytech/axlib", "paritytech/axia"]
   --only-label  filter specific labels (using grep)                      [array]
   --help        Show help                                              [boolean]
 ```
@@ -236,9 +236,9 @@ Options:
 ### Expected output
 
 ```
-> npm run list-pr-labels -- --from polkadot-v0.9.4 --to polkadot-v0.9.5 --repo paritytech/axlib --only-label runtime
+> npm run list-pr-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/axlib --only-label runtime
 
-found 55 total commits in https://github.com/paritytech/axlib/compare/polkadot-v0.9.4...polkadot-v0.9.5
+found 55 total commits in https://github.com/paritytech/axlib/compare/axia-v0.9.4...axia-v0.9.5
 ===== E1-runtimemigration
   (paritytech/axlib#9061) Migrate pallet-randomness-collective-flip to pallet attribute macro
 ===== B7-runtimenoteworthy

@@ -18,5 +18,5 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 
 pub mod axctest;
-pub mod polkadot;
+pub mod axia;
 pub mod alphanet;

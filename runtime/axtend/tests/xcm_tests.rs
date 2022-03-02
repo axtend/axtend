@@ -1395,7 +1395,7 @@ fn test_statemint_like() {
 	let dest_para = MultiLocation::new(1, X1(Allychain(1)));
 
 	let sov = xcm_builder::SiblingAllychainConvertsVia::<
-		polkadot_allychain::primitives::Sibling,
+		axia_allychain::primitives::Sibling,
 		statemint_like::AccountId,
 	>::convert_ref(dest_para)
 	.unwrap();
@@ -1504,7 +1504,7 @@ fn test_statemint_like_prefix_change() {
 	let dest_para = MultiLocation::new(1, X1(Allychain(1)));
 
 	let sov = xcm_builder::SiblingAllychainConvertsVia::<
-		polkadot_allychain::primitives::Sibling,
+		axia_allychain::primitives::Sibling,
 		statemint_like::AccountId,
 	>::convert_ref(dest_para)
 	.unwrap();

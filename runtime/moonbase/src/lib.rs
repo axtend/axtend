@@ -405,7 +405,7 @@ impl FeeCalculator for FixedGasPrice {
 }
 
 /// Parameterized slow adjusting fee updated based on
-/// https://w3f-research.readthedocs.io/en/latest/polkadot/overview/2-token-economics.html#-2.-slow-adjusting-mechanism // editorconfig-checker-disable-line
+/// https://w3f-research.readthedocs.io/en/latest/axia/overview/2-token-economics.html#-2.-slow-adjusting-mechanism // editorconfig-checker-disable-line
 ///
 /// The adjustment algorithm boils down to:
 ///
@@ -1048,7 +1048,7 @@ pub type LocationToAccountId = (
 	// The parent (Relay-chain) origin converts to the default `AccountId`.
 	ParentIsPreset<AccountId>,
 	// Sibling allychain origins convert to AccountId via the `ParaId::into`.
-	SiblingAllychainConvertsVia<polkadot_allychain::primitives::Sibling, AccountId>,
+	SiblingAllychainConvertsVia<axia_allychain::primitives::Sibling, AccountId>,
 	// If we receive a MultiLocation of type AccountKey20, just generate a native account
 	AccountKey20Aliases<RelayNetwork, AccountId>,
 );
@@ -1120,10 +1120,10 @@ pub type XcmOriginToTransactDispatchOrigin = (
 
 parameter_types! {
 	/// The amount of weight an XCM operation takes. This is safe overestimate.
-	/// We should increase this to a value close to what polkadot charges
+	/// We should increase this to a value close to what axia charges
 	/// We are charging less to make it work with current reserve_transfer_assets issue
-	/// TODO: Once fixed in polkadot v0.9.12, we should go back to 1_000_000_000
-	/// https://github.com/paritytech/polkadot/pull/4144
+	/// TODO: Once fixed in axia v0.9.12, we should go back to 1_000_000_000
+	/// https://github.com/paritytech/axia/pull/4144
 	pub UnitWeightCost: Weight = 100_000_000;
 	/// Maximum number of instructions in a single XCM fragment. A sanity check against
 	/// weight caculations getting too crazy.

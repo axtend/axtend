@@ -1,19 +1,19 @@
-import { ApiPromise } from "@polkadot/api";
+import { ApiPromise } from "@axia/api";
 import {
   BlockHash,
   DispatchError,
   DispatchInfo,
   Extrinsic,
   RuntimeDispatchInfo,
-} from "@polkadot/types/interfaces";
-import type { Block } from "@polkadot/types/interfaces/runtime/types";
-import type { TxWithEvent } from "@polkadot/api-derive/types";
+} from "@axia/types/interfaces";
+import type { Block } from "@axia/types/interfaces/runtime/types";
+import type { TxWithEvent } from "@axia/api-derive/types";
 import Debug from "debug";
 import { WEIGHT_PER_GAS } from "./constants";
 import { DevTestContext } from "./setup-dev-tests";
-import { FrameSystemEventRecord } from "@polkadot/types/lookup";
+import { FrameSystemEventRecord } from "@axia/types/lookup";
 const debug = Debug("blocks");
-import "@polkadot/api-augment";
+import "@axia/api-augment";
 
 export async function createAndFinalizeBlock(
   api: ApiPromise,
@@ -136,7 +136,7 @@ export const verifyBlockFees = async (
   expect,
   expectedBalanceDiff: bigint
 ) => {
-  const api = context.polkadotApi;
+  const api = context.axiaApi;
   debug(`========= Checking block ${fromBlockNumber}...${toBlockNumber}`);
   let sumBlockFees = 0n;
   let sumBlockBurnt = 0n;
@@ -296,7 +296,7 @@ export const verifyLatestBlockFees = async (
   expect,
   expectedBalanceDiff: bigint = BigInt(0)
 ) => {
-  const signedBlock = await context.polkadotApi.rpc.chain.getBlock();
+  const signedBlock = await context.axiaApi.rpc.chain.getBlock();
   const blockNumber = Number(signedBlock.block.header.number);
   return verifyBlockFees(context, blockNumber, blockNumber, expect, expectedBalanceDiff);
 };

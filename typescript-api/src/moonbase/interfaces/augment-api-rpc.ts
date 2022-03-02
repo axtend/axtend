@@ -1,8 +1,8 @@
-// Auto-generated via `yarn polkadot-types-from-chain`, do not edit
+// Auto-generated via `yarn axia-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { AugmentedRpc } from "@polkadot/rpc-core/types";
-import type { Metadata, StorageKey } from "@polkadot/types";
+import type { AugmentedRpc } from "@axia/rpc-core/types";
+import type { Metadata, StorageKey } from "@axia/types";
 import type {
   Bytes,
   HashMap,
@@ -16,14 +16,14 @@ import type {
   bool,
   u32,
   u64,
-} from "@polkadot/types-codec";
-import type { AnyNumber, Codec } from "@polkadot/types-codec/types";
-import type { ExtrinsicOrHash, ExtrinsicStatus } from "@polkadot/types/interfaces/author";
-import type { EpochAuthorship } from "@polkadot/types/interfaces/babe";
-import type { BeefySignedCommitment } from "@polkadot/types/interfaces/beefy";
-import type { BlockHash } from "@polkadot/types/interfaces/chain";
-import type { PrefixedStorageKey } from "@polkadot/types/interfaces/childstate";
-import type { AuthorityId } from "@polkadot/types/interfaces/consensus";
+} from "@axia/types-codec";
+import type { AnyNumber, Codec } from "@axia/types-codec/types";
+import type { ExtrinsicOrHash, ExtrinsicStatus } from "@axia/types/interfaces/author";
+import type { EpochAuthorship } from "@axia/types/interfaces/babe";
+import type { BeefySignedCommitment } from "@axia/types/interfaces/beefy";
+import type { BlockHash } from "@axia/types/interfaces/chain";
+import type { PrefixedStorageKey } from "@axia/types/interfaces/childstate";
+import type { AuthorityId } from "@axia/types/interfaces/consensus";
 import type {
   CodeUploadRequest,
   CodeUploadResult,
@@ -31,8 +31,8 @@ import type {
   ContractExecResult,
   ContractInstantiateResult,
   InstantiateRequest,
-} from "@polkadot/types/interfaces/contracts";
-import type { CreatedBlock } from "@polkadot/types/interfaces/engine";
+} from "@axia/types/interfaces/contracts";
+import type { CreatedBlock } from "@axia/types/interfaces/engine";
 import type {
   EthAccount,
   EthCallRequest,
@@ -47,17 +47,17 @@ import type {
   EthTransaction,
   EthTransactionRequest,
   EthWork,
-} from "@polkadot/types/interfaces/eth";
-import type { Extrinsic } from "@polkadot/types/interfaces/extrinsics";
+} from "@axia/types/interfaces/eth";
+import type { Extrinsic } from "@axia/types/interfaces/extrinsics";
 import type {
   EncodedFinalityProofs,
   JustificationNotification,
   ReportedRoundStates,
-} from "@polkadot/types/interfaces/grandpa";
-import type { MmrLeafProof } from "@polkadot/types/interfaces/mmr";
-import type { StorageKind } from "@polkadot/types/interfaces/offchain";
-import type { FeeDetails, RuntimeDispatchInfo } from "@polkadot/types/interfaces/payment";
-import type { RpcMethods } from "@polkadot/types/interfaces/rpc";
+} from "@axia/types/interfaces/grandpa";
+import type { MmrLeafProof } from "@axia/types/interfaces/mmr";
+import type { StorageKind } from "@axia/types/interfaces/offchain";
+import type { FeeDetails, RuntimeDispatchInfo } from "@axia/types/interfaces/payment";
+import type { RpcMethods } from "@axia/types/interfaces/rpc";
 import type {
   AccountId,
   BlockNumber,
@@ -71,12 +71,12 @@ import type {
   KeyValue,
   SignedBlock,
   StorageData,
-} from "@polkadot/types/interfaces/runtime";
+} from "@axia/types/interfaces/runtime";
 import type {
   ReadProof,
   RuntimeVersion,
   TraceBlockResponse,
-} from "@polkadot/types/interfaces/state";
+} from "@axia/types/interfaces/state";
 import type {
   ApplyExtrinsicResult,
   ChainProperties,
@@ -86,10 +86,10 @@ import type {
   NodeRole,
   PeerInfo,
   SyncState,
-} from "@polkadot/types/interfaces/system";
-import type { IExtrinsic, Observable } from "@polkadot/types/types";
+} from "@axia/types/interfaces/system";
+import type { IExtrinsic, Observable } from "@axia/types/types";
 
-declare module "@polkadot/rpc-core/types/jsonrpc" {
+declare module "@axia/rpc-core/types/jsonrpc" {
   export interface RpcInterface {
     author: {
       /**

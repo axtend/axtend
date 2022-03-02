@@ -1,8 +1,8 @@
-// Auto-generated via `yarn polkadot-types-from-chain`, do not edit
+// Auto-generated via `yarn axia-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { ApiTypes } from "@polkadot/api-base/types";
-import type { Data } from "@polkadot/types";
+import type { ApiTypes } from "@axia/api-base/types";
+import type { Data } from "@axia/types";
 import type {
   Bytes,
   Compact,
@@ -16,8 +16,8 @@ import type {
   u32,
   u64,
   u8,
-} from "@polkadot/types-codec";
-import type { AnyNumber, ITuple } from "@polkadot/types-codec/types";
+} from "@axia/types-codec";
+import type { AnyNumber, ITuple } from "@axia/types-codec/types";
 import type {
   AccountId20,
   Call,
@@ -26,7 +26,7 @@ import type {
   Perbill,
   Percent,
   Permill,
-} from "@polkadot/types/interfaces/runtime";
+} from "@axia/types/interfaces/runtime";
 import type {
   CumulusPrimitivesAllychainInherentAllychainInherentData,
   EthereumTransactionTransactionV2,
@@ -52,9 +52,9 @@ import type {
   XcmVersionedMultiAssets,
   XcmVersionedMultiLocation,
   XcmVersionedXcm,
-} from "@polkadot/types/lookup";
+} from "@axia/types/lookup";
 
-declare module "@polkadot/api-base/types/submittable" {
+declare module "@axia/api-base/types/submittable" {
   export interface AugmentedSubmittables<ApiType extends ApiTypes> {
     assetManager: {
       /**
@@ -2556,7 +2556,7 @@ declare module "@polkadot/api-base/types/submittable" {
        */
       [key: string]: SubmittableExtrinsicFunction<ApiType>;
     };
-    polkadotXcm: {
+    axiaXcm: {
       /**
        * Execute an XCM message from a local, signed, origin.
        *

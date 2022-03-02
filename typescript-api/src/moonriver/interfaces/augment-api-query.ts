@@ -1,8 +1,8 @@
-// Auto-generated via `yarn polkadot-types-from-chain`, do not edit
+// Auto-generated via `yarn axia-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { ApiTypes } from "@polkadot/api-base/types";
-import type { Data } from "@polkadot/types";
+import type { ApiTypes } from "@axia/api-base/types";
+import type { Data } from "@axia/types";
 import type {
   BTreeMap,
   Bytes,
@@ -16,8 +16,8 @@ import type {
   u16,
   u32,
   u64,
-} from "@polkadot/types-codec";
-import type { AnyNumber, ITuple } from "@polkadot/types-codec/types";
+} from "@axia/types-codec";
+import type { AnyNumber, ITuple } from "@axia/types-codec/types";
 import type {
   AccountId20,
   Call,
@@ -26,7 +26,7 @@ import type {
   Perbill,
   Percent,
   Permill,
-} from "@polkadot/types/interfaces/runtime";
+} from "@axia/types/interfaces/runtime";
 import type {
   CumulusPalletDmpQueueConfigData,
   CumulusPalletDmpQueuePageIndexData,
@@ -94,10 +94,10 @@ import type {
   XcmTransactorRemoteTransactInfoWithMaxWeight,
   XcmV1MultiLocation,
   XcmVersionedMultiLocation,
-} from "@polkadot/types/lookup";
-import type { Observable } from "@polkadot/types/types";
+} from "@axia/types/lookup";
+import type { Observable } from "@axia/types/types";
 
-declare module "@polkadot/api-base/types/storage" {
+declare module "@axia/api-base/types/storage" {
   export interface AugmentedQueries<ApiType extends ApiTypes> {
     assetManager: {
       /**
@@ -1082,7 +1082,7 @@ declare module "@polkadot/api-base/types/storage" {
        */
       [key: string]: QueryableStorageEntry<ApiType>;
     };
-    polkadotXcm: {
+    axiaXcm: {
       /**
        * The existing asset traps.
        *

@@ -1,7 +1,7 @@
-// Auto-generated via `yarn polkadot-types-from-chain`, do not edit
+// Auto-generated via `yarn axia-types-from-chain`, do not edit
 /* eslint-disable */
 
-import type { ApiTypes } from "@polkadot/api-base/types";
+import type { ApiTypes } from "@axia/api-base/types";
 import type {
   Bytes,
   Null,
@@ -16,8 +16,8 @@ import type {
   u32,
   u64,
   u8,
-} from "@polkadot/types-codec";
-import type { ITuple } from "@polkadot/types-codec/types";
+} from "@axia/types-codec";
+import type { ITuple } from "@axia/types-codec/types";
 import type {
   AccountId20,
   H160,
@@ -25,7 +25,7 @@ import type {
   Perbill,
   Percent,
   Permill,
-} from "@polkadot/types/interfaces/runtime";
+} from "@axia/types/interfaces/runtime";
 import type {
   EthereumLog,
   EvmCoreErrorExitReason,
@@ -50,9 +50,9 @@ import type {
   XcmV2Xcm,
   XcmVersionedMultiAssets,
   XcmVersionedMultiLocation,
-} from "@polkadot/types/lookup";
+} from "@axia/types/lookup";
 
-declare module "@polkadot/api-base/types/events" {
+declare module "@axia/api-base/types/events" {
   export interface AugmentedEvents<ApiType extends ApiTypes> {
     assetManager: {
       AssetRegistered: AugmentedEvent<
@@ -744,7 +744,7 @@ declare module "@polkadot/api-base/types/events" {
        */
       [key: string]: AugmentedEvent<ApiType>;
     };
-    polkadotXcm: {
+    axiaXcm: {
       /**
        * Some assets have been placed in an asset trap.
        *

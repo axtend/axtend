@@ -1,4 +1,4 @@
-import { ApiPromise, WsProvider } from "@polkadot/api";
+import { ApiPromise, WsProvider } from "@axia/api";
 import Web3 from "web3";
 import { typesBundlePre900 } from "../../axtend-types-bundle/dist";
 import { FAITH } from "../test-constants";
@@ -10,11 +10,11 @@ export default async function test(ACC: string) {
   console.log("BALANCE WEB3", balance.toString());
 
   const wsProvider = new WsProvider(wsProviderUrl);
-  const polkadotApi = await ApiPromise.create({
+  const axiaApi = await ApiPromise.create({
     provider: wsProvider,
     typesBundle: typesBundlePre900 as any,
   });
-  const account = await polkadotApi.query.system.account(ACC);
+  const account = await axiaApi.query.system.account(ACC);
   // console.log("BALANCE API", account.data.feeFrozen.toString());
   // console.log("BALANCE API", account.data.miscFrozen.toString());
   // console.log("BALANCE API", account.data.reserved.toString());

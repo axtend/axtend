@@ -27,7 +27,7 @@ use moonbeam_runtime::{
 	currency::GLMR, currency::SUPPLY_FACTOR, AccountId, AuthorFilterConfig, AuthorMappingConfig,
 	Balance, BalancesConfig, CouncilCollectiveConfig, CrowdloanRewardsConfig, DemocracyConfig,
 	EVMConfig, EthereumChainIdConfig, EthereumConfig, GenesisAccount, GenesisConfig, InflationInfo,
-	MaintenanceModeConfig, ParachainInfoConfig, ParachainStakingConfig, PolkadotXcmConfig,
+	MaintenanceModeConfig, ParachainInfoConfig, ParachainStakingConfig, AxiaXcmConfig,
 	Precompiles, Range, SystemConfig, TechCommitteeCollectiveConfig, WASM_BINARY,
 };
 use nimbus_primitives::NimbusId;
@@ -160,7 +160,7 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 		),
 		// Extensions
 		Extensions {
-			relay_chain: "polkadot-local".into(),
+			relay_chain: "axia-local".into(),
 			para_id: para_id.into(),
 		},
 	)
@@ -283,7 +283,7 @@ pub fn testnet_genesis(
 			start_in_maintenance_mode: false,
 		},
 		// This should initialize it to whatever we have set in the pallet
-		axia_xcm: PolkadotXcmConfig::default(),
+		axia_xcm: AxiaXcmConfig::default(),
 	}
 }
 

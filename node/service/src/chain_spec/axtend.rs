@@ -161,7 +161,7 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 		),
 		// Extensions
 		Extensions {
-			relay_chain: "polkadot-local".into(),
+			relay_chain: "axia-local".into(),
 			para_id: para_id.into(),
 		},
 	)

@@ -12,7 +12,7 @@ describeDevMoonbeam(
         transactions: [await createTransfer(context, testAddress, 512)],
       });
 
-      const signedBlock = await context.polkadotApi.rpc.chain.getBlock();
+      const signedBlock = await context.axiaApi.rpc.chain.getBlock();
       let extrinsic = signedBlock.block.extrinsics.find((ex) => ex.method.section == "ethereum")
         .args[0] as any;
       expect(extrinsic.isLegacy).to.be.true;
@@ -54,7 +54,7 @@ describeDevMoonbeam(
         ],
       });
 
-      const signedBlock = await context.polkadotApi.rpc.chain.getBlock();
+      const signedBlock = await context.axiaApi.rpc.chain.getBlock();
       let extrinsic = signedBlock.block.extrinsics.find((ex) => ex.method.section == "ethereum")
         .args[0] as any;
       expect(extrinsic.isEip2930).to.be.true;
@@ -103,7 +103,7 @@ describeDevMoonbeam(
         ],
       });
 
-      const signedBlock = await context.polkadotApi.rpc.chain.getBlock();
+      const signedBlock = await context.axiaApi.rpc.chain.getBlock();
       let extrinsic = signedBlock.block.extrinsics.find((ex) => ex.method.section == "ethereum")
         .args[0] as any;
       expect(extrinsic.isEip1559).to.be.true;

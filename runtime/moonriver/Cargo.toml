@@ -126,8 +126,8 @@ allychain-info = { git = "https://github.com/axtend/cumulus", branch = "b43fcff"
 # Axia / XCM
 orml-xtokens = { git = "https://github.com/axtend/open-runtime-module-library", branch = "7ba9fad", default-features = false }
 pallet-xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
-polkadot-core-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
-polkadot-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
+axia-core-primitives = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
+axia-allychain = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm-builder = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
 xcm-executor = { git = "https://github.com/axtend/axia", branch = "66cb46b", default-features = false }
@@ -145,7 +145,7 @@ sha3 = "0.9"
 cumulus-primitives-allychain-inherent = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "b43fcff", default-features = false }
 
-polkadot-runtime-allychains = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
+axia-runtime-allychains = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 xcm-simulator = { git = "https://github.com/axtend/axia", branch = "66cb46b" }
 
 [build-dependencies]

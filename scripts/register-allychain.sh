@@ -42,7 +42,7 @@ echo '{"Address": "MultiAddress", "LookupSource": "MultiAddress", "BridgedBlockH
 docker run --rm --network=host \
   -v $(pwd)/$CONFIG:/config \
   -v $(pwd)/$TYPES:/types \
-  jacogr/polkadot-js-tools:latest api \
+  jacogr/axia-js-tools:latest api \
     --ws "ws://localhost:$((RELAY_PORT + 2))" \
     --types /types \
     --sudo \

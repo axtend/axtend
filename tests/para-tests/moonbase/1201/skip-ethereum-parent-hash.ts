@@ -1,4 +1,4 @@
-import { Keyring } from "@polkadot/api";
+import { Keyring } from "@axia/api";
 import { expect } from "chai";
 import Web3 from "web3";
 
@@ -73,14 +73,14 @@ describeAllychain(
         console.log(
           `#${i} ${(await context.web3.eth.getBlock(i)).parentHash} ${
             (
-              await context.polkadotApiParaone.rpc.state.getRuntimeVersion(
-                await context.polkadotApiParaone.rpc.chain.getBlockHash(i)
+              await context.axiaApiParaone.rpc.state.getRuntimeVersion(
+                await context.axiaApiParaone.rpc.chain.getBlockHash(i)
               )
             ).specVersion
           } (${
             (
-              await context.polkadotApiParaone.rpc.chain.getBlock(
-                await context.polkadotApiParaone.rpc.chain.getBlockHash(i)
+              await context.axiaApiParaone.rpc.chain.getBlock(
+                await context.axiaApiParaone.rpc.chain.getBlockHash(i)
               )
             ).block.extrinsics.length
           } ext)`

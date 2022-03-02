@@ -11,8 +11,8 @@ const ADDRESS_XTOKENS = "0x0000000000000000000000000000000000000804";
 export const BALANCES_ADDRESS = "0x0000000000000000000000000000000000000802";
 
 async function getBalance(context, blockHeight, address) {
-  const blockHash = await context.polkadotApi.rpc.chain.getBlockHash(blockHeight);
-  const account = await context.polkadotApi.query.system.account.at(blockHash, address);
+  const blockHash = await context.axiaApi.rpc.chain.getBlockHash(blockHeight);
+  const account = await context.axiaApi.query.system.account.at(blockHash, address);
   return account.data.free;
 }
 

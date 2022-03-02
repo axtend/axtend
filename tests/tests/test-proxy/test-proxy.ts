@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { describeDevMoonbeam } from "../../util/setup-dev-tests";
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 import {
   ALITH_PRIVATE_KEY,
   BALTATHAR_PRIVATE_KEY,
@@ -28,10 +28,10 @@ describeDevMoonbeam("Pallet proxy - shouldn't accept unknown proxy", (context) =
         const events = await axlibTransaction(
           context,
           baltathar,
-          context.polkadotApi.tx.proxy.proxy(
+          context.axiaApi.tx.proxy.proxy(
             alith.address,
             null,
-            context.polkadotApi.tx.balances.transfer(charleth.address, 100)
+            context.axiaApi.tx.balances.transfer(charleth.address, 100)
           )
         );
         expect(events[5].method).to.be.eq("ExtrinsicFailed");
@@ -51,7 +51,7 @@ describeDevMoonbeam("Pallet proxy - should accept known proxy", (context) => {
         const events = await axlibTransaction(
           context,
           alith,
-          context.polkadotApi.tx.proxy.addProxy(baltathar.address, "Any", 0)
+          context.axiaApi.tx.proxy.addProxy(baltathar.address, "Any", 0)
         );
         expect(events[2].method).to.be.eq("ProxyAdded");
         expect(events[2].data[2].toString()).to.be.eq("Any"); //ProxyType
@@ -60,10 +60,10 @@ describeDevMoonbeam("Pallet proxy - should accept known proxy", (context) => {
         const events2 = await axlibTransaction(
           context,
           baltathar,
-          context.polkadotApi.tx.proxy.proxy(
+          context.axiaApi.tx.proxy.proxy(
             alith.address,
             null,
-            context.polkadotApi.tx.balances.transfer(charleth.address, 100)
+            context.axiaApi.tx.balances.transfer(charleth.address, 100)
           )
         );
         expect(events2[2].method).to.be.eq("ProxyExecuted");
@@ -85,24 +85,24 @@ describeDevMoonbeam("Pallet proxy - shouldn't accept removed proxy", (context) =
         const events = await axlibTransaction(
           context,
           alith,
-          context.polkadotApi.tx.proxy.addProxy(baltathar.address, "Any", 0)
+          context.axiaApi.tx.proxy.addProxy(baltathar.address, "Any", 0)
         );
         expect(events[7].method).to.be.eq("ExtrinsicSuccess");
 
         const events2 = await axlibTransaction(
           context,
           alith,
-          context.polkadotApi.tx.proxy.removeProxy(baltathar.address, "Any", 0)
+          context.axiaApi.tx.proxy.removeProxy(baltathar.address, "Any", 0)
         );
         expect(events2[4].method).to.be.eq("ExtrinsicSuccess");
 
         const events3 = await axlibTransaction(
           context,
           baltathar,
-          context.polkadotApi.tx.proxy.proxy(
+          context.axiaApi.tx.proxy.proxy(
             alith.address,
             null,
-            context.polkadotApi.tx.balances.transfer(charleth.address, 100)
+            context.axiaApi.tx.balances.transfer(charleth.address, 100)
           )
         );
         expect(events3[3].method).to.be.eq("ExtrinsicFailed");
@@ -122,17 +122,17 @@ describeDevMoonbeam("Pallet proxy - shouldn't accept instant for delayed proxy",
         const events = await axlibTransaction(
           context,
           alith,
-          context.polkadotApi.tx.proxy.addProxy(baltathar.address, "Any", 2)
+          context.axiaApi.tx.proxy.addProxy(baltathar.address, "Any", 2)
         );
         expect(events[7].method).to.be.eq("ExtrinsicSuccess");
 
         const events2 = await axlibTransaction(
           context,
           baltathar,
-          context.polkadotApi.tx.proxy.proxy(
+          context.axiaApi.tx.proxy.proxy(
             alith.address,
             null,
-            context.polkadotApi.tx.balances.transfer(charleth.address, 100)
+            context.axiaApi.tx.balances.transfer(charleth.address, 100)
           )
         );
         expect(events2[3].method).to.be.eq("ExtrinsicFailed");
@@ -152,17 +152,17 @@ describeDevMoonbeam("Pallet proxy - shouldn't accept early delayed proxy", (cont
         const events = await axlibTransaction(
           context,
           alith,
-          context.polkadotApi.tx.proxy.addProxy(baltathar.address, "Any", 6)
+          context.axiaApi.tx.proxy.addProxy(baltathar.address, "Any", 6)
         );
         events.forEach((event) => debug(`1${event.method}(${event.data})`));
         expect(events[7].method).to.be.eq("ExtrinsicSuccess");
 
-        const transfer = context.polkadotApi.tx.balances.transfer(charleth.address, 100);
+        const transfer = context.axiaApi.tx.balances.transfer(charleth.address, 100);
 
         const events2 = await axlibTransaction(
           context,
           baltathar,
-          context.polkadotApi.tx.proxy.announce(alith.address, transfer.hash)
+          context.axiaApi.tx.proxy.announce(alith.address, transfer.hash)
         );
         events2.forEach((event) => debug(`2${event.method}(${event.data})`));
         expect(events2[2].method).to.be.eq("Announced");
@@ -172,7 +172,7 @@ describeDevMoonbeam("Pallet proxy - shouldn't accept early delayed proxy", (cont
         const events3 = await axlibTransaction(
           context,
           baltathar,
-          context.polkadotApi.tx.proxy.proxyAnnounced(
+          context.axiaApi.tx.proxy.proxyAnnounced(
             baltathar.address,
             alith.address,
             null,
@@ -197,7 +197,7 @@ describeDevMoonbeam("Pallet proxy - should accept on-time delayed proxy", (conte
         const events = await axlibTransaction(
           context,
           alith,
-          context.polkadotApi.tx.proxy.addProxy(baltathar.address, "Any", 2)
+          context.axiaApi.tx.proxy.addProxy(baltathar.address, "Any", 2)
         );
         events.forEach((e) => {
           debug(e.toHuman());
@@ -205,14 +205,14 @@ describeDevMoonbeam("Pallet proxy - should accept on-time delayed proxy", (conte
         expect(events[7].method).to.be.eq("ExtrinsicSuccess");
 
         // Build transaction
-        const transfer = context.polkadotApi.tx.balances.transfer(charleth.address, 100);
+        const transfer = context.axiaApi.tx.balances.transfer(charleth.address, 100);
         const u8a = transfer.method.toU8a();
         const transfer_hash = transfer.registry.hash(u8a).toHex();
 
         const events2 = await axlibTransaction(
           context,
           baltathar,
-          context.polkadotApi.tx.proxy.announce(alith.address, transfer_hash)
+          context.axiaApi.tx.proxy.announce(alith.address, transfer_hash)
         );
         events2.forEach((event) => debug(`${event.method}(${event.data})`));
         expect(events2[2].method).to.be.eq("Announced");
@@ -226,7 +226,7 @@ describeDevMoonbeam("Pallet proxy - should accept on-time delayed proxy", (conte
         const events3 = await axlibTransaction(
           context,
           baltathar,
-          context.polkadotApi.tx.proxy.proxyAnnounced(
+          context.axiaApi.tx.proxy.proxyAnnounced(
             baltathar.address,
             alith.address,
             null,

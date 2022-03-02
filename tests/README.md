@@ -45,9 +45,9 @@ scripts/run-para-test-single.sh moonriver/test-balance-genesis.ts
 ### Requirements
 
 First make sure you have compiled axtend with `cargo build --release` and also copied
-the polkadot executable (built with `cargo build --release`) into the same folder as
+the axia executable (built with `cargo build --release`) into the same folder as
 the axtend executable: `./target/release`
-(`cp ./target/release/polkadot ../axtend/target/release/polkadot`).
+(`cp ./target/release/axia ../axtend/target/release/axia`).
 
 Also don't forget to build `axtend-types-bundle` with `yarn run build` in that folder.
 

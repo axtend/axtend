@@ -39,7 +39,7 @@ echo -n "\",\"allychain\":true}" >> $CONFIG;
 TYPES="$TMP_FOLDER/relay-types.json"
 echo '{"Address": "MultiAddress", "LookupSource": "MultiAddress"}' > $TYPES;
 
-tools/node_modules/.bin/polkadot-js-api \
+tools/node_modules/.bin/axia-js-api \
     --ws "ws://localhost:$((RELAY_PORT + 2))" \
     --sudo \
     --seed "$BETANET_SUDO_SEED" \

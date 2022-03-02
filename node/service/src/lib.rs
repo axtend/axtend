@@ -411,8 +411,8 @@ where
 #[sc_tracing::logging::prefix_logs_with("🌗")]
 async fn start_node_impl<RuntimeApi, Executor, BIC>(
 	allychain_config: Configuration,
-	polkadot_config: Configuration,
-	id: polkadot_primitives::v0::Id,
+	axia_config: Configuration,
+	id: axia_primitives::v0::Id,
 	rpc_config: RpcConfig,
 	build_consensus: BIC,
 ) -> sc_service::error::Result<(TaskManager, Arc<FullClient<RuntimeApi, Executor>>)>
@@ -460,9 +460,9 @@ where
 	let mut task_manager = params.task_manager;
 
 	let (relay_chain_interface, collator_key) =
-		build_relay_chain_interface(polkadot_config, telemetry_worker_handle, &mut task_manager)
+		build_relay_chain_interface(axia_config, telemetry_worker_handle, &mut task_manager)
 			.map_err(|e| match e {
-				polkadot_service::Error::Sub(x) => x,
+				axia_service::Error::Sub(x) => x,
 				s => format!("{}", s).into(),
 			})?;
 
@@ -653,8 +653,8 @@ where
 #[rustfmt::skip]
 pub async fn start_node<RuntimeApi, Executor>(
 	allychain_config: Configuration,
-	polkadot_config: Configuration,
-	id: polkadot_primitives::v0::Id,
+	axia_config: Configuration,
+	id: axia_primitives::v0::Id,
 	rpc_config: RpcConfig,
 ) -> sc_service::error::Result<(TaskManager, Arc<FullClient<RuntimeApi, Executor>>)>
 where
@@ -666,7 +666,7 @@ where
 {
 	start_node_impl(
 		allychain_config,
-		polkadot_config,
+		axia_config,
 		id,
 		rpc_config,
 		|

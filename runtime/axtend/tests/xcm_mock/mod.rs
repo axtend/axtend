@@ -19,7 +19,7 @@ pub mod relay_chain;
 pub mod statemint_like;
 
 use cumulus_primitives_core::ParaId;
-use polkadot_allychain::primitives::AccountIdConversion;
+use axia_allychain::primitives::AccountIdConversion;
 use sp_runtime::AccountId32;
 use xcm_simulator::{decl_test_network, decl_test_allychain, decl_test_relay_chain};
 

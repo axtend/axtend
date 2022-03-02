@@ -1,18 +1,18 @@
 // Copyright 2021 Parity Technologies (UK) Ltd.
-// This file is part of Polkadot.
+// This file is part of Axia.
 
-// Polkadot is free software: you can redistribute it and/or modify
+// Axia is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Polkadot is distributed in the hope that it will be useful,
+// Axia is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Polkadot.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axia.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Parachain runtime mock.
 
@@ -34,8 +34,8 @@ use sp_runtime::{
 use sp_std::{convert::TryFrom, prelude::*};
 use xcm::{latest::prelude::*, Version as XcmVersion, VersionedXcm};
 
-use polkadot_core_primitives::BlockNumber as RelayBlockNumber;
-use polkadot_parachain::primitives::{Id as ParaId, Sibling};
+use axia_core_primitives::BlockNumber as RelayBlockNumber;
+use axia_parachain::primitives::{Id as ParaId, Sibling};
 use xcm::latest::{
 	AssetId as XcmAssetId, Error as XcmError, ExecuteXcm,
 	Junction::{PalletInstance, Parachain},
@@ -221,7 +221,7 @@ pub type Barrier = (
 	TakeWeightCredit,
 	AllowTopLevelPaidExecutionFrom<Everything>,
 	// Expected responses are OK.
-	AllowKnownQueryResponses<PolkadotXcm>,
+	AllowKnownQueryResponses<AxiaXcm>,
 	// Subscriptions for version tracking are OK.
 	AllowSubscriptionsFrom<Everything>,
 );
@@ -261,7 +261,7 @@ parameter_types! {
 }
 
 parameter_types! {
-	pub const RelayNetwork: NetworkId = NetworkId::Polkadot;
+	pub const RelayNetwork: NetworkId = NetworkId::Axia;
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 	pub Ancestry: MultiLocation = Parachain(MsgQueue::parachain_id().into()).into();
 	// Old Self Reserve location, defines the multilocation identifiying the self-reserve currency
@@ -312,10 +312,10 @@ impl Config for XcmConfig {
 		xcm_primitives::FirstAssetTrader<AssetType, AssetManager, XcmFeesToAccount_>,
 	);
 
-	type ResponseHandler = PolkadotXcm;
-	type SubscriptionService = PolkadotXcm;
-	type AssetTrap = PolkadotXcm;
-	type AssetClaims = PolkadotXcm;
+	type ResponseHandler = AxiaXcm;
+	type SubscriptionService = AxiaXcm;
+	type AssetTrap = AxiaXcm;
+	type AssetClaims = AxiaXcm;
 }
 
 impl cumulus_pallet_xcm::Config for Runtime {
@@ -841,7 +841,7 @@ construct_runtime!(
 		MsgQueue: mock_msg_queue::{Pallet, Storage, Event<T>},
 		XcmVersioner: mock_version_changer::{Pallet, Storage, Event<T>},
 
-		PolkadotXcm: pallet_xcm::{Pallet, Call, Event<T>, Origin},
+		AxiaXcm: pallet_xcm::{Pallet, Call, Event<T>, Origin},
 		Assets: pallet_assets::{Pallet, Storage, Event<T>},
 		CumulusXcm: cumulus_pallet_xcm::{Pallet, Event<T>, Origin},
 		XTokens: orml_xtokens::{Pallet, Call, Storage, Event<T>},
@@ -864,17 +864,17 @@ pub(crate) fn para_events() -> Vec<Event> {
 
 use frame_support::traits::{OnFinalize, OnInitialize, OnRuntimeUpgrade};
 pub(crate) fn on_runtime_upgrade() {
-	PolkadotXcm::on_runtime_upgrade();
+	AxiaXcm::on_runtime_upgrade();
 }
 
 pub(crate) fn para_roll_to(n: u64) {
 	while System::block_number() < n {
-		PolkadotXcm::on_finalize(System::block_number());
+		AxiaXcm::on_finalize(System::block_number());
 		Balances::on_finalize(System::block_number());
 		System::on_finalize(System::block_number());
 		System::set_block_number(System::block_number() + 1);
 		System::on_initialize(System::block_number());
 		Balances::on_initialize(System::block_number());
-		PolkadotXcm::on_initialize(System::block_number());
+		AxiaXcm::on_initialize(System::block_number());
 	}
 }

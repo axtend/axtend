@@ -1,8 +1,8 @@
-// Auto-generated via `yarn polkadot-types-from-defs`, do not edit
+// Auto-generated via `yarn axia-types-from-defs`, do not edit
 /* eslint-disable */
 
-declare module "@polkadot/types/lookup" {
-  import type { Data } from "@polkadot/types";
+declare module "@axia/types/lookup" {
+  import type { Data } from "@axia/types";
   import type {
     BTreeMap,
     Bytes,
@@ -23,9 +23,9 @@ declare module "@polkadot/types/lookup" {
     u32,
     u64,
     u8,
-  } from "@polkadot/types-codec";
-  import type { ITuple } from "@polkadot/types-codec/types";
-  import type { Vote } from "@polkadot/types/interfaces/elections";
+  } from "@axia/types-codec";
+  import type { ITuple } from "@axia/types-codec/types";
+  import type { Vote } from "@axia/types/interfaces/elections";
   import type {
     AccountId20,
     Call,
@@ -34,8 +34,8 @@ declare module "@polkadot/types/lookup" {
     Perbill,
     Percent,
     Permill,
-  } from "@polkadot/types/interfaces/runtime";
-  import type { Event } from "@polkadot/types/interfaces/system";
+  } from "@axia/types/interfaces/runtime";
+  import type { Event } from "@axia/types/interfaces/system";
 
   /**
    * @name FrameSystemAccountInfo (3)
@@ -1366,9 +1366,9 @@ declare module "@polkadot/types/lookup" {
     readonly isAny: boolean;
     readonly isNamed: boolean;
     readonly asNamed: Bytes;
-    readonly isPolkadot: boolean;
-    readonly isKusama: boolean;
-    readonly type: "Any" | "Named" | "Polkadot" | "Kusama";
+    readonly isAxia: boolean;
+    readonly isAxiaTest: boolean;
+    readonly type: "Any" | "Named" | "Axia" | "AxiaTest";
   }
 
   /**
@@ -2268,9 +2268,9 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name PolkadotPrimitivesV1PersistedValidationData (148)
+   * @name AxiaPrimitivesV1PersistedValidationData (148)
    */
-  export interface PolkadotPrimitivesV1PersistedValidationData extends Struct {
+  export interface AxiaPrimitivesV1PersistedValidationData extends Struct {
     readonly parentHead: Bytes;
     readonly relayParentNumber: u32;
     readonly relayParentStorageRoot: H256;
@@ -2278,9 +2278,9 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name PolkadotPrimitivesV1UpgradeRestriction (151)
+   * @name AxiaPrimitivesV1UpgradeRestriction (151)
    */
-  export interface PolkadotPrimitivesV1UpgradeRestriction extends Enum {
+  export interface AxiaPrimitivesV1UpgradeRestriction extends Enum {
     readonly isPresent: boolean;
     readonly type: "Present";
   }
@@ -2292,14 +2292,14 @@ declare module "@polkadot/types/lookup" {
     extends Struct {
     readonly dmqMqcHead: H256;
     readonly relayDispatchQueueSize: ITuple<[u32, u32]>;
-    readonly ingressChannels: Vec<ITuple<[u32, PolkadotPrimitivesV1AbridgedHrmpChannel]>>;
-    readonly egressChannels: Vec<ITuple<[u32, PolkadotPrimitivesV1AbridgedHrmpChannel]>>;
+    readonly ingressChannels: Vec<ITuple<[u32, AxiaPrimitivesV1AbridgedHrmpChannel]>>;
+    readonly egressChannels: Vec<ITuple<[u32, AxiaPrimitivesV1AbridgedHrmpChannel]>>;
   }
 
   /**
-   * @name PolkadotPrimitivesV1AbridgedHrmpChannel (156)
+   * @name AxiaPrimitivesV1AbridgedHrmpChannel (156)
    */
-  export interface PolkadotPrimitivesV1AbridgedHrmpChannel extends Struct {
+  export interface AxiaPrimitivesV1AbridgedHrmpChannel extends Struct {
     readonly maxCapacity: u32;
     readonly maxTotalSize: u32;
     readonly maxMessageSize: u32;
@@ -2309,9 +2309,9 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name PolkadotPrimitivesV1AbridgedHostConfiguration (157)
+   * @name AxiaPrimitivesV1AbridgedHostConfiguration (157)
    */
-  export interface PolkadotPrimitivesV1AbridgedHostConfiguration extends Struct {
+  export interface AxiaPrimitivesV1AbridgedHostConfiguration extends Struct {
     readonly maxCodeSize: u32;
     readonly maxHeadDataSize: u32;
     readonly maxUpwardQueueCount: u32;
@@ -2324,9 +2324,9 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name PolkadotCorePrimitivesOutboundHrmpMessage (163)
+   * @name AxiaCorePrimitivesOutboundHrmpMessage (163)
    */
-  export interface PolkadotCorePrimitivesOutboundHrmpMessage extends Struct {
+  export interface AxiaCorePrimitivesOutboundHrmpMessage extends Struct {
     readonly recipient: u32;
     readonly data: Bytes;
   }
@@ -2362,10 +2362,10 @@ declare module "@polkadot/types/lookup" {
    * @name CumulusPrimitivesParachainInherentParachainInherentData (165)
    */
   export interface CumulusPrimitivesParachainInherentParachainInherentData extends Struct {
-    readonly validationData: PolkadotPrimitivesV1PersistedValidationData;
+    readonly validationData: AxiaPrimitivesV1PersistedValidationData;
     readonly relayChainState: SpTrieStorageProof;
-    readonly downwardMessages: Vec<PolkadotCorePrimitivesInboundDownwardMessage>;
-    readonly horizontalMessages: BTreeMap<u32, Vec<PolkadotCorePrimitivesInboundHrmpMessage>>;
+    readonly downwardMessages: Vec<AxiaCorePrimitivesInboundDownwardMessage>;
+    readonly horizontalMessages: BTreeMap<u32, Vec<AxiaCorePrimitivesInboundHrmpMessage>>;
   }
 
   /**
@@ -2376,17 +2376,17 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name PolkadotCorePrimitivesInboundDownwardMessage (168)
+   * @name AxiaCorePrimitivesInboundDownwardMessage (168)
    */
-  export interface PolkadotCorePrimitivesInboundDownwardMessage extends Struct {
+  export interface AxiaCorePrimitivesInboundDownwardMessage extends Struct {
     readonly sentAt: u32;
     readonly msg: Bytes;
   }
 
   /**
-   * @name PolkadotCorePrimitivesInboundHrmpMessage (171)
+   * @name AxiaCorePrimitivesInboundHrmpMessage (171)
    */
-  export interface PolkadotCorePrimitivesInboundHrmpMessage extends Struct {
+  export interface AxiaCorePrimitivesInboundHrmpMessage extends Struct {
     readonly sentAt: u32;
     readonly data: Bytes;
   }
@@ -2396,7 +2396,7 @@ declare module "@polkadot/types/lookup" {
    */
   export interface CumulusPalletParachainSystemError extends Enum {
     readonly isOverlappingUpgrades: boolean;
-    readonly isProhibitedByPolkadot: boolean;
+    readonly isProhibitedByAxia: boolean;
     readonly isTooBig: boolean;
     readonly isValidationDataNotAvailable: boolean;
     readonly isHostConfigurationNotAvailable: boolean;
@@ -2405,7 +2405,7 @@ declare module "@polkadot/types/lookup" {
     readonly isUnauthorized: boolean;
     readonly type:
       | "OverlappingUpgrades"
-      | "ProhibitedByPolkadot"
+      | "ProhibitedByAxia"
       | "TooBig"
       | "ValidationDataNotAvailable"
       | "HostConfigurationNotAvailable"
@@ -4548,8 +4548,8 @@ declare module "@polkadot/types/lookup" {
     readonly asTechCommitteeCollective: PalletCollectiveRawOrigin;
     readonly isCumulusXcm: boolean;
     readonly asCumulusXcm: CumulusPalletXcmOrigin;
-    readonly isPolkadotXcm: boolean;
-    readonly asPolkadotXcm: PalletXcmOrigin;
+    readonly isAxiaXcm: boolean;
+    readonly asAxiaXcm: PalletXcmOrigin;
     readonly type:
       | "System"
       | "Void"
@@ -4557,7 +4557,7 @@ declare module "@polkadot/types/lookup" {
       | "CouncilCollective"
       | "TechCommitteeCollective"
       | "CumulusXcm"
-      | "PolkadotXcm";
+      | "AxiaXcm";
   }
 
   /**
@@ -5147,9 +5147,9 @@ declare module "@polkadot/types/lookup" {
   }
 
   /**
-   * @name PolkadotParachainPrimitivesXcmpMessageFormat (431)
+   * @name AxiaParachainPrimitivesXcmpMessageFormat (431)
    */
-  export interface PolkadotParachainPrimitivesXcmpMessageFormat extends Enum {
+  export interface AxiaParachainPrimitivesXcmpMessageFormat extends Enum {
     readonly isConcatenatedVersionedXcm: boolean;
     readonly isConcatenatedEncodedBlob: boolean;
     readonly isSignals: boolean;

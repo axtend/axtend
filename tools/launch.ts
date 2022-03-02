@@ -14,7 +14,7 @@ import yargs from "yargs";
 import * as fs from "fs";
 import * as path from "path";
 import * as child_process from "child_process";
-import { killAll, run } from "polkadot-launch";
+import { killAll, run } from "axia-launch";
 
 // Description of the network to launch
 type NetworkConfig = {
@@ -199,7 +199,7 @@ const relays: { [name: string]: NetworkConfig } = {
     chain: "alphanet-local",
   },
   local: {
-    binary: "../../polkadot/target/release/polkadot",
+    binary: "../../axia/target/release/axia",
     chain: "betanet-local",
   },
 };
@@ -258,11 +258,11 @@ async function start() {
           "betanet",
           "alphanet",
           "axctest",
-          "polkadot",
+          "axia",
           "betanet-local",
           "alphanet-local",
           "axctest-local",
-          "polkadot-local",
+          "axia-local",
         ],
         describe: "overrides relay chain/runtime",
       },
@@ -417,14 +417,14 @@ async function start() {
       );
       return;
     }
-    relayBinary = `build/${relayName}/polkadot`;
-    const relayPath = path.join(__dirname, `build/${relayName}/polkadot`);
+    relayBinary = `build/${relayName}/axia`;
+    const relayPath = path.join(__dirname, `build/${relayName}/axia`);
     if (!fs.existsSync(relayPath)) {
       console.log(`     Missing ${relayBinary} locally, downloading it...`);
       child_process.execSync(`mkdir -p ${path.dirname(relayPath)} && \
-          docker create --name polkadot-tmp ${relay.docker} && \
-          docker cp polkadot-tmp:/usr/local/bin/polkadot ${relayPath} && \
-          docker rm polkadot-tmp`);
+          docker create --name axia-tmp ${relay.docker} && \
+          docker cp axia-tmp:/usr/local/bin/axia ${relayPath} && \
+          docker rm axia-tmp`);
       console.log(`     ${relayBinary} downloaded !`);
     }
   }
@@ -482,7 +482,7 @@ async function start() {
 
   launchConfig.relaychain.nodes = relay_nodes;
 
-  const knownRelayChains = ["axctest", "alphanet", "betanet", "polkadot"]
+  const knownRelayChains = ["axctest", "alphanet", "betanet", "axia"]
     .map((network) => [`${network}`, `${network}-local`, `${network}-dev`])
     .flat();
 

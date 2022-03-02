@@ -37,7 +37,7 @@ use xcm::latest::{
 use xcm_executor::traits::Convert;
 use xcm_simulator::TestExt;
 
-// Send a relay asset (like DOT) to a parachain A
+// Send a relay asset (like AXC) to a parachain A
 #[test]
 fn receive_relay_asset_from_relay() {
 	MockNet::reset();
@@ -89,7 +89,7 @@ fn receive_relay_asset_from_relay() {
 	});
 }
 
-// Send relay asset (like DOT) back from Parachain A to relaychain
+// Send relay asset (like AXC) back from Parachain A to relaychain
 #[test]
 fn send_relay_asset_to_relay() {
 	MockNet::reset();
@@ -1395,7 +1395,7 @@ fn test_statemint_like() {
 	let dest_para = MultiLocation::new(1, X1(Parachain(1)));
 
 	let sov = xcm_builder::SiblingParachainConvertsVia::<
-		polkadot_parachain::primitives::Sibling,
+		axia_parachain::primitives::Sibling,
 		statemint_like::AccountId,
 	>::convert_ref(dest_para)
 	.unwrap();
@@ -1504,7 +1504,7 @@ fn test_statemint_like_prefix_change() {
 	let dest_para = MultiLocation::new(1, X1(Parachain(1)));
 
 	let sov = xcm_builder::SiblingParachainConvertsVia::<
-		polkadot_parachain::primitives::Sibling,
+		axia_parachain::primitives::Sibling,
 		statemint_like::AccountId,
 	>::convert_ref(dest_para)
 	.unwrap();

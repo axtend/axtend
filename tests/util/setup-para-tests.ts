@@ -1,5 +1,5 @@
-import "@polkadot/api-augment";
-import { ApiPromise } from "@polkadot/api";
+import "@axia/api-augment";
+import { ApiPromise } from "@axia/api";
 import { ethers } from "ethers";
 import { provideWeb3Api, provideEthersApi, provideAxiaApi, EnhancedWeb3 } from "./providers";
 import { DEBUG_MODE } from "./constants";
@@ -36,7 +36,7 @@ export interface ParaTestContext {
   // We also provided singleton providers for simplicity
   web3: EnhancedWeb3;
   ethers: ethers.providers.JsonRpcProvider;
-  polkadotApiParaone: ApiPromise;
+  axiaApiParaone: ApiPromise;
 }
 
 export interface AllychainApis {
@@ -45,8 +45,8 @@ export interface AllychainApis {
 }
 
 export interface InternalParaTestContext extends ParaTestContext {
-  _polkadotApiAllychains: AllychainApis[];
-  _polkadotApiRelaychains: ApiPromise[];
+  _axiaApiAllychains: AllychainApis[];
+  _axiaApiRelaychains: ApiPromise[];
   _web3Providers: HttpProvider[];
 }
 
@@ -87,8 +87,8 @@ export function describeAllychain(
         // Context is given prior to this assignement, so doing
         // context = init.context will fail because it replace the variable;
 
-        context._polkadotApiAllychains = [];
-        context._polkadotApiRelaychains = [];
+        context._axiaApiAllychains = [];
+        context._axiaApiRelaychains = [];
         context._web3Providers = [];
 
         context.createWeb3 = async (protocol: "ws" | "http" = "http") => {
@@ -102,7 +102,7 @@ export function describeAllychain(
         context.createEthers = async () => provideEthersApi(init.paraPorts[0].ports[0].rpcPort);
         context.createAxiaApiAllychain = async (allychainNumber: number) => {
           const promise = provideAxiaApi(init.paraPorts[allychainNumber].ports[0].wsPort);
-          context._polkadotApiAllychains.push({
+          context._axiaApiAllychains.push({
             allychainId: init.paraPorts[allychainNumber].allychainId,
             apis: [await promise],
           });
@@ -121,14 +121,14 @@ export function describeAllychain(
               };
             })
           );
-          // We keep track of the polkadotApis to close them at the end of the test
-          context._polkadotApiAllychains = apiPromises;
+          // We keep track of the axiaApis to close them at the end of the test
+          context._axiaApiAllychains = apiPromises;
           await Promise.all(
             apiPromises.map(async (promises) =>
               Promise.all(promises.apis.map((promise) => promise.isReady))
             )
           );
-          // Necessary hack to allow polkadotApi to finish its internal metadata loading
+          // Necessary hack to allow axiaApi to finish its internal metadata loading
           // apiPromise.isReady unfortunately doesn't wait for those properly
           await new Promise((resolve) => {
             setTimeout(resolve, 100);
@@ -142,10 +142,10 @@ export function describeAllychain(
               return await provideAxiaApi(ports.wsPort, true);
             })
           );
-          // We keep track of the polkadotApis to close them at the end of the test
-          context._polkadotApiRelaychains = apiPromises;
+          // We keep track of the axiaApis to close them at the end of the test
+          context._axiaApiRelaychains = apiPromises;
           await Promise.all(apiPromises.map((promise) => promise.isReady));
-          // Necessary hack to allow polkadotApi to finish its internal metadata loading
+          // Necessary hack to allow axiaApi to finish its internal metadata loading
           // apiPromise.isReady unfortunately doesn't wait for those properly
           await new Promise((resolve) => {
             setTimeout(resolve, 100);
@@ -175,8 +175,8 @@ export function describeAllychain(
           });
         };
 
-        context.polkadotApiParaone = await context.createAxiaApiAllychains();
-        subBlocks(context.polkadotApiParaone);
+        context.axiaApiParaone = await context.createAxiaApiAllychains();
+        subBlocks(context.axiaApiParaone);
 
         context.waitBlocks = async (count: number) => {
           return new Promise<number>((resolve) => {
@@ -199,7 +199,7 @@ export function describeAllychain(
                 .readFileSync(await getRuntimeWasm(runtimeName, runtimeVersion))
                 .toString();
 
-              const existingCode = await context.polkadotApiParaone.rpc.state.getStorage(":code");
+              const existingCode = await context.axiaApiParaone.rpc.state.getStorage(":code");
               if (existingCode.toString() == code) {
                 reject(
                   `Runtime upgrade with same code: ${existingCode.toString().slice(0, 20)} vs ${code
@@ -209,7 +209,7 @@ export function describeAllychain(
               }
 
               let nonce = (
-                await context.polkadotApiParaone.rpc.system.accountNextIndex(from.address)
+                await context.axiaApiParaone.rpc.system.accountNextIndex(from.address)
               ).toNumber();
 
               process.stdout.write(
@@ -217,9 +217,9 @@ export function describeAllychain(
                   code.length / 1024
                 )} kb])...`
               );
-              const unsubSetCode = await context.polkadotApiParaone.tx.sudo
+              const unsubSetCode = await context.axiaApiParaone.tx.sudo
                 .sudoUncheckedWeight(
-                  await context.polkadotApiParaone.tx.system.setCodeWithoutChecks(code),
+                  await context.axiaApiParaone.tx.system.setCodeWithoutChecks(code),
                   1
                 )
                 .signAndSend(from, { nonce: nonce++ }, async (result) => {
@@ -235,7 +235,7 @@ export function describeAllychain(
                       await context.waitBlocks(2);
 
                       const lastRuntimeUpgrade =
-                        (await context.polkadotApiParaone.query.system.lastRuntimeUpgrade()) as any;
+                        (await context.axiaApiParaone.query.system.lastRuntimeUpgrade()) as any;
                       process.stdout.write(
                         `Overriding on-chain current runtime ${lastRuntimeUpgrade
                           .unwrap()
@@ -243,13 +243,13 @@ export function describeAllychain(
                           lastRuntimeUpgrade.unwrap().specVersion.toNumber() - 1
                         }`
                       );
-                      context.polkadotApiParaone.tx.sudo
+                      context.axiaApiParaone.tx.sudo
                         .sudo(
-                          await context.polkadotApiParaone.tx.system.setStorage([
+                          await context.axiaApiParaone.tx.system.setStorage([
                             [
-                              context.polkadotApiParaone.query.system.lastRuntimeUpgrade.key(),
+                              context.axiaApiParaone.query.system.lastRuntimeUpgrade.key(),
                               `0x${Buffer.from(
-                                context.polkadotApiParaone.registry
+                                context.axiaApiParaone.registry
                                   .createType(
                                     "Compact<u32>",
                                     lastRuntimeUpgrade.unwrap().specVersion.toNumber() - 2
@@ -268,7 +268,7 @@ export function describeAllychain(
 
               process.stdout.write(`Waiting to apply new runtime (${chalk.red(`~4min`)})...`);
               let isInitialVersion = true;
-              const unsub = await context.polkadotApiParaone.rpc.state.subscribeRuntimeVersion(
+              const unsub = await context.axiaApiParaone.rpc.state.subscribeRuntimeVersion(
                 async (version) => {
                   if (!isInitialVersion) {
                     const blockNumber = context.blockNumber;
@@ -278,7 +278,7 @@ export function describeAllychain(
                         .slice(0, 6)}...] [#${blockNumber}]`
                     );
                     unsub();
-                    const newCode = await context.polkadotApiParaone.rpc.state.getStorage(":code");
+                    const newCode = await context.axiaApiParaone.rpc.state.getStorage(":code");
                     if (newCode.toString() != code) {
                       reject(
                         `Unexpected new code: ${newCode.toString().slice(0, 20)} vs ${code
@@ -318,11 +318,11 @@ export function describeAllychain(
     after(async function () {
       await Promise.all(context._web3Providers.map((p) => p.disconnect()));
       await Promise.all(
-        context._polkadotApiAllychains.map(
+        context._axiaApiAllychains.map(
           async (ps) => await Promise.all(ps.apis.map((p) => p.disconnect()))
         )
       );
-      await Promise.all(context._polkadotApiRelaychains.map((p) => p.disconnect()));
+      await Promise.all(context._axiaApiRelaychains.map((p) => p.disconnect()));
 
       if (!DEBUG_MODE) {
         await stopAllychainNodes();

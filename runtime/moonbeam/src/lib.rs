@@ -197,7 +197,7 @@ parameter_types! {
 	pub const BlockHashCount: BlockNumber = 256;
 	pub const Version: RuntimeVersion = VERSION;
 	/// We allow for one half second of compute with a 6 second average block time.
-	/// These values are dictated by Polkadot for the parachain.
+	/// These values are dictated by Axia for the parachain.
 	pub BlockWeights: frame_system::limits::BlockWeights = frame_system::limits::BlockWeights
 		::with_sensible_defaults(MAXIMUM_BLOCK_WEIGHT, NORMAL_DISPATCH_RATIO);
 	/// We allow for 5 MB blocks.
@@ -378,7 +378,7 @@ impl FeeCalculator for FixedGasPrice {
 }
 
 /// Parameterized slow adjusting fee updated based on
-/// https://w3f-research.readthedocs.io/en/latest/polkadot/overview/2-token-economics.html#-2.-slow-adjusting-mechanism // editorconfig-checker-disable-line
+/// https://w3f-research.readthedocs.io/en/latest/axia/overview/2-token-economics.html#-2.-slow-adjusting-mechanism // editorconfig-checker-disable-line
 ///
 /// The adjustment algorithm boils down to:
 ///
@@ -931,7 +931,7 @@ impl pallet_migrations::Config for Runtime {
 }
 parameter_types! {
 	// The network Id of the relay
-	pub const RelayNetwork: NetworkId = NetworkId::Kusama;
+	pub const RelayNetwork: NetworkId = NetworkId::AxiaTest;
 	// The relay chain Origin type
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 	// The ancestry, defines the multilocation describing this consensus system
@@ -955,7 +955,7 @@ pub type LocationToAccountId = (
 	// The parent (Relay-chain) origin converts to the default `AccountId`.
 	ParentIsPreset<AccountId>,
 	// Sibling parachain origins convert to AccountId via the `ParaId::into`.
-	SiblingParachainConvertsVia<polkadot_parachain::primitives::Sibling, AccountId>,
+	SiblingParachainConvertsVia<axia_parachain::primitives::Sibling, AccountId>,
 	// If we receive a MultiLocation of type AccountKey20, just generate a native account
 	AccountKey20Aliases<RelayNetwork, AccountId>,
 );
@@ -1024,7 +1024,7 @@ pub type XcmBarrier = (
 	TakeWeightCredit,
 	AllowTopLevelPaidExecutionFrom<Everything>,
 	// Expected responses are OK.
-	AllowKnownQueryResponses<PolkadotXcm>,
+	AllowKnownQueryResponses<AxiaXcm>,
 	// Subscriptions for version tracking are OK.
 	AllowSubscriptionsFrom<Everything>,
 );
@@ -1067,10 +1067,10 @@ impl xcm_executor::Config for XcmExecutorConfig {
 	// When we receive a non-reserve asset, we use AssetManager to fetch how many
 	// units per second we should charge
 	type Trader = FirstAssetTrader<AssetType, AssetManager, XcmFeesToAccount>;
-	type ResponseHandler = PolkadotXcm;
-	type SubscriptionService = PolkadotXcm;
-	type AssetTrap = PolkadotXcm;
-	type AssetClaims = PolkadotXcm;
+	type ResponseHandler = AxiaXcm;
+	type SubscriptionService = AxiaXcm;
+	type AssetTrap = AxiaXcm;
+	type AssetClaims = AxiaXcm;
 }
 
 type XcmExecutor = xcm_executor::XcmExecutor<XcmExecutorConfig>;
@@ -1086,7 +1086,7 @@ pub type LocalOriginToLocation = SignedToAccountId20<Origin, AccountId, RelayNet
 /// queues.
 pub type XcmRouter = (
 	// Two routers - use UMP to communicate with the relay chain:
-	cumulus_primitives_utility::ParentAsUmp<ParachainSystem, PolkadotXcm>,
+	cumulus_primitives_utility::ParentAsUmp<ParachainSystem, AxiaXcm>,
 	// ..and XCMP to communicate with the sibling chains.
 	XcmpQueue,
 );
@@ -1117,7 +1117,7 @@ impl cumulus_pallet_xcmp_queue::Config for Runtime {
 	type Event = Event;
 	type XcmExecutor = XcmExecutor;
 	type ChannelInfo = ParachainSystem;
-	type VersionWrapper = PolkadotXcm;
+	type VersionWrapper = AxiaXcm;
 	type ExecuteOverweightOrigin = EnsureRoot<AccountId>;
 	type ControllerOrigin = EnsureRoot<AccountId>;
 	type ControllerOriginConverter = XcmOriginToTransactDispatchOrigin;
@@ -1165,7 +1165,7 @@ impl pallet_assets::Config for Runtime {
 }
 
 parameter_types! {
-	// Statemint ParaId in Polkadot
+	// Statemint ParaId in Axia
 	pub StatemineParaId: u32 = 1000;
 	// Assets Pallet instance in Statemint
 	pub StatemineAssetPalletInstance: u8 = 50;
@@ -1401,9 +1401,9 @@ impl TryFrom<u8> for Transactors {
 impl UtilityEncodeCall for Transactors {
 	fn encode_call(self, call: UtilityAvailableCalls) -> Vec<u8> {
 		match self {
-			// Shall we use westend for moonbase? The tests are probably based on rococo
-			// but moonbase-alpha is attached to westend-runtime I think
-			Transactors::Relay => moonbeam_relay_encoder::kusama::KusamaEncoder.encode_call(call),
+			// Shall we use alphanet for moonbase? The tests are probably based on betanet
+			// but moonbase-alpha is attached to alphanet-runtime I think
+			Transactors::Relay => moonbeam_relay_encoder::axctest::AxiaTestEncoder.encode_call(call),
 		}
 	}
 }
@@ -1448,7 +1448,7 @@ impl Contains<Call> for MaintenanceFilter {
 			Call::Identity(_) => false,
 			Call::XTokens(_) => false,
 			Call::ParachainStaking(_) => false,
-			Call::PolkadotXcm(_) => false,
+			Call::AxiaXcm(_) => false,
 			Call::Treasury(_) => false,
 			Call::XcmTransactor(_) => false,
 			_ => true,
@@ -1475,7 +1475,7 @@ impl Contains<Call> for NormalFilter {
 			},
 			// We just want to enable this in case of live chains, since the default version
 			// is populated at genesis
-			Call::PolkadotXcm(method) => match method {
+			Call::AxiaXcm(method) => match method {
 				pallet_xcm::Call::force_default_xcm_version { .. } => true,
 				_ => false,
 			},
@@ -1636,7 +1636,7 @@ construct_runtime! {
 		XcmpQueue: cumulus_pallet_xcmp_queue::{Pallet, Storage, Event<T>} = 100,
 		CumulusXcm: cumulus_pallet_xcm::{Pallet, Event<T>, Origin} = 101,
 		DmpQueue: cumulus_pallet_dmp_queue::{Pallet, Call, Storage, Event<T>} = 102,
-		PolkadotXcm: pallet_xcm::{Pallet, Storage, Call, Event<T>, Origin, Config} = 103,
+		AxiaXcm: pallet_xcm::{Pallet, Storage, Call, Event<T>, Origin, Config} = 103,
 		Assets: pallet_assets::{Pallet, Call, Storage, Event<T>} = 104,
 		AssetManager: pallet_asset_manager::{Pallet, Call, Storage, Event<T>} = 105,
 		XTokens: orml_xtokens::{Pallet, Call, Storage, Event<T>} = 106,

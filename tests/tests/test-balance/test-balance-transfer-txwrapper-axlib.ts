@@ -1,17 +1,17 @@
-// As inspired by https://github.com/paritytech/txwrapper/blob/master/examples/polkadot.ts
+// As inspired by https://github.com/paritytech/txwrapper/blob/master/examples/axia.ts
 // This flow is used by some exchange partners like kraken
 
 import { expect } from "chai";
 import { methods as axlibMethods } from "@axlib/txwrapper-axlib";
 import { createMetadata, KeyringPair, OptionsWithMeta } from "@axlib/txwrapper-core";
-import { Keyring } from "@polkadot/api";
+import { Keyring } from "@axia/api";
 import { getRegistry } from "@axlib/txwrapper-registry";
 
 import { GENESIS_ACCOUNT, GENESIS_ACCOUNT_PRIVATE_KEY } from "../../util/constants";
 
 import { describeDevMoonbeam } from "../../util/setup-dev-tests";
 import { rpcToLocalNode } from "../../util/transactions";
-import { EXTRINSIC_VERSION } from "@polkadot/types/extrinsic/v4/Extrinsic";
+import { EXTRINSIC_VERSION } from "@axia/types/extrinsic/v4/Extrinsic";
 import { createSignedTx, createSigningPayload } from "@axlib/txwrapper-core/lib/core/construct";
 import { verifyLatestBlockFees } from "../../util/block";
 
@@ -109,11 +109,11 @@ describeDevMoonbeam("Balance transfer - txwrapper", (context) => {
     expect(await context.web3.eth.getBalance(TEST_ACCOUNT, 1)).to.equal("512");
   });
 
-  it("should reflect balance identically on polkadot/web3", async function () {
-    const block1Hash = await context.polkadotApi.rpc.chain.getBlockHash(1);
+  it("should reflect balance identically on axia/web3", async function () {
+    const block1Hash = await context.axiaApi.rpc.chain.getBlockHash(1);
     expect(await context.web3.eth.getBalance(GENESIS_ACCOUNT, 1)).to.equal(
       (
-        (await context.polkadotApi.query.system.account.at(block1Hash, GENESIS_ACCOUNT)) as any
+        (await context.axiaApi.query.system.account.at(block1Hash, GENESIS_ACCOUNT)) as any
       ).data.free.toString()
     );
   });
