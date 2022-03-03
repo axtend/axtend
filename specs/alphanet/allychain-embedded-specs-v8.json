@@ -2,13 +2,8 @@
   "name": "Moonbase Alpha",
   "id": "moonbase_alpha",
   "chainType": "Live",
-  "bootNodes": [
-    "/dns4/frag-moonbase-alpha-boot-0.g.moonbase.axtend.network/tcp/30333/p2p/12D3KooWNtwcFhwfsTb14BiUX4jTHvDVY424nyDySYWMNZjmFA2R",
-    "/dns4/mtla-moonbase-alpha-boot-0.a.moonbase.axtend.network/tcp/30333/p2p/12D3KooWLkGLsJMmQDCXDitJn6y6ZTPXqmcQ7bkMDKpsx6YWiZDD"
-  ],
-  "telemetryEndpoints": [
-    ["/dns/telemetry.axia.io/tcp/443/x-parity-wss/%2Fsubmit%2F", 0]
-  ],
+  "bootNodes": [],
+  "telemetryEndpoints": [],
   "protocolId": null,
   "properties": {
     "tokenDecimals": 18,
