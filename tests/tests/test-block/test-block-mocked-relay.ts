@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 
-describeDevMoonbeam("Block - Mocked relaychain block", (context) => {
+describeDevAxtend("Block - Mocked relaychain block", (context) => {
   it("should contain mock relay chain block information", async function () {
     const blockResult = await context.createBlock();
     const blockData = await context.axiaApi.rpc.chain.getBlock(blockResult.block.hash);

@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { GENESIS_ACCOUNT } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { createTransfer } from "../util/transactions";
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Ethereum Extrinsic (Legacy)",
   (context) => {
     it("should contain valid legacy Ethereum data", async function () {
@@ -35,7 +35,7 @@ describeDevMoonbeam(
   false
 );
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Ethereum Extrinsic (EIP2930)",
   (context) => {
     it("should contain valid EIP2930 Ethereum data", async function () {
@@ -84,7 +84,7 @@ describeDevMoonbeam(
   false
 );
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Ethereum Extrinsic (EIP1559)",
   (context) => {
     it("should contain valid EIP1559 Ethereum data", async function () {

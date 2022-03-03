@@ -1,8 +1,8 @@
 # Bug Bounty
 
-The Moonbeam bug bounty program is focused on the Moonriver and Moonbeam Allychains (deployed to AxiaTest and Axia respectively) and dapps. It is focused on preventing:
+The Axtend bug bounty program is focused on the Moonriver and Axtend Allychains (deployed to AxiaTest and Axia respectively) and dapps. It is focused on preventing:
 
-Moonbeam/Moonriver:
+Axtend/Moonriver:
 * Thefts and freezing of principal of any amount
 * Thefts and freezing of unclaimed yield of any amount
 * Theft of governance funds 
@@ -41,6 +41,6 @@ At the discretion of the team, a PoC may be required in order to determine if th
 
 Critical vulnerabilities are further capped at 10% of economic damage, with the main consideration being the funds affected in addition to PR and brand considerations, at the discretion of the team. However, there is a minimum of USD 75 000 for Critical bug reports.
 
-The Moonbeam Foundation requires KYC to be done for all bug bounty hunters submitting a report and wanting a reward. The information needed is an ID scan along with a selfie to verify identity. 
+The Axtend Foundation requires KYC to be done for all bug bounty hunters submitting a report and wanting a reward. The information needed is an ID scan along with a selfie to verify identity. 
 
-Payouts are handled by the Moonbeam Foundation team directly and are denominated in USD. However, payouts are done in USDT or USDC.
+Payouts are handled by the Axtend Foundation team directly and are denominated in USD. However, payouts are done in USDT or USDC.

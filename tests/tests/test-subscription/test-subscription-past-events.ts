@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { createContract } from "../../util/transactions";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import { web3Subscribe } from "../../util/providers";
 
-describeDevMoonbeam("Subscription - Past Events", (context) => {
+describeDevAxtend("Subscription - Past Events", (context) => {
   let web3Ws;
 
   before("Setup: Create 4 blocks with transfer", async () => {

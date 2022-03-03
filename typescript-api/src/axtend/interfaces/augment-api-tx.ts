@@ -30,12 +30,12 @@ import type {
 import type {
   CumulusPrimitivesAllychainInherentAllychainInherentData,
   EthereumTransactionTransactionV2,
-  MoonbeamRuntimeAssetRegistrarMetadata,
-  MoonbeamRuntimeAssetType,
-  MoonbeamRuntimeCurrencyId,
-  MoonbeamRuntimeOriginCaller,
-  MoonbeamRuntimeProxyType,
-  MoonbeamRuntimeTransactors,
+  AxtendRuntimeAssetRegistrarMetadata,
+  AxtendRuntimeAssetType,
+  AxtendRuntimeCurrencyId,
+  AxtendRuntimeOriginCaller,
+  AxtendRuntimeProxyType,
+  AxtendRuntimeTransactors,
   NimbusPrimitivesNimbusCryptoPublic,
   PalletAssetsDestroyWitness,
   PalletDemocracyConviction,
@@ -64,25 +64,25 @@ declare module "@axia/api-base/types/submittable" {
       changeExistingAssetType: AugmentedSubmittable<
         (
           assetId: u128 | AnyNumber | Uint8Array,
-          newAssetType: MoonbeamRuntimeAssetType | { Xcm: any } | string | Uint8Array
+          newAssetType: AxtendRuntimeAssetType | { Xcm: any } | string | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [u128, MoonbeamRuntimeAssetType]
+        [u128, AxtendRuntimeAssetType]
       >;
       /**
        * Register new asset with the asset manager
        */
       registerAsset: AugmentedSubmittable<
         (
-          asset: MoonbeamRuntimeAssetType | { Xcm: any } | string | Uint8Array,
+          asset: AxtendRuntimeAssetType | { Xcm: any } | string | Uint8Array,
           metadata:
-            | MoonbeamRuntimeAssetRegistrarMetadata
+            | AxtendRuntimeAssetRegistrarMetadata
             | { name?: any; symbol?: any; decimals?: any; isFrozen?: any }
             | string
             | Uint8Array,
           minAmount: u128 | AnyNumber | Uint8Array,
           isSufficient: bool | boolean | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [MoonbeamRuntimeAssetType, MoonbeamRuntimeAssetRegistrarMetadata, u128, bool]
+        [AxtendRuntimeAssetType, AxtendRuntimeAssetRegistrarMetadata, u128, bool]
       >;
       /**
        * Change the amount of units we are charging per execution second for a
@@ -90,10 +90,10 @@ declare module "@axia/api-base/types/submittable" {
        */
       setAssetUnitsPerSecond: AugmentedSubmittable<
         (
-          assetType: MoonbeamRuntimeAssetType | { Xcm: any } | string | Uint8Array,
+          assetType: AxtendRuntimeAssetType | { Xcm: any } | string | Uint8Array,
           unitsPerSecond: u128 | AnyNumber | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [MoonbeamRuntimeAssetType, u128]
+        [AxtendRuntimeAssetType, u128]
       >;
       /**
        * Generic tx
@@ -2801,7 +2801,7 @@ declare module "@axia/api-base/types/submittable" {
         (
           delegate: AccountId20 | string | Uint8Array,
           proxyType:
-            | MoonbeamRuntimeProxyType
+            | AxtendRuntimeProxyType
             | "Any"
             | "NonTransfer"
             | "Governance"
@@ -2813,7 +2813,7 @@ declare module "@axia/api-base/types/submittable" {
             | Uint8Array,
           delay: u32 | AnyNumber | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [AccountId20, MoonbeamRuntimeProxyType, u32]
+        [AccountId20, AxtendRuntimeProxyType, u32]
       >;
       /**
        * Publish the hash of a proxy-call that will be made in the future.
@@ -2882,7 +2882,7 @@ declare module "@axia/api-base/types/submittable" {
       anonymous: AugmentedSubmittable<
         (
           proxyType:
-            | MoonbeamRuntimeProxyType
+            | AxtendRuntimeProxyType
             | "Any"
             | "NonTransfer"
             | "Governance"
@@ -2895,7 +2895,7 @@ declare module "@axia/api-base/types/submittable" {
           delay: u32 | AnyNumber | Uint8Array,
           index: u16 | AnyNumber | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [MoonbeamRuntimeProxyType, u32, u16]
+        [AxtendRuntimeProxyType, u32, u16]
       >;
       /**
        * Removes a previously spawned anonymous proxy.
@@ -2925,7 +2925,7 @@ declare module "@axia/api-base/types/submittable" {
         (
           spawner: AccountId20 | string | Uint8Array,
           proxyType:
-            | MoonbeamRuntimeProxyType
+            | AxtendRuntimeProxyType
             | "Any"
             | "NonTransfer"
             | "Governance"
@@ -2939,7 +2939,7 @@ declare module "@axia/api-base/types/submittable" {
           height: Compact<u32> | AnyNumber | Uint8Array,
           extIndex: Compact<u32> | AnyNumber | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [AccountId20, MoonbeamRuntimeProxyType, u16, Compact<u32>, Compact<u32>]
+        [AccountId20, AxtendRuntimeProxyType, u16, Compact<u32>, Compact<u32>]
       >;
       /**
        * Dispatch the given `call` from an account that the sender is authorised
@@ -2965,10 +2965,10 @@ declare module "@axia/api-base/types/submittable" {
       proxy: AugmentedSubmittable<
         (
           real: AccountId20 | string | Uint8Array,
-          forceProxyType: Option<MoonbeamRuntimeProxyType> | null | object | string | Uint8Array,
+          forceProxyType: Option<AxtendRuntimeProxyType> | null | object | string | Uint8Array,
           call: Call | { callIndex?: any; args?: any } | string | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [AccountId20, Option<MoonbeamRuntimeProxyType>, Call]
+        [AccountId20, Option<AxtendRuntimeProxyType>, Call]
       >;
       /**
        * Dispatch the given `call` from an account that the sender is authorized
@@ -2998,10 +2998,10 @@ declare module "@axia/api-base/types/submittable" {
         (
           delegate: AccountId20 | string | Uint8Array,
           real: AccountId20 | string | Uint8Array,
-          forceProxyType: Option<MoonbeamRuntimeProxyType> | null | object | string | Uint8Array,
+          forceProxyType: Option<AxtendRuntimeProxyType> | null | object | string | Uint8Array,
           call: Call | { callIndex?: any; args?: any } | string | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [AccountId20, AccountId20, Option<MoonbeamRuntimeProxyType>, Call]
+        [AccountId20, AccountId20, Option<AxtendRuntimeProxyType>, Call]
       >;
       /**
        * Remove the given announcement of a delegate.
@@ -3098,7 +3098,7 @@ declare module "@axia/api-base/types/submittable" {
         (
           delegate: AccountId20 | string | Uint8Array,
           proxyType:
-            | MoonbeamRuntimeProxyType
+            | AxtendRuntimeProxyType
             | "Any"
             | "NonTransfer"
             | "Governance"
@@ -3110,7 +3110,7 @@ declare module "@axia/api-base/types/submittable" {
             | Uint8Array,
           delay: u32 | AnyNumber | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [AccountId20, MoonbeamRuntimeProxyType, u32]
+        [AccountId20, AxtendRuntimeProxyType, u32]
       >;
       /**
        * Generic tx
@@ -3719,7 +3719,7 @@ declare module "@axia/api-base/types/submittable" {
       dispatchAs: AugmentedSubmittable<
         (
           asOrigin:
-            | MoonbeamRuntimeOriginCaller
+            | AxtendRuntimeOriginCaller
             | { system: any }
             | { Void: any }
             | { Ethereum: any }
@@ -3731,7 +3731,7 @@ declare module "@axia/api-base/types/submittable" {
             | Uint8Array,
           call: Call | { callIndex?: any; args?: any } | string | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [MoonbeamRuntimeOriginCaller, Call]
+        [AxtendRuntimeOriginCaller, Call]
       >;
       /**
        * Generic tx
@@ -3779,10 +3779,10 @@ declare module "@axia/api-base/types/submittable" {
        */
       transactThroughDerivative: AugmentedSubmittable<
         (
-          dest: MoonbeamRuntimeTransactors | "Relay" | number | Uint8Array,
+          dest: AxtendRuntimeTransactors | "Relay" | number | Uint8Array,
           index: u16 | AnyNumber | Uint8Array,
           currencyId:
-            | MoonbeamRuntimeCurrencyId
+            | AxtendRuntimeCurrencyId
             | { SelfReserve: any }
             | { OtherReserve: any }
             | string
@@ -3790,7 +3790,7 @@ declare module "@axia/api-base/types/submittable" {
           destWeight: u64 | AnyNumber | Uint8Array,
           innerCall: Bytes | string | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [MoonbeamRuntimeTransactors, u16, MoonbeamRuntimeCurrencyId, u64, Bytes]
+        [AxtendRuntimeTransactors, u16, AxtendRuntimeCurrencyId, u64, Bytes]
       >;
       /**
        * Transact the inner call through a derivative account in a destination
@@ -3803,13 +3803,13 @@ declare module "@axia/api-base/types/submittable" {
        */
       transactThroughDerivativeMultilocation: AugmentedSubmittable<
         (
-          dest: MoonbeamRuntimeTransactors | "Relay" | number | Uint8Array,
+          dest: AxtendRuntimeTransactors | "Relay" | number | Uint8Array,
           index: u16 | AnyNumber | Uint8Array,
           feeLocation: XcmVersionedMultiLocation | { V0: any } | { V1: any } | string | Uint8Array,
           destWeight: u64 | AnyNumber | Uint8Array,
           innerCall: Bytes | string | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [MoonbeamRuntimeTransactors, u16, XcmVersionedMultiLocation, u64, Bytes]
+        [AxtendRuntimeTransactors, u16, XcmVersionedMultiLocation, u64, Bytes]
       >;
       /**
        * Transact the call through the sovereign account in a destination chain,
@@ -3848,7 +3848,7 @@ declare module "@axia/api-base/types/submittable" {
       transfer: AugmentedSubmittable<
         (
           currencyId:
-            | MoonbeamRuntimeCurrencyId
+            | AxtendRuntimeCurrencyId
             | { SelfReserve: any }
             | { OtherReserve: any }
             | string
@@ -3857,7 +3857,7 @@ declare module "@axia/api-base/types/submittable" {
           dest: XcmVersionedMultiLocation | { V0: any } | { V1: any } | string | Uint8Array,
           destWeight: u64 | AnyNumber | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [MoonbeamRuntimeCurrencyId, u128, XcmVersionedMultiLocation, u64]
+        [AxtendRuntimeCurrencyId, u128, XcmVersionedMultiLocation, u64]
       >;
       /**
        * Transfer `MultiAsset`.
@@ -3928,7 +3928,7 @@ declare module "@axia/api-base/types/submittable" {
       transferWithFee: AugmentedSubmittable<
         (
           currencyId:
-            | MoonbeamRuntimeCurrencyId
+            | AxtendRuntimeCurrencyId
             | { SelfReserve: any }
             | { OtherReserve: any }
             | string
@@ -3938,7 +3938,7 @@ declare module "@axia/api-base/types/submittable" {
           dest: XcmVersionedMultiLocation | { V0: any } | { V1: any } | string | Uint8Array,
           destWeight: u64 | AnyNumber | Uint8Array
         ) => SubmittableExtrinsic<ApiType>,
-        [MoonbeamRuntimeCurrencyId, u128, u128, XcmVersionedMultiLocation, u64]
+        [AxtendRuntimeCurrencyId, u128, u128, XcmVersionedMultiLocation, u64]
       >;
       /**
        * Generic tx

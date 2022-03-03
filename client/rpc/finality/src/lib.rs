@@ -1,18 +1,18 @@
 // Copyright 2019-2021 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 use fc_rpc::frontier_backend_client::{self, is_canon};
 use futures::{future::BoxFuture, FutureExt as _};
 use jsonrpc_core::Result as RpcResult;
@@ -26,9 +26,9 @@ use sp_api::BlockId;
 use sp_blockchain::HeaderBackend;
 use sp_runtime::traits::Block;
 
-/// An RPC endpoint to check for finality of blocks and transactions in Moonbeam
+/// An RPC endpoint to check for finality of blocks and transactions in Axtend
 #[rpc(server)]
-pub trait MoonbeamFinalityApi {
+pub trait AxtendFinalityApi {
 	/// Reports whether a Axlib or Ethereum block is finalized.
 	/// Returns false if the block is not found.
 	#[rpc(name = "moon_isBlockFinalized")]
@@ -40,13 +40,13 @@ pub trait MoonbeamFinalityApi {
 	fn is_tx_finalized(&self, tx_hash: H256) -> BoxFuture<'static, RpcResult<bool>>;
 }
 
-pub struct MoonbeamFinality<B: Block, C> {
+pub struct AxtendFinality<B: Block, C> {
 	pub backend: Arc<FrontierBackend<B>>,
 	pub client: Arc<C>,
 	_phdata: PhantomData<B>,
 }
 
-impl<B: Block, C> MoonbeamFinality<B, C> {
+impl<B: Block, C> AxtendFinality<B, C> {
 	pub fn new(client: Arc<C>, backend: Arc<FrontierBackend<B>>) -> Self {
 		Self {
 			backend,
@@ -56,7 +56,7 @@ impl<B: Block, C> MoonbeamFinality<B, C> {
 	}
 }
 
-impl<B, C> MoonbeamFinalityApi for MoonbeamFinality<B, C>
+impl<B, C> AxtendFinalityApi for AxtendFinality<B, C>
 where
 	B: Block<Hash = H256>,
 	C: HeaderBackend<B> + Send + Sync + 'static,

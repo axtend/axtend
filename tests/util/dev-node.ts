@@ -38,14 +38,14 @@ export async function findAvailablePorts() {
 }
 
 // Stores if the node has already started.
-// It is used when a test file contains multiple describeDevMoonbeam. Those are
+// It is used when a test file contains multiple describeDevAxtend. Those are
 // executed within the same PID and so would generate a race condition if started
 // at the same time.
 let nodeStarted = false;
 
 // This will start a axtend dev node, only 1 at a time (check every 100ms).
 // This will prevent race condition on the findAvailablePorts which uses the PID of the process
-export async function startMoonbeamDevNode(withWasm?: boolean): Promise<{
+export async function startAxtendDevNode(withWasm?: boolean): Promise<{
   p2pPort: number;
   rpcPort: number;
   wsPort: number;
@@ -107,8 +107,8 @@ export async function startMoonbeamDevNode(withWasm?: boolean): Promise<{
   runningNode.on("error", (err) => {
     if ((err as any).errno == "ENOENT") {
       console.error(
-        `\x1b[31mMissing Moonbeam binary ` +
-          `(${BINARY_PATH}).\nPlease compile the Moonbeam project\x1b[0m`
+        `\x1b[31mMissing Axtend binary ` +
+          `(${BINARY_PATH}).\nPlease compile the Axtend project\x1b[0m`
       );
     } else {
       console.error(err);
@@ -119,7 +119,7 @@ export async function startMoonbeamDevNode(withWasm?: boolean): Promise<{
   const binaryLogs = [];
   await new Promise<void>((resolve) => {
     const timer = setTimeout(() => {
-      console.error(`\x1b[31m Failed to start Moonbeam Test Node.\x1b[0m`);
+      console.error(`\x1b[31m Failed to start Axtend Test Node.\x1b[0m`);
       console.error(`Command: ${cmd} ${args.join(" ")}`);
       console.error(`Logs:`);
       console.error(binaryLogs.map((chunk) => chunk.toString()).join("\n"));

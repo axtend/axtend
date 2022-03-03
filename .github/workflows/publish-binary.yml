@@ -35,16 +35,16 @@ jobs:
         if: ${{ matrix.cpu == '' }}
         run: |
           mkdir -p build
-          cp target/release/moonbeam build/moonbeam
+          cp target/release/axtend build/axtend
       - name: Save parachain custom binary
         if: ${{ matrix.cpu != '' }}
         run: |
           mkdir -p build
-          cp target/release/moonbeam build/moonbeam-${{matrix.cpu}}
+          cp target/release/axtend build/axtend-${{matrix.cpu}}
       - name: Upload binary
         uses: actions/upload-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
 
   ####### Prepare the release draft #######
@@ -63,7 +63,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/download-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2
@@ -85,30 +85,30 @@ jobs:
           release_name: Moonbeam ${{ github.event.inputs.to }}
           body_path: body.md
           draft: true
-      - name: Upload moonbeam
+      - name: Upload axtend
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: build/moonbeam
-          asset_name: moonbeam
+          asset_path: build/axtend
+          asset_name: axtend
           asset_content_type: application/octet-stream
-      - name: Upload moonbeam skylake
+      - name: Upload axtend skylake
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: build/moonbeam-skylake
-          asset_name: moonbeam-skylake
+          asset_path: build/axtend-skylake
+          asset_name: axtend-skylake
           asset_content_type: application/octet-stream
-      - name: Upload moonbeam znver3
+      - name: Upload axtend znver3
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: build/moonbeam-znver3
-          asset_name: moonbeam-znver3
+          asset_path: build/axtend-znver3
+          asset_name: axtend-znver3
           asset_content_type: application/octet-stream

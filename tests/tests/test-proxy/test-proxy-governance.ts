@@ -9,7 +9,7 @@ import {
   GLMR,
   VOTE_AMOUNT,
 } from "../../util/constants";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import {
   execFromTwoThirdsOfCouncil,
   execFromAllMembersOfTechCommittee,
@@ -23,7 +23,7 @@ let alith;
 let dorothy;
 let ethan;
 
-describeDevMoonbeam("Proxing governance", (context) => {
+describeDevAxtend("Proxing governance", (context) => {
   before("Create accounts and fast-tracking referundum", async () => {
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     dorothy = await keyring.addFromUri(DOROTHY_PRIV_KEY, null, "ethereum");

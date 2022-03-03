@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { customWeb3Request } from "../../util/providers";
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createContract } from "../../util/transactions";
 
-describeDevMoonbeam("Filter Block API - Polling", (context) => {
+describeDevAxtend("Filter Block API - Polling", (context) => {
   it("should return block information", async function () {
     const createFilter = await customWeb3Request(context.web3, "eth_newBlockFilter", []);
     const block = await context.web3.eth.getBlock("latest");
@@ -16,7 +16,7 @@ describeDevMoonbeam("Filter Block API - Polling", (context) => {
   });
 });
 
-describeDevMoonbeam("Filter Block API - Polling", (context) => {
+describeDevAxtend("Filter Block API - Polling", (context) => {
   it("should not retrieve previously polled", async function () {
     const createFilter = await customWeb3Request(context.web3, "eth_newBlockFilter", []);
 
@@ -41,7 +41,7 @@ describeDevMoonbeam("Filter Block API - Polling", (context) => {
   });
 });
 
-describeDevMoonbeam("Filter Block API - Polling", (context) => {
+describeDevAxtend("Filter Block API - Polling", (context) => {
   it("should be empty after already polling", async function () {
     const createFilter = await customWeb3Request(context.web3, "eth_newBlockFilter", []);
 
@@ -57,7 +57,7 @@ describeDevMoonbeam("Filter Block API - Polling", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Filter Block API - Polling", (context) => {
+describeDevAxtendAllEthTxTypes("Filter Block API - Polling", (context) => {
   it("should support filtering created contract", async function () {
     const { contract, rawTx } = await createContract(context, "SingleEventContract");
     const { txResults } = await context.createBlock({ transactions: [rawTx] });

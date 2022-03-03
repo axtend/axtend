@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { createTransfer } from "../util/transactions";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { TEST_ACCOUNT } from "../util/constants";
 
-describeDevMoonbeam("Transaction Index", (context) => {
+describeDevAxtend("Transaction Index", (context) => {
   before("Setup: Create block with transaction", async () => {
     await context.createBlock({
       transactions: [await createTransfer(context, TEST_ACCOUNT, 0)],

@@ -1,7 +1,7 @@
 [package]
 name = "axtend"
 authors = [ "PureStake" ]
-description = "Moonbeam Collator"
+description = "Axtend Collator"
 edition = "2018"
 homepage = "https://axtend.network"
 license = "GPL-3.0-only"

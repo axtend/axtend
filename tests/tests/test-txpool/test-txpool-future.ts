@@ -3,10 +3,10 @@ import { Contract } from "web3-eth-contract";
 
 import { GENESIS_ACCOUNT } from "../../util/constants";
 import { createContract, createContractExecution } from "../../util/transactions";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import { customWeb3Request } from "../../util/providers";
 
-describeDevMoonbeam("TxPool - Future Ethereum transaction", (context) => {
+describeDevAxtend("TxPool - Future Ethereum transaction", (context) => {
   let txHash;
   before("Setup: Create transaction", async () => {
     const { rawTx } = await createContract(context, "TestContract", {

@@ -4,7 +4,7 @@ import { BN, bnToHex } from "@axia/util";
 import { KeyringPair } from "@axia/keyring/types";
 
 import { ALITH_PRIV_KEY } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { verifyLatestBlockFees } from "../util/block";
 
@@ -19,7 +19,7 @@ const assetMetadata = {
 const sourceLocation = { XCM: { parents: 1, interior: "Here" } };
 const newSourceLocation = { XCM: { parents: 1, interior: { X1: { Allychain: 1000 } } } };
 
-describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
+describeDevAxtend("XCM - asset manager - register asset", (context) => {
   it("should be able to register an asset and set unit per sec", async function () {
     const keyringEth = new Keyring({ type: "ethereum" });
     const alith = keyringEth.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -61,7 +61,7 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
   });
 });
 
-describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
+describeDevAxtend("XCM - asset manager - register asset", (context) => {
   let assetId: string;
   let alith: KeyringPair;
   before("should be able to change existing asset type", async function () {
@@ -139,7 +139,7 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
   });
 });
 
-describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
+describeDevAxtend("XCM - asset manager - register asset", (context) => {
   let assetId: string;
   let alith: KeyringPair;
   before("should be able to change existing asset type", async function () {

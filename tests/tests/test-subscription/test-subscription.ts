@@ -2,11 +2,11 @@ import { expect } from "chai";
 import { customWeb3Request, web3Subscribe } from "../../util/providers";
 import { BlockHeader } from "web3-eth";
 
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import { createTransfer } from "../../util/transactions";
 import { COLLATOR_ACCOUNT } from "../../util/constants";
 
-describeDevMoonbeam("Subscription", (context) => {
+describeDevAxtend("Subscription", (context) => {
   let web3Ws;
   before("Setup: Create empty block", async () => {
     web3Ws = await context.createWeb3("ws");
@@ -21,7 +21,7 @@ describeDevMoonbeam("Subscription", (context) => {
   });
 });
 
-describeDevMoonbeam("Subscription - Block headers", (context) => {
+describeDevAxtend("Subscription - Block headers", (context) => {
   let web3Ws;
   before("Setup: Create empty block", async () => {
     web3Ws = await context.createWeb3("ws");
@@ -63,7 +63,7 @@ describeDevMoonbeam("Subscription - Block headers", (context) => {
   });
 });
 
-describeDevMoonbeam("Subscription - Pending transactions", (context) => {
+describeDevAxtend("Subscription - Pending transactions", (context) => {
   let web3Ws;
   before("Setup: Create empty block", async () => {
     web3Ws = await context.createWeb3("ws");

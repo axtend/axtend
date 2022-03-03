@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { customWeb3Request } from "../util/providers";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 
-describeDevMoonbeam("Web3Api Information", (context) => {
+describeDevAxtend("Web3Api Information", (context) => {
   it("should include client version", async function () {
     const version = await context.web3.eth.getNodeInfo();
     let specName: string = await context.axiaApi.runtimeVersion.specName.toString();

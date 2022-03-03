@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { ethers } from "ethers";
 import { getCompiled } from "../../util/contracts";
 import { createContract, createTransaction } from "../../util/transactions";
@@ -29,7 +29,7 @@ async function getMappingInfo(
   return null;
 }
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - author mapping", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - author mapping", (context) => {
   it("allows to add association", async function () {
     const contractData = await getCompiled("AuthorMapping");
     const iFace = new ethers.utils.Interface(contractData.contract.abi);
@@ -73,7 +73,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - author mapping", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - author mapping", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - author mapping", (context) => {
   let firstMappingAccount, secondMappingAccount;
   before("First add association", async () => {
     // We will work with genesis account
@@ -148,7 +148,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - author mapping", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - author mapping", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - author mapping", (context) => {
   let mappingAccount;
   before("First add association", async () => {
     // We will work with genesis account

@@ -73,7 +73,7 @@ async function testGanache() {
 }
 
 // Script meant to be used against a running axtend dev instance
-async function testMoonbeamDev() {
+async function testAxtendDev() {
   const web3 = new Web3(`ws://localhost:9944`); // with axtend dev
 
   //call

@@ -1,20 +1,20 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-//! This module assembles the Moonbeam service components, executes them, and manages communication
+//! This module assembles the Axtend service components, executes them, and manages communication
 //! between them. This is the backbone of the client-side node implementation.
 //!
 //! This module can assemble:
@@ -72,14 +72,14 @@ type MaybeSelectChain = Option<sc_consensus::LongestChain<FullBackend, Block>>;
 
 pub type HostFunctions = (
 	frame_benchmarking::benchmarking::HostFunctions,
-	axtend_primitives_ext::moonbeam_ext::HostFunctions,
+	axtend_primitives_ext::axtend_ext::HostFunctions,
 );
 
 #[cfg(feature = "axtend-native")]
-pub struct MoonbeamExecutor;
+pub struct AxtendExecutor;
 
 #[cfg(feature = "axtend-native")]
-impl sc_executor::NativeExecutionDispatch for MoonbeamExecutor {
+impl sc_executor::NativeExecutionDispatch for AxtendExecutor {
 	type ExtendHostFunctions = HostFunctions;
 
 	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
@@ -127,7 +127,7 @@ impl sc_executor::NativeExecutionDispatch for MoonbaseExecutor {
 #[derive(Clone)]
 pub enum RuntimeVariant {
 	#[cfg(feature = "axtend-native")]
-	Moonbeam,
+	Axtend,
 	#[cfg(feature = "moonriver-native")]
 	Moonriver,
 	#[cfg(feature = "moonbase-native")]
@@ -139,7 +139,7 @@ impl RuntimeVariant {
 	pub fn from_chain_spec(chain_spec: &Box<dyn ChainSpec>) -> Self {
 		match chain_spec {
 			#[cfg(feature = "axtend-native")]
-			spec if spec.is_axtend() => Self::Moonbeam,
+			spec if spec.is_axtend() => Self::Axtend,
 			#[cfg(feature = "moonriver-native")]
 			spec if spec.is_moonriver() => Self::Moonriver,
 			#[cfg(feature = "moonbase-native")]
@@ -150,12 +150,12 @@ impl RuntimeVariant {
 }
 
 /// Can be called for a `Configuration` to check if it is a configuration for
-/// the `Moonbeam` network.
+/// the `Axtend` network.
 pub trait IdentifyVariant {
 	/// Returns `true` if this is a configuration for the `Moonbase` network.
 	fn is_moonbase(&self) -> bool;
 
-	/// Returns `true` if this is a configuration for the `Moonbeam` network.
+	/// Returns `true` if this is a configuration for the `Axtend` network.
 	fn is_axtend(&self) -> bool;
 
 	/// Returns `true` if this is a configuration for the `Moonriver` network.
@@ -232,7 +232,7 @@ pub fn new_chain_ops(
 		}
 		#[cfg(feature = "axtend-native")]
 		spec if spec.is_axtend() => {
-			new_chain_ops_inner::<axtend_runtime::RuntimeApi, MoonbeamExecutor>(config)
+			new_chain_ops_inner::<axtend_runtime::RuntimeApi, AxtendExecutor>(config)
 		}
 		#[cfg(feature = "moonbase-native")]
 		_ => new_chain_ops_inner::<moonbase_runtime::RuntimeApi, MoonbaseExecutor>(config),

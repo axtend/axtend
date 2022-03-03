@@ -10,12 +10,12 @@ import {
   TEST_ACCOUNT,
   ALITH,
 } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { verifyLatestBlockFees } from "../util/block";
 import { createTransfer } from "../util/transactions";
 
-describeDevMoonbeam("Sudo - successful setAllychainBondAccount", (context) => {
+describeDevAxtend("Sudo - successful setAllychainBondAccount", (context) => {
   let alith: KeyringPair;
   before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -45,7 +45,7 @@ describeDevMoonbeam("Sudo - successful setAllychainBondAccount", (context) => {
     );
   });
 });
-describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
+describeDevAxtend("Sudo - fail if no funds in sudo", (context) => {
   let alith: KeyringPair;
   before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -89,7 +89,7 @@ describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
     expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
   });
 });
-describeDevMoonbeam("Sudo - Only sudo account", (context) => {
+describeDevAxtend("Sudo - Only sudo account", (context) => {
   let genesisAccount: KeyringPair;
   before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -120,7 +120,7 @@ describeDevMoonbeam("Sudo - Only sudo account", (context) => {
   });
 });
 
-describeDevMoonbeam("Sudo - Only sudo account - test gas", (context) => {
+describeDevAxtend("Sudo - Only sudo account - test gas", (context) => {
   let alith: KeyringPair;
   before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });

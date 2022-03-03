@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { BN, u8aToHex } from "@axia/util";
 
 import { ALITH_PRIV_KEY, RANDOM_PRIV_KEY } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { customWeb3Request } from "../util/providers";
 import type { XcmVersionedXcm } from "@axia/types/lookup";
@@ -52,7 +52,7 @@ const statemintLocationAssetOne = {
   },
 };
 
-describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
+describeDevAxtend("Mock XCM - receive horizontal transfer", (context) => {
   let assetId: string;
   let alith: KeyringPair;
 
@@ -118,7 +118,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
   });
 });
 
-describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
+describeDevAxtend("Mock XCM - receive horizontal transfer", (context) => {
   let assetId: string;
   let alith: KeyringPair;
 
@@ -247,7 +247,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
   });
 });
 
-describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
+describeDevAxtend("Mock XCM - receive horizontal transfer", (context) => {
   let assetId: string;
   let alith: KeyringPair;
 
@@ -388,7 +388,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
   });
 });
 
-describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) => {
+describeDevAxtend("Mock XCM - receive horizontal transfer of DEV", (context) => {
   let alith: KeyringPair;
   let random: KeyringPair;
   let paraId: ParaId;
@@ -514,7 +514,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer of DEV", (context) =
   });
 });
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Mock XCM - receive horizontal transfer of DEV with new reanchor",
   (context) => {
     let alith: KeyringPair;
@@ -645,7 +645,7 @@ describeDevMoonbeam(
   }
 );
 
-describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
+describeDevAxtend("Mock XCM - receive horizontal transfer", (context) => {
   let assetIdZero: string;
   let assetIdOne: string;
   let alith: KeyringPair;
@@ -813,7 +813,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
   });
 });
 
-describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
+describeDevAxtend("Mock XCM - receive horizontal transfer", (context) => {
   let assetIdZero: string;
   let alith: KeyringPair;
 

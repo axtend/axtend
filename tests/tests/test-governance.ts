@@ -1,14 +1,14 @@
 import { expect } from "chai";
 import Keyring from "@axia/keyring";
 import { ALITH_PRIV_KEY, PROPOSAL_AMOUNT } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { execFromTwoThirdsOfCouncil, execFromAllMembersOfTechCommittee } from "../util/governance";
 
 const keyring = new Keyring({ type: "ethereum" });
 
 let alith;
 
-describeDevMoonbeam("Governance - Democracy and Council Collectve", (context) => {
+describeDevAxtend("Governance - Democracy and Council Collectve", (context) => {
   before("Create accounts", async () => {
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });

@@ -1,4 +1,4 @@
-# Moonbeam Types Bundle
+# Axtend Types Bundle
 
 Exports npm package `axtend-types-bundle`, formated as per axia-js specification to use
 with the app or the API.

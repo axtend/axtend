@@ -7,15 +7,15 @@ import {
   GENESIS_ACCOUNT_PRIVATE_KEY,
   ZERO_ADDRESS,
 } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/axlib-rpc";
+import { describeDevAxtend } from "../util/setup-dev-tests";
+import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 
 const TWENTY_PERCENT = 20;
 const TWENTY_PERCENT_STRING = "20.00%";
 
-describeDevMoonbeam("Staking - Allychain Bond - genesis and setAllychainBondAccount", (context) => {
+describeDevAxtend("Staking - Allychain Bond - genesis and setAllychainBondAccount", (context) => {
   let sudoAccount: KeyringPair;
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
@@ -37,10 +37,10 @@ describeDevMoonbeam("Staking - Allychain Bond - genesis and setAllychainBondAcco
   });
 });
 
-describeDevMoonbeam("Staking - Allychain Bond - no sudo on setAllychainBondAccount", (context) => {
+describeDevAxtend("Staking - Allychain Bond - no sudo on setAllychainBondAccount", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -64,10 +64,10 @@ describeDevMoonbeam("Staking - Allychain Bond - no sudo on setAllychainBondAccou
   });
 });
 
-describeDevMoonbeam("Staking - Allychain Bond - setAllychainBondReservePercent", (context) => {
+describeDevAxtend("Staking - Allychain Bond - setAllychainBondReservePercent", (context) => {
   let sudoAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
@@ -84,11 +84,11 @@ describeDevMoonbeam("Staking - Allychain Bond - setAllychainBondReservePercent",
   });
 });
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Staking - Allychain Bond - no sudo on setAllychainBondReservePercent",
   (context) => {
     let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
-    before("Setup genesis account for axlib", async () => {
+    before("Setup genesis account for substrate", async () => {
       const keyring = new Keyring({ type: "ethereum" });
       genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
       sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");

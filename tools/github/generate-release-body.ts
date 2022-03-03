@@ -55,7 +55,7 @@ ${filteredPr.map((pr) => `* ${pr.title} (#${pr.number})`).join("\n")}
 
 ## Dependency changes
 
-Moonbeam: https://github.com/PureStake/axtend/compare/${previousTag}...${newTag}
+Axtend: https://github.com/PureStake/axtend/compare/${previousTag}...${newTag}
 ${moduleLinks.map((modules) => `${capitalize(modules.name)}: ${modules.link}`).join("\n")}
 `;
   console.log(template);

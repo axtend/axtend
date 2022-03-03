@@ -1,11 +1,11 @@
 import { expect } from "chai";
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 
 import { EXTRINSIC_GAS_LIMIT } from "../../util/constants";
 import { createContract } from "../../util/transactions";
 import { customWeb3Request } from "../../util/providers";
 
-describeDevMoonbeamAllEthTxTypes("Block Gas - Limit", (context) => {
+describeDevAxtendAllEthTxTypes("Block Gas - Limit", (context) => {
   it("should be allowed to the max block gas", async function () {
     const { rawTx } = await createContract(context, "TestContract", {
       gas: EXTRINSIC_GAS_LIMIT,
@@ -18,7 +18,7 @@ describeDevMoonbeamAllEthTxTypes("Block Gas - Limit", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Block Gas - Limit", (context) => {
+describeDevAxtendAllEthTxTypes("Block Gas - Limit", (context) => {
   it("should fail setting it over the max block gas", async function () {
     const { rawTx } = await createContract(context, "TestContract", {
       gas: EXTRINSIC_GAS_LIMIT + 1,
@@ -31,7 +31,7 @@ describeDevMoonbeamAllEthTxTypes("Block Gas - Limit", (context) => {
   });
 });
 
-describeDevMoonbeam("Block Gas - Limit", (context) => {
+describeDevAxtend("Block Gas - Limit", (context) => {
   // TODO: Joshy to fix block gas access in smart contract
   it.skip("should be accessible within a contract", async function () {
     const { contract, rawTx } = await createContract(context, "CheckBlockVariables");

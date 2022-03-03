@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import Keyring from "@axia/keyring";
 import {
   ALITH_PRIVATE_KEY,
@@ -20,7 +20,7 @@ const alith = keyring.addFromUri(ALITH_PRIVATE_KEY, null, "ethereum");
 const baltathar = keyring.addFromUri(BALTATHAR_PRIVATE_KEY, null, "ethereum");
 const charleth = keyring.addFromUri(CHARLETH_PRIVATE_KEY, null, "ethereum");
 
-describeDevMoonbeam("Proxy: Balances - should accept known proxy", (context) => {
+describeDevAxtend("Proxy: Balances - should accept known proxy", (context) => {
   it("should accept known proxy", async () => {
     await expectBalanceDifference(
       context,
@@ -56,7 +56,7 @@ describeDevMoonbeam("Proxy: Balances - should accept known proxy", (context) => 
   });
 });
 
-describeDevMoonbeam("Proxy: Balances - shouldn't accept other proxy types", (context) => {
+describeDevAxtend("Proxy: Balances - shouldn't accept other proxy types", (context) => {
   before("first add proxy", async () => {
     await axlibTransaction(
       context,

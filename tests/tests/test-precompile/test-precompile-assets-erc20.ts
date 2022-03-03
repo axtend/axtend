@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { customWeb3Request } from "../../util/providers";
 import {
   GENESIS_ACCOUNT,
@@ -106,7 +106,7 @@ const SELECTORS = {
 };
 const GAS_PRICE = "0x" + (1_000_000_000).toString(16);
 
-describeDevMoonbeamAllEthTxTypes(
+describeDevAxtendAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace;
@@ -264,7 +264,7 @@ describeDevMoonbeamAllEthTxTypes(
   true
 );
 
-describeDevMoonbeamAllEthTxTypes(
+describeDevAxtendAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace;
@@ -355,7 +355,7 @@ describeDevMoonbeamAllEthTxTypes(
   true
 );
 
-describeDevMoonbeamAllEthTxTypes(
+describeDevAxtendAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace, contractInstanceAddress;
@@ -461,7 +461,7 @@ describeDevMoonbeamAllEthTxTypes(
   true
 );
 
-describeDevMoonbeamAllEthTxTypes(
+describeDevAxtendAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace;
@@ -526,7 +526,7 @@ describeDevMoonbeamAllEthTxTypes(
   true
 );
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) => {
   let sudoAccount, assetId, iFace, contractInstanceAddress;
   before("Setup contract and mock balance", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -633,7 +633,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) =>
   });
 });
 
-describeDevMoonbeamAllEthTxTypes(
+describeDevAxtendAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace, contractInstanceAddress;
@@ -699,7 +699,7 @@ describeDevMoonbeamAllEthTxTypes(
   true
 );
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) => {
   let sudoAccount, assetId, iFace, contractInstanceAddress;
   before("Setup contract and mock balance", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -842,7 +842,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) =>
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) => {
   let sudoAccount, assetId, iFace, contractInstanceAddress;
   before("Setup contract and mock balance", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -949,7 +949,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) =>
   });
 });
 
-describeDevMoonbeamAllEthTxTypes(
+describeDevAxtendAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace, contractInstanceAddress;

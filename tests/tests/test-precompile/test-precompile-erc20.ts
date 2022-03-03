@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { customWeb3Request } from "../../util/providers";
 import {
   GENESIS_ACCOUNT,
@@ -77,7 +77,7 @@ async function checkAllowance(context, owner, spender, amount) {
   expect(request.result).equals(`0x${amount.padStart(64, "0")}`);
 }
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
   it("allows to call getBalance", async function () {
     const address = ALITH.slice(2).padStart(64, "0");
 
@@ -116,7 +116,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
   it("allows to approve transfers, and allowance matches", async function () {
     const amount = `1000000000000`.padStart(64, "0");
 
@@ -126,7 +126,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
   it("allows to call transfer", async function () {
     const amount = `400000000000`.padStart(64, "0");
 
@@ -159,7 +159,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
   it("allows to approve transfer and use transferFrom", async function () {
     const allowedAmount = `1000000000000`.padStart(64, "0");
     const transferAmount = `400000000000`.padStart(64, "0");
@@ -213,7 +213,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - ERC20 Native", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - ERC20", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - ERC20", (context) => {
   it("refuses to transferFrom more than allowed", async function () {
     const allowedAmount = `1000000000000`.padStart(64, "0");
     const transferAmount = `1400000000000`.padStart(64, "0");

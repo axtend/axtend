@@ -1,18 +1,18 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
 #[macro_export]
 macro_rules! impl_runtime_apis_plus_common {
@@ -356,7 +356,7 @@ macro_rules! impl_runtime_apis_plus_common {
 				) -> bool {
 					let block_number = parent_header.number + 1;
 
-					// The Moonbeam runtimes use an entropy source that needs to do some accounting
+					// The Axtend runtimes use an entropy source that needs to do some accounting
 					// work during block initialization. Therefore we initialize it here to match
 					// the state it will be in when the next block is being executed.
 					use frame_support::traits::OnInitialize;

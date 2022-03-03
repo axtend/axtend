@@ -2,7 +2,7 @@ import { expect } from "chai";
 import Keyring from "@axia/keyring";
 
 import { ALITH, BOB_AUTHOR_ID } from "../../util/constants";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import { createBlockWithExtrinsic } from "../../util/axlib-rpc";
 import { ALITH_PRIVATE_KEY, BALTATHAR_PRIVATE_KEY } from "../../util/constants";
 
@@ -20,7 +20,7 @@ export async function getMappingInfo(
   return null;
 }
 
-describeDevMoonbeam("Proxy : Author Mapping - simple association", (context) => {
+describeDevAxtend("Proxy : Author Mapping - simple association", (context) => {
   it("should succeed in adding an association", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const alith = keyring.addFromUri(ALITH_PRIVATE_KEY, null, "ethereum");

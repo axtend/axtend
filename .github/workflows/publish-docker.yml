@@ -21,20 +21,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - run: |
-          DOCKER_IMAGE=purestake/moonbeam
+          DOCKER_IMAGE=purestake/axtend
           VERSION="${{ github.event.inputs.tag }}"
           COMMIT=`git rev-list -n 1 '${{ github.event.inputs.tag }}'`
           SHA=sha-${COMMIT::8}
           echo using "${DOCKER_IMAGE}:${SHA} as base image"
 
           mkdir -p build 
-          wget https://github.com/PureStake/moonbeam/releases/download/$VERSION/moonbeam -O build/moonbeam
+          wget https://github.com/PureStake/axtend/releases/download/$VERSION/axtend -O build/axtend
 
           echo building "${DOCKER_IMAGE}:${VERSION}"
           docker build \
             --build-arg DOCKER_IMAGE="$DOCKER_IMAGE" \
             --build-arg SHA="$SHA" \
-            -f docker/moonbeam-release.Dockerfile \
+            -f docker/axtend-release.Dockerfile \
             -t "${DOCKER_IMAGE}:${VERSION}" \
             . 
 

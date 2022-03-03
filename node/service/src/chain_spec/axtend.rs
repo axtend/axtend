@@ -1,36 +1,35 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Moonbeam Chain Specifications and utilities for building them.
+//! Axtend Chain Specifications and utilities for building them.
 //!
-//! Learn more about Axlib chain specifications at
-//! https://axlib.dev/docs/en/knowledgebase/integrate/chain-spec
+//! Learn more about Substrate chain specifications at
+//! https://substrate.dev/docs/en/knowledgebase/integrate/chain-spec
 
 #[cfg(test)]
 use crate::chain_spec::{derive_bip44_pairs_from_mnemonic, get_account_id_from_pair};
 use crate::chain_spec::{generate_accounts, get_from_seed, Extensions};
-use axtend_runtime::{
-	currency::GLMR, currency::SUPPLY_FACTOR, AccountId, AllychainInfoConfig,
-	AllychainStakingConfig, AuthorFilterConfig, AuthorMappingConfig, AxiaXcmConfig, Balance,
-	BalancesConfig, CouncilCollectiveConfig, CrowdloanRewardsConfig, DemocracyConfig, EVMConfig,
-	EthereumChainIdConfig, EthereumConfig, GenesisAccount, GenesisConfig, InflationInfo,
-	MaintenanceModeConfig, Precompiles, Range, SystemConfig, TechCommitteeCollectiveConfig,
-	WASM_BINARY,
-};
 use cumulus_primitives_core::ParaId;
+use axtend_runtime::{
+	currency::GLMR, currency::SUPPLY_FACTOR, AccountId, AuthorFilterConfig, AuthorMappingConfig,
+	Balance, BalancesConfig, CouncilCollectiveConfig, CrowdloanRewardsConfig, DemocracyConfig,
+	EVMConfig, EthereumChainIdConfig, EthereumConfig, GenesisAccount, GenesisConfig, InflationInfo,
+	MaintenanceModeConfig, AllychainInfoConfig, AllychainStakingConfig, AxiaXcmConfig,
+	Precompiles, Range, SystemConfig, TechCommitteeCollectiveConfig, WASM_BINARY,
+};
 use nimbus_primitives::NimbusId;
 use sc_service::ChainType;
 #[cfg(test)]
@@ -38,7 +37,7 @@ use sp_core::ecdsa;
 use sp_runtime::Perbill;
 use std::str::FromStr;
 
-/// Specialized `ChainSpec`. This is a specialization of the general Axlib ChainSpec type.
+/// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
 pub type ChainSpec = sc_service::GenericChainSpec<GenesisConfig, Extensions>;
 
 /// Generate a chain spec for use with the development service.
@@ -51,7 +50,7 @@ pub fn development_chain_spec(mnemonic: Option<String>, num_accounts: Option<u32
 	// We add Gerald here
 	accounts.push(AccountId::from_str("6Be02d1d3665660d22FF9624b7BE0551ee1Ac91b").unwrap());
 	ChainSpec::from_genesis(
-		"Moonbeam Development Testnet",
+		"Axtend Development Testnet",
 		"axtend_dev",
 		ChainType::Development,
 		move || {
@@ -104,7 +103,7 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 		// TODO Apps depends on this string to determine whether the chain is an ethereum compat
 		// or not. We should decide the proper strings, and update Apps accordingly.
 		// Or maybe Apps can be smart enough to say if the string contains "axtend" at all...
-		"Moonbeam Local Testnet",
+		"Axtend Local Testnet",
 		"axtend_local",
 		ChainType::Local,
 		move || {

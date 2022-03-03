@@ -2,7 +2,7 @@
   "name": "@axtend/api-augment",
   "version": "0.0.1",
   "private": true,
-  "description": "Moonbeam types augment for @axia/api",
+  "description": "Axtend types augment for @axia/api",
   "author": "PureStake",
   "license": "GPL-3.0-only",
   "repository": {

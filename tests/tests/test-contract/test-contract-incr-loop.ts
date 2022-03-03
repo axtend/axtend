@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { verifyLatestBlockFees } from "../../util/block";
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createContract, createContractExecution } from "../../util/transactions";
 
-describeDevMoonbeamAllEthTxTypes("Contract loop creation", (context) => {
+describeDevAxtendAllEthTxTypes("Contract loop creation", (context) => {
   it("Should be initialized at 0", async () => {
     const { contract, rawTx } = await createContract(context, "TestContractIncr");
     await context.createBlock({ transactions: [rawTx] });
@@ -12,7 +12,7 @@ describeDevMoonbeamAllEthTxTypes("Contract loop creation", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Contract loop increment", (context) => {
+describeDevAxtendAllEthTxTypes("Contract loop increment", (context) => {
   it("should increment contract state", async function () {
     const { contract, rawTx, contractAddress } = await createContract(context, "TestContractIncr");
     await context.createBlock({ transactions: [rawTx] });
@@ -29,7 +29,7 @@ describeDevMoonbeamAllEthTxTypes("Contract loop increment", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Contract loop increment - check fees", (context) => {
+describeDevAxtendAllEthTxTypes("Contract loop increment - check fees", (context) => {
   it("should increment contract state", async function () {
     const { contract, rawTx } = await createContract(context, "TestContractIncr");
     await context.createBlock({ transactions: [rawTx] });

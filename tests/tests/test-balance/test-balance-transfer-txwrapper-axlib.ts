@@ -9,7 +9,7 @@ import { getRegistry } from "@axlib/txwrapper-registry";
 
 import { GENESIS_ACCOUNT, GENESIS_ACCOUNT_PRIVATE_KEY } from "../../util/constants";
 
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import { rpcToLocalNode } from "../../util/transactions";
 import { EXTRINSIC_VERSION } from "@axia/types/extrinsic/v4/Extrinsic";
 import { createSignedTx, createSigningPayload } from "@axlib/txwrapper-core/lib/core/construct";
@@ -40,7 +40,7 @@ export function signWith(
   return signature as `0x${string}`; //TODO: fix this when type problem is fixed
 }
 
-describeDevMoonbeam("Balance transfer - txwrapper", (context) => {
+describeDevAxtend("Balance transfer - txwrapper", (context) => {
   const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";
 
   before("Create block with transfer to test account of 512", async function () {

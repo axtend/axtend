@@ -65,7 +65,7 @@ export async function waitOneBlock(api: ApiPromise, numberOfBlocks: number = 1) 
   });
 }
 
-// Log relay/parachain new blocks and events
+// Log relay/allychain new blocks and events
 export async function logEvents(api: ApiPromise, name: string) {
   api.derive.chain.subscribeNewHeads(async (header) => {
     debug(
@@ -128,7 +128,7 @@ async function tryLookingForEvents(api: ApiPromise, extrinsicHash: Uint8Array) {
   }
 }
 
-export const createBlockWithExtrinsicParachain = async <
+export const createBlockWithExtrinsicAllychain = async <
   Call extends SubmittableExtrinsic<ApiType>,
   ApiType extends ApiTypes
 >(

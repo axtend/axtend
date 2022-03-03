@@ -2,7 +2,7 @@
 name = "axtend-runtime"
 authors = ["PureStake"]
 build = "build.rs"
-description = "Moonbeam Runtime"
+description = "Axtend Runtime"
 edition = "2018"
 homepage = "https://axtend.network"
 license = "GPL-3.0-only"
@@ -16,7 +16,7 @@ serde = { version = "1.0.101", optional = true, default-features = false, featur
 ] }
 sha3 = { version = "0.8", optional = true, default-features = false }
 
-# Moonbeam
+# Axtend
 account = { path = "../../primitives/account/", default-features = false }
 axtend-core-primitives = { path = "../../core-primitives", default-features = false }
 axtend-relay-encoder = { path = "../relay-encoder", default-features = false }
@@ -24,7 +24,7 @@ precompile-utils = { path = "../../precompiles/utils", default-features = false 
 runtime-common = { path = "../common", default-features = false }
 xcm-primitives = { path = "../../primitives/xcm/", default-features = false }
 
-# Moonbeam pallets
+# Axtend pallets
 pallet-asset-manager = { path = "../../pallets/asset-manager", default-features = false }
 pallet-author-mapping = { path = "../../pallets/author-mapping", default-features = false }
 pallet-crowdloan-rewards = { git = "https://github.com/axtend/crowdloan-rewards", branch = "9a9c171", default-features = false }
@@ -37,7 +37,7 @@ pallet-proxy-genesis-companion = { path = "../../pallets/proxy-genesis-companion
 allychain-staking = { path = "../../pallets/allychain-staking", default-features = false }
 xcm-transactor = { path = "../../pallets/xcm-transactor", default-features = false }
 
-# Moonbeam precompiles
+# Axtend precompiles
 crowdloan-rewards-precompiles = { path = "../../precompiles/crowdloan-rewards", default-features = false }
 pallet-author-mapping-precompiles = { path = "../../precompiles/author-mapping", default-features = false }
 pallet-evm-precompile-assets-erc20 = { path = "../../precompiles/assets-erc20", default-features = false }
@@ -47,7 +47,7 @@ relay-encoder-precompiles = { path = "../../precompiles/relay-encoder", default-
 xcm-transactor-precompiles = { path = "../../precompiles/xcm_transactor", default-features = false }
 xtokens-precompiles = { path = "../../precompiles/xtokens", default-features = false }
 
-# Moonbeam tracing
+# Axtend tracing
 evm-tracing-events = { path = "../../primitives/rpc/evm-tracing-events", optional = true, default-features = false }
 axtend-evm-tracer = { path = "../evm_tracer", optional = true, default-features = false }
 axtend-rpc-primitives-debug = { path = "../../primitives/rpc/debug", default-features = false }

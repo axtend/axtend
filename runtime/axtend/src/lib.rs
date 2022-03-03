@@ -1,24 +1,24 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-//! The Moonbeam Runtime.
+//! The Axtend Runtime.
 //!
 //! Primary features of this runtime include:
 //! * Ethereum compatibility
-//! * Moonbeam tokenomics
+//! * Axtend tokenomics
 
 #![cfg_attr(not(feature = "std"), no_std)]
 // `construct_runtime!` does a lot of recursion and requires us to increase the limit to 256.
@@ -109,12 +109,12 @@ use sp_version::RuntimeVersion;
 use nimbus_primitives::{CanAuthor, NimbusId};
 
 mod precompiles;
-use precompiles::{MoonbeamPrecompiles, ASSET_PRECOMPILE_ADDRESS_PREFIX};
+use precompiles::{AxtendPrecompiles, ASSET_PRECOMPILE_ADDRESS_PREFIX};
 
 #[cfg(any(feature = "std", test))]
 pub use sp_runtime::BuildStorage;
 
-pub type Precompiles = MoonbeamPrecompiles<Runtime>;
+pub type Precompiles = AxtendPrecompiles<Runtime>;
 
 /// GLMR, the native token, uses 18 decimals of precision.
 pub mod currency {
@@ -341,9 +341,9 @@ pub const GAS_PER_SECOND: u64 = 40_000_000;
 /// u64 works for approximations because Weight is a very small unit compared to gas.
 pub const WEIGHT_PER_GAS: u64 = WEIGHT_PER_SECOND / GAS_PER_SECOND;
 
-pub struct MoonbeamGasWeightMapping;
+pub struct AxtendGasWeightMapping;
 
-impl pallet_evm::GasWeightMapping for MoonbeamGasWeightMapping {
+impl pallet_evm::GasWeightMapping for AxtendGasWeightMapping {
 	fn gas_to_weight(gas: u64) -> Weight {
 		gas.saturating_mul(WEIGHT_PER_GAS)
 	}
@@ -367,7 +367,7 @@ parameter_types! {
 	/// This value is currently only used by pallet-transaction-payment as an assertion that the
 	/// next multiplier is always > min value.
 	pub MinimumMultiplier: Multiplier = Multiplier::saturating_from_rational(1, 1_000_000u128);
-	pub PrecompilesValue: MoonbeamPrecompiles<Runtime> = MoonbeamPrecompiles::<_>::new();
+	pub PrecompilesValue: AxtendPrecompiles<Runtime> = AxtendPrecompiles::<_>::new();
 }
 
 pub struct FixedGasPrice;
@@ -413,7 +413,7 @@ where
 
 impl pallet_evm::Config for Runtime {
 	type FeeCalculator = FixedGasPrice;
-	type GasWeightMapping = MoonbeamGasWeightMapping;
+	type GasWeightMapping = AxtendGasWeightMapping;
 	type BlockHashMapping = pallet_ethereum::EthereumBlockHashMapping<Self>;
 	type CallOrigin = EnsureAddressRoot<AccountId>;
 	type WithdrawOrigin = EnsureAddressNever<AccountId>;
@@ -421,7 +421,7 @@ impl pallet_evm::Config for Runtime {
 	type Currency = Balances;
 	type Event = Event;
 	type Runner = pallet_evm::runner::stack::Runner<Self>;
-	type PrecompilesType = MoonbeamPrecompiles<Self>;
+	type PrecompilesType = AxtendPrecompiles<Self>;
 	type PrecompilesValue = PrecompilesValue;
 	type ChainId = EthereumChainId;
 	type OnChargeTransaction = pallet_evm::EVMCurrencyAdapter<Balances, DealWithFees<Runtime>>;

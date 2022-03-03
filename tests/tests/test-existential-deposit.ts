@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../util/setup-dev-tests";
 import { createTransfer } from "../util/transactions";
 import { GENESIS_ACCOUNT, GENESIS_ACCOUNT_BALANCE } from "../util/constants";
 
-describeDevMoonbeamAllEthTxTypes("Existential Deposit", (context) => {
+describeDevAxtendAllEthTxTypes("Existential Deposit", (context) => {
   it("should be disabled (no reaped account on 0 balance)", async function () {
     await context.createBlock({
       transactions: [
@@ -23,7 +23,7 @@ describeDevMoonbeamAllEthTxTypes("Existential Deposit", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Existential Deposit", (context) => {
+describeDevAxtendAllEthTxTypes("Existential Deposit", (context) => {
   it("should be disabled (no reaped account on tiny balance - 1)", async function () {
     await context.createBlock({
       transactions: [
@@ -43,7 +43,7 @@ describeDevMoonbeamAllEthTxTypes("Existential Deposit", (context) => {
   });
 });
 
-describeDevMoonbeam("Existential Deposit", (context) => {
+describeDevAxtend("Existential Deposit", (context) => {
   it("checks that existantial deposit is set to zero", async function () {
     // Grab existential deposit
     let existentialDeposit = (await context.axiaApi.consts.balances.existentialDeposit) as any;

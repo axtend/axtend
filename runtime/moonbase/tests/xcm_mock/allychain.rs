@@ -1,4 +1,4 @@
-// Copyright 2021 Axia Technologies (UK) Ltd.
+// Copyright 2021 Parity Technologies (UK) Ltd.
 // This file is part of Axia.
 
 // Axia is free software: you can redistribute it and/or modify
@@ -134,7 +134,7 @@ impl pallet_assets::Config for Runtime {
 	type Freezer = ();
 	type Extra = ();
 	type AssetAccountDeposit = AssetAccountDeposit;
-	type WeightInfo = pallet_assets::weights::AxlibWeight<Runtime>;
+	type WeightInfo = pallet_assets::weights::SubstrateWeight<Runtime>;
 }
 
 /// Type for specifying how a `MultiLocation` can be converted into an `AccountId`. This is used
@@ -772,7 +772,7 @@ impl pallet_evm::Config for Runtime {
 	type ChainId = ();
 	type BlockGasLimit = ();
 	type OnChargeTransaction = ();
-	type BlockHashMapping = pallet_evm::AxlibBlockHashMapping<Self>;
+	type BlockHashMapping = pallet_evm::SubstrateBlockHashMapping<Self>;
 	type FindAuthor = ();
 }
 

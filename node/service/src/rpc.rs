@@ -1,18 +1,18 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
 //! A collection of node-specific RPC extensions and related background tasks.
 
@@ -39,7 +39,7 @@ use futures::StreamExt;
 use jsonrpc_pubsub::manager::SubscriptionManager;
 use manual_xcm_rpc::{ManualXcm, ManualXcmApi};
 use axtend_core_primitives::{Block, Hash};
-use axtend_finality_rpc::{MoonbeamFinality, MoonbeamFinalityApi};
+use axtend_finality_rpc::{AxtendFinality, AxtendFinalityApi};
 use axtend_rpc_txpool::{TxPool, TxPoolServer};
 use pallet_transaction_payment_rpc::{TransactionPayment, TransactionPaymentApi};
 use sc_client_api::{
@@ -244,7 +244,7 @@ where
 		)));
 	}
 
-	io.extend_with(MoonbeamFinalityApi::to_delegate(MoonbeamFinality::new(
+	io.extend_with(AxtendFinalityApi::to_delegate(AxtendFinality::new(
 		client.clone(),
 		frontier_backend.clone(),
 	)));
@@ -278,7 +278,7 @@ pub struct SpawnTasksParams<'a, B: BlockT, C, BE> {
 	pub fee_history_cache: FeeHistoryCache,
 }
 
-/// Spawn the tasks that are required to run Moonbeam.
+/// Spawn the tasks that are required to run Axtend.
 pub fn spawn_essential_tasks<B, C, BE>(params: SpawnTasksParams<B, C, BE>)
 where
 	C: ProvideRuntimeApi<B> + BlockOf,

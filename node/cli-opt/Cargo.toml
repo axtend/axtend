@@ -14,7 +14,7 @@ sha3 = "0.9"
 tiny-bip39 = "0.8"
 tiny-hderive = "0.3.0"
 
-# Moonbeam
+# Axtend
 account = { path = "../../primitives/account" }
 
 # Axlib

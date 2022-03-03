@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 
-describeDevMoonbeam("Block genesis", (context) => {
+describeDevAxtend("Block genesis", (context) => {
   it("should be at block 0", async function () {
     expect(await context.web3.eth.getBlockNumber()).to.equal(0);
   });

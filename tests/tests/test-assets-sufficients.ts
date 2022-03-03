@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { ALITH, BALTATHAR, ALITH_PRIV_KEY } from "../util/constants";
 import { blake2AsU8a, xxhashAsU8a } from "@axia/util-crypto";
 import { BN, hexToU8a, bnToHex, u8aToHex } from "@axia/util";
@@ -85,7 +85,7 @@ async function mockAssetBalance(
   return;
 }
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Assets - Sufficient tests: is_sufficient to true",
   (context) => {
     let sudoAccount, assetId;
@@ -229,7 +229,7 @@ describeDevMoonbeam(
   true
 );
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Assets - Sufficient tests: is_sufficient to true",
   (context) => {
     let sudoAccount, assetId;
@@ -371,7 +371,7 @@ describeDevMoonbeam(
   true
 );
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Assets - Sufficient tests: is_sufficient to false",
   (context) => {
     let sudoAccount, assetId;

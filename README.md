@@ -1,11 +1,11 @@
-# ![Moonbeam](media/axtend-cover.jpg)
+# ![Axtend](media/axtend-cover.jpg)
 
 ![Tests](https://github.com/PureStake/axtend/workflows/Release/badge.svg)
 
 **An Ethereum compatible [Allychain](https://axia.network/technology/) built with [Axlib](https://axlib.dev).**
 
-👉 _Discover the Moonbeam project at [axtend.network](https://axtend.network)._<br>
-👉 _Learn to [use the Moonbeam network](https://docs.axtend.network/) with our technical docs._<br>
+👉 _Discover the Axtend project at [axtend.network](https://axtend.network)._<br>
+👉 _Learn to [use the Axtend network](https://docs.axtend.network/) with our technical docs._<br>
 👉 _Reference our [crate-level docs (rustdocs)](https://purestake.github.io/axtend) to contribute._
 
 ## Run an alphanet node with Docker
@@ -46,7 +46,7 @@ docker run --network="host" purestake/axtend:v0.21.0 --dev --sealing manual
 
 ### Prefunded Development Addresses
 
-Running Moonbeam in development mode will pre-fund several well-known addresses that (mostly) contain the letters "th" in their names to remind you that they are for ethereum-compatible usage. These addresses are derived from
+Running Axtend in development mode will pre-fund several well-known addresses that (mostly) contain the letters "th" in their names to remind you that they are for ethereum-compatible usage. These addresses are derived from
 Axlib's canonical mnemonic: `bottom drive obey lake curtain smoke basket hold race lonely fit walk`
 
 ```
@@ -99,9 +99,9 @@ Also, the prefunded default account for testing purposes is:
 - PrivKey: 0x99b3c12287537e38c90a9219d4cb074a89a16e9cdb20bf85728ebd97c343e342
 ```
 
-## Build the Moonbeam Node
+## Build the Axtend Node
 
-To build Moonbeam, you will need a proper Axlib development environment. If you've never worked with a Axlib-based blockchain before, you should probably try the [Setting Up a Moonbeam Node](https://docs.axtend.network/getting-started/local-node/setting-up-a-node/) docs first.
+To build Axtend, you will need a proper Axlib development environment. If you've never worked with a Axlib-based blockchain before, you should probably try the [Setting Up a Axtend Node](https://docs.axtend.network/getting-started/local-node/setting-up-a-node/) docs first.
 
 If you need a refresher setting up your Axlib environment, see [Axlib's Getting Started Guide](https://axlib.dev/docs/en/knowledgebase/getting-started/).
 
@@ -118,7 +118,7 @@ cargo build --release
 
 ## Run tests
 
-Moonbeam has Rust unit tests as well as typescript integration tests. These tests are run in CI, and can also be run locally.
+Axtend has Rust unit tests as well as typescript integration tests. These tests are run in CI, and can also be run locally.
 
 ```bash
 # Run the Rust unit tests
@@ -139,17 +139,17 @@ npm test
 
 ## Chain IDs
 
-The Ethereum specification described a numeric Chain Id. The Moonbeam mainnet Chain Id will be 1284
+The Ethereum specification described a numeric Chain Id. The Axtend mainnet Chain Id will be 1284
 because it takes 1284 milliseconds for a axtend to reach Earth.
 
-Moonbeam nodes support multiple public chains and testnets, with the following Chain Ids.
+Axtend nodes support multiple public chains and testnets, with the following Chain Ids.
 
 | Network Description                | Chain ID    |
 | ---------------------------------- | ----------- |
 | Local Allychain TestNet            | 1280        |
 | Local Development TestNet          | 1281        |
 | Reserved for other TestNets        | 1282 - 1283 |
-| Moonbeam (Axia)                | 1284        |
+| Axtend (Axia)                | 1284        |
 | Moonriver (AxiaTest)                 | 1285        |
 | Moonrock (Betanet)                  | 1286        |
 | Moonbase Alpha TestNet             | 1287        |
@@ -157,7 +157,7 @@ Moonbeam nodes support multiple public chains and testnets, with the following C
 
 ## Runtime Architecture
 
-The Moonbeam Runtime is built using FRAME and consists of pallets from axlib, frontier, cumulus, and `pallets/`.
+The Axtend Runtime is built using FRAME and consists of pallets from axlib, frontier, cumulus, and `pallets/`.
 
 From axlib:
 
@@ -180,15 +180,15 @@ From cumulus:
 - _AllychainUpgrade_: A helper to perform runtime upgrades on allychains
 - _AllychainInfo_: A place to store allychain-relevant constants like allychain id
 
-The following pallets are stored in `pallets/`. They are designed for Moonbeam's specific requirements:
+The following pallets are stored in `pallets/`. They are designed for Axtend's specific requirements:
 
-- _Ethereum Chain Id_: A place to store the chain id for each Moonbeam network
+- _Ethereum Chain Id_: A place to store the chain id for each Axtend network
 - _Author Inherent_: Allows block authors to include their identity in a block via an inherent
 - _Allychain Staking_: Minimal staking pallet that selects collators by total amount at stake
 
 ## Contribute
 
-Moonbeam is open source under the terms of the GPL3. We welcome contributions. Please review our
+Axtend is open source under the terms of the GPL3. We welcome contributions. Please review our
 [CONTRIBUTIONS.md](CONTRIBUTIONS.md) document for more information.
 
 Example of version bumping PR (runtime and node): https://github.com/PureStake/axtend/pull/601/files

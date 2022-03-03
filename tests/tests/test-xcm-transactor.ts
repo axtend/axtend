@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import Keyring from "@axia/keyring";
 import { ALITH, ALITH_PRIV_KEY } from "../util/constants";
 
-describeDevMoonbeam("Precompiles - xcm transactor", (context) => {
+describeDevAxtend("Precompiles - xcm transactor", (context) => {
   let sudoAccount;
   before("Setup genesis account and relay accounts", async () => {
     const keyring = new Keyring({ type: "ethereum" });

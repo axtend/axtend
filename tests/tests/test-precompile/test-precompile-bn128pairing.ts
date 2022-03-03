@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createContract } from "../../util/transactions";
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - bn128Pairing", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - bn128Pairing", (context) => {
   it("should be accessible from a smart contract", async function () {
     const { rawTx } = await createContract(context, "Bn128Pairing");
     await context.createBlock({ transactions: [rawTx] });

@@ -6,7 +6,7 @@
       "request": "launch",
       "name": "Build & Launch Moonbeam Node (Linux)",
       "preLaunchTask": "Build Moonbeam (debug symbols)",
-      "program": "${workspaceFolder}/target/release/moonbeam",
+      "program": "${workspaceFolder}/target/release/axtend",
       "args": [
         "--execution=Native",
         "--no-telemetry",
@@ -30,7 +30,7 @@
       "type": "lldb",
       "request": "launch",
       "name": "Launch Moonbeam Node (Linux)",
-      "program": "${workspaceFolder}/target/release/moonbeam",
+      "program": "${workspaceFolder}/target/release/axtend",
       "args": [
         "--execution=Native",
         "--no-telemetry",

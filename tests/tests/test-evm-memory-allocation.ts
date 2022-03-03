@@ -1,10 +1,10 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { createContract } from "../util/transactions";
 import { GENESIS_ACCOUNT, GENESIS_ACCOUNT_PRIVATE_KEY } from "../util/constants";
 import { customWeb3Request } from "../util/providers";
 
-describeDevMoonbeam("Excessive memory allocation", (context) => {
+describeDevAxtend("Excessive memory allocation", (context) => {
   it("should fail with OOG", async () => {
     // this tests a security vulnerability in our EVM which was patched in May 2021 or so.
     // The vulnerability allowed contract code to request an extremely large amount of memory,

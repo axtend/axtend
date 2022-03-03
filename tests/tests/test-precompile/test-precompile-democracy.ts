@@ -12,7 +12,7 @@ import {
   ZERO_ADDRESS,
   GAS_PRICE,
 } from "../../util/constants";
-import { describeDevMoonbeam, DevTestContext } from "../../util/setup-dev-tests";
+import { describeDevAxtend, DevTestContext } from "../../util/setup-dev-tests";
 import { ApiTypes, SubmittableExtrinsic } from "@axia/api/types";
 
 import { blake2AsHex } from "@axia/util-crypto";
@@ -97,7 +97,7 @@ export const notePreimagePrecompile = async <
   return blake2AsHex(encodedProposal);
 };
 
-describeDevMoonbeam("Democracy - genesis and preimage", (context) => {
+describeDevAxtend("Democracy - genesis and preimage", (context) => {
   let genesisAccount: KeyringPair;
   let iFace: Interface;
 
@@ -136,7 +136,7 @@ describeDevMoonbeam("Democracy - genesis and preimage", (context) => {
   });
 });
 
-describeDevMoonbeam("Democracy - propose", (context) => {
+describeDevAxtend("Democracy - propose", (context) => {
   let genesisAccount: KeyringPair;
   let encodedHash: `0x${string}`;
   let iFace: Interface;
@@ -185,7 +185,7 @@ describeDevMoonbeam("Democracy - propose", (context) => {
   });
 });
 
-describeDevMoonbeam("Democracy - second proposal", (context) => {
+describeDevAxtend("Democracy - second proposal", (context) => {
   let genesisAccount: KeyringPair, alith: KeyringPair;
   let encodedHash: `0x${string}`;
   let launchPeriod;
@@ -268,7 +268,7 @@ describeDevMoonbeam("Democracy - second proposal", (context) => {
   });
 });
 
-describeDevMoonbeam("Democracy - vote on referendum", (context) => {
+describeDevAxtend("Democracy - vote on referendum", (context) => {
   let genesisAccount: KeyringPair, alith: KeyringPair;
   let encodedHash: `0x${string}`;
   let enactmentPeriod, votingPeriod;
@@ -364,7 +364,7 @@ describeDevMoonbeam("Democracy - vote on referendum", (context) => {
 // When forgetting to call notePreimage, all following steps should work as intended
 // until the end where the proposal is never enacted
 
-describeDevMoonbeam("Democracy - forget notePreimage", (context) => {
+describeDevAxtend("Democracy - forget notePreimage", (context) => {
   let genesisAccount: KeyringPair, alith: KeyringPair;
   let encodedHash: string;
   let enactmentPeriod, votingPeriod;

@@ -10,7 +10,7 @@
 // We have to make sure that's not possible
 
 import { expect } from "chai";
-import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 
 import { GENESIS_ACCOUNT, MIN_GLMR_STAKING } from "../../util/constants";
 import { getCompiled } from "../../util/contracts";
@@ -21,7 +21,7 @@ import {
 } from "../../util/transactions";
 import { numberToHex } from "@axia/util";
 
-describeDevMoonbeamAllEthTxTypes(
+describeDevAxtendAllEthTxTypes(
   "Precompiles - test revert attack on state modifier",
   (context) => {
     it("should return contract creation gas cost", async function () {

@@ -4,7 +4,7 @@
 
 FROM phusion/baseimage:0.11
 LABEL maintainer "alan@purestake.com"
-LABEL description="Moonbeam network node. Supports Alphanet/Stagenet. Will support Moonriver and Moonbeam mainnet."
+LABEL description="Axtend network node. Supports Alphanet/Stagenet. Will support Moonriver and Axtend mainnet."
 ARG PROFILE=release
 
 RUN mv /usr/share/ca* /tmp && \

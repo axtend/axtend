@@ -24,7 +24,7 @@ RUN cargo build --$PROFILE
 
 FROM debian:buster-slim
 LABEL maintainer "alan@purestake.com"
-LABEL description="Axia for Moonbeam Relay Chains"
+LABEL description="Axia for Axtend Relay Chains"
 ARG PROFILE=release
 COPY --from=builder /axia/target/$PROFILE/axia /usr/local/bin
 

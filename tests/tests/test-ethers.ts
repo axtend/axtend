@@ -1,16 +1,16 @@
 import { expect } from "chai";
 import { ethers } from "ethers";
 import { GENESIS_ACCOUNT_PRIVATE_KEY } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { getCompiled } from "../util/contracts";
 
-describeDevMoonbeam("Ethers.js", (context) => {
+describeDevAxtend("Ethers.js", (context) => {
   it("should get correct network ids", async function () {
     expect((await context.ethers.getNetwork()).chainId).to.equal(1281);
   });
 });
 
-describeDevMoonbeam("Ethers.js contract", (context) => {
+describeDevAxtend("Ethers.js contract", (context) => {
   it("should be deployable", async function () {
     let signer = new ethers.Wallet(GENESIS_ACCOUNT_PRIVATE_KEY, context.ethers);
     const contractData = await getCompiled("TestContract");
@@ -36,7 +36,7 @@ describeDevMoonbeam("Ethers.js contract", (context) => {
   });
 });
 
-describeDevMoonbeam("Ethers.js contract", (context) => {
+describeDevAxtend("Ethers.js contract", (context) => {
   it("should be callable", async function () {
     let signer = new ethers.Wallet(GENESIS_ACCOUNT_PRIVATE_KEY, context.ethers);
     const contractData = await getCompiled("TestContract");

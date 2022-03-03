@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { customWeb3Request } from "../../util/providers";
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createContract } from "../../util/transactions";
 
-describeDevMoonbeamAllEthTxTypes("Filter API", (context) => {
+describeDevAxtendAllEthTxTypes("Filter API", (context) => {
   it("should be able to create a Log filter", async function () {
     const { contract, rawTx } = await createContract(context, "SingleEventContract");
     await context.createBlock({ transactions: [rawTx] });
@@ -23,7 +23,7 @@ describeDevMoonbeamAllEthTxTypes("Filter API", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Filter API - Creating", (context) => {
+describeDevAxtendAllEthTxTypes("Filter API - Creating", (context) => {
   it("should increment filter id", async function () {
     const { contract, rawTx } = await createContract(context, "SingleEventContract");
     await context.createBlock({ transactions: [rawTx] });
@@ -50,7 +50,7 @@ describeDevMoonbeamAllEthTxTypes("Filter API - Creating", (context) => {
   });
 });
 
-describeDevMoonbeam("Filter Block API - Creating", (context) => {
+describeDevAxtend("Filter Block API - Creating", (context) => {
   it("should be able to create a Block Log filter", async function () {
     const createFilter = await customWeb3Request(context.web3, "eth_newBlockFilter", []);
     expect(createFilter.result).to.be.eq(context.web3.utils.numberToHex(1));

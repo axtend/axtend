@@ -1,9 +1,9 @@
 import { expect } from "chai";
 
-import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createContract } from "../../util/transactions";
 
-describeDevMoonbeamAllEthTxTypes("Receipt - Revert", (context) => {
+describeDevAxtendAllEthTxTypes("Receipt - Revert", (context) => {
   it("should generate a receipt", async function () {
     const { rawTx } = await createContract(context, "FailContract");
     const { txResults } = await context.createBlock({ transactions: [rawTx] });

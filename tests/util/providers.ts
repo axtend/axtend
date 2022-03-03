@@ -68,8 +68,8 @@ export const provideWeb3Api = async (port: number, protocol: "ws" | "http" = "ht
   return web3 as EnhancedWeb3;
 };
 
-export const provideAxiaApi = async (port: number, isNotMoonbeam?: boolean) => {
-  return isNotMoonbeam
+export const provideAxiaApi = async (port: number, isNotAxtend?: boolean) => {
+  return isNotAxtend
     ? await ApiPromise.create({
         initWasm: false,
         provider: new WsProvider(`ws://localhost:${port}`),
