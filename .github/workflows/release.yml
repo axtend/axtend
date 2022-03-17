@@ -82,10 +82,10 @@ jobs:
           chmod uog+x build/axtend
       - name: Generate specs
         run: |
-          MOONBEAM_BINARY=build/axtend scripts/generate-allychain-specs.sh
+          AXTEND_BINARY=build/axtend scripts/generate-allychain-specs.sh
       - name: Generate runtimes
         run: |
-          MOONBEAM_BINARY=build/axtend scripts/generate-runtimes.sh
+          AXTEND_BINARY=build/axtend scripts/generate-runtimes.sh
       - name: Upload allychain specs
         uses: actions/upload-artifact@v2
         with:

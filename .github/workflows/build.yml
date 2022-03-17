@@ -199,7 +199,7 @@ jobs:
     env:
       CARGO_SCCACHE_COMMIT: 90e1dc81
       RUSTFLAGS: "-C opt-level=3 -D warnings"
-      # MOONBEAM_LOG: info
+      # AXTEND_LOG: info
       # DEBUG: "test*"
     outputs:
       RUSTC: ${{ steps.get-rust-versions.outputs.rustc }}
@@ -349,7 +349,7 @@ jobs:
     env:
       CARGO_SCCACHE_COMMIT: 90e1dc81
       RUSTFLAGS: "-C opt-level=3 -D warnings"
-      # MOONBEAM_LOG: info
+      # AXTEND_LOG: info
       # DEBUG: "test*"
     outputs:
       RUSTC: ${{ steps.get-rust-versions.outputs.rustc }}
