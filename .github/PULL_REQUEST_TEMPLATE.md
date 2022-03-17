@@ -6,6 +6,6 @@
 
 ### What alternative implementations were considered?
 
-### Are there relevant PRs or issues in other repositories (Substrate, Polkadot, Frontier, Cumulus)?
+### Are there relevant PRs or issues in other repositories (Substrate, Axia, Frontier, Cumulus)?
 
 ### What value does it bring to the blockchain users?

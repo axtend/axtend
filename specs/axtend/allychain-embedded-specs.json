@@ -3,7 +3,7 @@
   "id": "axtend",
   "chainType": "Live",
   "bootNodes": [],
-  "telemetryEndpoints": [],
+  "telemetryEndpoints": [["ws://localhost:8001/submit/", 0]],
   "protocolId": null,
   "properties": {
     "SS58Prefix": 1284,
@@ -11,7 +11,7 @@
     "tokenSymbol": "GLMR"
   },
   "relayChain": "axia",
-  "paraId": 2004,
+  "paraId": 2000,
   "consensusEngine": null,
   "codeSubstitutes": {},
   "genesis": {

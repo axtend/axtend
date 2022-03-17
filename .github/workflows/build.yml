@@ -26,8 +26,8 @@ jobs:
       image_exists: ${{ steps.check-check-docker-image.outputs.image_exists }}
       sha: ${{ steps.get-sha.outputs.sha }}
       sha8: ${{ steps.get-sha.outputs.sha8 }}
-      polkadot_repo: ${{ steps.get-sha.outputs.polkadot_repo }}
-      polkadot_commit: ${{ steps.get-sha.outputs.polkadot_commit }}
+      axia_repo: ${{ steps.get-sha.outputs.axia_repo }}
+      axia_commit: ${{ steps.get-sha.outputs.axia_commit }}
     steps:
       - name: Check git ref
         id: check-git-ref
@@ -50,8 +50,8 @@ jobs:
         run: |
           echo ::set-output name=sha::$(git log -1 --format="%H")
           echo ::set-output name=sha8::$(git log -1 --format="%H" | cut -c1-8)
-          echo ::set-output name=polkadot_repo::$(egrep -o 'https.*/polkadot' Cargo.lock | head -1)
-          echo ::set-output name=polkadot_commit::$(egrep -o '/polkadot.*#([^\"]*)' Cargo.lock | \
+          echo ::set-output name=axia_repo::$(egrep -o 'https.*/axia' Cargo.lock | head -1)
+          echo ::set-output name=axia_commit::$(egrep -o '/axia.*#([^\"]*)' Cargo.lock | \
             head -1 | sed 's/.*#//' |  cut -c1-8)
       - name: Check existing docker image
         id: check-docker-image
@@ -162,9 +162,9 @@ jobs:
       - name: Format code with rustfmt
         run: cargo fmt -- --check
 
-  ####### Preparing polkadot binary for parachain tests #######
+  ####### Preparing axia binary for allychain tests #######
 
-  prepare-polkadot:
+  prepare-axia:
     runs-on: self-hosted
     needs: ["set-tags"]
     if: github.repository == 'purestake/axtend'
@@ -178,15 +178,15 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Check & build polkadot docker image
+      - name: Check & build axia docker image
         run: |
-          POLKADOT_REPO=${{ needs.set-tags.outputs.polkadot_repo }}
-          POLKADOT_COMMIT=${{ needs.set-tags.outputs.polkadot_commit }}
-          DOCKER_TAG="purestake/moonbase-relay-testnet:sha-$POLKADOT_COMMIT"
-          POLKADOT_EXISTS=$(docker manifest inspect $DOCKER_TAG > /dev/null && \
+          AXIA_REPO=${{ needs.set-tags.outputs.axia_repo }}
+          AXIA_COMMIT=${{ needs.set-tags.outputs.axia_commit }}
+          DOCKER_TAG="purestake/moonbase-relay-testnet:sha-$AXIA_COMMIT"
+          AXIA_EXISTS=$(docker manifest inspect $DOCKER_TAG > /dev/null && \
             echo "true" || echo "false")
-          if [[ "$POLKADOT_EXISTS" == "false" ]]; then
-            # $POLKADOT_COMMIT and $POLKADOT_REPO is used to build the relay image
+          if [[ "$AXIA_EXISTS" == "false" ]]; then
+            # $AXIA_COMMIT and $AXIA_REPO is used to build the relay image
             ./scripts/build-alphanet-relay-image.sh
             docker push $DOCKER_TAG
           fi
@@ -439,7 +439,7 @@ jobs:
 
   typescript-para-tests:
     runs-on: self-hosted
-    needs: ["set-tags", "build", "prepare-polkadot"]
+    needs: ["set-tags", "build", "prepare-axia"]
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -449,12 +449,12 @@ jobs:
         with:
           name: axtend
           path: build
-      - name: Retrieve polkadot
+      - name: Retrieve axia
         run: |
-          POLKADOT_COMMIT=${{ needs.set-tags.outputs.polkadot_commit }}
-          DOCKER_TAG="purestake/moonbase-relay-testnet:sha-$POLKADOT_COMMIT"
+          AXIA_COMMIT=${{ needs.set-tags.outputs.axia_commit }}
+          DOCKER_TAG="purestake/moonbase-relay-testnet:sha-$AXIA_COMMIT"
           docker create -ti --name dummy $DOCKER_TAG bash
-          docker cp dummy:/usr/local/bin/polkadot build/polkadot
+          docker cp dummy:/usr/local/bin/axia build/axia
           docker rm -f dummy
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2
@@ -463,9 +463,9 @@ jobs:
       - name: Typescript integration tests (against dev service)
         env:
           BINARY_PATH: ../build/axtend
-          RELAY_BINARY_PATH: ../build/polkadot
+          RELAY_BINARY_PATH: ../build/axia
         run: |
-          chmod uog+x build/polkadot
+          chmod uog+x build/axia
           chmod uog+x build/axtend
           cd axtend-types-bundle
           npm install
@@ -473,7 +473,7 @@ jobs:
           npm install
           node_modules/.bin/mocha --parallel -j 7 -r ts-node/register 'para-tests/**/test-*.ts'
 
-  docker-parachain:
+  docker-allychain:
     runs-on: ubuntu-latest
     needs: ["set-tags", "build"]
     if: ${{ needs.set-tags.outputs.image_exists }} == false && github.repository == 'purestake/axtend'
@@ -489,7 +489,7 @@ jobs:
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=purestake/moonbase-parachain
+          DOCKER_IMAGE=purestake/moonbase-allychain
           TAGS="${DOCKER_IMAGE}:sha-${{ needs.set-tags.outputs.sha8 }}"
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
@@ -506,12 +506,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push parachain
+      - name: Build and push allychain
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./docker/moonbase-parachain.Dockerfile
+          file: ./docker/moonbase-allychain.Dockerfile
           platforms: linux/amd64
           push: true
           tags: ${{ steps.prep.outputs.tags }}
