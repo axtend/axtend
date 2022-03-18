@@ -2,7 +2,7 @@
 
 ![Tests](https://github.com/PureStake/moonbeam/workflows/Release/badge.svg)
 
-**An Ethereum compatible [Parachain](https://polkadot.network/technology/) built with [Substrate](https://substrate.dev).**
+**An Ethereum compatible [Allychain](https://axia.network/technology/) built with [Substrate](https://substrate.dev).**
 
 👉 _Discover the Moonbeam project at [moonbeam.network](https://moonbeam.network)._<br>
 👉 _Learn to [use the Moonbeam network](https://docs.moonbeam.network/) with our technical docs._<br>
@@ -14,7 +14,7 @@ Docker images are published for every tagged release. Learn more with `moonbeam 
 
 ```bash
 # Join the public testnet
-docker run --network="host" purestake/moonbeam:v0.18.1 --chain alphanet
+docker run --network="host" purestake/moonbeam:v0.21.1 --chain alphanet
 ```
 
 You can find more detailed instructions to [run a full node in our TestNet](https://docs.moonbeam.network/node-operators/networks/full-node/)
@@ -26,8 +26,8 @@ locally. You can quickly spin up a single node with no relay chain backing it us
 service.
 
 ```bash
-# Run a dev service node.
-docker run --network="host" purestake/moonbeam:v0.18.1 --dev
+# Run a dev service node
+docker run --network="host" purestake/moonbeam:v0.21.1 --dev
 ```
 
 For more information, see our detailed instructions to [run a development node](https://docs.moonbeam.network/getting-started/local-node/setting-up-a-node/)
@@ -38,10 +38,10 @@ The command above will start the node in instant seal mode. It creates a block w
 
 ```bash
 # Author a block every 6 seconds.
-docker run --network="host" purestake/moonbeam:v0.18.1 --dev --sealing 6000
+docker run --network="host" purestake/moonbeam:v0.21.1 --dev --sealing 6000
 
 # Manually control the block authorship and finality
-docker run --network="host" purestake/moonbeam:v0.18.1 --dev --sealing manual
+docker run --network="host" purestake/moonbeam:v0.21.1 --dev --sealing manual
 ```
 
 ### Prefunded Development Addresses
@@ -146,10 +146,10 @@ Moonbeam nodes support multiple public chains and testnets, with the following C
 
 | Network Description                | Chain ID    |
 | ---------------------------------- | ----------- |
-| Local Parachain TestNet            | 1280        |
+| Local Allychain TestNet            | 1280        |
 | Local Development TestNet          | 1281        |
 | Reserved for other TestNets        | 1282 - 1283 |
-| Moonbeam (Polkadot)                | 1284        |
+| Moonbeam (Axia)                | 1284        |
 | Moonriver (Kusama)                 | 1285        |
 | Moonrock (Rococo)                  | 1286        |
 | Moonbase Alpha TestNet             | 1287        |
@@ -167,7 +167,7 @@ From substrate:
   launch
 - _Timestamp_: On-Chain notion of time
 - _Transaction Payment_: Transaction payment (fee) management
-- _Randomness Collective Flip_: A (mock) onchain randomness beacon. Will be replaced by parachain
+- _Randomness Collective Flip_: A (mock) onchain randomness beacon. Will be replaced by allychain
   randomness by mainnet.
 
 From frontier:
@@ -177,14 +177,14 @@ From frontier:
 
 From cumulus:
 
-- _ParachainUpgrade_: A helper to perform runtime upgrades on parachains
-- _ParachainInfo_: A place to store parachain-relevant constants like parachain id
+- _AllychainUpgrade_: A helper to perform runtime upgrades on allychains
+- _AllychainInfo_: A place to store allychain-relevant constants like allychain id
 
 The following pallets are stored in `pallets/`. They are designed for Moonbeam's specific requirements:
 
 - _Ethereum Chain Id_: A place to store the chain id for each Moonbeam network
 - _Author Inherent_: Allows block authors to include their identity in a block via an inherent
-- _Parachain Staking_: Minimal staking pallet that selects collators by total amount at stake
+- _Allychain Staking_: Minimal staking pallet that selects collators by total amount at stake
 
 ## Contribute
 

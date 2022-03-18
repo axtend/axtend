@@ -1,13 +1,13 @@
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 import { expect } from "chai";
 import {
   GENESIS_ACCOUNT,
   GENESIS_ACCOUNT_BALANCE,
   GENESIS_ACCOUNT_PRIVATE_KEY,
 } from "../../util/constants";
-import type { SubmittableExtrinsic } from "@polkadot/api/promise/types";
+import type { SubmittableExtrinsic } from "@axia/api/promise/types";
 import { describeDevMoonbeam } from "../../util/setup-dev-tests";
-import { blake2AsHex } from "@polkadot/util-crypto";
+import { blake2AsHex } from "@axia/util-crypto";
 
 describeDevMoonbeam("Reducible Balance", (context) => {
   const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";
@@ -21,18 +21,18 @@ describeDevMoonbeam("Reducible Balance", (context) => {
     );
 
     // Grab existential deposit
-    let existentialDeposit = (await context.polkadotApi.consts.balances.existentialDeposit) as any;
+    let existentialDeposit = (await context.axiaApi.consts.balances.existentialDeposit) as any;
 
     // Let's lock some funds by doing a public referendum proposal
-    let lock_amount = (await context.polkadotApi.consts.democracy.minimumDeposit) as any;
-    const proposal = context.polkadotApi.tx.balances.setBalance(TEST_ACCOUNT, 100, 100);
+    let lock_amount = (await context.axiaApi.consts.democracy.minimumDeposit) as any;
+    const proposal = context.axiaApi.tx.balances.setBalance(TEST_ACCOUNT, 100, 100);
 
     // We encode the proposal
     let encodedProposal = (proposal as SubmittableExtrinsic)?.method.toHex() || "";
     let encodedHash = blake2AsHex(encodedProposal);
 
     // Submit the pre-image
-    await context.polkadotApi.tx.democracy
+    await context.axiaApi.tx.democracy
       .notePreimage(encodedProposal)
       .signAndSend(genesisAccount);
 
@@ -43,13 +43,13 @@ describeDevMoonbeam("Reducible Balance", (context) => {
 
     // Fees
     const fee = (
-      await context.polkadotApi.tx.democracy
+      await context.axiaApi.tx.democracy
         .propose(encodedHash, lock_amount)
         .paymentInfo(genesisAccount)
     ).partialFee as any;
 
     // Propose
-    await context.polkadotApi.tx.democracy
+    await context.axiaApi.tx.democracy
       .propose(encodedHash, lock_amount)
       .signAndSend(genesisAccount);
 

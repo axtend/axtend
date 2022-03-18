@@ -1,4 +1,4 @@
-// Copyright 2019-2021 PureStake Inc.
+// Copyright 2019-2022 PureStake Inc.
 // This file is part of Moonbeam.
 
 // Moonbeam is free software: you can redistribute it and/or modify
@@ -16,18 +16,18 @@
 
 #![allow(dead_code)]
 
-use cumulus_primitives_parachain_inherent::ParachainInherentData;
+use cumulus_primitives_allychain_inherent::AllychainInherentData;
 use frame_support::{
 	assert_ok,
 	dispatch::Dispatchable,
 	traits::{GenesisBuild, OnFinalize, OnInitialize},
 };
-use frame_system::InitKind;
 pub use moonbeam_runtime::{
-	currency::{GLMR, WEI},
-	AccountId, AuthorInherent, Balance, Balances, Call, CrowdloanRewards, Ethereum, Event,
-	Executive, FixedGasPrice, InflationInfo, ParachainStaking, Range, Runtime, System,
-	TransactionConverter, UncheckedExtrinsic, WEEKS,
+	currency::{GIGAWEI, GLMR, SUPPLY_FACTOR, WEI},
+	AccountId, AssetId, AssetManager, AssetRegistrarMetadata, AssetType, Assets, AuthorInherent,
+	Balance, Balances, Call, CrowdloanRewards, Ethereum, Event, Executive, FixedGasPrice,
+	InflationInfo, AllychainStaking, Range, Runtime, System, TransactionConverter,
+	UncheckedExtrinsic, WEEKS,
 };
 use nimbus_primitives::{NimbusId, NIMBUS_ENGINE_ID};
 use pallet_evm::GenesisAccount;
@@ -64,11 +64,11 @@ pub fn run_to_block(n: u32, author: Option<NimbusId>) {
 				let pre_digest = Digest {
 					logs: vec![DigestItem::PreRuntime(NIMBUS_ENGINE_ID, author.encode())],
 				};
+				System::reset_events();
 				System::initialize(
 					&(System::block_number() + 1),
 					&System::parent_hash(),
 					&pre_digest,
-					InitKind::Full,
 				);
 			}
 			None => {
@@ -78,7 +78,7 @@ pub fn run_to_block(n: u32, author: Option<NimbusId>) {
 
 		// Initialize the new block
 		AuthorInherent::on_initialize(System::block_number());
-		ParachainStaking::on_initialize(System::block_number());
+		AllychainStaking::on_initialize(System::block_number());
 		Ethereum::on_initialize(System::block_number());
 	}
 }
@@ -98,7 +98,18 @@ pub fn evm_test_context() -> fp_evm::Context {
 	}
 }
 
+// Test struct with the purpose of initializing xcm assets
+#[derive(Clone)]
+pub struct XcmAssetInitialization {
+	pub asset_type: AssetType,
+	pub metadata: AssetRegistrarMetadata,
+	pub balances: Vec<(AccountId, Balance)>,
+	pub is_sufficient: bool,
+}
+
 pub struct ExtBuilder {
+	// [asset, Vec<Account, Balance>]
+	assets: Vec<(AssetId, Vec<(AccountId, Balance)>)>,
 	// endowed accounts with balances
 	balances: Vec<(AccountId, Balance)>,
 	// [collator, amount]
@@ -115,11 +126,15 @@ pub struct ExtBuilder {
 	chain_id: u64,
 	// EVM genesis accounts
 	evm_accounts: BTreeMap<H160, GenesisAccount>,
+	// [assettype, metadata, Vec<Account, Balance,>, is_sufficient]
+	xcm_assets: Vec<XcmAssetInitialization>,
+	safe_xcm_version: Option<u32>,
 }
 
 impl Default for ExtBuilder {
 	fn default() -> ExtBuilder {
 		ExtBuilder {
+			assets: vec![],
 			balances: vec![],
 			delegations: vec![],
 			collators: vec![],
@@ -146,6 +161,8 @@ impl Default for ExtBuilder {
 			crowdloan_fund: 0,
 			chain_id: CHAIN_ID,
 			evm_accounts: BTreeMap::new(),
+			xcm_assets: vec![],
+			safe_xcm_version: None,
 		}
 	}
 }
@@ -181,6 +198,21 @@ impl ExtBuilder {
 		self
 	}
 
+	pub fn with_assets(mut self, assets: Vec<(AssetId, Vec<(AccountId, Balance)>)>) -> Self {
+		self.assets = assets;
+		self
+	}
+
+	pub fn with_xcm_assets(mut self, xcm_assets: Vec<XcmAssetInitialization>) -> Self {
+		self.xcm_assets = xcm_assets;
+		self
+	}
+
+	pub fn with_safe_xcm_version(mut self, safe_xcm_version: u32) -> Self {
+		self.safe_xcm_version = Some(safe_xcm_version);
+		self
+	}
+
 	#[allow(dead_code)]
 	pub fn with_inflation(mut self, inflation: InflationInfo<Balance>) -> Self {
 		self.inflation = inflation;
@@ -198,7 +230,7 @@ impl ExtBuilder {
 		.assimilate_storage(&mut t)
 		.unwrap();
 
-		parachain_staking::GenesisConfig::<Runtime> {
+		allychain_staking::GenesisConfig::<Runtime> {
 			candidates: self.collators,
 			delegations: self.delegations,
 			inflation_config: self.inflation,
@@ -240,8 +272,54 @@ impl ExtBuilder {
 		)
 		.unwrap();
 
+		<pallet_xcm::GenesisConfig as GenesisBuild<Runtime>>::assimilate_storage(
+			&pallet_xcm::GenesisConfig {
+				safe_xcm_version: self.safe_xcm_version,
+			},
+			&mut t,
+		)
+		.unwrap();
+
+		<pallet_base_fee::GenesisConfig<Runtime> as GenesisBuild<Runtime>>::assimilate_storage(
+			&pallet_base_fee::GenesisConfig::<Runtime>::default(),
+			&mut t,
+		)
+		.unwrap();
+
 		let mut ext = sp_io::TestExternalities::new(t);
-		ext.execute_with(|| System::set_block_number(1));
+		let assets = self.assets.clone();
+		let xcm_assets = self.xcm_assets.clone();
+		ext.execute_with(|| {
+			// If any assets specified, we create them here
+			for (asset_id, balances) in assets.clone() {
+				Assets::force_create(root_origin(), asset_id, ALICE.into(), true, 1).unwrap();
+				for (account, balance) in balances {
+					Assets::mint(origin_of(ALICE.into()), asset_id, account, balance).unwrap();
+				}
+			}
+			// If any xcm assets specified, we register them here
+			for xcm_asset_initialization in xcm_assets {
+				let asset_id: AssetId = xcm_asset_initialization.asset_type.clone().into();
+				AssetManager::register_asset(
+					root_origin(),
+					xcm_asset_initialization.asset_type,
+					xcm_asset_initialization.metadata,
+					1,
+					xcm_asset_initialization.is_sufficient,
+				)
+				.unwrap();
+				for (account, balance) in xcm_asset_initialization.balances {
+					Assets::mint(
+						origin_of(AssetManager::account_id()),
+						asset_id,
+						account,
+						balance,
+					)
+					.unwrap();
+				}
+			}
+			System::set_block_number(1);
+		});
 		ext
 	}
 }
@@ -266,10 +344,10 @@ pub fn root_origin() -> <Runtime as frame_system::Config>::Origin {
 	<Runtime as frame_system::Config>::Origin::root()
 }
 
-/// Mock the inherent that sets validation data in ParachainSystem, which
+/// Mock the inherent that sets validation data in AllychainSystem, which
 /// contains the `relay_chain_block_number`, which is used in `author-filter` as a
 /// source of randomness to filter valid authors at each block.
-pub fn set_parachain_inherent_data() {
+pub fn set_allychain_inherent_data() {
 	use cumulus_primitives_core::PersistedValidationData;
 	use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 	let (relay_parent_storage_root, relay_chain_state) =
@@ -279,15 +357,15 @@ pub fn set_parachain_inherent_data() {
 		relay_parent_storage_root,
 		..Default::default()
 	};
-	let parachain_inherent_data = ParachainInherentData {
+	let allychain_inherent_data = AllychainInherentData {
 		validation_data: vfp,
 		relay_chain_state: relay_chain_state,
 		downward_messages: Default::default(),
 		horizontal_messages: Default::default(),
 	};
-	assert_ok!(Call::ParachainSystem(
-		cumulus_pallet_parachain_system::Call::<Runtime>::set_validation_data {
-			data: parachain_inherent_data
+	assert_ok!(Call::AllychainSystem(
+		cumulus_pallet_allychain_system::Call::<Runtime>::set_validation_data {
+			data: allychain_inherent_data
 		}
 	)
 	.dispatch(inherent_origin()));

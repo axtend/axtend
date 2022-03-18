@@ -1,4 +1,4 @@
-// Copyright 2019-2021 PureStake Inc.
+// Copyright 2019-2022 PureStake Inc.
 // This file is part of Moonbeam.
 
 // Moonbeam is free software: you can redistribute it and/or modify
@@ -16,18 +16,17 @@
 
 #![allow(dead_code)]
 
-use cumulus_primitives_parachain_inherent::ParachainInherentData;
+use cumulus_primitives_allychain_inherent::AllychainInherentData;
 use frame_support::{
 	assert_ok,
 	dispatch::Dispatchable,
 	traits::{GenesisBuild, OnFinalize, OnInitialize},
 };
-use frame_system::InitKind;
 pub use moonriver_runtime::{
-	currency::{MOVR, WEI},
+	currency::{GIGAWEI, MOVR, SUPPLY_FACTOR, WEI},
 	AccountId, AssetId, AssetManager, AssetRegistrarMetadata, AssetType, Assets, AuthorInherent,
 	Balance, Balances, Call, CrowdloanRewards, Ethereum, Event, Executive, FixedGasPrice,
-	InflationInfo, ParachainStaking, Range, Runtime, System, TransactionConverter,
+	InflationInfo, AllychainStaking, Range, Runtime, System, TransactionConverter,
 	UncheckedExtrinsic, WEEKS,
 };
 use nimbus_primitives::{NimbusId, NIMBUS_ENGINE_ID};
@@ -65,11 +64,11 @@ pub fn run_to_block(n: u32, author: Option<NimbusId>) {
 				let pre_digest = Digest {
 					logs: vec![DigestItem::PreRuntime(NIMBUS_ENGINE_ID, author.encode())],
 				};
+				System::reset_events();
 				System::initialize(
 					&(System::block_number() + 1),
 					&System::parent_hash(),
 					&pre_digest,
-					InitKind::Full,
 				);
 			}
 			None => {
@@ -79,7 +78,7 @@ pub fn run_to_block(n: u32, author: Option<NimbusId>) {
 
 		// Initialize the new block
 		AuthorInherent::on_initialize(System::block_number());
-		ParachainStaking::on_initialize(System::block_number());
+		AllychainStaking::on_initialize(System::block_number());
 		Ethereum::on_initialize(System::block_number());
 	}
 }
@@ -231,7 +230,7 @@ impl ExtBuilder {
 		.assimilate_storage(&mut t)
 		.unwrap();
 
-		parachain_staking::GenesisConfig::<Runtime> {
+		allychain_staking::GenesisConfig::<Runtime> {
 			candidates: self.collators,
 			delegations: self.delegations,
 			inflation_config: self.inflation,
@@ -277,6 +276,12 @@ impl ExtBuilder {
 			&pallet_xcm::GenesisConfig {
 				safe_xcm_version: self.safe_xcm_version,
 			},
+			&mut t,
+		)
+		.unwrap();
+
+		<pallet_base_fee::GenesisConfig<Runtime> as GenesisBuild<Runtime>>::assimilate_storage(
+			&pallet_base_fee::GenesisConfig::<Runtime>::default(),
 			&mut t,
 		)
 		.unwrap();
@@ -339,10 +344,10 @@ pub fn root_origin() -> <Runtime as frame_system::Config>::Origin {
 	<Runtime as frame_system::Config>::Origin::root()
 }
 
-/// Mock the inherent that sets validation data in ParachainSystem, which
+/// Mock the inherent that sets validation data in AllychainSystem, which
 /// contains the `relay_chain_block_number`, which is used in `author-filter` as a
 /// source of randomness to filter valid authors at each block.
-pub fn set_parachain_inherent_data() {
+pub fn set_allychain_inherent_data() {
 	use cumulus_primitives_core::PersistedValidationData;
 	use cumulus_test_relay_sproof_builder::RelayStateSproofBuilder;
 	let (relay_parent_storage_root, relay_chain_state) =
@@ -352,15 +357,15 @@ pub fn set_parachain_inherent_data() {
 		relay_parent_storage_root,
 		..Default::default()
 	};
-	let parachain_inherent_data = ParachainInherentData {
+	let allychain_inherent_data = AllychainInherentData {
 		validation_data: vfp,
 		relay_chain_state: relay_chain_state,
 		downward_messages: Default::default(),
 		horizontal_messages: Default::default(),
 	};
-	assert_ok!(Call::ParachainSystem(
-		cumulus_pallet_parachain_system::Call::<Runtime>::set_validation_data {
-			data: parachain_inherent_data
+	assert_ok!(Call::AllychainSystem(
+		cumulus_pallet_allychain_system::Call::<Runtime>::set_validation_data {
+			data: allychain_inherent_data
 		}
 	)
 	.dispatch(inherent_origin()));

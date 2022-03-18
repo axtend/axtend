@@ -1,6 +1,6 @@
 # Moonbeam Types Bundle
 
-Exports npm package `moonbeam-types-bundle`, formated as per polkadot-js specification to use
+Exports npm package `moonbeam-types-bundle`, formated as per axia-js specification to use
 with the app or the API.
 
 ## ⚠️Warning: Types deprecation⚠️
@@ -20,7 +20,7 @@ The default export `typesBundle` has **been removed** to avoid confusion.
 The following package versions have been tested:
 
 ```
-"@polkadot/api": "^6.9.1",
+"@axia/api": "^6.9.1",
 "moonbeam-types-bundle": "^2.0.1",
 "typescript": "4.3.2"
 ```
@@ -69,7 +69,7 @@ around Nov 18th 2021)*
 The following package versions have been tested:
 
 ```
-"@polkadot/api": "^6.9.1",
+"@axia/api": "^6.9.1",
 "moonbeam-types-bundle": "^2.0.1",
 "typescript": "4.3.2"
 ```
@@ -123,12 +123,12 @@ All changes were listed [previously](#breaking-changes-in-typesbundlepre900).
 
 ## Support for ethereum encoded (MiXedCaSe) addresses
 
-In runtime 900, addresses are represented in lower case by PolkadotJs SDK (this should be fixed
+In runtime 900, addresses are represented in lower case by AxiaJs SDK (this should be fixed
 in runtime 1000).  
 However it is possible to manually encode the address in Ethereum encoded (MiXedCaSe) format using:
 
 ```
-import { ethereumEncode } from "@polkadot/util-crypto";
+import { ethereumEncode } from "@axia/util-crypto";
 
 ...
 console.log(address);

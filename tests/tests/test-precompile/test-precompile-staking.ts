@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 import {
   DEFAULT_GENESIS_MAPPING,
   DEFAULT_GENESIS_STAKING,
@@ -12,9 +12,13 @@ import {
   GENESIS_ACCOUNT,
   ALITH_PRIV_KEY,
 } from "../../util/constants";
-import { blake2AsHex, randomAsHex } from "@polkadot/util-crypto";
-import { describeDevMoonbeam, DevTestContext } from "../../util/setup-dev-tests";
-import { numberToHex, stringToHex } from "@polkadot/util";
+import { blake2AsHex, randomAsHex } from "@axia/util-crypto";
+import {
+  describeDevMoonbeam,
+  describeDevMoonbeamAllEthTxTypes,
+  DevTestContext,
+} from "../../util/setup-dev-tests";
+import { numberToHex, stringToHex } from "@axia/util";
 import Web3 from "web3";
 import { customWeb3Request } from "../../util/providers";
 import { callPrecompile, sendPrecompileTx } from "../../util/transactions";
@@ -71,7 +75,7 @@ describeDevMoonbeam("Staking - Genesis", (context) => {
   });
 });
 
-describeDevMoonbeam("Staking - Join Candidates", (context) => {
+describeDevMoonbeamAllEthTxTypes("Staking - Join Candidates", (context) => {
   it("should successfully call joinCandidates on ETHAN", async function () {
     const block = await sendPrecompileTx(
       context,
@@ -86,7 +90,7 @@ describeDevMoonbeam("Staking - Join Candidates", (context) => {
     const receipt = await context.web3.eth.getTransactionReceipt(block.txResults[0].result);
     expect(receipt.status).to.equal(true);
 
-    let candidatesAfter = await context.polkadotApi.query.parachainStaking.candidatePool();
+    let candidatesAfter = await context.axiaApi.query.allychainStaking.candidatePool();
     expect((candidatesAfter.toJSON() as { owner: string; amount: string }[]).length).to.equal(
       2,
       "New candidate should have been added"
@@ -101,11 +105,11 @@ describeDevMoonbeam("Staking - Join Candidates", (context) => {
     );
 
     expect(Number((await isCandidate(context, ETHAN)).result)).to.equal(1);
-    await verifyLatestBlockFees(context.polkadotApi, expect, MIN_GLMR_STAKING);
+    await verifyLatestBlockFees(context, expect, MIN_GLMR_STAKING);
   });
 });
 
-describeDevMoonbeam("Staking - Join Delegators", (context) => {
+describeDevMoonbeamAllEthTxTypes("Staking - Join Delegators", (context) => {
   beforeEach("should successfully call delegate for ETHAN to ALITH", async function () {
     await sendPrecompileTx(context, ADDRESS_STAKING, SELECTORS, ETHAN, ETHAN_PRIVKEY, "nominate", [
       ALITH,
@@ -117,7 +121,7 @@ describeDevMoonbeam("Staking - Join Delegators", (context) => {
 
   it("should have successfully delegated ALITH", async function () {
     const delegatorsAfter = (
-      (await context.polkadotApi.query.parachainStaking.delegatorState(ETHAN)) as any
+      (await context.axiaApi.query.allychainStaking.delegatorState(ETHAN)) as any
     ).unwrap();
     expect(
       (

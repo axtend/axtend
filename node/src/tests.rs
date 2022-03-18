@@ -1,4 +1,4 @@
-// Copyright 2019-2021 PureStake Inc.
+// Copyright 2019-2022 PureStake Inc.
 // This file is part of Moonbeam.
 
 // Moonbeam is free software: you can redistribute it and/or modify
@@ -16,7 +16,7 @@
 
 //! An example of doing some integration testing against the complete node in Rust
 //! This approach is similar to our current typescript tests and is inspired by
-//! https://github.com/paritytech/cumulus/blob/master/rococo-parachains/tests/purge_chain_works.rs
+//! https://github.com/paritytech/cumulus/blob/master/rococo-allychains/tests/purge_chain_works.rs
 //! However Basti seems dissatisfied with this approach, for reasons I don't fully understand.
 //! https://github.com/paritytech/cumulus/pull/306#discussion_r584166203
 
@@ -97,7 +97,7 @@ fn purge_chain_purges_relay_and_para() {
 			.unwrap();
 		assert!(status.success());
 
-		// Make sure the parachain data directory exists
+		// Make sure the allychain data directory exists
 		assert!(base_path.path().join("chains/moonbase_dev").exists());
 		// Make sure its database is deleted
 		assert!(!base_path

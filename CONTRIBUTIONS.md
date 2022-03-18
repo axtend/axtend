@@ -36,7 +36,7 @@ The following is a list of directories of interest in development.
 | --------------------- | -------------------------------------------------------------------------- |
 |client/                | Debug & Trace related code (rust)                                          |
 |docker/                | Dockerfiles for running Moonbeam                                           |
-|moonbeam-types-bundle/ | PolkadotJs types definitions for Moonbeam (typescript)                     |
+|moonbeam-types-bundle/ | AxiaJs types definitions for Moonbeam (typescript)                     |
 |node/                  | Moonbeam's main node (rust)                                                |
 |pallets/               | Moonmeam's Substrate runtime pallets (rust)                                |
 |primitives/            | More Debug & Trace related code (rust)                                     |

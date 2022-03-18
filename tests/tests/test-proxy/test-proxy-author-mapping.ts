@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 
 import { ALITH, BOB_AUTHOR_ID } from "../../util/constants";
 import { describeDevMoonbeam } from "../../util/setup-dev-tests";
@@ -10,7 +10,7 @@ export async function getMappingInfo(
   context,
   authorId: string
 ): Promise<{ account: string; deposit: BigInt }> {
-  const mapping = await context.polkadotApi.query.authorMapping.mappingWithDeposit(authorId);
+  const mapping = await context.axiaApi.query.authorMapping.mappingWithDeposit(authorId);
   if (mapping.isSome) {
     return {
       account: mapping.unwrap().account.toString(),
@@ -30,7 +30,7 @@ describeDevMoonbeam("Proxy : Author Mapping - simple association", (context) => 
       context,
       alith,
       // @ts-ignore
-      context.polkadotApi.tx.proxy.addProxy(baltathar.address, "AuthorMapping", 0)
+      context.axiaApi.tx.proxy.addProxy(baltathar.address, "AuthorMapping", 0)
     );
     expect(events[2].method).to.be.eq("ProxyAdded");
     expect(events[2].data[2].toString()).to.be.eq("AuthorMapping"); //ProxyType
@@ -38,10 +38,10 @@ describeDevMoonbeam("Proxy : Author Mapping - simple association", (context) => 
     const { events: events2 } = await createBlockWithExtrinsic(
       context,
       baltathar,
-      context.polkadotApi.tx.proxy.proxy(
+      context.axiaApi.tx.proxy.proxy(
         alith.address,
         null,
-        context.polkadotApi.tx.authorMapping.addAssociation(BOB_AUTHOR_ID)
+        context.axiaApi.tx.authorMapping.addAssociation(BOB_AUTHOR_ID)
       )
     );
 

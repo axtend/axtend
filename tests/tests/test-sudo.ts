@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import { Keyring } from "@polkadot/api";
-import { KeyringPair } from "@polkadot/keyring/types";
+import { Keyring } from "@axia/api";
+import { KeyringPair } from "@axia/keyring/types";
 import {
   GENESIS_ACCOUNT,
   ALITH_PRIV_KEY,
@@ -15,7 +15,7 @@ import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 import { verifyLatestBlockFees } from "../util/block";
 import { createTransfer } from "../util/transactions";
 
-describeDevMoonbeam("Sudo - successful setParachainBondAccount", (context) => {
+describeDevMoonbeam("Sudo - successful setAllychainBondAccount", (context) => {
   let alith: KeyringPair;
   before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -25,20 +25,20 @@ describeDevMoonbeam("Sudo - successful setParachainBondAccount", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
       )
     );
-    //check parachainBondInfo
-    const parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
-    expect(parachainBondInfo.toHuman()["percent"]).to.equal("30.00%");
+    //check allychainBondInfo
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(GENESIS_ACCOUNT);
+    expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
     //check events
     expect(events.length).to.eq(5);
-    expect(context.polkadotApi.events.parachainStaking.ParachainBondAccountSet.is(events[1])).to.be
-      .true;
-    expect(context.polkadotApi.events.balances.Deposit.is(events[3])).to.be.true;
-    expect(context.polkadotApi.events.system.ExtrinsicSuccess.is(events[4])).to.be.true;
+    expect(context.axiaApi.events.allychainStaking.AllychainBondAccountSet.is(events[1] as any))
+      .to.be.true;
+    expect(context.axiaApi.events.balances.Deposit.is(events[3] as any)).to.be.true;
+    expect(context.axiaApi.events.system.ExtrinsicSuccess.is(events[4] as any)).to.be.true;
     // check balance diff (diff should be null for sudo - funds are sent back)
     expect(await context.web3.eth.getBalance(GENESIS_ACCOUNT, 1)).to.equal(
       GENESIS_ACCOUNT_BALANCE.toString()
@@ -54,7 +54,7 @@ describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
     await context.createBlock({
       transactions: [
         await createTransfer(
-          context.web3,
+          context,
           TEST_ACCOUNT,
           BigInt(initBalance) - 1n - 21000n * 1_000_000_000n,
           {
@@ -74,8 +74,8 @@ describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
       await createBlockWithExtrinsic(
         context,
         alith,
-        context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+        context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
         )
       );
     } catch (e) {
@@ -84,9 +84,9 @@ describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
           "to pay some fees , e.g. account balance too low"
       );
     }
-    //check parachainBondInfo
-    const parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
+    //check allychainBondInfo
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
   });
 });
 describeDevMoonbeam("Sudo - Only sudo account", (context) => {
@@ -99,20 +99,20 @@ describeDevMoonbeam("Sudo - Only sudo account", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       genesisAccount,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
       )
     );
-    //check parachainBondInfo
-    const parachainBondInfo = await context.polkadotApi.query.parachainStaking.parachainBondInfo();
-    expect(parachainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
-    expect(parachainBondInfo.toHuman()["percent"]).to.equal("30.00%");
+    //check allychainBondInfo
+    const allychainBondInfo = await context.axiaApi.query.allychainStaking.allychainBondInfo();
+    expect(allychainBondInfo.toHuman()["account"]).to.equal(ZERO_ADDRESS);
+    expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
     //check events
     expect(events.length === 6).to.be.true;
-    expect(context.polkadotApi.events.system.NewAccount.is(events[2])).to.be.true;
-    expect(context.polkadotApi.events.balances.Endowed.is(events[3])).to.be.true;
-    expect(context.polkadotApi.events.treasury.Deposit.is(events[4])).to.be.true;
-    expect(context.polkadotApi.events.system.ExtrinsicFailed.is(events[5])).to.be.true;
+    expect(context.axiaApi.events.system.NewAccount.is(events[2] as any)).to.be.true;
+    expect(context.axiaApi.events.balances.Endowed.is(events[3] as any)).to.be.true;
+    expect(context.axiaApi.events.treasury.Deposit.is(events[4] as any)).to.be.true;
+    expect(context.axiaApi.events.system.ExtrinsicFailed.is(events[5] as any)).to.be.true;
     // check balance diff (should not be null for a failed extrinsic)
     expect(
       BigInt(await context.web3.eth.getBalance(GENESIS_ACCOUNT, 1)) - GENESIS_ACCOUNT_BALANCE !== 0n
@@ -130,11 +130,11 @@ describeDevMoonbeam("Sudo - Only sudo account - test gas", (context) => {
     await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
       )
     );
 
-    await verifyLatestBlockFees(context.polkadotApi, expect);
+    await verifyLatestBlockFees(context, expect);
   });
 });

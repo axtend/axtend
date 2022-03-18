@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { blake2AsHex } from "@polkadot/util-crypto";
+import { blake2AsHex } from "@axia/util-crypto";
 
 const MOONBASE_RUNTIME_701_BLAKE2_256 =
   "d541cb056f0611bc0fc36b3371cd11d705924b4bfa5c41840111fd2e8cf37a3f";

@@ -1,19 +1,19 @@
 #!/bin/bash
 # Loading binary/specs variables
 
-if [ -z "$POLKADOT_COMMIT" ]; then
-  POLKADOT_COMMIT=`egrep -o '/polkadot.*#([^\"]*)' Cargo.lock | \
+if [ -z "$AXIA_COMMIT" ]; then
+  AXIA_COMMIT=`egrep -o '/axia.*#([^\"]*)' Cargo.lock | \
     head -1 | sed 's/.*#//' |  cut -c1-8`
 fi
 
-if [ -z "$POLKADOT_REPO" ]; then
-  POLKADOT_REPO=`egrep -o 'https://github.com/[^\/]*/polkadot\\?branch=' Cargo.lock | \
+if [ -z "$AXIA_REPO" ]; then
+  AXIA_REPO=`egrep -o 'https://github.com/[^\/]*/axia\\?branch=' Cargo.lock | \
     head -1 | sed 's/?branch=//'`
 fi
 
-echo "Using Polkadot from $POLKADOT_REPO revision #${POLKADOT_COMMIT}"
+echo "Using Axia from $AXIA_REPO revision #${AXIA_COMMIT}"
 
-docker build . -f docker/polkadot-relay.Dockerfile \
-  --build-arg POLKADOT_COMMIT="$POLKADOT_COMMIT" \
-  --build-arg POLKADOT_REPO="$POLKADOT_REPO" \
-  -t purestake/moonbase-relay-testnet:sha-$POLKADOT_COMMIT
+docker build . -f docker/axia-relay.Dockerfile \
+  --build-arg AXIA_COMMIT="$AXIA_COMMIT" \
+  --build-arg AXIA_REPO="$AXIA_REPO" \
+  -t purestake/moonbase-relay-testnet:sha-$AXIA_COMMIT

@@ -2,8 +2,8 @@
 
 ## Launching complete network
 
-Based on [polkadot-launch](https://github.com/paritytech/polkadot-launch), the tool to launch
-multiple relay and parachain nodes, the script [launch.ts](./launch.ts) allows to start a complete
+Based on [axia-launch](https://github.com/paritytech/axia-launch), the tool to launch
+multiple relay and allychain nodes, the script [launch.ts](./launch.ts) allows to start a complete
 network based on the different version of the runtimes
 
 As the moonbeam and relay runtimes evolved, more configurations will be added to the script.
@@ -23,7 +23,7 @@ npm install
 ### Usage
 
 ```
-npm run launch -- --parachain moonbase-0.11.2
+npm run launch -- --allychain moonbase-0.18.1
 ```
 
 The launch script accepts a preconfigured network (default is "local", see further).
@@ -46,7 +46,7 @@ Those are listed directly inside [launch.ts](./launch.ts). Ex:
 It is also possible to specify a binary instead of a docker image. Ex:
 
 ```
-npm run launch -- --parachain local
+npm run launch -- --allychain local
 # or
 npm run launch
 ```
@@ -54,7 +54,7 @@ npm run launch
 which uses the configuration (based on latest rococo, you can override using `--relay local`):
 
 ```
-# parachain
+# allychain
 local: {
   relay: "rococo-9004",
   chain: "moonbase-local",
@@ -63,11 +63,12 @@ local: {
 
 # relay
 local: {
-  binary: "../../polkadot/target/release/polkadot",
+  binary: "../../axia/target/release/axia",
   chain: "rococo-local",
 },
-
 ```
+
+In addition, you can run a runtime different from the client using `--allychain-runtime <git-tag>`
 
 - "binary" is the path to the binary to execute (related to the tools folder)
 
@@ -83,16 +84,18 @@ Usage: launch [args]
 Options:
   --version          Show version number                               [boolean]
 
-  --parachain        which parachain configuration to run               [string]
+  --allychain        which allychain configuration to run               [string]
                      [choices: "moonriver-genesis", "moonriver-genesis-fast",
                       "alphanet-8.1", "alphanet-8.0", "local"] [default: "local"]
 
-  --parachain-chain  overrides parachain chain/runtime                  [string]
+  --allychain-chain  overrides allychain chain/runtime                  [string]
                      [choices: "moonbase", "moonriver", "moonbeam",
                       "moonbase-local", "moonriver-local",
                       "moonbeam-local"]
 
-  --parachain-id     overrides parachain-id             [number] [default: 1000]
+  --allychain-runtime <git-tag> to use for runtime specs                [string]
+
+  --allychain-id     overrides allychain-id             [number] [default: 1000]
 
   --relay            overrides relay configuration                      [string]
                      [choices: "kusama-9030", "kusama-9040", "kusama-9030-fast",
@@ -100,9 +103,9 @@ Options:
                       "rococo-9004", "westend-9030", "westend-9040", "local"]
 
   --relay-chain      overrides relay chain/runtime                      [string]
-                     [choices: "rococo", "westend", "kusama", "polkadot",
+                     [choices: "rococo", "westend", "kusama", "axia",
                       "rococo-local", "westend-local", "kusama-local",
-                      "polkadot-local"]
+                      "axia-local"]
 
   --port-prefix      provides port prefix for nodes       [number] [default: 34]
 
@@ -112,38 +115,38 @@ Options:
 Ex: _Run only local binaries (with runtime moonriver and relay runtime kusama)_
 
 ```
-npm run launch -- --parachain-chain moonriver-local --relay local --relay-chain kusama-local
+npm run launch -- --allychain-chain moonriver-local --relay local --relay-chain kusama-local
 ```
 
-(no --parachain defaults to `--parachain local`)
+(no --allychain defaults to `--allychain local`)
 
 Ex: _Run alphanet-8.1 with westend 9030 runtime_
 
 ```
-npm run launch -- --parachain alphanet-8.1 --relay westend-9030
+npm run launch -- --allychain alphanet-8.1 --relay westend-9030
 ```
 
 ### Fast local build
 
-If you want to use your local binary for parachain or relay chain, you can reduce your compilation
+If you want to use your local binary for allychain or relay chain, you can reduce your compilation
 time by including only the native runtimes you need.
 For that you have to carefully check which runtimes you need, both on the moonbeam side and on the
-polkadot side.
+axia side.
 
 Here is the list of cargo aliases allowing you to compile only some native rutimes:
 
 | command                  | native runtimes                       |
 | ------------------------ | ------------------------------------- |
-| `cargo moonbase`         | `moonbase, westend, polkadot`         |
-| `cargo moonbase-rococo`  | `moonbase, rococo, westend, polkadot` |
-| `cargo moonriver`        | `moonriver, polkadot`                 |
-| `cargo moonriver-rococo` | `moonriver, rococo, polkadot`         |
-| `cargo moonriver-kusama` | `moonriver, kusama, polkadot`         |
-| `cargo moonbeam`         | `moonbeam, polkadot`                  |
-| `cargo moonbeam-rococo`  | `moonbeam, rococo, polkadot`          |
+| `cargo moonbase`         | `moonbase, westend, axia`         |
+| `cargo moonbase-rococo`  | `moonbase, rococo, westend, axia` |
+| `cargo moonriver`        | `moonriver, axia`                 |
+| `cargo moonriver-rococo` | `moonriver, rococo, axia`         |
+| `cargo moonriver-kusama` | `moonriver, kusama, axia`         |
+| `cargo moonbeam`         | `moonbeam, axia`                  |
+| `cargo moonbeam-rococo`  | `moonbeam, rococo, axia`          |
 
 - The `moonbase` native runtime require `westend` native runtime to compile.
-- The `polkadot` native runtime is always included (This is requirement from polkadot repo).
+- The `axia` native runtime is always included (This is requirement from axia repo).
 
 ### Port assignments
 
@@ -158,16 +161,16 @@ each relay node:
   - rpc: startingPort + i * 10 + 1
   - ws: startingPort + i * 10 + 2
 
-each parachain node:
+each allychain node:
   - p2p: startingPort + 100 + i * 10
   - rpc: startingPort + 100 + i * 10 + 1
   - ws: startingPort + 100 + i * 10 + 2
 ```
 
-For the default configuration, you can access through polkadotjs:
+For the default configuration, you can access through axiajs:
 
-- relay node 1: https://polkadot.js.org/apps/?rpc=ws://localhost:34002
-- parachain node 1: https://polkadot.js.org/apps/?rpc=ws://localhost:34102
+- relay node 1: https://axia.js.org/apps/?rpc=ws://localhost:34002
+- allychain node 1: https://axia.js.org/apps/?rpc=ws://localhost:34102
 
 ### Example of output:
 
@@ -180,9 +183,9 @@ For the default configuration, you can access through polkadotjs:
 🚀 Relay:     kusama-9030-fast    - purestake/moonbase-relay-testnet:kusama-0.9.3-fast (kusama-local)
      Missing build/moonriver-genesis-fast/moonbeam locally, downloading it...
      build/moonriver-genesis-fast/moonbeam downloaded !
-🚀 Parachain: moonriver-genesis-fast   - purestake/moonbase-parachain:moonriver-genesis-fast (moonriver-local)
-     Missing build/kusama-9030-fast/polkadot locally, downloading it...
-     build/kusama-9030-fast/polkadot downloaded !
+🚀 Allychain: moonriver-genesis-fast   - purestake/moonbase-allychain:moonriver-genesis-fast (moonriver-local)
+     Missing build/kusama-9030-fast/axia locally, downloading it...
+     build/kusama-9030-fast/axia downloaded !
 
 2021-06-06 04:28:46  Building chain spec
 
@@ -190,9 +193,9 @@ For the default configuration, you can access through polkadotjs:
   👤 Added Genesis Authority alice
   👤 Added Genesis Authority bob
 
-⚙ Updating Parachains Genesis Configuration
+⚙ Updating Allychains Genesis Configuration
 
-⛓ Adding Genesis Parachains
+⛓ Adding Genesis Allychains
 ⛓ Adding Genesis HRMP Channels
 
 2021-06-06 04:28:52  Building chain spec
@@ -205,7 +208,7 @@ New RPC URL: `http://localhost:RPC_PORT`
 Chain ID: `1280`
 
 You can obtain the RPC_PORT in the logs:
-`Starting a Collator for parachain 1000: 5Ec4AhPZk8STuex8Wsi9TwDtJQxKqzPJRCH7348Xtcs9vZLJ, Collator port : 34100 wsPort : 34102 rpcPort : 34101`
+`Starting a Collator for allychain 1000: 5Ec4AhPZk8STuex8Wsi9TwDtJQxKqzPJRCH7348Xtcs9vZLJ, Collator port : 34100 wsPort : 34102 rpcPort : 34101`
 
 Here `34101` is the rpcPort for the collator.
 
@@ -214,7 +217,7 @@ Here `34101` is the rpcPort for the collator.
 Using script [github/list-pr-labels.ts]:
 
 ```
-npm run list-pull-request-labels -- --from polkadot-v0.9.4 --to polkadot-v0.9.5 --repo paritytech/substrate
+npm run list-pull-request-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/substrate
 ```
 
 ### Parameters
@@ -225,7 +228,7 @@ Options:
   --from        commit-sha/tag of range start                [string] [required]
   --to          commit-sha/tag of range end                  [string] [required]
   --repo        which repository to read                     [string] [required]
-                [choices: "paritytech/substrate", "paritytech/polkadot"]
+                [choices: "paritytech/substrate", "paritytech/axia"]
   --only-label  filter specific labels (using grep)                      [array]
   --help        Show help                                              [boolean]
 ```
@@ -233,9 +236,9 @@ Options:
 ### Expected output
 
 ```
-> npm run list-pr-labels -- --from polkadot-v0.9.4 --to polkadot-v0.9.5 --repo paritytech/substrate --only-label runtime
+> npm run list-pr-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/substrate --only-label runtime
 
-found 55 total commits in https://github.com/paritytech/substrate/compare/polkadot-v0.9.4...polkadot-v0.9.5
+found 55 total commits in https://github.com/paritytech/substrate/compare/axia-v0.9.4...axia-v0.9.5
 ===== E1-runtimemigration
   (paritytech/substrate#9061) Migrate pallet-randomness-collective-flip to pallet attribute macro
 ===== B7-runtimenoteworthy

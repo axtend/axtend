@@ -1,11 +1,11 @@
-import { Keyring } from "@polkadot/api";
-import { KeyringPair } from "@polkadot/keyring/types";
+import { Keyring } from "@axia/api";
+import { KeyringPair } from "@axia/keyring/types";
 import { expect } from "chai";
 import Web3 from "web3";
 import { Account } from "web3-core";
-import { stringToU8a } from "@polkadot/util";
-import type { SubmittableExtrinsic } from "@polkadot/api/promise/types";
-import { blake2AsHex, randomAsHex } from "@polkadot/util-crypto";
+import { stringToU8a } from "@axia/util";
+import type { SubmittableExtrinsic } from "@axia/api/promise/types";
+import { blake2AsHex, randomAsHex } from "@axia/util-crypto";
 import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 
 import {
@@ -26,7 +26,7 @@ import { verifyLatestBlockFees } from "../util/block";
 export const VESTING_PERIOD = 201600n;
 async function calculate_vested_amount(context, totalReward, initialPayment, numberOfBlocks) {
   const amountToVest = BigInt(totalReward) - BigInt(initialPayment);
-  // On average a parachain only gets a candidate into every other relay chain block.
+  // On average a allychain only gets a candidate into every other relay chain block.
   // In the dev service, where the relay block number is mocked, we get exactly two relay blocks.
   const elapsedRelayBlocks = numberOfBlocks * 2;
   const amountForBlocks = (BigInt(amountToVest) * BigInt(elapsedRelayBlocks)) / VESTING_PERIOD;
@@ -43,7 +43,7 @@ export const getAccountPayable = async (
   claimedReward: any;
   contributedRelayAddresses: any;
 } | null> => {
-  const accountsPayable = (await context.polkadotApi.query.crowdloanRewards.accountsPayable(
+  const accountsPayable = (await context.axiaApi.query.crowdloanRewards.accountsPayable(
     address
   )) as any;
   return accountsPayable.unwrapOr(null);
@@ -70,23 +70,23 @@ describeDevMoonbeam("Crowdloan", (context) => {
 
   it("should be able to register the genesis account for reward", async function () {
     // should be able to register the genesis account for reward
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, GENESIS_ACCOUNT, 3_000_000n * GLMR],
         ])
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    await verifyLatestBlockFees(context.polkadotApi, expect, 3_000_000n);
+    await verifyLatestBlockFees(context, expect, 3_000_000n);
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
@@ -96,7 +96,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
     expect((await getAccountPayable(context, GENESIS_ACCOUNT)).totalReward.toBigInt()).to.equal(
       3_000_000n * GLMR
     );
-    let isInitialized = await context.polkadotApi.query.crowdloanRewards.initialized();
+    let isInitialized = await context.axiaApi.query.crowdloanRewards.initialized();
     expect(isInitialized.toHuman()).to.be.true;
   });
 });
@@ -111,21 +111,21 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 
   it("should be able to make a first claim", async function () {
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, GENESIS_ACCOUNT, 3_000_000n * GLMR],
         ])
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
@@ -140,9 +140,9 @@ describeDevMoonbeam("Crowdloan", (context) => {
       2
     );
     // construct a transaction
-    const transfer = context.polkadotApi.tx.crowdloanRewards.claim();
+    const transfer = context.axiaApi.tx.crowdloanRewards.claim();
     await transfer.signAndSend(genesisAccount);
-    const details = await context.polkadotApi.rpc.payment.queryFeeDetails(transfer.toHex());
+    const details = await context.axiaApi.rpc.payment.queryFeeDetails(transfer.toHex());
     const claimFee =
       details.inclusionFee.unwrap().baseFee.toBigInt() +
       details.inclusionFee.unwrap().lenFee.toBigInt() +
@@ -158,7 +158,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
     expect(
       BigInt(await context.web3.eth.getBalance(GENESIS_ACCOUNT)) - GENESIS_ACCOUNT_BALANCE
     ).to.equal(claimed - claimFee); // reduce the claim fee part;
-    const account = await context.polkadotApi.query.system.account(GENESIS_ACCOUNT);
+    const account = (await context.axiaApi.query.system.account(GENESIS_ACCOUNT)) as any;
     expect(account.data.free.toBigInt() - GENESIS_ACCOUNT_BALANCE).to.equal(claimed - claimFee);
   });
 });
@@ -173,21 +173,21 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 
   it("should show me the money after 5 blocks, after first claim was called", async function () {
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, GENESIS_ACCOUNT, 3_000_000n * GLMR],
         ])
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
@@ -197,7 +197,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
     let rewardInfo = await getAccountPayable(context, GENESIS_ACCOUNT);
 
     // construct a transaction
-    const transfer = context.polkadotApi.tx.crowdloanRewards.claim();
+    const transfer = context.axiaApi.tx.crowdloanRewards.claim();
     await transfer.signAndSend(genesisAccount);
 
     await context.createBlock();
@@ -213,7 +213,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
       5
     );
 
-    await context.polkadotApi.tx.crowdloanRewards.claim().signAndSend(genesisAccount);
+    await context.axiaApi.tx.crowdloanRewards.claim().signAndSend(genesisAccount);
     await context.createBlock();
     const isPayable4 = await getAccountPayable(context, GENESIS_ACCOUNT);
     expect(isPayable4.claimedReward.toBigInt()).to.equal(claimed);
@@ -230,21 +230,21 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 
   it("should make first claim 5 blocks after initialization called", async function () {
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, GENESIS_ACCOUNT, 3_000_000n * GLMR],
         ])
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
@@ -264,7 +264,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
       5
     );
 
-    await context.polkadotApi.tx.crowdloanRewards.claim().signAndSend(genesisAccount);
+    await context.axiaApi.tx.crowdloanRewards.claim().signAndSend(genesisAccount);
     await context.createBlock();
 
     const isPayable4 = await getAccountPayable(context, GENESIS_ACCOUNT);
@@ -282,21 +282,21 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 
   it("should not be able to call initializeRewardVec another time", async function () {
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, GENESIS_ACCOUNT, 3_000_000n * GLMR],
         ])
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
@@ -304,9 +304,9 @@ describeDevMoonbeam("Crowdloan", (context) => {
     await context.createBlock();
 
     // should not be able to call initializeRewardVec another time
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, ALITH, 1000n * GLMR],
         ])
       )
@@ -326,21 +326,21 @@ describeDevMoonbeam("Crowdloan", (context) => {
 
   it("should be able to register the genesis account - with small amount", async function () {
     // initializeRewardVec
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, ALITH, 3_000_000n * GLMR],
         ])
       )
       .signAndSend(alithAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
@@ -359,7 +359,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
       2
     );
     // claim
-    await context.polkadotApi.tx.crowdloanRewards.claim().signAndSend(alithAccount);
+    await context.axiaApi.tx.crowdloanRewards.claim().signAndSend(alithAccount);
     await context.createBlock();
 
     const isPayable4 = await getAccountPayable(context, ALITH);
@@ -375,7 +375,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
 
   before("Setup genesis account for substrate", async () => {
     numberOfAccounts = Number(
-      (await context.polkadotApi.consts.crowdloanRewards.maxInitContributors) as any
+      (await context.axiaApi.consts.crowdloanRewards.maxInitContributors) as any
     );
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -398,18 +398,18 @@ describeDevMoonbeam("Crowdloan", (context) => {
     expect(largInput[0][1] !== largInput[numberOfAccounts - 1][1]).to.eq(true);
 
     // should be able to register many accounts
-    await context.polkadotApi.tx.sudo
-      .sudo(context.polkadotApi.tx.crowdloanRewards.initializeRewardVec(largInput))
+    await context.axiaApi.tx.sudo
+      .sudo(context.axiaApi.tx.crowdloanRewards.initializeRewardVec(largInput))
       .signAndSend(sudoAccount);
 
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
@@ -436,7 +436,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   before("Setup genesis account for substrate", async () => {
     // We shouldnt be able to register as many accounts unless we do it in batches
     numberOfAccounts = Number(
-      (await context.polkadotApi.consts.crowdloanRewards.maxInitContributors) as any
+      (await context.axiaApi.consts.crowdloanRewards.maxInitContributors) as any
     );
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -458,23 +458,23 @@ describeDevMoonbeam("Crowdloan", (context) => {
     expect(largInput[0][1] !== largInput[numberOfAccounts - 1][1]).to.eq(true);
 
     // should be able to register many accounts
-    await context.polkadotApi.tx.utility
+    await context.axiaApi.tx.utility
       .batch([
-        await context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.crowdloanRewards.initializeRewardVec(
+        await context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.crowdloanRewards.initializeRewardVec(
             largInput.slice(0, Math.floor(numberOfAccounts / 3))
           )
         ),
-        await context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.crowdloanRewards.initializeRewardVec(
+        await context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.crowdloanRewards.initializeRewardVec(
             largInput.slice(
               Math.floor(numberOfAccounts / 3),
               Math.floor((numberOfAccounts * 2) / 3)
             )
           )
         ),
-        await context.polkadotApi.tx.sudo.sudo(
-          context.polkadotApi.tx.crowdloanRewards.initializeRewardVec(
+        await context.axiaApi.tx.sudo.sudo(
+          context.axiaApi.tx.crowdloanRewards.initializeRewardVec(
             largInput.slice(Math.floor((numberOfAccounts * 2) / 3), numberOfAccounts)
           )
         ),
@@ -482,12 +482,12 @@ describeDevMoonbeam("Crowdloan", (context) => {
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
@@ -516,50 +516,50 @@ describeDevMoonbeam("Crowdloan", (context) => {
     let calls = [];
     // We are gonna put the initialization and completion in a batch_all utility call
     calls.push(
-      context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+      context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
         [relayChainAddress, GENESIS_ACCOUNT, 1_500_000n * GLMR],
         [relayChainAddress_2, null, 1_500_000n * GLMR],
       ])
     );
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
     calls.push(
-      context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+      context.axiaApi.tx.crowdloanRewards.completeInitialization(
         initBlock.toBigInt() + VESTING_PERIOD
       )
     );
 
     // Here we build the utility call
-    const proposal = context.polkadotApi.tx.utility.batchAll(calls);
+    const proposal = context.axiaApi.tx.utility.batchAll(calls);
 
     // We encode the proposal
     let encodedProposal = (proposal as SubmittableExtrinsic)?.method.toHex() || "";
     let encodedHash = blake2AsHex(encodedProposal);
 
     // Submit the pre-image
-    await context.polkadotApi.tx.democracy.notePreimage(encodedProposal).signAndSend(sudoAccount);
+    await context.axiaApi.tx.democracy.notePreimage(encodedProposal).signAndSend(sudoAccount);
 
     await context.createBlock();
 
     // Propose
-    await context.polkadotApi.tx.democracy
+    await context.axiaApi.tx.democracy
       .propose(encodedHash, 1000n * GLMR)
       .signAndSend(sudoAccount);
 
     await context.createBlock();
-    const publicPropCount = await context.polkadotApi.query.democracy.publicPropCount();
+    const publicPropCount = await context.axiaApi.query.democracy.publicPropCount();
 
     // we only use sudo to enact the proposal
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudoUncheckedWeight(
-        context.polkadotApi.tx.democracy.enactProposal(encodedHash, publicPropCount),
+        context.axiaApi.tx.democracy.enactProposal(encodedHash, publicPropCount),
         1
       )
       .signAndSend(sudoAccount);
 
     await context.createBlock();
 
-    let isInitialized = await context.polkadotApi.query.crowdloanRewards.initialized();
+    let isInitialized = await context.axiaApi.query.crowdloanRewards.initialized();
 
     expect(isInitialized.toHuman()).to.be.true;
 
@@ -568,7 +568,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
 
     // Get reward info of unassociated
     let reward_info_unassociated = (
-      (await context.polkadotApi.query.crowdloanRewards.unassociatedContributions(
+      (await context.axiaApi.query.crowdloanRewards.unassociatedContributions(
         relayChainAddress_2
       )) as any
     ).unwrap();
@@ -583,7 +583,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
     expect(reward_info_unassociated.claimedReward.toBigInt()).to.equal(0n);
 
     // check balances
-    const account = await context.polkadotApi.query.system.account(GENESIS_ACCOUNT);
+    const account = (await context.axiaApi.query.system.account(GENESIS_ACCOUNT)) as any;
     expect(account.data.free.toBigInt() - GENESIS_ACCOUNT_BALANCE).to.equal(
       reward_info_associated.claimedReward.toBigInt()
     );
@@ -599,9 +599,9 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 
   it("should be able to burn the dust", async function () {
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, GENESIS_ACCOUNT, 1_500_000n * GLMR],
           [relayChainAddress_2, null, 1_499_999_999_999_999_999_999_999n],
         ])
@@ -609,22 +609,22 @@ describeDevMoonbeam("Crowdloan", (context) => {
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
-    let previousIssuance = (await context.polkadotApi.query.balances.totalIssuance()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let previousIssuance = (await context.axiaApi.query.balances.totalIssuance()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let issuance = (await context.polkadotApi.query.balances.totalIssuance()) as any;
+    let issuance = (await context.axiaApi.query.balances.totalIssuance()) as any;
 
-    let isInitialized = await context.polkadotApi.query.crowdloanRewards.initialized();
+    let isInitialized = await context.axiaApi.query.crowdloanRewards.initialized();
 
     expect(isInitialized.toJSON()).to.be.true;
 
@@ -651,9 +651,9 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 
   it("should be able to associate identity", async function () {
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, GENESIS_ACCOUNT, 1_500_000n * GLMR],
           [relayAccount.addressRaw, null, 1_500_000n * GLMR],
         ])
@@ -661,26 +661,26 @@ describeDevMoonbeam("Crowdloan", (context) => {
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let isInitialized = await context.polkadotApi.query.crowdloanRewards.initialized();
+    let isInitialized = await context.axiaApi.query.crowdloanRewards.initialized();
 
     expect(isInitialized.toJSON()).to.be.true;
 
     // relayAccount should be in the unassociated contributions
     expect(
       (
-        (await context.polkadotApi.query.crowdloanRewards.unassociatedContributions(
+        (await context.axiaApi.query.crowdloanRewards.unassociatedContributions(
           relayAccount.addressRaw
         )) as any
       )
@@ -702,7 +702,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
     signature["Ed25519"] = relayAccount.sign(message);
 
     // Associate the identity
-    await context.polkadotApi.tx.crowdloanRewards
+    await context.axiaApi.tx.crowdloanRewards
       .associateNativeIdentity(toAssociateAccount.address, relayAccount.addressRaw, signature)
       .signAndSend(genesisAccount);
     await context.createBlock();
@@ -710,7 +710,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
     // relayAccount should no longer be in the unassociated contributions
     expect(
       (
-        await context.polkadotApi.query.crowdloanRewards.unassociatedContributions(
+        await context.axiaApi.query.crowdloanRewards.unassociatedContributions(
           relayAccount.addressRaw
         )
       ).toJSON()
@@ -730,7 +730,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
       3
     );
 
-    await context.polkadotApi.tx.crowdloanRewards.claim().signAndSend(toAssociateAccount);
+    await context.axiaApi.tx.crowdloanRewards.claim().signAndSend(toAssociateAccount);
 
     await context.createBlock();
 
@@ -767,9 +767,9 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 
   it("should be able to change reward address with relay keys", async function () {
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayAccount.addressRaw, firstAccount.address, 1_500_000n * GLMR],
           [relayAccount2.addressRaw, firstAccount.address, 1_500_000n * GLMR],
         ])
@@ -777,19 +777,19 @@ describeDevMoonbeam("Crowdloan", (context) => {
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let isInitialized = await context.polkadotApi.query.crowdloanRewards.initialized();
+    let isInitialized = await context.axiaApi.query.crowdloanRewards.initialized();
 
     expect(isInitialized.toJSON()).to.be.true;
 
@@ -815,7 +815,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
       [relayAccount2.addressRaw, signature2],
     ];
     // Associate the identity
-    await context.polkadotApi.tx.crowdloanRewards
+    await context.axiaApi.tx.crowdloanRewards
       .changeAssociationWithRelayKeys(toAssociateAccount.address, firstAccount.address, proofs)
       .signAndSend(genesisAccount);
     await context.createBlock();
@@ -839,28 +839,28 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 
   it("should be able to update reward address", async function () {
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, GENESIS_ACCOUNT, 3_000_000n * GLMR],
         ])
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let isInitialized = await context.polkadotApi.query.crowdloanRewards.initialized();
+    let isInitialized = await context.axiaApi.query.crowdloanRewards.initialized();
 
     expect(isInitialized.toJSON()).to.be.true;
 
@@ -879,7 +879,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
       2
     );
 
-    await context.polkadotApi.tx.crowdloanRewards.claim().signAndSend(genesisAccount);
+    await context.axiaApi.tx.crowdloanRewards.claim().signAndSend(genesisAccount);
 
     await context.createBlock();
 
@@ -889,7 +889,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
     expect(claimedRewards.toBigInt()).to.equal(claimed);
 
     // Let's update the reward address
-    await context.polkadotApi.tx.crowdloanRewards
+    await context.axiaApi.tx.crowdloanRewards
       .updateRewardAddress(toUpdateAccount.address)
       .signAndSend(genesisAccount);
     await context.createBlock();
@@ -922,28 +922,28 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 
   it("should be able to call crowdloan rewards with non-transfer proxy", async function () {
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, GENESIS_ACCOUNT, 3_000_000n * GLMR],
         ])
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let isInitialized = await context.polkadotApi.query.crowdloanRewards.initialized();
+    let isInitialized = await context.axiaApi.query.crowdloanRewards.initialized();
 
     expect(isInitialized.toJSON()).to.be.true;
 
@@ -955,7 +955,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
     expect(rewardInfo.claimedReward.toBigInt()).to.equal(900_000n * GLMR);
 
     // CreateProxy
-    await context.polkadotApi.tx.proxy
+    await context.axiaApi.tx.proxy
       .addProxy(proxy.address, "NonTransfer", 0)
       .signAndSend(genesisAccount);
     await context.createBlock();
@@ -969,8 +969,8 @@ describeDevMoonbeam("Crowdloan", (context) => {
     );
 
     // Claim with proxy
-    await context.polkadotApi.tx.proxy
-      .proxy(genesisAccount.address, null, context.polkadotApi.tx.crowdloanRewards.claim())
+    await context.axiaApi.tx.proxy
+      .proxy(genesisAccount.address, null, context.axiaApi.tx.crowdloanRewards.claim())
       .signAndSend(proxy);
 
     await context.createBlock();
@@ -998,28 +998,28 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 
   it("should NOT be able to call non-claim extrinsic with non-transfer proxy", async function () {
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.initializeRewardVec([
+        context.axiaApi.tx.crowdloanRewards.initializeRewardVec([
           [relayChainAddress, GENESIS_ACCOUNT, 3_000_000n * GLMR],
         ])
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
+    let initBlock = (await context.axiaApi.query.crowdloanRewards.initRelayBlock()) as any;
 
     // Complete initialization
-    await context.polkadotApi.tx.sudo
+    await context.axiaApi.tx.sudo
       .sudo(
-        context.polkadotApi.tx.crowdloanRewards.completeInitialization(
+        context.axiaApi.tx.crowdloanRewards.completeInitialization(
           initBlock.toBigInt() + VESTING_PERIOD
         )
       )
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    let isInitialized = await context.polkadotApi.query.crowdloanRewards.initialized();
+    let isInitialized = await context.axiaApi.query.crowdloanRewards.initialized();
 
     expect(isInitialized.toJSON()).to.be.true;
 
@@ -1031,7 +1031,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
     expect(rewardInfo.claimedReward.toBigInt()).to.equal(900_000n * GLMR);
 
     // CreateProxy
-    await context.polkadotApi.tx.proxy
+    await context.axiaApi.tx.proxy
       .addProxy(proxy.address, "NonTransfer", 0)
       .signAndSend(genesisAccount);
     await context.createBlock();
@@ -1040,14 +1040,14 @@ describeDevMoonbeam("Crowdloan", (context) => {
     let { events } = await createBlockWithExtrinsic(
       context,
       proxy,
-      context.polkadotApi.tx.proxy.proxy(
+      context.axiaApi.tx.proxy.proxy(
         genesisAccount.address,
         null,
-        context.polkadotApi.tx.crowdloanRewards.updateRewardAddress(proxy.address)
+        context.axiaApi.tx.crowdloanRewards.updateRewardAddress(proxy.address)
       )
     );
     expect(events[1].toHuman().method).to.eq("ProxyExecuted");
-    expect(events[1].data.toJSON()[0]["err"].hasOwnProperty("badOrigin")).to.eq(true);
+    expect(events[1].data[0].toString()).to.be.eq(`{"err":{"module":{"index":0,"error":5}}}`);
 
     // Genesis account still has the money
     rewardInfo = await getAccountPayable(context, GENESIS_ACCOUNT);

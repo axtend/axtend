@@ -1,19 +1,19 @@
 
-# POLKADOT_BINARY='../polkadot/target/release/polkadot'
-POLKADOT_BINARY='docker run parity/polkadot:v0.9.1'
+# AXIA_BINARY='../axia/target/release/axia'
+AXIA_BINARY='docker run parity/axia:v0.9.1'
 
 if [ -z "$MNEMONIC" ]; then
-  MNEMONIC=`$POLKADOT_BINARY key generate -w 24 --output-type Json | jq -r '.secretPhrase'`
+  MNEMONIC=`$AXIA_BINARY key generate -w 24 --output-type Json | jq -r '.secretPhrase'`
 fi
 
-KEY=`$POLKADOT_BINARY key inspect "$MNEMONIC" --output-type Json`
+KEY=`$AXIA_BINARY key inspect "$MNEMONIC" --output-type Json`
 SEED=`jq -r '.secretSeed' <<< $KEY `
-SR25519_SS58=`$POLKADOT_BINARY key inspect --scheme sr25519 "$MNEMONIC" --output-type Json 2>&1 | jq -r '.ss58PublicKey'`
-ED25519_SS58=`$POLKADOT_BINARY key inspect --scheme ed25519 "$MNEMONIC" --output-type Json 2>&1 | jq -r '.ss58PublicKey'`
-ECDSA_SS58=`$POLKADOT_BINARY key inspect --scheme ecdsa "$MNEMONIC" --output-type Json 2>&1 | jq -r '.ss58PublicKey'`
-SR25519_PUB=`$POLKADOT_BINARY key inspect --scheme sr25519 "$MNEMONIC" --output-type Json 2>&1 | jq -r '.publicKey'`
-ED25519_PUB=`$POLKADOT_BINARY key inspect --scheme ed25519 "$MNEMONIC" --output-type Json 2>&1 | jq -r '.publicKey'`
-ECDSA_PUB=`$POLKADOT_BINARY key inspect --scheme ecdsa "$MNEMONIC" --output-type Json 2>&1 | jq -r '.publicKey'`
+SR25519_SS58=`$AXIA_BINARY key inspect --scheme sr25519 "$MNEMONIC" --output-type Json 2>&1 | jq -r '.ss58PublicKey'`
+ED25519_SS58=`$AXIA_BINARY key inspect --scheme ed25519 "$MNEMONIC" --output-type Json 2>&1 | jq -r '.ss58PublicKey'`
+ECDSA_SS58=`$AXIA_BINARY key inspect --scheme ecdsa "$MNEMONIC" --output-type Json 2>&1 | jq -r '.ss58PublicKey'`
+SR25519_PUB=`$AXIA_BINARY key inspect --scheme sr25519 "$MNEMONIC" --output-type Json 2>&1 | jq -r '.publicKey'`
+ED25519_PUB=`$AXIA_BINARY key inspect --scheme ed25519 "$MNEMONIC" --output-type Json 2>&1 | jq -r '.publicKey'`
+ECDSA_PUB=`$AXIA_BINARY key inspect --scheme ecdsa "$MNEMONIC" --output-type Json 2>&1 | jq -r '.publicKey'`
 ECDSA_PUB_ENC=`cd tools && node_modules/.bin/ts-node beefy.ts $ECDSA_PUB`
 
 echo "****************** $node account data ******************"

@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
 import { customWeb3Request } from "../../util/providers";
 import {
   GENESIS_ACCOUNT,
@@ -9,9 +9,9 @@ import {
   CHARLETH,
   BALTATHAR_PRIV_KEY,
 } from "../../util/constants";
-import { blake2AsU8a, xxhashAsU8a } from "@polkadot/util-crypto";
-import { BN, hexToU8a, bnToHex, u8aToHex, stringToHex, numberToHex } from "@polkadot/util";
-import Keyring from "@polkadot/keyring";
+import { blake2AsU8a, xxhashAsU8a } from "@axia/util-crypto";
+import { BN, hexToU8a, bnToHex, u8aToHex, stringToHex, numberToHex } from "@axia/util";
+import Keyring from "@axia/keyring";
 import { getCompiled } from "../../util/contracts";
 import { ethers } from "ethers";
 import { createContract, createTransaction } from "../../util/transactions";
@@ -41,9 +41,9 @@ export async function mockAssetBalance(
   account
 ) {
   // Register the asset
-  await context.polkadotApi.tx.sudo
+  await context.axiaApi.tx.sudo
     .sudo(
-      context.polkadotApi.tx.assetManager.registerAsset(
+      context.axiaApi.tx.assetManager.registerAsset(
         sourceLocationRelayAssetType,
         relayAssetMetadata,
         new BN(1),
@@ -54,7 +54,7 @@ export async function mockAssetBalance(
   await context.createBlock();
 
   let assets = (
-    (await context.polkadotApi.query.assetManager.assetIdType(assetId)) as any
+    (await context.axiaApi.query.assetManager.assetIdType(assetId)) as any
   ).toJSON();
   // make sure we created it
   expect(assets["xcm"]["parents"]).to.equal(1);
@@ -81,9 +81,9 @@ export async function mockAssetBalance(
   // Get keys to modify total supply
   let assetKey = xxhashAsU8a(new TextEncoder().encode("Asset"), 128);
   let overallAssetKey = new Uint8Array([...module, ...assetKey, ...blake2concatAssetId]);
-  await context.polkadotApi.tx.sudo
+  await context.axiaApi.tx.sudo
     .sudo(
-      context.polkadotApi.tx.system.setStorage([
+      context.axiaApi.tx.system.setStorage([
         [u8aToHex(overallAccountKey), u8aToHex(assetBalance.toU8a())],
         [u8aToHex(overallAssetKey), u8aToHex(assetDetails.toU8a())],
       ])
@@ -106,7 +106,7 @@ const SELECTORS = {
 };
 const GAS_PRICE = "0x" + (1_000_000_000).toString(16);
 
-describeDevMoonbeam(
+describeDevMoonbeamAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace;
@@ -116,27 +116,27 @@ describeDevMoonbeam(
       // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
       // And we need relay tokens for issuing a transaction to be executed in the relay
       const balance = new BN("100000000000000");
-      const assetBalance = context.polkadotApi.createType("PalletAssetsAssetBalance", {
+      const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
         balance: balance,
       });
-      assetId = context.polkadotApi.createType(
+      assetId = context.axiaApi.createType(
         "u128",
         new BN("42259045809535163221576417993425387648")
       );
 
-      const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+      const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
         supply: balance,
       });
 
       await mockAssetBalance(context, assetBalance, assetDetails, sudoAccount, assetId, ALITH);
 
       let beforeAssetBalance = (
-        (await context.polkadotApi.query.assets.account(assetId, ALITH)) as any
+        (await context.axiaApi.query.assets.account(assetId, ALITH)) as any
       ).balance as BN;
 
       const contractData = await getCompiled("ERC20Instance");
       iFace = new ethers.utils.Interface(contractData.contract.abi);
-      const { contract, rawTx } = await createContract(context.web3, "ERC20Instance");
+      const { contract, rawTx } = await createContract(context, "ERC20Instance");
       const address = contract.options.address;
       await context.createBlock({ transactions: [rawTx] });
     });
@@ -264,7 +264,7 @@ describeDevMoonbeam(
   true
 );
 
-describeDevMoonbeam(
+describeDevMoonbeamAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace;
@@ -273,16 +273,16 @@ describeDevMoonbeam(
       sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
       // And we need relay tokens for issuing a transaction to be executed in the relay
-      const balance = context.polkadotApi.createType("Balance", 100000000000000);
-      const assetBalance = context.polkadotApi.createType("PalletAssetsAssetBalance", {
+      const balance = context.axiaApi.createType("Balance", 100000000000000);
+      const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
         balance: balance,
       });
 
-      assetId = context.polkadotApi.createType(
+      assetId = context.axiaApi.createType(
         "u128",
         new BN("42259045809535163221576417993425387648")
       );
-      const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+      const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
         supply: balance,
       });
 
@@ -290,7 +290,7 @@ describeDevMoonbeam(
 
       const contractData = await getCompiled("ERC20Instance");
       iFace = new ethers.utils.Interface(contractData.contract.abi);
-      const { rawTx } = await createContract(context.web3, "ERC20Instance");
+      const { rawTx } = await createContract(context, "ERC20Instance");
       await context.createBlock({ transactions: [rawTx] });
     });
     it("allows to approve transfers, and allowance matches", async function () {
@@ -300,7 +300,7 @@ describeDevMoonbeam(
         [BALTATHAR, 1000]
       );
 
-      const tx = await createTransaction(context.web3, {
+      const tx = await createTransaction(context, {
         from: ALITH,
         privateKey: ALITH_PRIV_KEY,
         value: "0x0",
@@ -321,7 +321,7 @@ describeDevMoonbeam(
       expect(receipt.logs[0].address).to.eq(ADDRESS_ERC20);
       expect(receipt.logs[0].topics.length).to.eq(3);
       expect(receipt.logs[0].topics[0]).to.eq(SELECTORS.logApprove);
-      let approvals = (await context.polkadotApi.query.assets.approvals(
+      let approvals = (await context.axiaApi.query.assets.approvals(
         assetId,
         ALITH,
         BALTATHAR
@@ -355,7 +355,7 @@ describeDevMoonbeam(
   true
 );
 
-describeDevMoonbeam(
+describeDevMoonbeamAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace, contractInstanceAddress;
@@ -364,16 +364,16 @@ describeDevMoonbeam(
       sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
       // And we need relay tokens for issuing a transaction to be executed in the relay
-      const balance = context.polkadotApi.createType("Balance", 100000000000000);
-      const assetBalance = context.polkadotApi.createType("PalletAssetsAssetBalance", {
+      const balance = context.axiaApi.createType("Balance", 100000000000000);
+      const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
         balance: balance,
       });
 
-      assetId = context.polkadotApi.createType(
+      assetId = context.axiaApi.createType(
         "u128",
         new BN("42259045809535163221576417993425387648")
       );
-      const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+      const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
         supply: balance,
       });
 
@@ -381,7 +381,7 @@ describeDevMoonbeam(
 
       const contractData = await getCompiled("ERC20Instance");
       iFace = new ethers.utils.Interface(contractData.contract.abi);
-      const { contract, rawTx } = await createContract(context.web3, "ERC20Instance");
+      const { contract, rawTx } = await createContract(context, "ERC20Instance");
       contractInstanceAddress = contract.options.address;
       await context.createBlock({ transactions: [rawTx] });
     });
@@ -393,7 +393,7 @@ describeDevMoonbeam(
         [BALTATHAR, 1000]
       );
 
-      let tx = await createTransaction(context.web3, {
+      let tx = await createTransaction(context, {
         from: ALITH,
         privateKey: ALITH_PRIV_KEY,
         value: "0x0",
@@ -407,7 +407,7 @@ describeDevMoonbeam(
         transactions: [tx],
       });
 
-      let approvals = (await context.polkadotApi.query.assets.approvals(
+      let approvals = (await context.axiaApi.query.assets.approvals(
         assetId,
         ALITH,
         BALTATHAR
@@ -421,7 +421,7 @@ describeDevMoonbeam(
         [ALITH, CHARLETH, 1000]
       );
 
-      tx = await createTransaction(context.web3, {
+      tx = await createTransaction(context, {
         from: BALTATHAR,
         privateKey: BALTATHAR_PRIV_KEY,
         value: "0x0",
@@ -443,7 +443,7 @@ describeDevMoonbeam(
       expect(receipt.status).to.equal(true);
 
       // Approve amount is null now
-      approvals = (await context.polkadotApi.query.assets.approvals(
+      approvals = (await context.axiaApi.query.assets.approvals(
         assetId,
         ALITH,
         BALTATHAR
@@ -451,17 +451,17 @@ describeDevMoonbeam(
       expect(approvals.isNone).to.eq(true);
 
       // Charleth balance is 1000
-      let charletBalance = (await context.polkadotApi.query.assets.account(
+      let charletBalance = (await context.axiaApi.query.assets.account(
         assetId,
         CHARLETH
       )) as any;
-      expect(charletBalance.balance.eq(new BN(1000))).to.equal(true);
+      expect(charletBalance.unwrap()["balance"].eq(new BN(1000))).to.equal(true);
     });
   },
   true
 );
 
-describeDevMoonbeam(
+describeDevMoonbeamAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace;
@@ -470,16 +470,16 @@ describeDevMoonbeam(
       sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
       // And we need relay tokens for issuing a transaction to be executed in the relay
-      const balance = context.polkadotApi.createType("Balance", 100000000000000);
-      const assetBalance = context.polkadotApi.createType("PalletAssetsAssetBalance", {
+      const balance = context.axiaApi.createType("Balance", 100000000000000);
+      const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
         balance: balance,
       });
 
-      assetId = context.polkadotApi.createType(
+      assetId = context.axiaApi.createType(
         "u128",
         new BN("42259045809535163221576417993425387648")
       );
-      const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+      const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
         supply: balance,
       });
 
@@ -487,7 +487,7 @@ describeDevMoonbeam(
 
       const contractData = await getCompiled("ERC20Instance");
       iFace = new ethers.utils.Interface(contractData.contract.abi);
-      const { rawTx } = await createContract(context.web3, "ERC20Instance");
+      const { rawTx } = await createContract(context, "ERC20Instance");
       await context.createBlock({ transactions: [rawTx] });
     });
     it("allows to transfer", async function () {
@@ -498,7 +498,7 @@ describeDevMoonbeam(
         [BALTATHAR, 1000]
       );
 
-      let tx = await createTransaction(context.web3, {
+      let tx = await createTransaction(context, {
         from: ALITH,
         privateKey: ALITH_PRIV_KEY,
         value: "0x0",
@@ -516,33 +516,33 @@ describeDevMoonbeam(
       expect(receipt.status).to.equal(true);
 
       // Baltathar balance is 1000
-      let baltatharBalance = (await context.polkadotApi.query.assets.account(
+      let baltatharBalance = (await context.axiaApi.query.assets.account(
         assetId,
         BALTATHAR
       )) as any;
-      expect(baltatharBalance.balance.eq(new BN(1000))).to.equal(true);
+      expect(baltatharBalance.unwrap()["balance"].eq(new BN(1000))).to.equal(true);
     });
   },
   true
 );
 
-describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
+describeDevMoonbeamAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) => {
   let sudoAccount, assetId, iFace, contractInstanceAddress;
   before("Setup contract and mock balance", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
     // And we need relay tokens for issuing a transaction to be executed in the relay
-    const balance = context.polkadotApi.createType("Balance", 100000000000000);
-    const assetBalance = context.polkadotApi.createType("PalletAssetsAssetBalance", {
+    const balance = context.axiaApi.createType("Balance", 100000000000000);
+    const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
       balance: balance,
     });
 
-    assetId = context.polkadotApi.createType(
+    assetId = context.axiaApi.createType(
       "u128",
       new BN("42259045809535163221576417993425387648")
     );
-    const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+    const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
       supply: balance,
     });
 
@@ -550,7 +550,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
 
     const contractData = await getCompiled("ERC20Instance");
     iFace = new ethers.utils.Interface(contractData.contract.abi);
-    const { contract, rawTx } = await createContract(context.web3, "ERC20Instance");
+    const { contract, rawTx } = await createContract(context, "ERC20Instance");
     contractInstanceAddress = contract.options.address;
     await context.createBlock({ transactions: [rawTx] });
   });
@@ -562,7 +562,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
       [BALTATHAR, 1000]
     );
 
-    let tx = await createTransaction(context.web3, {
+    let tx = await createTransaction(context, {
       from: ALITH,
       privateKey: ALITH_PRIV_KEY,
       value: "0x0",
@@ -584,7 +584,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
     expect(receipt.logs[0].topics.length).to.eq(3);
     expect(receipt.logs[0].topics[0]).to.eq(SELECTORS.logApprove);
 
-    let approvals = (await context.polkadotApi.query.assets.approvals(
+    let approvals = (await context.axiaApi.query.assets.approvals(
       assetId,
       ALITH,
       BALTATHAR
@@ -598,7 +598,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
       [ALITH, CHARLETH, 1000]
     );
 
-    tx = await createTransaction(context.web3, {
+    tx = await createTransaction(context, {
       from: BALTATHAR,
       privateKey: BALTATHAR_PRIV_KEY,
       value: "0x0",
@@ -620,7 +620,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
     expect(receipt.status).to.equal(true);
 
     // Approve amount is null now
-    approvals = (await context.polkadotApi.query.assets.approvals(
+    approvals = (await context.axiaApi.query.assets.approvals(
       assetId,
       ALITH,
       BALTATHAR
@@ -628,12 +628,12 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
     expect(approvals.isNone).to.eq(true);
 
     // Charleth balance is 1000
-    let charletBalance = (await context.polkadotApi.query.assets.account(assetId, CHARLETH)) as any;
-    expect(charletBalance.balance.eq(new BN(1000))).to.equal(true);
+    let charletBalance = (await context.axiaApi.query.assets.account(assetId, CHARLETH)) as any;
+    expect(charletBalance.unwrap()["balance"].eq(new BN(1000))).to.equal(true);
   });
 });
 
-describeDevMoonbeam(
+describeDevMoonbeamAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace, contractInstanceAddress;
@@ -642,16 +642,16 @@ describeDevMoonbeam(
       sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
       // And we need relay tokens for issuing a transaction to be executed in the relay
-      const balance = context.polkadotApi.createType("Balance", 100000000000000);
-      const assetBalance = context.polkadotApi.createType("PalletAssetsAssetBalance", {
+      const balance = context.axiaApi.createType("Balance", 100000000000000);
+      const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
         balance: balance,
       });
 
-      assetId = context.polkadotApi.createType(
+      assetId = context.axiaApi.createType(
         "u128",
         new BN("42259045809535163221576417993425387648")
       );
-      const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+      const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
         supply: balance,
       });
 
@@ -659,7 +659,7 @@ describeDevMoonbeam(
 
       const contractData = await getCompiled("ERC20Instance");
       iFace = new ethers.utils.Interface(contractData.contract.abi);
-      const { contract, rawTx } = await createContract(context.web3, "ERC20Instance");
+      const { contract, rawTx } = await createContract(context, "ERC20Instance");
       contractInstanceAddress = contract.options.address;
       await context.createBlock({ transactions: [rawTx] });
     });
@@ -671,7 +671,7 @@ describeDevMoonbeam(
         [BALTATHAR, 1000]
       );
 
-      let tx = await createTransaction(context.web3, {
+      let tx = await createTransaction(context, {
         from: ALITH,
         privateKey: ALITH_PRIV_KEY,
         value: "0x0",
@@ -689,39 +689,39 @@ describeDevMoonbeam(
       expect(receipt.status).to.equal(true);
 
       // Baltathar balance is 1000
-      let baltatharBalance = (await context.polkadotApi.query.assets.account(
+      let baltatharBalance = (await context.axiaApi.query.assets.account(
         assetId,
         BALTATHAR
       )) as any;
-      expect(baltatharBalance.balance.eq(new BN(1000))).to.equal(true);
+      expect(baltatharBalance.unwrap()["balance"].eq(new BN(1000))).to.equal(true);
     });
   },
   true
 );
 
-describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
+describeDevMoonbeamAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) => {
   let sudoAccount, assetId, iFace, contractInstanceAddress;
   before("Setup contract and mock balance", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
     // And we need relay tokens for issuing a transaction to be executed in the relay
-    const balance = context.polkadotApi.createType("Balance", 100000000000000);
-    const assetBalance = context.polkadotApi.createType("PalletAssetsAssetBalance", {
+    const balance = context.axiaApi.createType("Balance", 100000000000000);
+    const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
       balance: balance,
     });
 
-    assetId = context.polkadotApi.createType(
+    assetId = context.axiaApi.createType(
       "u128",
       new BN("42259045809535163221576417993425387648")
     );
-    const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+    const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
       supply: balance,
     });
 
     const contractData = await getCompiled("ERC20Instance");
     iFace = new ethers.utils.Interface(contractData.contract.abi);
-    const { contract, rawTx } = await createContract(context.web3, "ERC20Instance");
+    const { contract, rawTx } = await createContract(context, "ERC20Instance");
     contractInstanceAddress = contract.options.address;
     // We fund the contract address with this test
     await mockAssetBalance(
@@ -743,7 +743,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
       [BALTATHAR, 1000]
     );
 
-    let tx = await createTransaction(context.web3, {
+    let tx = await createTransaction(context, {
       from: ALITH,
       privateKey: ALITH_PRIV_KEY,
       value: "0x0",
@@ -765,7 +765,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
     expect(receipt.logs[0].topics.length).to.eq(3);
     expect(receipt.logs[0].topics[0]).to.eq(SELECTORS.logApprove);
 
-    let approvals = (await context.polkadotApi.query.assets.approvals(
+    let approvals = (await context.axiaApi.query.assets.approvals(
       assetId,
       contractInstanceAddress,
       BALTATHAR
@@ -781,7 +781,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
       [contractInstanceAddress, CHARLETH, 1000]
     );
 
-    tx = await createTransaction(context.web3, {
+    tx = await createTransaction(context, {
       from: BALTATHAR,
       privateKey: BALTATHAR_PRIV_KEY,
       value: "0x0",
@@ -801,7 +801,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
     expect(receipt.status).to.equal(true);
 
     // approvals are untouched
-    approvals = (await context.polkadotApi.query.assets.approvals(
+    approvals = (await context.axiaApi.query.assets.approvals(
       assetId,
       contractInstanceAddress,
       BALTATHAR
@@ -809,7 +809,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
     expect(approvals.unwrap().amount.eq(new BN(1000))).to.equal(true);
 
     // this time we call directly from Baltathar the ERC20 contract
-    tx = await createTransaction(context.web3, {
+    tx = await createTransaction(context, {
       from: BALTATHAR,
       privateKey: BALTATHAR_PRIV_KEY,
       value: "0x0",
@@ -829,7 +829,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
     expect(receipt.status).to.equal(true);
 
     // Approve amount is null now
-    approvals = (await context.polkadotApi.query.assets.approvals(
+    approvals = (await context.axiaApi.query.assets.approvals(
       assetId,
       contractInstanceAddress,
       BALTATHAR
@@ -837,34 +837,34 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
     expect(approvals.isNone).to.eq(true);
 
     // Charleth balance is 2000
-    let charletBalance = (await context.polkadotApi.query.assets.account(assetId, CHARLETH)) as any;
-    expect(charletBalance.balance.eq(new BN(2000))).to.equal(true);
+    let charletBalance = (await context.axiaApi.query.assets.account(assetId, CHARLETH)) as any;
+    expect(charletBalance.unwrap()["balance"].eq(new BN(2000))).to.equal(true);
   });
 });
 
-describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
+describeDevMoonbeamAllEthTxTypes("Precompiles - Assets-ERC20 Wasm", (context) => {
   let sudoAccount, assetId, iFace, contractInstanceAddress;
   before("Setup contract and mock balance", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
     // And we need relay tokens for issuing a transaction to be executed in the relay
-    const balance = context.polkadotApi.createType("Balance", 100000000000000);
-    const assetBalance = context.polkadotApi.createType("PalletAssetsAssetBalance", {
+    const balance = context.axiaApi.createType("Balance", 100000000000000);
+    const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
       balance: balance,
     });
 
-    assetId = context.polkadotApi.createType(
+    assetId = context.axiaApi.createType(
       "u128",
       new BN("42259045809535163221576417993425387648")
     );
-    const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+    const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
       supply: balance,
     });
 
     const contractData = await getCompiled("ERC20Instance");
     iFace = new ethers.utils.Interface(contractData.contract.abi);
-    const { contract, rawTx } = await createContract(context.web3, "ERC20Instance");
+    const { contract, rawTx } = await createContract(context, "ERC20Instance");
     contractInstanceAddress = contract.options.address;
     // We fund Alith with this test
     await mockAssetBalance(context, assetBalance, assetDetails, sudoAccount, assetId, ALITH);
@@ -879,7 +879,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
       [contractInstanceAddress, 1000]
     );
 
-    let tx = await createTransaction(context.web3, {
+    let tx = await createTransaction(context, {
       from: ALITH,
       privateKey: ALITH_PRIV_KEY,
       value: "0x0",
@@ -901,7 +901,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
     expect(receipt.logs[0].topics.length).to.eq(3);
     expect(receipt.logs[0].topics[0]).to.eq(SELECTORS.logApprove);
 
-    let approvals = (await context.polkadotApi.query.assets.approvals(
+    let approvals = (await context.axiaApi.query.assets.approvals(
       assetId,
       ALITH,
       contractInstanceAddress
@@ -916,7 +916,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
       [ALITH, CHARLETH, 1000]
     );
 
-    tx = await createTransaction(context.web3, {
+    tx = await createTransaction(context, {
       from: BALTATHAR,
       privateKey: BALTATHAR_PRIV_KEY,
       value: "0x0",
@@ -936,7 +936,7 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
     expect(receipt.status).to.equal(true);
 
     // Approve amount is null now
-    approvals = (await context.polkadotApi.query.assets.approvals(
+    approvals = (await context.axiaApi.query.assets.approvals(
       assetId,
       ALITH,
       contractInstanceAddress
@@ -944,12 +944,12 @@ describeDevMoonbeam("Precompiles - Assets-ERC20 Wasm", (context) => {
     expect(approvals.isNone).to.eq(true);
 
     // Charleth balance is 1000
-    let charletBalance = (await context.polkadotApi.query.assets.account(assetId, CHARLETH)) as any;
-    expect(charletBalance.balance.eq(new BN(1000))).to.equal(true);
+    let charletBalance = (await context.axiaApi.query.assets.account(assetId, CHARLETH)) as any;
+    expect(charletBalance.unwrap()["balance"].eq(new BN(1000))).to.equal(true);
   });
 });
 
-describeDevMoonbeam(
+describeDevMoonbeamAllEthTxTypes(
   "Precompiles - Assets-ERC20 Wasm",
   (context) => {
     let sudoAccount, assetId, iFace, contractInstanceAddress;
@@ -958,22 +958,22 @@ describeDevMoonbeam(
       sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
       // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
       // And we need relay tokens for issuing a transaction to be executed in the relay
-      const balance = context.polkadotApi.createType("Balance", 100000000000000);
-      const assetBalance = context.polkadotApi.createType("PalletAssetsAssetBalance", {
+      const balance = context.axiaApi.createType("Balance", 100000000000000);
+      const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
         balance: balance,
       });
 
-      assetId = context.polkadotApi.createType(
+      assetId = context.axiaApi.createType(
         "u128",
         new BN("42259045809535163221576417993425387648")
       );
-      const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+      const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
         supply: balance,
       });
 
       const contractData = await getCompiled("ERC20Instance");
       iFace = new ethers.utils.Interface(contractData.contract.abi);
-      const { contract, rawTx } = await createContract(context.web3, "ERC20Instance");
+      const { contract, rawTx } = await createContract(context, "ERC20Instance");
       contractInstanceAddress = contract.options.address;
       await mockAssetBalance(
         context,
@@ -994,7 +994,7 @@ describeDevMoonbeam(
         [BALTATHAR, 1000]
       );
 
-      let tx = await createTransaction(context.web3, {
+      let tx = await createTransaction(context, {
         from: ALITH,
         privateKey: ALITH_PRIV_KEY,
         value: "0x0",
@@ -1012,11 +1012,11 @@ describeDevMoonbeam(
       expect(receipt.status).to.equal(true);
 
       // Baltathar balance is 1000
-      let baltatharBalance = (await context.polkadotApi.query.assets.account(
+      let baltatharBalance = (await context.axiaApi.query.assets.account(
         assetId,
         BALTATHAR
       )) as any;
-      expect(baltatharBalance.balance.eq(new BN(1000))).to.equal(true);
+      expect(baltatharBalance.unwrap()["balance"].eq(new BN(1000))).to.equal(true);
     });
   },
   true

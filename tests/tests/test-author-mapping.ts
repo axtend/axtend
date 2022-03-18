@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 
 import {
   BALTATHAR,
@@ -22,7 +22,7 @@ async function getMappingInfo(
   context,
   authorId: string
 ): Promise<{ account: string; deposit: BigInt }> {
-  const mapping = await context.polkadotApi.query.authorMapping.mappingWithDeposit(authorId);
+  const mapping = await context.axiaApi.query.authorMapping.mappingWithDeposit(authorId);
   if (mapping.isSome) {
     return {
       account: mapping.unwrap().account.toString(),
@@ -37,12 +37,12 @@ describeDevMoonbeam("Author Mapping - simple association", (context) => {
     expect((await getMappingInfo(context, aliceAuthorId)).account).to.eq(ALITH);
     expect((await getMappingInfo(context, aliceAuthorId)).deposit).to.eq(DEFAULT_GENESIS_MAPPING);
     expect(await getMappingInfo(context, bobAuthorId)).to.eq(null);
-    expect((await context.polkadotApi.query.system.account(ALITH)).data.free.toBigInt()).to.eq(
-      1207825819614629174706176n
-    );
-    expect((await context.polkadotApi.query.system.account(ALITH)).data.reserved.toBigInt()).to.eq(
-      DEFAULT_GENESIS_MAPPING + DEFAULT_GENESIS_STAKING
-    );
+    expect(
+      ((await context.axiaApi.query.system.account(ALITH)) as any).data.free.toBigInt()
+    ).to.eq(1207825819614629174706176n);
+    expect(
+      ((await context.axiaApi.query.system.account(ALITH)) as any).data.reserved.toBigInt()
+    ).to.eq(DEFAULT_GENESIS_MAPPING + DEFAULT_GENESIS_STAKING);
   });
 
   it("should succeed in adding an association", async function () {
@@ -51,25 +51,26 @@ describeDevMoonbeam("Author Mapping - simple association", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       genesisAccount,
-      context.polkadotApi.tx.authorMapping.addAssociation(bobAuthorId)
+      context.axiaApi.tx.authorMapping.addAssociation(bobAuthorId)
     );
     // check events
     expect(events.length === 8);
-    expect(context.polkadotApi.events.balances.Reserved.is(events[1])).to.be.true;
-    expect(context.polkadotApi.events.authorMapping.AuthorRegistered.is(events[2])).to.be.true;
-    expect(context.polkadotApi.events.system.NewAccount.is(events[4])).to.be.true;
-    expect(context.polkadotApi.events.balances.Endowed.is(events[5])).to.be.true;
-    expect(context.polkadotApi.events.treasury.Deposit.is(events[6])).to.be.true;
-    expect(context.polkadotApi.events.system.ExtrinsicSuccess.is(events[7])).to.be.true;
+    expect(context.axiaApi.events.balances.Reserved.is(events[1] as any)).to.be.true;
+    expect(context.axiaApi.events.authorMapping.AuthorRegistered.is(events[2] as any)).to.be
+      .true;
+    expect(context.axiaApi.events.system.NewAccount.is(events[4] as any)).to.be.true;
+    expect(context.axiaApi.events.balances.Endowed.is(events[5] as any)).to.be.true;
+    expect(context.axiaApi.events.treasury.Deposit.is(events[6] as any)).to.be.true;
+    expect(context.axiaApi.events.system.ExtrinsicSuccess.is(events[7] as any)).to.be.true;
 
     // check association
     expect((await getMappingInfo(context, bobAuthorId)).account).to.eq(ALITH);
-    expect((await context.polkadotApi.query.system.account(ALITH)).data.free.toBigInt()).to.eq(
-      1207725818354628455674176n
-    );
-    expect((await context.polkadotApi.query.system.account(ALITH)).data.reserved.toBigInt()).to.eq(
-      2n * DEFAULT_GENESIS_MAPPING + DEFAULT_GENESIS_STAKING
-    );
+    expect(
+      ((await context.axiaApi.query.system.account(ALITH)) as any).data.free.toBigInt()
+    ).to.eq(1207725818354628455674176n);
+    expect(
+      ((await context.axiaApi.query.system.account(ALITH)) as any).data.reserved.toBigInt()
+    ).to.eq(2n * DEFAULT_GENESIS_MAPPING + DEFAULT_GENESIS_STAKING);
   });
 });
 
@@ -80,22 +81,22 @@ describeDevMoonbeam("Author Mapping - Fail to reassociate alice", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       baltathar,
-      context.polkadotApi.tx.authorMapping.addAssociation(aliceAuthorId)
+      context.axiaApi.tx.authorMapping.addAssociation(aliceAuthorId)
     );
 
     // should check events for failure
     expect(events.length === 6);
-    expect(context.polkadotApi.events.system.NewAccount.is(events[2])).to.be.true;
-    expect(context.polkadotApi.events.balances.Endowed.is(events[3])).to.be.true;
-    expect(context.polkadotApi.events.treasury.Deposit.is(events[4])).to.be.true;
-    expect(context.polkadotApi.events.system.ExtrinsicFailed.is(events[5])).to.be.true;
+    expect(context.axiaApi.events.system.NewAccount.is(events[2] as any)).to.be.true;
+    expect(context.axiaApi.events.balances.Endowed.is(events[3] as any)).to.be.true;
+    expect(context.axiaApi.events.treasury.Deposit.is(events[4] as any)).to.be.true;
+    expect(context.axiaApi.events.system.ExtrinsicFailed.is(events[5] as any)).to.be.true;
 
     //check state
-    expect((await context.polkadotApi.query.system.account(BALTATHAR)).data.free.toBigInt()).to.eq(
-      1208925818354628455674176n
-    );
     expect(
-      (await context.polkadotApi.query.system.account(BALTATHAR)).data.reserved.toBigInt()
+      ((await context.axiaApi.query.system.account(BALTATHAR)) as any).data.free.toBigInt()
+    ).to.eq(1208925818354628455674176n);
+    expect(
+      ((await context.axiaApi.query.system.account(BALTATHAR)) as any).data.reserved.toBigInt()
     ).to.eq(0n);
     expect((await getMappingInfo(context, aliceAuthorId)).account).to.eq(ALITH);
   });
@@ -107,12 +108,12 @@ describeDevMoonbeam("Author Mapping - Fail to reassociate alice", (context) => {
     await createBlockWithExtrinsic(
       context,
       baltathar,
-      context.polkadotApi.tx.authorMapping.addAssociation(charlieAuthorId)
+      context.axiaApi.tx.authorMapping.addAssociation(charlieAuthorId)
     );
     const { events } = await createBlockWithExtrinsic(
       context,
       baltathar,
-      context.polkadotApi.tx.authorMapping.updateAssociation(charlieAuthorId, aliceAuthorId)
+      context.axiaApi.tx.authorMapping.updateAssociation(charlieAuthorId, aliceAuthorId)
     );
 
     // should check events for failure
@@ -131,10 +132,10 @@ describeDevMoonbeam("Author Mapping - Fail without deposit", (context) => {
     const keyring = new Keyring({ type: "ethereum" });
     const rando = await keyring.addFromUri(RANDOM_PRIV_KEY, null, "ethereum");
     expect(
-      (await context.polkadotApi.query.system.account(RANDOM_ADDRESS)).data.free.toBigInt()
+      ((await context.axiaApi.query.system.account(RANDOM_ADDRESS)) as any).data.free.toBigInt()
     ).to.eq(0n);
     try {
-      await context.polkadotApi.tx.authorMapping.addAssociation(bobAuthorId).signAndSend(rando);
+      await context.axiaApi.tx.authorMapping.addAssociation(bobAuthorId).signAndSend(rando);
     } catch (e) {
       expect(e.message.toString()).to.eq(
         "1010: Invalid Transaction: Inability to pay some fees , e.g. account balance too low"
@@ -149,10 +150,10 @@ describeDevMoonbeam("Author Mapping - Fail without deposit", (context) => {
 
   // TODO: Fix this test as there is no failed extrinsic in the block
   it.skip("should check events for failure", async function () {
-    const signedBlock = await context.polkadotApi.rpc.chain.getBlock();
-    const allRecords = await context.polkadotApi.query.system.events.at(
+    const signedBlock = await context.axiaApi.rpc.chain.getBlock();
+    const allRecords = (await context.axiaApi.query.system.events.at(
       signedBlock.block.header.hash
-    );
+    )) as any;
 
     // map between the extrinsics and events
     signedBlock.block.extrinsics.forEach(({ method: { method, section } }, index) => {
@@ -165,23 +166,24 @@ describeDevMoonbeam("Author Mapping - Fail without deposit", (context) => {
       switch (index) {
         // First 3 events:
         // timestamp.set:: system.ExtrinsicSuccess
-        // parachainUpgrade.setValidationData:: system.ExtrinsicSuccess
+        // allychainUpgrade.setValidationData:: system.ExtrinsicSuccess
         // authorInherent.setAuthor:: system.ExtrinsicSuccess
         case 0:
         case 1:
         case 2:
           expect(
-            events.length === 1 && context.polkadotApi.events.system.ExtrinsicSuccess.is(events[0])
+            events.length === 1 &&
+              context.axiaApi.events.system.ExtrinsicSuccess.is(events[0] as any)
           ).to.be.true;
           break;
         // Fourth extrinsic
         case 3:
           expect(section === "authorMapping" && method === "addAssociation").to.be.true;
           expect(events.length === 6);
-          expect(context.polkadotApi.events.system.NewAccount.is(events[2])).to.be.true;
-          expect(context.polkadotApi.events.balances.Endowed.is(events[3])).to.be.true;
-          expect(context.polkadotApi.events.treasury.Deposit.is(events[4])).to.be.true;
-          expect(context.polkadotApi.events.system.ExtrinsicFailed.is(events[5])).to.be.true;
+          expect(context.axiaApi.events.system.NewAccount.is(events[2] as any)).to.be.true;
+          expect(context.axiaApi.events.balances.Endowed.is(events[3] as any)).to.be.true;
+          expect(context.axiaApi.events.treasury.Deposit.is(events[4] as any)).to.be.true;
+          expect(context.axiaApi.events.system.ExtrinsicFailed.is(events[5] as any)).to.be.true;
           break;
         default:
           throw new Error(`Unexpected extrinsic`);
@@ -195,35 +197,35 @@ describeDevMoonbeam("Author Mapping - double registration", (context) => {
   it("should succeed in adding an association for bob", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
-    await context.polkadotApi.tx.authorMapping
+    await context.axiaApi.tx.authorMapping
       .addAssociation(bobAuthorId)
       .signAndSend(genesisAccount);
     await context.createBlock();
     expect((await getMappingInfo(context, bobAuthorId)).account).to.eq(ALITH);
-    expect((await context.polkadotApi.query.system.account(ALITH)).data.free.toBigInt()).to.eq(
-      1207725818354628455674176n
-    );
-    expect((await context.polkadotApi.query.system.account(ALITH)).data.reserved.toBigInt()).to.eq(
-      2n * DEFAULT_GENESIS_MAPPING + DEFAULT_GENESIS_STAKING
-    );
+    expect(
+      ((await context.axiaApi.query.system.account(ALITH)) as any).data.free.toBigInt()
+    ).to.eq(1207725818354628455674176n);
+    expect(
+      ((await context.axiaApi.query.system.account(ALITH)) as any).data.reserved.toBigInt()
+    ).to.eq(2n * DEFAULT_GENESIS_MAPPING + DEFAULT_GENESIS_STAKING);
   });
 
   it("should associate with charlie, although already associated with bob", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
-    await context.polkadotApi.tx.authorMapping
+    await context.axiaApi.tx.authorMapping
       .addAssociation(charlieAuthorId)
       .signAndSend(genesisAccount);
     await context.createBlock();
     //check that both are registered
     expect((await getMappingInfo(context, charlieAuthorId)).account).to.eq(ALITH);
     expect((await getMappingInfo(context, bobAuthorId)).account).to.eq(ALITH);
-    expect((await context.polkadotApi.query.system.account(ALITH)).data.free.toBigInt()).to.eq(
-      1207625817094627736646598n
-    );
-    expect((await context.polkadotApi.query.system.account(ALITH)).data.reserved.toBigInt()).to.eq(
-      3n * DEFAULT_GENESIS_MAPPING + DEFAULT_GENESIS_STAKING
-    );
+    expect(
+      ((await context.axiaApi.query.system.account(ALITH)) as any).data.free.toBigInt()
+    ).to.eq(1207625817094627736646598n);
+    expect(
+      ((await context.axiaApi.query.system.account(ALITH)) as any).data.reserved.toBigInt()
+    ).to.eq(3n * DEFAULT_GENESIS_MAPPING + DEFAULT_GENESIS_STAKING);
   });
 });
 
@@ -231,7 +233,7 @@ describeDevMoonbeam("Author Mapping - registered author can clear (de register)"
   it("should succeed in clearing an association", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
-    await context.polkadotApi.tx.authorMapping
+    await context.axiaApi.tx.authorMapping
       .addAssociation(bobAuthorId)
       .signAndSend(genesisAccount);
     await context.createBlock();
@@ -240,14 +242,15 @@ describeDevMoonbeam("Author Mapping - registered author can clear (de register)"
     const { events } = await createBlockWithExtrinsic(
       context,
       genesisAccount,
-      context.polkadotApi.tx.authorMapping.clearAssociation(bobAuthorId)
+      context.axiaApi.tx.authorMapping.clearAssociation(bobAuthorId)
     );
     //check events
     expect(events.length === 6);
-    expect(context.polkadotApi.events.balances.Unreserved.is(events[1])).to.be.true;
-    expect(context.polkadotApi.events.authorMapping.AuthorDeRegistered.is(events[2])).to.be.true;
-    expect(context.polkadotApi.events.treasury.Deposit.is(events[4])).to.be.true;
-    expect(context.polkadotApi.events.system.ExtrinsicSuccess.is(events[5])).to.be.true;
+    expect(context.axiaApi.events.balances.Unreserved.is(events[1] as any)).to.be.true;
+    expect(context.axiaApi.events.authorMapping.AuthorDeRegistered.is(events[2] as any)).to.be
+      .true;
+    expect(context.axiaApi.events.treasury.Deposit.is(events[4] as any)).to.be.true;
+    expect(context.axiaApi.events.system.ExtrinsicSuccess.is(events[5] as any)).to.be.true;
 
     // check mapping
     expect(await getMappingInfo(context, bobAuthorId)).to.eq(null);
@@ -263,13 +266,13 @@ describeDevMoonbeam("Author Mapping - unregistered author cannot clear associati
     const { events } = await createBlockWithExtrinsic(
       context,
       genesisAccount,
-      context.polkadotApi.tx.authorMapping.clearAssociation(bobAuthorId)
+      context.axiaApi.tx.authorMapping.clearAssociation(bobAuthorId)
     );
     expect(events.length === 6);
-    expect(context.polkadotApi.events.system.NewAccount.is(events[2])).to.be.true;
-    expect(context.polkadotApi.events.balances.Endowed.is(events[3])).to.be.true;
-    expect(context.polkadotApi.events.treasury.Deposit.is(events[4])).to.be.true;
-    expect(context.polkadotApi.events.system.ExtrinsicFailed.is(events[5])).to.be.true;
+    expect(context.axiaApi.events.system.NewAccount.is(events[2] as any)).to.be.true;
+    expect(context.axiaApi.events.balances.Endowed.is(events[3] as any)).to.be.true;
+    expect(context.axiaApi.events.treasury.Deposit.is(events[4] as any)).to.be.true;
+    expect(context.axiaApi.events.system.ExtrinsicFailed.is(events[5] as any)).to.be.true;
   });
 });
 
@@ -279,7 +282,7 @@ describeDevMoonbeam("Author Mapping - non author clearing", (context) => {
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
     const baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
-    await context.polkadotApi.tx.authorMapping
+    await context.axiaApi.tx.authorMapping
       .addAssociation(bobAuthorId)
       .signAndSend(genesisAccount);
     await context.createBlock();
@@ -288,12 +291,12 @@ describeDevMoonbeam("Author Mapping - non author clearing", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       baltathar,
-      context.polkadotApi.tx.authorMapping.clearAssociation(bobAuthorId)
+      context.axiaApi.tx.authorMapping.clearAssociation(bobAuthorId)
     );
 
     expect(events.length === 4);
-    expect(context.polkadotApi.events.treasury.Deposit.is(events[2])).to.be.true;
-    expect(context.polkadotApi.events.system.ExtrinsicFailed.is(events[3])).to.be.true;
+    expect(context.axiaApi.events.treasury.Deposit.is(events[2] as any)).to.be.true;
+    expect(context.axiaApi.events.system.ExtrinsicFailed.is(events[3] as any)).to.be.true;
   });
 });
 
@@ -302,12 +305,12 @@ describeDevMoonbeam("Author Mapping - registered can rotate", (context) => {
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
-    await context.polkadotApi.tx.authorMapping
+    await context.axiaApi.tx.authorMapping
       .addAssociation(bobAuthorId)
       .signAndSend(genesisAccount);
     await context.createBlock();
     expect((await getMappingInfo(context, bobAuthorId)).account).to.eq(ALITH);
-    await context.polkadotApi.tx.authorMapping
+    await context.axiaApi.tx.authorMapping
       .updateAssociation(bobAuthorId, charlieAuthorId)
       .signAndSend(genesisAccount);
     await context.createBlock();
@@ -323,7 +326,7 @@ describeDevMoonbeam("Author Mapping - unregistered cannot rotate", (context) => 
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
-    await context.polkadotApi.tx.authorMapping
+    await context.axiaApi.tx.authorMapping
       .updateAssociation(bobAuthorId, charlieAuthorId)
       .signAndSend(genesisAccount);
     await context.createBlock();
@@ -340,12 +343,12 @@ describeDevMoonbeam("Author Mapping - non-author cannot rotate", (context) => {
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     const baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
 
-    await context.polkadotApi.tx.authorMapping
+    await context.axiaApi.tx.authorMapping
       .addAssociation(bobAuthorId)
       .signAndSend(genesisAccount);
     await context.createBlock();
     expect((await getMappingInfo(context, bobAuthorId)).account).to.eq(ALITH);
-    await context.polkadotApi.tx.authorMapping
+    await context.axiaApi.tx.authorMapping
       .updateAssociation(bobAuthorId, charlieAuthorId)
       .signAndSend(baltathar);
     await context.createBlock();

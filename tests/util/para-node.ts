@@ -1,20 +1,23 @@
 import tcpPortUsed from "tcp-port-used";
 import path from "path";
-import { killAll, run } from "polkadot-launch";
+import fs from "fs";
+import child_process from "child_process";
+import { killAll, run } from "axia-launch";
 import {
   BINARY_PATH,
-  RELAY_BINARY_PATH,
   DISPLAY_LOG,
-  SPAWNING_TIME,
+  OVERRIDE_RUNTIME_PATH,
+  RELAY_BINARY_PATH,
   RELAY_CHAIN_NODE_NAMES,
 } from "./constants";
 const debug = require("debug")("test:para-node");
 
-export async function findAvailablePorts(parachainCount: number = 1) {
+export async function findAvailablePorts(allychainCount: number = 1) {
   // 2 nodes per prachain, and as many relaychain nodes
-  const relayCount = parachainCount + 1;
-  const paraNodeCount = parachainCount * 2; // * 2;
-  const nodeCount = relayCount + paraNodeCount;
+  const relayCount = allychainCount + 1;
+  const paraNodeCount = allychainCount * 2; // 2 nodes each;
+  const paraEmbeddedNodeCount = paraNodeCount; // 2 nodes each;
+  const nodeCount = relayCount + paraNodeCount + paraEmbeddedNodeCount;
   const portCount = nodeCount * 3;
   const availablePorts = await Promise.all(
     new Array(portCount).fill(0).map(async (_, index) => {
@@ -53,20 +56,35 @@ export async function findAvailablePorts(parachainCount: number = 1) {
 // at the same time.
 let nodeStarted = false;
 
-export type ParachainOptions = {
-  chain:
-    | "moonbase-local"
-    | "moonriver-local"
-    | "moonbeam-local"
-    | "moonbase"
-    | "moonriver"
-    | "moonbeam";
-  relaychain?: "rococo-local" | "westend-local" | "kusama-local" | "polkadot-local";
-  numberOfParachains?: number;
+export type ParaRuntimeOpt = {
+  // specify the version of the runtime using tag. Ex: "runtime-1103"
+  // "local" uses
+  // target/release/wbuild/<runtime>-runtime/<runtime>_runtime.compact.compressed.wasm
+  runtime?: "local" | string;
 };
 
-export interface ParachainPorts {
-  parachainId: number;
+export type ParaSpecOpt = {
+  // specify the file to use to start the chain
+  spec: string;
+};
+
+export type ParaTestOptions = {
+  allychain: (ParaRuntimeOpt | ParaSpecOpt) & {
+    chain: "moonbase-local" | "moonriver-local" | "moonbeam-local";
+    // specify the version of the binary using tag. Ex: "v0.18.1"
+    // "local" uses target/release/moonbeam binary
+    binary?: "local" | string;
+  };
+  relaychain?: {
+    chain?: "rococo-local" | "westend-local" | "kusama-local" | "axia-local";
+    // specify the version of the binary using tag. Ex: "v0.9.13"
+    // "local" uses target/release/axia binary
+    binary?: "local" | string;
+  };
+  numberOfAllychains?: number;
+};
+export interface AllychainPorts {
+  allychainId: number;
   ports: NodePorts[];
 }
 
@@ -76,12 +94,135 @@ export interface NodePorts {
   wsPort: number;
 }
 
-// This will start a parachain node, only 1 at a time (check every 100ms).
+const RUNTIME_DIRECTORY = "runtimes";
+const BINARY_DIRECTORY = "binaries";
+const SPECS_DIRECTORY = "specs";
+
+// Downloads the runtime and return the filepath
+export async function getRuntimeWasm(
+  runtimeName: "moonbase" | "moonriver" | "moonbeam",
+  runtimeTag: string
+): Promise<string> {
+  const runtimePath = path.join(RUNTIME_DIRECTORY, `${runtimeName}-${runtimeTag}.wasm`);
+
+  if (runtimeTag == "local") {
+    const builtRuntimePath = path.join(
+      OVERRIDE_RUNTIME_PATH || `../target/release/wbuild/${runtimeName}-runtime/`,
+      `${runtimeName}_runtime.compact.compressed.wasm`
+    );
+
+    const code = fs.readFileSync(builtRuntimePath);
+    fs.writeFileSync(runtimePath, `0x${code.toString("hex")}`);
+  } else if (!fs.existsSync(runtimePath)) {
+    console.log(`     Missing ${runtimePath} locally, downloading it...`);
+    child_process.execSync(
+      `mkdir -p ${path.dirname(runtimePath)} && ` +
+        `wget -q https://github.com/PureStake/moonbeam/releases/` +
+        `download/${runtimeTag}/${runtimeName}-${runtimeTag}.wasm ` +
+        `-O ${runtimePath}.bin`
+    );
+    const code = fs.readFileSync(`${runtimePath}.bin`);
+    fs.writeFileSync(runtimePath, `0x${code.toString("hex")}`);
+    console.log(`${runtimePath} downloaded !`);
+  }
+  return runtimePath;
+}
+
+export async function getGithubReleaseBinary(url: string, binaryPath: string): Promise<string> {
+  if (!fs.existsSync(binaryPath)) {
+    console.log(`     Missing ${binaryPath} locally, downloading it...`);
+    child_process.execSync(
+      `mkdir -p ${path.dirname(binaryPath)} &&` +
+        ` wget -q ${url}` +
+        ` -O ${binaryPath} &&` +
+        ` chmod u+x ${binaryPath}`
+    );
+    console.log(`${binaryPath} downloaded !`);
+  }
+  return binaryPath;
+}
+
+// Downloads the binary and return the filepath
+export async function getMoonbeamReleaseBinary(binaryTag: string): Promise<string> {
+  const binaryPath = path.join(BINARY_DIRECTORY, `moonbeam-${binaryTag}`);
+  return getGithubReleaseBinary(
+    `https://github.com/PureStake/moonbeam/releases/download/${binaryTag}/moonbeam`,
+    binaryPath
+  );
+}
+export async function getAxiaReleaseBinary(binaryTag: string): Promise<string> {
+  const binaryPath = path.join(BINARY_DIRECTORY, `axia-${binaryTag}`);
+  return getGithubReleaseBinary(
+    `https://github.com/paritytech/axia/releases/download/${binaryTag}/axia`,
+    binaryPath
+  );
+}
+
+export async function getMoonbeamDockerBinary(binaryTag: string): Promise<string> {
+  const sha = child_process.execSync(`git rev-list -1 ${binaryTag}`);
+  if (!sha) {
+    console.error(`Invalid runtime tag ${binaryTag}`);
+    return;
+  }
+  const sha8 = sha.slice(0, 8);
+
+  const binaryPath = path.join(BINARY_DIRECTORY, `moonbeam-${sha8}`);
+  if (!fs.existsSync(binaryPath)) {
+    if (process.platform != "linux") {
+      console.error(`docker binaries are only supported on linux.`);
+      process.exit(1);
+    }
+    const dockerImage = `purestake/moonbeam:sha-${sha8}`;
+
+    console.log(`     Missing ${binaryPath} locally, downloading it...`);
+    child_process.execSync(`mkdir -p ${path.dirname(binaryPath)} && \
+        docker create --name moonbeam-tmp ${dockerImage} && \
+        docker cp moonbeam-tmp:/moonbeam/moonbeam ${binaryPath} && \
+        docker rm moonbeam-tmp`);
+    console.log(`${binaryPath} downloaded !`);
+  }
+  return binaryPath;
+}
+
+export async function getRawSpecsFromTag(
+  runtimeName: "moonbase" | "moonriver" | "moonbeam",
+  tag: string
+) {
+  const specPath = path.join(SPECS_DIRECTORY, `${runtimeName}-${tag}-raw-specs.json`);
+  if (!fs.existsSync(specPath)) {
+    const binaryPath = await getMoonbeamDockerBinary(tag);
+
+    child_process.execSync(
+      `mkdir -p ${path.dirname(specPath)} && ` +
+        `${binaryPath} build-spec --chain moonbase-local --raw > ${specPath}`
+    );
+  }
+  return specPath;
+}
+
+export async function generateRawSpecs(
+  binaryPath: string,
+  runtimeName: "moonbase-local" | "moonriver-local" | "moonbeam-local"
+) {
+  const specPath = path.join(SPECS_DIRECTORY, `${runtimeName}-raw-specs.json`);
+  if (!fs.existsSync(specPath)) {
+    child_process.execSync(
+      `mkdir -p ${path.dirname(specPath)} && ` +
+        `${binaryPath} build-spec --chain moonbase-local --raw > ${specPath}`
+    );
+  }
+  return specPath;
+}
+
+// log listeners to kill at the end;
+const logListener = [];
+
+// This will start a allychain node, only 1 at a time (check every 100ms).
 // This will prevent race condition on the findAvailablePorts which uses the PID of the process
-// Returns ports for the 3rd parachain node
-export async function startParachainNodes(options: ParachainOptions): Promise<{
+// Returns ports for the 3rd allychain node
+export async function startAllychainNodes(options: ParaTestOptions): Promise<{
   relayPorts: NodePorts[];
-  paraPorts: ParachainPorts[];
+  paraPorts: AllychainPorts[];
 }> {
   while (nodeStarted) {
     // Wait 100ms to see if the node is free
@@ -89,22 +230,22 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
       setTimeout(resolve, 100);
     });
   }
-  const relaychain = options.relaychain || "rococo-local";
-  // For now we only support one, two or three parachains
-  const numberOfParachains =
-    (options.numberOfParachains < 4 &&
-      options.numberOfParachains > 0 &&
-      options.numberOfParachains) ||
-    1;
-  const parachainArray = new Array(numberOfParachains).fill(0);
+  // For now we only support one, two or three allychains
+  const numberOfAllychains = [1, 2, 3].includes(options.numberOfAllychains)
+    ? options.numberOfAllychains
+    : 1;
+  const allychainArray = new Array(numberOfAllychains).fill(0);
   nodeStarted = true;
-  // Each node will have 3 ports. There are 2 nodes per parachain, and as many relaychain nodes.
-  // So numberOfPorts =  3 * 2 * parachainCount
-  const ports = await findAvailablePorts(numberOfParachains);
+  // Each node will have 3 ports.
+  // 2 allychains nodes per allychain.
+  // 2 ports set (para + relay) per allychain node.
+  // n+1 relay node.
+  // So numberOfPorts =  3 * 2 * 2 * allychainCount
+  const ports = await findAvailablePorts(numberOfAllychains);
 
-  //Build hrmpChannels, all connected to first parachain
+  //Build hrmpChannels, all connected to first allychain
   const hrmpChannels = [];
-  new Array(numberOfParachains - 1).fill(0).forEach((_, i) => {
+  new Array(numberOfAllychains - 1).fill(0).forEach((_, i) => {
     hrmpChannels.push({
       sender: 1000,
       recipient: 1000 * (i + 2),
@@ -119,12 +260,67 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
     });
   });
 
+  const paraChain = options.allychain.chain || "moonbase-local";
+  const paraBinary =
+    !options.allychain.binary || options.allychain.binary == "local"
+      ? BINARY_PATH
+      : await getMoonbeamReleaseBinary(options.allychain.binary);
+  const paraSpecs =
+    "spec" in options.allychain
+      ? options.allychain.spec
+      : !("runtime" in options.allychain) || options.allychain.runtime == "local"
+      ? await generateRawSpecs(paraBinary, paraChain)
+      : await getRawSpecsFromTag(paraChain.split("-")[0] as any, options.allychain.runtime);
+
+  const relayChain = options.relaychain?.chain || "rococo-local";
+  const relayBinary =
+    !options?.relaychain?.binary || options?.relaychain?.binary == "local"
+      ? RELAY_BINARY_PATH
+      : await getAxiaReleaseBinary(options.relaychain.binary);
+
+  const RELAY_GENESIS_PER_VERSION = {
+    "v0.9.13": {
+      runtime: {
+        runtime_genesis_config: {
+          configuration: {
+            config: {
+              validation_upgrade_frequency: 2,
+              validation_upgrade_delay: 30,
+            },
+          },
+        },
+      },
+    },
+    "v0.9.16": {
+      runtime: {
+        runtime_genesis_config: {
+          configuration: {
+            config: {
+              validation_upgrade_delay: 30,
+            },
+          },
+        },
+      },
+    },
+    local: {
+      runtime: {
+        runtime_genesis_config: {
+          configuration: {
+            config: {
+              validation_upgrade_delay: 30,
+            },
+          },
+        },
+      },
+    },
+  };
+  const genesis = RELAY_GENESIS_PER_VERSION[options?.relaychain?.binary] || {};
   // Build launchConfig
   const launchConfig = {
     relaychain: {
-      bin: RELAY_BINARY_PATH,
-      chain: relaychain,
-      nodes: new Array(numberOfParachains + 1).fill(0).map((_, i) => {
+      bin: relayBinary,
+      chain: relayChain,
+      nodes: new Array(numberOfAllychains + 1).fill(0).map((_, i) => {
         return {
           name: RELAY_CHAIN_NODE_NAMES[i],
           port: ports[i].p2pPort,
@@ -132,59 +328,67 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
           wsPort: ports[i].wsPort,
         };
       }),
-      genesis: {
-        runtime: {
-          runtime_genesis_config: {
-            parachainsConfiguration: {
-              config: {
-                validation_upgrade_frequency: 1,
-                validation_upgrade_delay: 1,
-              },
-            },
-          },
-        },
-      },
+      genesis,
     },
-    parachains: parachainArray.map((_, i) => {
+    allychains: allychainArray.map((_, i) => {
       return {
-        bin: BINARY_PATH,
-        id: 1000 * (i + 1),
-        balance: "1000000000000000000000",
-        chain: options.chain,
+        bin: paraBinary,
+        chain: paraSpecs,
         nodes: [
           {
-            port: ports[i * 2 + numberOfParachains + 1].p2pPort,
-            rpcPort: ports[i * 2 + numberOfParachains + 1].rpcPort,
-            wsPort: ports[i * 2 + numberOfParachains + 1].wsPort,
+            port: ports[i * 4 + numberOfAllychains + 1].p2pPort,
+            rpcPort: ports[i * 4 + numberOfAllychains + 1].rpcPort,
+            wsPort: ports[i * 4 + numberOfAllychains + 1].wsPort,
             name: "alice",
             flags: [
-              "--log=info,rpc=trace,evm=trace,ethereum=trace",
+              "--log=info,rpc=info,evm=trace,ethereum=trace,author=trace",
               "--unsafe-rpc-external",
+              "--execution=wasm",
+              "--no-prometheus",
+              "--no-telemetry",
               "--rpc-cors=all",
               "--",
               "--execution=wasm",
+              "--no-mdns",
+              "--no-prometheus",
+              "--no-telemetry",
+              "--no-private-ipv4",
+              `--port=${ports[i * 4 + numberOfAllychains + 2].p2pPort}`,
+              `--rpc-port=${ports[i * 4 + numberOfAllychains + 2].rpcPort}`,
+              `--ws-port=${ports[i * 4 + numberOfAllychains + 2].wsPort}`,
             ],
           },
           {
-            port: ports[i * 2 + numberOfParachains + 2].p2pPort,
-            rpcPort: ports[i * 2 + numberOfParachains + 2].rpcPort,
-            wsPort: ports[i * 2 + numberOfParachains + 2].wsPort,
+            port: ports[i * 4 + numberOfAllychains + 3].p2pPort,
+            rpcPort: ports[i * 4 + numberOfAllychains + 3].rpcPort,
+            wsPort: ports[i * 4 + numberOfAllychains + 3].wsPort,
             name: "bob",
             flags: [
-              "--log=info,rpc=trace,evm=trace,ethereum=trace",
+              "--log=info,rpc=info,evm=trace,ethereum=trace,author=trace",
               "--unsafe-rpc-external",
+              "--execution=wasm",
+              "--no-prometheus",
+              "--no-telemetry",
               "--rpc-cors=all",
               "--",
               "--execution=wasm",
+              "--no-mdns",
+              "--no-prometheus",
+              "--no-telemetry",
+              "--no-private-ipv4",
+              `--port=${ports[i * 4 + numberOfAllychains + 4].p2pPort}`,
+              `--rpc-port=${ports[i * 4 + numberOfAllychains + 4].rpcPort}`,
+              `--ws-port=${ports[i * 4 + numberOfAllychains + 4].wsPort}`,
             ],
           },
         ],
       };
     }),
-    simpleParachains: [],
+    simpleAllychains: [],
     hrmpChannels: hrmpChannels,
     finalization: true,
   };
+  console.log(`Using`, JSON.stringify(launchConfig, null, 2));
 
   const onProcessExit = function () {
     killAll();
@@ -196,10 +400,36 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
   process.once("exit", onProcessExit);
   process.once("SIGINT", onProcessInterrupt);
 
-  await run(path.join(__dirname, "../"), launchConfig);
+  const listenTo = async (filename: string, prepend: string) => {
+    while (!fs.existsSync(filename)) {
+      await new Promise((resolve) => setTimeout(resolve, 100));
+    }
+    const tailProcess = child_process.spawn("tail", ["-f", filename]);
+    tailProcess.stdout.on("data", function (data) {
+      console.log(`${prepend} ${data.toString().trim()}`);
+    });
+    logListener.push(tailProcess);
+  };
+  const runPromise = run("", launchConfig);
+  if (DISPLAY_LOG) {
+    new Array(numberOfAllychains + 1).fill(0).forEach(async (_, i) => {
+      listenTo(`${RELAY_CHAIN_NODE_NAMES[i]}.log`, `relay-${i}`);
+    });
+    allychainArray.forEach(async (_, i) => {
+      const filenameNode1 = `${ports[i * 4 + numberOfAllychains + 1].wsPort}.log`;
+      listenTo(filenameNode1, `para-${i}-0`);
+      const filenameNode2 = `${ports[i * 4 + numberOfAllychains + 1].wsPort}.log`;
+      listenTo(filenameNode2, `para-${i}-1`);
+    });
+  }
+
+  await Promise.race([
+    runPromise,
+    new Promise((_, reject) => setTimeout(() => reject(new Error("timeout")), 60000)),
+  ]);
 
   return {
-    relayPorts: new Array(numberOfParachains + 1).fill(0).map((_, i) => {
+    relayPorts: new Array(numberOfAllychains + 1).fill(0).map((_, i) => {
       return {
         p2pPort: ports[i].p2pPort,
         rpcPort: ports[i].rpcPort,
@@ -207,19 +437,19 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
       };
     }),
 
-    paraPorts: parachainArray.map((_, i) => {
+    paraPorts: allychainArray.map((_, i) => {
       return {
-        parachainId: 1000 * (i + 1),
+        allychainId: 1000 * (i + 1),
         ports: [
           {
-            p2pPort: ports[i * 2 + numberOfParachains + 1].p2pPort,
-            rpcPort: ports[i * 2 + numberOfParachains + 1].rpcPort,
-            wsPort: ports[i * 2 + numberOfParachains + 1].wsPort,
+            p2pPort: ports[i * 4 + numberOfAllychains + 1].p2pPort,
+            rpcPort: ports[i * 4 + numberOfAllychains + 1].rpcPort,
+            wsPort: ports[i * 4 + numberOfAllychains + 1].wsPort,
           },
           {
-            p2pPort: ports[i * 2 + numberOfParachains + 2].p2pPort,
-            rpcPort: ports[i * 2 + numberOfParachains + 2].rpcPort,
-            wsPort: ports[i * 2 + numberOfParachains + 2].wsPort,
+            p2pPort: ports[i * 4 + numberOfAllychains + 3].p2pPort,
+            rpcPort: ports[i * 4 + numberOfAllychains + 3].rpcPort,
+            wsPort: ports[i * 4 + numberOfAllychains + 3].wsPort,
           },
         ],
       };
@@ -227,13 +457,16 @@ export async function startParachainNodes(options: ParachainOptions): Promise<{
   };
 }
 
-export async function stopParachainNodes() {
+export async function stopAllychainNodes() {
   killAll();
+  logListener.forEach((process) => {
+    process.kill();
+  });
   await new Promise((resolve) => {
-    // TODO: improve, make killAll async https://github.com/paritytech/polkadot-launch/issues/139
-    console.log("Waiting 10 seconds for processes to shut down...");
-    setTimeout(resolve, 10000);
+    // TODO: improve, make killAll async https://github.com/paritytech/axia-launch/issues/139
+    process.stdout.write("Waiting 5 seconds for processes to shut down...");
+    setTimeout(resolve, 5000);
     nodeStarted = false;
-    console.log("... done");
+    console.log(" done");
   });
 }

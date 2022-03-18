@@ -7,7 +7,7 @@
 # 43 for http
 # 44 for ws
 #
-# Parachain port (XX+1)000
+# Allychain port (XX+1)000
 # 52 for p2p
 # 53 for http
 # 54 for ws
@@ -40,12 +40,12 @@ done
 echo "relay ${RELAY_INDEX} - p2p-port: $((RELAY_PORT)), \
 http-port: $((RELAY_PORT + 1)) , ws-port: $((RELAY_PORT + 2))"
 
-if [ -z "$POLKADOT_VERSION" ]; then
-  POLKADOT_VERSION="sha-`egrep -o '/polkadot.*#([^\"]*)' Cargo.lock | \
+if [ -z "$AXIA_VERSION" ]; then
+  AXIA_VERSION="sha-`egrep -o '/axia.*#([^\"]*)' Cargo.lock | \
     head -1 | sed 's/.*#//' |  cut -c1-8`"
 fi
 
-echo "Using Polkadot revision #${POLKADOT_VERSION}"
+echo "Using Axia revision #${AXIA_VERSION}"
 
 # The -v build:/build allows to pass the spec files from the build folder to the docker container
 docker run \
@@ -53,8 +53,8 @@ docker run \
   -p $RELAY_PORT:$RELAY_PORT \
   -p $((RELAY_PORT + 1)):$((RELAY_PORT + 1)) \
   -p $((RELAY_PORT + 2)):$((RELAY_PORT + 2)) \
-  -it purestake/moonbase-relay-testnet:$POLKADOT_VERSION \
-    /usr/local/bin/polkadot \
+  -it purestake/moonbase-relay-testnet:$AXIA_VERSION \
+    /usr/local/bin/axia \
       --chain rococo-local \
       --${WELL_KNOWN_USERS[$RELAY_INDEX]} \
       --node-key ${COMMON_NODE_KEYS[$RELAY_INDEX]} \

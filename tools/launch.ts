@@ -1,5 +1,5 @@
 /**
- *  Script to launch 2 relay and 2 parachain nodes.
+ *  Script to launch 2 relay and 2 allychain nodes.
  *  It contains pre-registered versions to allow easy run using Docker.
  *
  *  ports can be given using --port-prefix xx (default 34) using the following rule:
@@ -14,7 +14,7 @@ import yargs from "yargs";
 import * as fs from "fs";
 import * as path from "path";
 import * as child_process from "child_process";
-import { killAll, run } from "polkadot-launch";
+import { killAll, run } from "axia-launch";
 
 // Description of the network to launch
 type NetworkConfig = {
@@ -26,13 +26,13 @@ type NetworkConfig = {
   chain: string;
 };
 
-// Description of the parachain network
-type ParachainConfig = NetworkConfig & {
+// Description of the allychain network
+type AllychainConfig = NetworkConfig & {
   // Which relay (name) config to use
   relay: string;
 };
 
-const parachains: { [name: string]: ParachainConfig } = {
+const allychains: { [name: string]: AllychainConfig } = {
   "moonriver-genesis": {
     relay: "kusama-9040",
     chain: "moonriver-local",
@@ -118,13 +118,28 @@ const parachains: { [name: string]: ParachainConfig } = {
     chain: "moonbase-local",
     docker: "purestake/moonbeam:v0.18.1",
   },
+  "moonbase-0.19.2": {
+    relay: "rococo-9130",
+    chain: "moonbase-local",
+    docker: "purestake/moonbeam:v0.19.2",
+  },
+  "moonbase-0.20.1": {
+    relay: "rococo-9140",
+    chain: "moonbase-local",
+    docker: "purestake/moonbeam:v0.20.1",
+  },
+  "moonbase-0.21.1": {
+    relay: "rococo-9140",
+    chain: "moonbase-local",
+    docker: "purestake/moonbeam:v0.21.1",
+  },
   local: {
-    relay: "rococo-9111",
+    relay: "rococo-9140",
     chain: "moonbase-local",
     binary: "../target/release/moonbeam",
   },
 };
-const parachainNames = Object.keys(parachains);
+const allychainNames = Object.keys(allychains);
 
 const relays: { [name: string]: NetworkConfig } = {
   "kusama-9030": {
@@ -171,6 +186,10 @@ const relays: { [name: string]: NetworkConfig } = {
     docker: "purestake/moonbase-relay-testnet:sha-45c0f1f3",
     chain: "rococo-local",
   },
+  "rococo-9140": {
+    docker: "purestake/moonbase-relay-testnet:sha-1a88d697",
+    chain: "rococo-local",
+  },
   "westend-9030": {
     docker: "purestake/moonbase-relay-testnet:sha-aa386760",
     chain: "westend-local",
@@ -180,31 +199,54 @@ const relays: { [name: string]: NetworkConfig } = {
     chain: "westend-local",
   },
   local: {
-    binary: "../../polkadot/target/release/polkadot",
+    binary: "../../axia/target/release/axia",
     chain: "rococo-local",
   },
 };
 const relayNames = Object.keys(relays);
 
-// We support 3 parachains for now
+// We support 3 allychains for now
 const validatorNames = ["Alice", "Bob", "Charlie", "Dave", "Eve", "Ferdie"];
+
+const retrieveBinaryFromDocker = async (binaryPath: string, dockerImage: string) => {
+  if (process.platform != "linux") {
+    console.error(
+      `docker binaries are only supported on linux. Use "local" config for compiled binaries`
+    );
+    process.exit(1);
+  }
+  const allychainPath = path.join(__dirname, binaryPath);
+  if (!fs.existsSync(allychainPath)) {
+    console.log(`     Missing ${binaryPath} locally, downloading it...`);
+    child_process.execSync(`mkdir -p ${path.dirname(allychainPath)} && \
+        docker create --name moonbeam-tmp ${dockerImage} && \
+        docker cp moonbeam-tmp:/moonbeam/moonbeam ${allychainPath} && \
+        docker rm moonbeam-tmp`);
+    console.log(`${binaryPath} downloaded !`);
+  }
+};
 
 async function start() {
   const argv = yargs(process.argv.slice(2))
     .usage("Usage: npm run launch [args]")
     .version("1.0.0")
     .options({
-      parachain: {
+      allychain: {
         type: "string",
-        choices: parachainNames,
+        choices: allychainNames,
         default: "local",
-        describe: "which parachain configuration to run",
+        describe: "which allychain configuration to run",
       },
-      "parachain-chain": {
+      "allychain-chain": {
         type: "string",
-        describe: "overrides parachain chain/runtime",
+        describe: "overrides allychain chain/runtime",
       },
-      "parachain-id": { type: "number", default: 1000, describe: "overrides parachain-id" },
+      "allychain-runtime": {
+        type: "string",
+        describe: "<git-tag> to use for runtime specs",
+        conflicts: ["allychain-chain"],
+      },
+      "allychain-id": { type: "number", default: 1000, describe: "overrides allychain-id" },
       relay: {
         type: "string",
         choices: relayNames,
@@ -216,11 +258,11 @@ async function start() {
           "rococo",
           "westend",
           "kusama",
-          "polkadot",
+          "axia",
           "rococo-local",
           "westend-local",
           "kusama-local",
-          "polkadot-local",
+          "axia-local",
         ],
         describe: "overrides relay chain/runtime",
       },
@@ -237,23 +279,42 @@ async function start() {
   const startingPort = portPrefix * 1000;
   let paras = [];
   let parasNames = [];
-  let parachainsChains = [];
+  let allychainsChains = [];
   let paraIds = [];
 
-  // We start gathering all the information about the parachains
-  if (Array.isArray(argv["parachain-id"])) {
-    // We need two validators per parachain, so there is a maximum we can support
-    if (argv["parachain-id"].length * 2 > validatorNames.length) {
+  // We start gathering all the information about the allychains
+  if (Array.isArray(argv["allychain-id"])) {
+    // We need two validators per allychain, so there is a maximum we can support
+    if (argv["allychain-id"].length * 2 > validatorNames.length) {
       console.error(`Exceeded max number of paras: ${validatorNames.length / 2}`);
       return;
     }
-    for (let i = 0; i < argv["parachain-id"].length; i++) {
-      paraIds.push(argv["parachain-id"][i]);
+    for (let i = 0; i < argv["allychain-id"].length; i++) {
+      paraIds.push(argv["allychain-id"][i]);
     }
   }
 
-  if (Array.isArray(argv.parachain)) {
-    for (let i = 0; i < argv.parachain.length; i++) {
+  if (argv["allychain-runtime"]) {
+    const sha = child_process.execSync(`git rev-list -1 ${argv["allychain-runtime"]}`);
+    if (!sha) {
+      console.error(`Invalid runtime tag ${argv["allychain-runtime"]}`);
+      return;
+    }
+    const sha8 = sha.slice(0, 8);
+    console.log(`Using runtime from sha: ${sha8}`);
+
+    const allychainBinary = `build/sha-${sha8}/moonbeam`;
+    const allychainPath = path.join(__dirname, allychainBinary);
+    retrieveBinaryFromDocker(allychainBinary, `purestake/moonbeam:sha-${sha8}`);
+
+    child_process.execSync(
+      `${allychainBinary} build-spec --chain moonbase-local --raw > ` +
+        `moonbase-${argv["allychain-runtime"]}-raw-spec.json`
+    );
+  }
+
+  if (Array.isArray(argv.allychain)) {
+    for (let i = 0; i < argv.allychain.length; i++) {
       if (i >= paraIds.length) {
         // If no paraId was provided for all of them, we just start assigning defaults
         // But if one of the defaults was assigned to a previous para, we error
@@ -264,30 +325,38 @@ async function start() {
           paraIds.push(1000 + i);
         }
       }
-      const parachainName = argv.parachain[i].toString();
-      parasNames.push(parachainName);
-      paras.push(parachains[parachainName]);
-      // If it is an array, push the position at which we are
-      if (Array.isArray(argv["parachain-chain"])) {
-        parachainsChains.push(argv["parachain-chain"] || parachains[parachainName].chain);
+      const allychainName = argv.allychain[i].toString();
+      parasNames.push(allychainName);
+      paras.push(allychains[allychainName]);
+      if (argv["allychain-runtime"]) {
+        allychainsChains.push(`moonbase-${argv["allychain-runtime"]}-raw-spec.json`);
       }
-      // Else, push the value to the first parachain if it exists, else the default
+      // If it is an array, push the position at which we are
+      else if (Array.isArray(argv["allychain-chain"])) {
+        allychainsChains.push(argv["allychain-chain"] || allychains[allychainName].chain);
+      }
+      // Else, push the value to the first allychain if it exists, else the default
       else {
         if (i == 0) {
-          parachainsChains.push(argv["parachain-chain"] || parachains[parachainName].chain);
+          allychainsChains.push(argv["allychain-chain"] || allychains[allychainName].chain);
         } else {
-          parachainsChains.push(parachains[parachainName].chain);
+          allychainsChains.push(allychains[allychainName].chain);
         }
       }
     }
   }
   // If it is not an array, we just simply push it
   else {
-    paraIds.push(argv["parachain-id"] || 1000);
-    const parachainName = argv.parachain.toString();
-    parasNames.push(parachainName);
-    paras.push(parachains[parachainName]);
-    parachainsChains.push(argv["parachain-chain"] || parachains[parachainName].chain);
+    paraIds.push(argv["allychain-id"] || 1000);
+    const allychainName = argv.allychain.toString();
+    parasNames.push(allychainName);
+    paras.push(allychains[allychainName]);
+
+    allychainsChains.push(
+      argv["allychain-runtime"]
+        ? `moonbase-${argv["allychain-runtime"]}-raw-spec.json`
+        : argv["allychain-chain"] || allychains[allychainName].chain
+    );
   }
 
   const relayName = argv.relay || paras[0].relay;
@@ -305,42 +374,30 @@ async function start() {
     `🚀 Relay:     ${relayName.padEnd(20)} - ${relay.docker || relay.binary} (${relayChain})`
   );
 
-  let parachainBinaries = [];
-  let parachainPaths = [];
+  let allychainBinaries = [];
+  let allychainPaths = [];
 
-  // We retrieve the binaries and paths for all parachains
+  // We retrieve the binaries and paths for all allychains
   for (let i = 0; i < paras.length; i++) {
     if (paras[i].binary) {
-      parachainBinaries.push(paras[i].binary);
-      const parachainPath = path.join(__dirname, paras[i].binary);
-      if (!fs.existsSync(parachainPath)) {
-        console.log(`     Missing ${parachainPath}`);
+      allychainBinaries.push(paras[i].binary);
+      const allychainPath = path.join(__dirname, paras[i].binary);
+      if (!fs.existsSync(allychainPath)) {
+        console.log(`     Missing ${allychainPath}`);
         return;
       }
-      parachainPaths.push(parachainPath);
+      allychainPaths.push(allychainPath);
     } else {
-      if (process.platform != "linux") {
-        console.log(
-          `docker binaries are only supported on linux. Use "local" config for compiled binaries`
-        );
-        return;
-      }
-      const parachainBinary = `build/${parasNames[i]}/moonbeam`;
-      const parachainPath = path.join(__dirname, parachainBinary);
-      if (!fs.existsSync(parachainPath)) {
-        console.log(`     Missing ${parachainBinary} locally, downloading it...`);
-        child_process.execSync(`mkdir -p ${path.dirname(parachainPath)} && \
-            docker create --name moonbeam-tmp ${paras[i].docker} && \
-            docker cp moonbeam-tmp:/moonbeam/moonbeam ${parachainPath} && \
-            docker rm moonbeam-tmp`);
-        console.log(`${parachainBinary} downloaded !`);
-      }
-      parachainBinaries.push(parachainBinary);
-      parachainPaths.push(parachainPath);
+      const allychainBinary = `build/${parasNames[i]}/moonbeam`;
+      const allychainPath = path.join(__dirname, allychainBinary);
+
+      retrieveBinaryFromDocker(allychainBinary, paras[i].docker);
+      allychainBinaries.push(allychainBinary);
+      allychainPaths.push(allychainPath);
     }
     console.log(
-      `🚀 Parachain: ${parasNames[i].padEnd(20)} - ${paras[i].docker || paras[i].binary} (${
-        parachainsChains[i]
+      `🚀 Allychain: ${parasNames[i].padEnd(20)} - ${paras[i].docker || paras[i].binary} (${
+        allychainsChains[i]
       })`
     );
   }
@@ -360,14 +417,14 @@ async function start() {
       );
       return;
     }
-    relayBinary = `build/${relayName}/polkadot`;
-    const relayPath = path.join(__dirname, `build/${relayName}/polkadot`);
+    relayBinary = `build/${relayName}/axia`;
+    const relayPath = path.join(__dirname, `build/${relayName}/axia`);
     if (!fs.existsSync(relayPath)) {
       console.log(`     Missing ${relayBinary} locally, downloading it...`);
       child_process.execSync(`mkdir -p ${path.dirname(relayPath)} && \
-          docker create --name polkadot-tmp ${relay.docker} && \
-          docker cp polkadot-tmp:/usr/local/bin/polkadot ${relayPath} && \
-          docker rm polkadot-tmp`);
+          docker create --name axia-tmp ${relay.docker} && \
+          docker cp axia-tmp:/usr/local/bin/axia ${relayPath} && \
+          docker rm axia-tmp`);
       console.log(`     ${relayBinary} downloaded !`);
     }
   }
@@ -379,9 +436,9 @@ async function start() {
 
   let relay_nodes = [];
   // We need to build the configuration for each of the paras
-  for (let i = 0; i < parachainBinaries.length; i++) {
+  for (let i = 0; i < allychainBinaries.length; i++) {
     let relayNodeConfig = JSON.parse(JSON.stringify(relayNodeTemplate));
-    let parachainConfig = JSON.parse(JSON.stringify(parachainTemplate));
+    let allychainConfig = JSON.parse(JSON.stringify(allychainTemplate));
     // HRMP is not configurable in Kusama and Westend thorugh genesis. We should detect this here
     // Maybe there is a nicer way of doing this
     if (launchConfig.relaychain.chain.startsWith("rococo")) {
@@ -397,34 +454,35 @@ async function start() {
       }
     }
 
-    parachainConfig.bin = parachainBinaries[i];
-    parachainConfig.chain = parachainsChains[i];
-    parachainConfig.id = paraIds[i];
-    parachainConfig.nodes[0].port = startingPort + 100 + i * 100;
-    parachainConfig.nodes[0].rpcPort = startingPort + 101 + i * 100;
-    parachainConfig.nodes[0].wsPort = startingPort + 102 + i * 100;
+    allychainConfig.bin = allychainBinaries[i];
+    allychainConfig.chain = allychainsChains[i];
+    allychainConfig.id = paraIds[i];
 
-    parachainConfig.nodes[1].port = startingPort + 110 + i * 100;
-    parachainConfig.nodes[1].rpcPort = startingPort + 111 + i * 100;
-    parachainConfig.nodes[1].wsPort = startingPort + 112 + i * 100;
-    launchConfig.parachains.push(parachainConfig);
+    allychainConfig.nodes.forEach((node, index) => {
+      node.port = startingPort + 100 + i * 100 + index * 10;
+      node.rpcPort = startingPort + 101 + i * 100 + index * 10;
+      node.wsPort = startingPort + 102 + i * 100 + index * 10;
+    });
+
+    launchConfig.allychains.push(allychainConfig);
 
     // Two relay nodes per para
     relayNodeConfig[0].name = validatorNames[i * 2];
-    relayNodeConfig[0].port = startingPort + i * 10;
-    relayNodeConfig[0].rpcPort = startingPort + 1 + i * 10;
-    relayNodeConfig[0].wsPort = startingPort + 2 + i * 10;
+    relayNodeConfig[0].port = startingPort + i * 20;
+    relayNodeConfig[0].rpcPort = startingPort + i * 20 + 1;
+    relayNodeConfig[0].wsPort = startingPort + i * 20 + 2;
+
     relayNodeConfig[1].name = validatorNames[i * 2 + 1];
-    relayNodeConfig[1].port = startingPort + i * 10;
-    relayNodeConfig[1].rpcPort = startingPort + 1 + i * 10;
-    relayNodeConfig[1].wsPort = startingPort + 1 + i * 10;
+    relayNodeConfig[1].port = startingPort + i * 20 + 10;
+    relayNodeConfig[1].rpcPort = startingPort + i * 20 + 11;
+    relayNodeConfig[1].wsPort = startingPort + i * 20 + 12;
     relay_nodes.push(relayNodeConfig[0]);
     relay_nodes.push(relayNodeConfig[1]);
   }
 
   launchConfig.relaychain.nodes = relay_nodes;
 
-  const knownRelayChains = ["kusama", "westend", "rococo", "polkadot"]
+  const knownRelayChains = ["kusama", "westend", "rococo", "axia"]
     .map((network) => [`${network}`, `${network}-local`, `${network}-dev`])
     .flat();
 
@@ -466,14 +524,14 @@ const launchTemplate = {
         configuration: {
           config: {
             validation_upgrade_frequency: 1,
-            validation_upgrade_delay: 1,
+            validation_upgrade_delay: 30,
           },
         },
       },
     },
   },
-  parachains: [],
-  simpleParachains: [],
+  allychains: [],
+  simpleAllychains: [],
   hrmpChannels: [],
   types: {
     Address: "MultiAddress",
@@ -486,21 +544,21 @@ const launchTemplate = {
 const relayNodeTemplate = [
   {
     name: "alice",
-    flags: ["--log=info,parachain::pvf=trace"],
+    flags: ["--log=info,allychain::pvf=trace"],
     port: 0,
     rpcPort: 1,
     wsPort: 2,
   },
   {
     name: "bob",
-    flags: ["--log=info,parachain::pvf=trace"],
+    flags: ["--log=info,allychain::pvf=trace"],
     port: 10,
     rpcPort: 11,
     wsPort: 12,
   },
 ];
 
-const parachainTemplate = {
+const allychainTemplate = {
   bin: "...",
   id: 1000,
   balance: "1000000000000000000000",
@@ -514,9 +572,7 @@ const parachainTemplate = {
       flags: [
         "--unsafe-rpc-external",
         "--unsafe-ws-external",
-        "--rpc-methods=unsafe",
         "--rpc-cors=all",
-        "--node-key=0x0000000000000000000000000000000000000000000000000000000000000100",
         "--",
         "--execution=wasm",
       ],
@@ -529,9 +585,7 @@ const parachainTemplate = {
       flags: [
         "--unsafe-rpc-external",
         "--unsafe-ws-external",
-        "--rpc-methods=unsafe",
         "--rpc-cors=all",
-        "--node-key=0x0000000000000000000000000000000000000000000000000000000000000101",
         "--",
         "--execution=wasm",
       ],

@@ -1,6 +1,6 @@
-import Keyring from "@polkadot/keyring";
+import Keyring from "@axia/keyring";
 import { expect } from "chai";
-import { BN } from "@polkadot/util";
+import { BN } from "@axia/util";
 import { ALITH, ALITH_PRIV_KEY, BALTATHAR } from "../util/constants";
 
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
@@ -11,22 +11,22 @@ const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";
 
 describeDevMoonbeam("Pallet Assets Pallet - assets transfer", (context) => {
   let sudoAccount, assetId;
-  before("Try turning maintenance mode on", async () => {
+  before("Test querying asset", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
 
     // We need to mint units with sudo.setStorage, as we dont have xcm mocker yet
     // And we need relay tokens for issuing a transaction to be executed in the relay
-    const balance = context.polkadotApi.createType("Balance", 100000000000000);
-    const assetBalance = context.polkadotApi.createType("PalletAssetsAssetBalance", {
+    const balance = context.axiaApi.createType("Balance", 100000000000000);
+    const assetBalance = context.axiaApi.createType("PalletAssetsAssetAccount", {
       balance: balance,
     });
 
-    assetId = context.polkadotApi.createType(
+    assetId = context.axiaApi.createType(
       "u128",
       new BN("42259045809535163221576417993425387648")
     );
-    const assetDetails = context.polkadotApi.createType("PalletAssetsAssetDetails", {
+    const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
       supply: balance,
     });
 
@@ -35,16 +35,16 @@ describeDevMoonbeam("Pallet Assets Pallet - assets transfer", (context) => {
     await createBlockWithExtrinsic(
       context,
       sudoAccount,
-      context.polkadotApi.tx.assets.transfer(assetId, BALTATHAR, 1000)
+      context.axiaApi.tx.assets.transfer(assetId, BALTATHAR, 1000)
     );
   });
 
-  it("should transfer asset", async function () {
+  it("should query asset balance", async function () {
     // Baltathar balance is 1000
-    let baltatharBalance = (await context.polkadotApi.query.assets.account(
+    let baltatharBalance = (await context.axiaApi.query.assets.account(
       assetId,
       BALTATHAR
     )) as any;
-    expect(baltatharBalance.balance.eq(new BN(1000))).to.equal(true);
+    expect(baltatharBalance.unwrap()["balance"].eq(new BN(1000))).to.equal(true);
   });
 });

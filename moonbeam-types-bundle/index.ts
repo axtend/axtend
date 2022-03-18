@@ -6,7 +6,7 @@ import {
   DefinitionRpcSub,
   RegistryTypes,
   OverrideVersionedType,
-} from "@polkadot/types/types";
+} from "@axia/types/types";
 
 // override types for specific pallets
 export const moduleDefinitions: Record<string, OverrideModuleType> = {
@@ -68,7 +68,7 @@ export const rpcDefinitions: Record<string, Record<string, DefinitionRpc | Defin
       type: "Result<()>",
     },
     injectHrmpMessage: {
-      description: "Inject an HRMP message from a dedicated channel from a sibling parachain",
+      description: "Inject an HRMP message from a dedicated channel from a sibling allychain",
       params: [
         { name: "sender", type: "ParaId" },
         { name: "message", type: "Vec<u8>" },
@@ -242,7 +242,7 @@ const TYPES_43_154: RegistryTypes = {
     account: "AccountId",
     deposit: "Balance",
   },
-  ParachainBondConfig: {
+  AllychainBondConfig: {
     account: "AccountId",
     percent: "Percent",
   },
@@ -318,7 +318,7 @@ const TYPES_600_799: RegistryTypes = {
   JunctionV0: {
     _enum: {
       Parent: "Null",
-      Parachain: "Compact<u32>",
+      Allychain: "Compact<u32>",
       AccountId32: "ENUM_AccountId32",
       AccountIndex64: "ENUM_AccountIndex64",
       AccountKey20: "ENUM_AccountKey20",
@@ -349,7 +349,7 @@ const TYPES_800_899: RegistryTypes = {
   ...TYPES_600_799,
   JunctionV1: {
     _enum: {
-      Parachain: "Compact<u32>",
+      Allychain: "Compact<u32>",
       AccountId32: "ENUM_AccountId32",
       AccountIndex64: "ENUM_AccountIndex64",
       AccountKey20: "ENUM_AccountKey20",
@@ -376,7 +376,7 @@ const TYPES_900_undefined_deprecated: RegistryTypes = {
     claimed_reward: "Balance",
     contributed_relay_addresses: "Vec<RelayChainAccountId>",
   },
-  ParachainStakingNominator2: {
+  AllychainStakingNominator2: {
     nominations: "Vec<Bond>",
     revocations: "Vec<AccountId>",
     total: "Balance",
@@ -384,13 +384,13 @@ const TYPES_900_undefined_deprecated: RegistryTypes = {
     scheduled_revocations_total: "Balance",
     status: "NominatorStatus",
   },
-  ParachainStakingExitQ: {
+  AllychainStakingExitQ: {
     candidates: "Vec<AccountId>",
     nominators_leaving: "Vec<AccountId>",
     candidate_schedule: "Vec<(AccountId, RoundIndex)>",
     nominator_schedule: "Vec<(AccountId, Option<AccountId>, RoundIndex)>",
   },
-  ParachainStakingCollator2: {
+  AllychainStakingCollator2: {
     id: "AccountId",
     bond: "Balance",
     nominators: "Vec<AccountId>",

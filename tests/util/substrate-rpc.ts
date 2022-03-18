@@ -1,9 +1,9 @@
-import { ApiPromise } from "@polkadot/api";
-import { AddressOrPair, ApiTypes, SubmittableExtrinsic } from "@polkadot/api/types";
-import { GenericExtrinsic } from "@polkadot/types/extrinsic";
-import { AnyTuple } from "@polkadot/types/types";
-import { Event } from "@polkadot/types/interfaces";
-import { u8aToHex } from "@polkadot/util";
+import { ApiPromise } from "@axia/api";
+import { AddressOrPair, ApiTypes, SubmittableExtrinsic } from "@axia/api/types";
+import { GenericExtrinsic } from "@axia/types/extrinsic";
+import { AnyTuple } from "@axia/types/types";
+import { Event, EventRecord } from "@axia/types/interfaces";
+import { u8aToHex } from "@axia/util";
 import { DevTestContext } from "./setup-dev-tests";
 const debug = require("debug")("test:substrateEvents");
 
@@ -15,19 +15,21 @@ export const createBlockWithExtrinsic = async <
 >(
   context: DevTestContext,
   sender: AddressOrPair,
-  polkadotCall: Call
+  axiaCall: Call
 ) => {
   // This should return a string, but is a bit complex to handle type properly so any will suffice
-  const extrinsicHash = (await polkadotCall.signAndSend(sender)) as any;
+  const extrinsicHash = (await axiaCall.signAndSend(sender)) as any;
 
   // We create the block which is containing the extrinsic
   const blockResult = await context.createBlock();
 
   // We retrieve the events for that block
-  const allRecords = await context.polkadotApi.query.system.events.at(blockResult.block.hash);
+  const allRecords: EventRecord[] = (await (
+    await context.axiaApi.at(blockResult.block.hash)
+  ).query.system.events()) as any;
 
   // We retrieve the block (including the extrinsics)
-  const blockData = await context.polkadotApi.rpc.chain.getBlock(blockResult.block.hash);
+  const blockData = await context.axiaApi.rpc.chain.getBlock(blockResult.block.hash);
 
   const extrinsicIndex = blockData.block.extrinsics.findIndex(
     (ext) => ext.hash.toHex() == extrinsicHash
@@ -63,13 +65,17 @@ export async function waitOneBlock(api: ApiPromise, numberOfBlocks: number = 1) 
   });
 }
 
-// Log relay/parachain new blocks and events
+// Log relay/allychain new blocks and events
 export async function logEvents(api: ApiPromise, name: string) {
   api.derive.chain.subscribeNewHeads(async (header) => {
     debug(
       `------------- ${name} BLOCK#${header.number}: author ${header.author}, hash ${header.hash}`
     );
-    (await api.query.system.events.at(header.hash)).forEach((e, i) => {
+    const allRecords: EventRecord[] = (await (
+      await api.at(header.hash)
+    ).query.system.events()) as any;
+
+    allRecords.forEach((e, i) => {
       debug(
         `${name} Event :`,
         i,
@@ -86,7 +92,9 @@ async function lookForExtrinsicAndEvents(api: ApiPromise, extrinsicHash: Uint8Ar
   const signedBlock = await api.rpc.chain.getBlock();
 
   // We retrieve the events for that block
-  const allRecords = await api.query.system.events.at(signedBlock.block.header.hash);
+  const allRecords: EventRecord[] = (await (
+    await api.at(signedBlock.block.header.hash)
+  ).query.system.events()) as any;
 
   const extrinsicIndex = signedBlock.block.extrinsics.findIndex((ext) => {
     return ext.hash.toHex() == u8aToHex(extrinsicHash);
@@ -120,17 +128,17 @@ async function tryLookingForEvents(api: ApiPromise, extrinsicHash: Uint8Array) {
   }
 }
 
-export const createBlockWithExtrinsicParachain = async <
+export const createBlockWithExtrinsicAllychain = async <
   Call extends SubmittableExtrinsic<ApiType>,
   ApiType extends ApiTypes
 >(
   api: ApiPromise,
   sender: AddressOrPair,
-  polkadotCall: Call
+  axiaCall: Call
 ): Promise<{ extrinsic: GenericExtrinsic<AnyTuple>; events: Event[] }> => {
   console.log("-------------- EXTRINSIC CALL -------------------------------");
   // This should return a Uint8Array
-  const extrinsicHash = (await polkadotCall.signAndSend(sender)) as unknown as Uint8Array;
+  const extrinsicHash = (await axiaCall.signAndSend(sender)) as unknown as Uint8Array;
 
   // We create the block which is containing the extrinsic
   //const blockResult = await context.createBlock();

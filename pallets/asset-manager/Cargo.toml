@@ -1,40 +1,37 @@
 [package]
 name = "pallet-asset-manager"
-authors = ["PureStake"]
+authors = [ "PureStake" ]
 edition = "2018"
 version = "0.1.0"
 
 [dependencies]
+log = { version = "0.4", default-features = false }
 serde = { version = "1.0.124", optional = true }
 
 # Moonbeam
 xcm-primitives = { path = "../../primitives/xcm/", default-features = false }
 
 # Substrate
-frame-support = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
-frame-system = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = [
-	"derive",
-] }
-scale-info = { version = "1.0", default-features = false, features = [
-	"derive",
-] }
-sp-io = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
-sp-runtime = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
-sp-std = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
+frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", default-features = false }
+frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", default-features = false }
+parity-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
+scale-info = { version = "1.0", default-features = false, features = [ "derive" ] }
+sp-io = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", default-features = false }
+sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", default-features = false }
+sp-std = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", default-features = false }
 
-# Polkadot
-xcm = { git = "https://github.com/axtend/axia", branch = "415ce0d", default-features = false }
+# Axia
+xcm = { git = "https://github.com/purestake/axia", branch = "moonbeam-axia-v0.9.17", default-features = false }
 
 # Benchmarks
-frame-benchmarking = { git = "https://github.com/axtend/axlib", branch = "e09e70a", optional = true, default-features = false }
+frame-benchmarking = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", optional = true, default-features = false }
 
 [dev-dependencies]
-pallet-balances = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
-sp-core = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+pallet-balances = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
+sp-core = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
 
 [features]
-default = ["std"]
+default = [ "std" ]
 std = [
 	"frame-support/std",
 	"frame-system/std",
@@ -48,4 +45,7 @@ std = [
 	"xcm/std",
 ]
 
-runtime-benchmarks = ["frame-benchmarking"]
+runtime-benchmarks = [
+	"frame-benchmarking",
+]
+try-runtime = [ "frame-support/try-runtime" ]

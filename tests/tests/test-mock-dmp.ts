@@ -1,7 +1,7 @@
-import Keyring from "@polkadot/keyring";
-import { KeyringPair } from "@polkadot/keyring/types";
+import Keyring from "@axia/keyring";
+import { KeyringPair } from "@axia/keyring/types";
 import { expect } from "chai";
-import { BN } from "@polkadot/util";
+import { BN } from "@axia/util";
 
 import { ALITH_PRIV_KEY } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
@@ -34,8 +34,8 @@ describeDevMoonbeam("Mock XCM - receive downward transfer", (context) => {
     const { events: eventsRegister } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.assetManager.registerAsset(
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.assetManager.registerAsset(
           sourceLocation,
           assetMetadata,
           new BN(1),
@@ -55,8 +55,8 @@ describeDevMoonbeam("Mock XCM - receive downward transfer", (context) => {
     const { events } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.polkadotApi.tx.sudo.sudo(
-        context.polkadotApi.tx.assetManager.setAssetUnitsPerSecond(assetId, 0)
+      context.axiaApi.tx.sudo.sudo(
+        context.axiaApi.tx.assetManager.setAssetUnitsPerSecond(sourceLocation, 0, 0)
       )
     );
     expect(events[1].method.toString()).to.eq("UnitsPerSecondChanged");
@@ -64,7 +64,7 @@ describeDevMoonbeam("Mock XCM - receive downward transfer", (context) => {
 
     // check asset in storage
     const registeredAsset = (
-      (await context.polkadotApi.query.assets.asset(assetId)) as any
+      (await context.axiaApi.query.assets.asset(assetId)) as any
     ).unwrap();
     expect(registeredAsset.owner.toHex()).to.eq(palletId.toLowerCase());
   });
@@ -79,8 +79,10 @@ describeDevMoonbeam("Mock XCM - receive downward transfer", (context) => {
 
     // Make sure the state has ALITH's to DOT tokens
     let alith_dot_balance = (
-      await context.polkadotApi.query.assets.account(assetId, alith.address)
-    ).balance.toBigInt();
+      (await context.axiaApi.query.assets.account(assetId, alith.address)) as any
+    )
+      .unwrap()
+      ["balance"].toBigInt();
 
     expect(alith_dot_balance).to.eq(10n * RELAY_TOKEN);
   });

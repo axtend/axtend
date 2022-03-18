@@ -5,15 +5,15 @@ import { getCommitAndLabels } from "./github-utils";
 async function printInfo(octokit: Octokit, previousVersion: string, nextVersion: string) {
   const owners = {
     substrate: "paritytech",
-    polkadot: "paritytech",
+    axia: "paritytech",
     cumulus: "paritytech",
     nimbus: "purestake",
   };
   const prefixes = {
-    substrate: "polkadot-",
-    polkadot: "release-",
-    cumulus: "polkadot-",
-    nimbus: "moonbeam-polkadot-",
+    substrate: "axia-",
+    axia: "release-",
+    cumulus: "axia-",
+    nimbus: "moonbeam-axia-",
   };
   console.log(`# Description\n`);
   console.log(`This ticket is automatically generated using\n`);

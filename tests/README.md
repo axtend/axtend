@@ -27,33 +27,33 @@ and to print more information:
 npm run test-with-logs
 ```
 
-# Running a parachain test
+# Running a allychain test
 
-Either use script or use parachain testing framework.
+Either use script or use allychain testing framework.
 
 ## Using Script
 
-You can directly launch a parachain test with this script.
+You can directly launch a allychain test with this script.
 It takes care of getting the binary relay node and spawns 2 validators and 2 collators.
 
 ```bash
 scripts/run-para-test-single.sh moonriver/test-balance-genesis.ts
 ```
 
-## Using parachain testing framework
+## Using allychain testing framework
 
 ### Requirements
 
 First make sure you have compiled moonbeam with `cargo build --release` and also copied
-the polkadot executable (built with `cargo build --release`) into the same folder as
+the axia executable (built with `cargo build --release`) into the same folder as
 the moonbeam executable: `./target/release`
-(`cp ./target/release/polkadot ../moonbeam/target/release/polkadot`).
+(`cp ./target/release/axia ../moonbeam/target/release/axia`).
 
 Also don't forget to build `moonbeam-types-bundle` with `yarn run build` in that folder.
 
 ### Execution
 
-Then run `npm run para-test-no-ci` to run the parachain tests in the para-tests-no-ci folder.
+Then run `npm run para-test-no-ci` to run the allychain tests in the para-tests-no-ci folder.
 
 This script is prefixed with `DEBUG=test:substrateEvents ` to log events during the tests.
 

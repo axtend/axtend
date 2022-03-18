@@ -10,9 +10,12 @@ describeDevMoonbeam("Balance genesis", (context) => {
     );
   });
 
-  it("should be accessible through polkadotJs", async function () {
-    const genesisHash = await context.polkadotApi.rpc.chain.getBlockHash(0);
-    const account = await context.polkadotApi.query.system.account.at(genesisHash, GENESIS_ACCOUNT);
+  it("should be accessible through axiaJs", async function () {
+    const genesisHash = await context.axiaApi.rpc.chain.getBlockHash(0);
+    const account = (await context.axiaApi.query.system.account.at(
+      genesisHash,
+      GENESIS_ACCOUNT
+    )) as any;
     expect(account.data.free.toString()).to.equal(GENESIS_ACCOUNT_BALANCE.toString());
   });
 });
