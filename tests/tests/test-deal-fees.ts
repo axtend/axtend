@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import Keyring from "@axia/keyring";
 import { TREASURY_ACCOUNT } from "../util/constants";
-import { describeDevMoonbeamAllEthTxTypes } from "../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../util/setup-dev-tests";
 import { createTransfer } from "../util/transactions";
 
-describeDevMoonbeamAllEthTxTypes("20% of the fees should go to treasury", (context) => {
+describeDevAxtendAllEthTxTypes("20% of the fees should go to treasury", (context) => {
   const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";
   const keyring = new Keyring({ type: "ethereum" });
 

@@ -1,6 +1,6 @@
-# Functional testing for Moonbeam
+# Functional testing for Axtend
 
-This folder contains a set of functional tests designed for Moonbeam network.
+This folder contains a set of functional tests designed for Axtend network.
 
 It is written in typescript, using Mocha/Chai as Test framework.
 
@@ -77,15 +77,15 @@ AXTEND_LOG="warn,rpc=trace" npm run test
 The test script will find available ports above 20000 in order to ensure that it doesn't conflict
 with any other running services.
 
-# Debugging a Moonbeam node
+# Debugging a Axtend node
 
 The repository contains a pre-configured debugger configuration for VSCode with the **CodeLLDB**
 (`vadimcn.vscode-lldb`) extension.
 
 Before debugging, you need to build the node with debug symbols with command
 `RUSTFLAGS=-g cargo build --release` (available as a VSCode task). Then go in the **Debug** tab in
-the left bar of VSCode and make sure **Launch Moonbeam Node (Linux)** is selected in the top
-dropdown. **Build & Launch Moonbeam Node (Linux)** will trigger the build before launching the node.
+the left bar of VSCode and make sure **Launch Axtend Node (Linux)** is selected in the top
+dropdown. **Build & Launch Axtend Node (Linux)** will trigger the build before launching the node.
 
 To launch the debug session click on the green "play" arrow next to the dropdown. It will take some
 time before the node starts, but the terminal containing the node output will appear when it is

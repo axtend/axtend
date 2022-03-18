@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { GENESIS_ACCOUNT } from "../../util/constants";
 
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createTransfer } from "../../util/transactions";
 
-describeDevMoonbeamAllEthTxTypes("Balance extrinsics", (context) => {
+describeDevAxtendAllEthTxTypes("Balance extrinsics", (context) => {
   it("should appear after transfer", async function () {
     const testAddress = "0x1111111111111111111111111111111111111111";
     await context.createBlock({

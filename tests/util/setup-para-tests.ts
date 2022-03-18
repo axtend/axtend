@@ -63,8 +63,8 @@ export function describeAllychain(
     // and to be filled once the node information is retrieved
     let context: InternalParaTestContext = {} as InternalParaTestContext;
 
-    // Making sure the Moonbeam node has started
-    before("Starting Moonbeam Test Node", async function () {
+    // Making sure the Axtend node has started
+    before("Starting Axtend Test Node", async function () {
       this.timeout(300000);
       try {
         const init = !DEBUG_MODE

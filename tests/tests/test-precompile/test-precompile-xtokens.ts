@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { ethers } from "ethers";
 import { getCompiled } from "../../util/contracts";
 import { createContract, createTransaction } from "../../util/transactions";
@@ -16,7 +16,7 @@ async function getBalance(context, blockHeight, address) {
   return account.data.free;
 }
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - xtokens", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - xtokens", (context) => {
   it("allows to issue transfer xtokens", async function () {
     const contractData = await getCompiled("XtokensInstance");
     const iFace = new ethers.utils.Interface(contractData.contract.abi);
@@ -92,7 +92,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - xtokens", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - xtokens", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - xtokens", (context) => {
   it("allows to issue transfer xtokens with fee", async function () {
     const contractData = await getCompiled("XtokensInstance");
     const iFace = new ethers.utils.Interface(contractData.contract.abi);
@@ -174,7 +174,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - xtokens", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - xtokens", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - xtokens", (context) => {
   it("allows to issue transfer_multiasset xtokens", async function () {
     const contractData = await getCompiled("XtokensInstance");
     const iFace = new ethers.utils.Interface(contractData.contract.abi);
@@ -272,7 +272,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - xtokens", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - xtokens", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - xtokens", (context) => {
   it("allows to issue transfer_multiasset xtokens with fee", async function () {
     const contractData = await getCompiled("XtokensInstance");
     const iFace = new ethers.utils.Interface(contractData.contract.abi);

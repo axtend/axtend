@@ -7,10 +7,10 @@ import {
   DOROTHY_PRIV_KEY,
   ETHAN_PRIVKEY,
 } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 
-describeDevMoonbeam("Treasury proposal #1", (context) => {
+describeDevAxtend("Treasury proposal #1", (context) => {
   it("should not be able to be approved by a non-council member", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
@@ -30,7 +30,7 @@ describeDevMoonbeam("Treasury proposal #1", (context) => {
   });
 });
 
-describeDevMoonbeam("Treasury proposal #2", (context) => {
+describeDevAxtend("Treasury proposal #2", (context) => {
   it("should not be able to be rejected by a non-council member", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
@@ -52,7 +52,7 @@ describeDevMoonbeam("Treasury proposal #2", (context) => {
   });
 });
 
-describeDevMoonbeam("Treasury proposal #3", (context) => {
+describeDevAxtend("Treasury proposal #3", (context) => {
   it("should be rejected if three-fifths of the council did not vote in favor", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const charleth = await keyring.addFromUri(CHARLETH_PRIV_KEY, null, "ethereum");
@@ -81,7 +81,7 @@ describeDevMoonbeam("Treasury proposal #3", (context) => {
   });
 });
 
-describeDevMoonbeam("Treasury proposal #4", (context) => {
+describeDevAxtend("Treasury proposal #4", (context) => {
   it("should not be rejected by less than half of the members of the Board", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const charleth = await keyring.addFromUri(CHARLETH_PRIV_KEY, null, "ethereum");
@@ -108,7 +108,7 @@ describeDevMoonbeam("Treasury proposal #4", (context) => {
   });
 });
 
-describeDevMoonbeam("Treasury proposal #5", (context) => {
+describeDevAxtend("Treasury proposal #5", (context) => {
   it("should be approvable by root", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -134,7 +134,7 @@ describeDevMoonbeam("Treasury proposal #5", (context) => {
   });
 });
 
-describeDevMoonbeam("Treasury proposal #6", (context) => {
+describeDevAxtend("Treasury proposal #6", (context) => {
   it("should be rejectable by root", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -162,7 +162,7 @@ describeDevMoonbeam("Treasury proposal #6", (context) => {
   });
 });
 
-describeDevMoonbeam("Treasury proposal #7", (context) => {
+describeDevAxtend("Treasury proposal #7", (context) => {
   it("should be approved if the three fifths of the council voted for it", async function () {
     // To run this long scenarios, we have to go through a lot of steps, so anyway we won't be
     // able to keep this tests within 5 seconds.
@@ -213,7 +213,7 @@ describeDevMoonbeam("Treasury proposal #7", (context) => {
   });
 });
 
-describeDevMoonbeam("Treasury proposal #8", (context) => {
+describeDevAxtend("Treasury proposal #8", (context) => {
   it("should be rejected if the half of the council voted against it", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const charleth = await keyring.addFromUri(CHARLETH_PRIV_KEY, null, "ethereum");

@@ -19,7 +19,7 @@ import {
   relayChainAddress,
   relayChainAddress_2,
 } from "../util/constants";
-import { describeDevMoonbeam, DevTestContext } from "../util/setup-dev-tests";
+import { describeDevAxtend, DevTestContext } from "../util/setup-dev-tests";
 import { verifyLatestBlockFees } from "../util/block";
 
 // 5 blocks per minute, 4 weeks
@@ -49,7 +49,7 @@ export const getAccountPayable = async (
   return accountsPayable.unwrapOr(null);
 };
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
   before("Setup genesis account for substrate", async () => {
@@ -101,7 +101,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
   before("Setup genesis account for substrate", async () => {
@@ -163,7 +163,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
   before("Setup genesis account for substrate", async () => {
@@ -220,7 +220,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
   before("Setup genesis account for substrate", async () => {
@@ -272,7 +272,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
   before("Setup genesis account for substrate", async () => {
@@ -316,7 +316,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let alithAccount: KeyringPair;
 
   before("Setup genesis account for substrate", async () => {
@@ -367,7 +367,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let sudoAccount: KeyringPair;
 
   let numberOfAccounts: number = 1000; // min 2
@@ -427,7 +427,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let sudoAccount: KeyringPair;
 
   let numberOfAccounts: number = 1000; // min 2
@@ -504,7 +504,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let sudoAccount: KeyringPair;
 
   before("Setup genesis account for substrate", async () => {
@@ -590,7 +590,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let sudoAccount: KeyringPair;
 
   before("Setup genesis account for substrate", async () => {
@@ -633,7 +633,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair,
     sudoAccount: KeyringPair,
     relayAccount: KeyringPair,
@@ -741,7 +741,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair,
     sudoAccount: KeyringPair,
     relayAccount: KeyringPair,
@@ -827,7 +827,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair, toUpdateAccount: KeyringPair;
 
   before("Setup genesis account and relay accounts", async () => {
@@ -906,7 +906,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair,
     sudoAccount: KeyringPair,
     toUpdateAccount: KeyringPair,
@@ -982,7 +982,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
   });
 });
 
-describeDevMoonbeam("Crowdloan", (context) => {
+describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair,
     sudoAccount: KeyringPair,
     toUpdateAccount: KeyringPair,

@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { BN } from "@axia/util";
 
 import { ALITH_PRIV_KEY } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 import { customWeb3Request } from "../util/providers";
 
@@ -22,7 +22,7 @@ const assetMetadata = {
 
 const sourceLocation = { XCM: { parents: 1, interior: "Here" } };
 
-describeDevMoonbeam("Mock XCM - receive downward transfer", (context) => {
+describeDevAxtend("Mock XCM - receive downward transfer", (context) => {
   let assetId: string;
   let alith: KeyringPair;
 

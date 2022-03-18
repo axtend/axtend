@@ -2,11 +2,11 @@ import { expect } from "chai";
 import { verifyLatestBlockFees } from "../../util/block";
 import { GENESIS_ACCOUNT, GENESIS_ACCOUNT_BALANCE } from "../../util/constants";
 
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createTransfer } from "../../util/transactions";
 import { customWeb3Request } from "../../util/providers";
 
-describeDevMoonbeamAllEthTxTypes("Balance transfer cost", (context) => {
+describeDevAxtendAllEthTxTypes("Balance transfer cost", (context) => {
   it("should cost 21000 * 1_000_000_000", async function () {
     const testAccount = "0x1111111111111111111111111111111111111111";
     await context.createBlock({
@@ -19,7 +19,7 @@ describeDevMoonbeamAllEthTxTypes("Balance transfer cost", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Balance transfer", (context) => {
+describeDevAxtendAllEthTxTypes("Balance transfer", (context) => {
   const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";
   before("Create block with transfer to test account of 512", async () => {
     await customWeb3Request(context.web3, "eth_sendRawTransaction", [
@@ -54,7 +54,7 @@ describeDevMoonbeamAllEthTxTypes("Balance transfer", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Balance transfer - fees", (context) => {
+describeDevAxtendAllEthTxTypes("Balance transfer - fees", (context) => {
   const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";
   before("Create block with transfer to test account of 512", async () => {
     await context.createBlock({

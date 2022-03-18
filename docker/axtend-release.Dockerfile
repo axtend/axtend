@@ -1,4 +1,4 @@
-# Node for Moonbeam networks
+# Node for Axtend networks
 
 ARG DOCKER_IMAGE
 ARG SHA

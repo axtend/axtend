@@ -14,7 +14,7 @@ import {
 } from "../util/constants";
 import { execFromAllMembersOfTechCommittee } from "../util/governance";
 
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { createBlockWithExtrinsic, createBlockWithExtrinsicAllychain } from "../util/substrate-rpc";
 import { createTransfer } from "../util/transactions";
 import { VESTING_PERIOD } from "./test-crowdloan";
@@ -37,7 +37,7 @@ export const expectError = (fun): Promise<string> => {
 // A call from root (sudo) can make a transfer directly in pallet_evm
 // A signed call cannot make a transfer directly in pallet_evm
 
-describeDevMoonbeam("Pallet Maintenance Mode - normal call shouldnt work", (context) => {
+describeDevAxtend("Pallet Maintenance Mode - normal call shouldnt work", (context) => {
   let events;
   before("Try turning maintenance mode on", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -54,7 +54,7 @@ describeDevMoonbeam("Pallet Maintenance Mode - normal call shouldnt work", (cont
     expect(await context.web3.eth.getBalance(TEST_ACCOUNT)).to.equal("0");
   });
 });
-describeDevMoonbeam("Pallet Maintenance Mode - with sudo shouldn't work", (context) => {
+describeDevAxtend("Pallet Maintenance Mode - with sudo shouldn't work", (context) => {
   let events;
   before("Try turning maintenance mode on", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -77,7 +77,7 @@ describeDevMoonbeam("Pallet Maintenance Mode - with sudo shouldn't work", (conte
   });
 });
 
-describeDevMoonbeam("Pallet Maintenance Mode - with council should work", (context) => {
+describeDevAxtend("Pallet Maintenance Mode - with council should work", (context) => {
   let events;
   before("Try turning maintenance mode on", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -96,7 +96,7 @@ describeDevMoonbeam("Pallet Maintenance Mode - with council should work", (conte
   });
 });
 // Exit
-describeDevMoonbeam("Pallet Maintenance Mode - exit mode", (context) => {
+describeDevAxtend("Pallet Maintenance Mode - exit mode", (context) => {
   let events;
   before("Try turning maintenance mode on", async () => {
     // go into Maintenance
@@ -118,7 +118,7 @@ describeDevMoonbeam("Pallet Maintenance Mode - exit mode", (context) => {
     );
   });
 });
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Maintenance Mode - exit mode - make sure transfers are allowed again",
   (context) => {
     before("Try turning maintenance mode on", async () => {
@@ -145,7 +145,7 @@ describeDevMoonbeam(
   }
 );
 
-describeDevMoonbeam("Pallet Maintenance Mode - normal exit call shouldnt work", (context) => {
+describeDevAxtend("Pallet Maintenance Mode - normal exit call shouldnt work", (context) => {
   before("Try turning maintenance mode on", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     const alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -172,7 +172,7 @@ describeDevMoonbeam("Pallet Maintenance Mode - normal exit call shouldnt work", 
 
 // pallets that should be desactivated with maintenance mode
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Maintenance Mode - no balance transfer with maintenance mode",
   (context) => {
     before("Try turning maintenance mode on", async () => {
@@ -195,7 +195,7 @@ describeDevMoonbeam(
   }
 );
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Maintenance Mode - evm transfer with maintenance mode works with sudo",
   (context) => {
     let events;
@@ -236,7 +236,7 @@ describeDevMoonbeam(
   }
 );
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Maintenance Mode - no crowdloanRewards claim with maintenance mode",
   (context) => {
     let genesisAccount;
@@ -287,7 +287,7 @@ describeDevMoonbeam(
   }
 );
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Maintenance Mode - no assets transfer with maintenance mode",
   (context) => {
     let sudoAccount, assetId;
@@ -334,7 +334,7 @@ describeDevMoonbeam(
 
 const HUNDRED_UNITS = 100000000000000;
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Maintenance Mode - no xtokens transfer with maintenance mode",
   (context) => {
     let baltathar: KeyringPair;
@@ -377,7 +377,7 @@ describeDevMoonbeam(
   }
 );
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Maintenance Mode - no xcmTransactor transfer with maintenance mode",
   (context) => {
     let sudoAccount;
@@ -404,7 +404,7 @@ describeDevMoonbeam(
   }
 );
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Maintenance Mode - no xcmTransactor transfer with maintenance mode",
   (context) => {
     let sudoAccount;
@@ -438,7 +438,7 @@ describeDevMoonbeam(
   }
 );
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Maintenance Mode - dmp messages should queue in maintenance mode",
   (context) => {
     let sudoAccount, assetId;
@@ -528,7 +528,7 @@ describeDevMoonbeam(
   }
 );
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Pallet Maintenance Mode - xcmp messages should queue in maintenance mode",
   (context) => {
     let sudoAccount, assetId, foreignParaId;

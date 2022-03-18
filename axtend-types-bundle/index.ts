@@ -18,7 +18,7 @@ export const moduleDefinitions: Record<string, OverrideModuleType> = {
   },
 };
 
-// Moonbeam specific rpc methods
+// Axtend specific rpc methods
 export const rpcDefinitions: Record<string, Record<string, DefinitionRpc | DefinitionRpcSub>> = {
   txpool: {
     content: {

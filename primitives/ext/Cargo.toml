@@ -10,7 +10,7 @@ version = "0.1.0"
 [dependencies]
 ethereum-types = { version = "0.12.1", default-features = false }
 
-# Moonbeam
+# Axtend
 evm-tracing-events = { path = "../rpc/evm-tracing-events", default-features = false }
 
 # Substrate

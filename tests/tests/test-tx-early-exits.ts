@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { customWeb3Request } from "../util/providers";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 
-describeDevMoonbeam("Transaction Cost discards", (context) => {
+describeDevAxtend("Transaction Cost discards", (context) => {
   it("should take transaction cost into account and not submit it to the pool", async function () {
     // This is a contract deployment signed by Alith but that doesn't have a high enough
     // gaslimit. Since web3 prevents to sign transactions that cannot pay its tx cost we

@@ -51,7 +51,7 @@ export async function findAvailablePorts(allychainCount: number = 1) {
 }
 
 // Stores if the node has already started.
-// It is used when a test file contains multiple describeDevMoonbeam. Those are
+// It is used when a test file contains multiple describeDevAxtend. Those are
 // executed within the same PID and so would generate a race condition if started
 // at the same time.
 let nodeStarted = false;
@@ -143,7 +143,7 @@ export async function getGithubReleaseBinary(url: string, binaryPath: string): P
 }
 
 // Downloads the binary and return the filepath
-export async function getMoonbeamReleaseBinary(binaryTag: string): Promise<string> {
+export async function getAxtendReleaseBinary(binaryTag: string): Promise<string> {
   const binaryPath = path.join(BINARY_DIRECTORY, `axtend-${binaryTag}`);
   return getGithubReleaseBinary(
     `https://github.com/PureStake/axtend/releases/download/${binaryTag}/axtend`,
@@ -158,7 +158,7 @@ export async function getAxiaReleaseBinary(binaryTag: string): Promise<string> {
   );
 }
 
-export async function getMoonbeamDockerBinary(binaryTag: string): Promise<string> {
+export async function getAxtendDockerBinary(binaryTag: string): Promise<string> {
   const sha = child_process.execSync(`git rev-list -1 ${binaryTag}`);
   if (!sha) {
     console.error(`Invalid runtime tag ${binaryTag}`);
@@ -190,7 +190,7 @@ export async function getRawSpecsFromTag(
 ) {
   const specPath = path.join(SPECS_DIRECTORY, `${runtimeName}-${tag}-raw-specs.json`);
   if (!fs.existsSync(specPath)) {
-    const binaryPath = await getMoonbeamDockerBinary(tag);
+    const binaryPath = await getAxtendDockerBinary(tag);
 
     child_process.execSync(
       `mkdir -p ${path.dirname(specPath)} && ` +
@@ -264,7 +264,7 @@ export async function startAllychainNodes(options: ParaTestOptions): Promise<{
   const paraBinary =
     !options.allychain.binary || options.allychain.binary == "local"
       ? BINARY_PATH
-      : await getMoonbeamReleaseBinary(options.allychain.binary);
+      : await getAxtendReleaseBinary(options.allychain.binary);
   const paraSpecs =
     "spec" in options.allychain
       ? options.allychain.spec

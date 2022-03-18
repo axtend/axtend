@@ -2,11 +2,11 @@ import { expect } from "chai";
 
 import { TransactionReceipt } from "web3-core";
 import { verifyLatestBlockFees } from "../../util/block";
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 
 import { createContract, createContractExecution } from "../../util/transactions";
 
-describeDevMoonbeamAllEthTxTypes("Contract loop error", (context) => {
+describeDevAxtendAllEthTxTypes("Contract loop error", (context) => {
   it("should return OutOfGas on inifinite loop call", async function () {
     const { contract, rawTx } = await createContract(context, "InfiniteContract");
     await context.createBlock({ transactions: [rawTx] });
@@ -21,7 +21,7 @@ describeDevMoonbeamAllEthTxTypes("Contract loop error", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Contract loop error", (context) => {
+describeDevAxtendAllEthTxTypes("Contract loop error", (context) => {
   it("should fail with OutOfGas on infinite loop transaction", async function () {
     const { contract, rawTx } = await createContract(context, "InfiniteContract");
     const infiniteTx = await createContractExecution(
@@ -44,7 +44,7 @@ describeDevMoonbeamAllEthTxTypes("Contract loop error", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Contract loop error - check fees", (context) => {
+describeDevAxtendAllEthTxTypes("Contract loop error - check fees", (context) => {
   it("should fail with OutOfGas on infinite loop transaction - check fees", async function () {
     const { contract, rawTx } = await createContract(context, "InfiniteContract");
     const infiniteTx = await createContractExecution(

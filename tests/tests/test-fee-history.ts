@@ -4,11 +4,11 @@ import { expect } from "chai";
 import { ALITH, GENESIS_ACCOUNT, GENESIS_ACCOUNT_PRIVATE_KEY } from "../util/constants";
 import { customWeb3Request } from "../util/providers";
 import { getCompiled } from "../util/contracts";
-import { describeDevMoonbeamAllEthTxTypes } from "../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../util/setup-dev-tests";
 
 // We use ethers library in this test as apparently web3js's types are not fully EIP-1559
 // compliant yet.
-describeDevMoonbeamAllEthTxTypes("Fee History", (context) => {
+describeDevAxtendAllEthTxTypes("Fee History", (context) => {
   async function sendTransaction(context, payload: any) {
     let signer = new ethers.Wallet(GENESIS_ACCOUNT_PRIVATE_KEY, context.ethers);
     // Ethers internally matches the locally calculated transaction hash against the one

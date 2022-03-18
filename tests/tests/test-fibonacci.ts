@@ -1,8 +1,8 @@
 import { expect } from "chai";
-import { describeDevMoonbeamAllEthTxTypes } from "../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../util/setup-dev-tests";
 import { createContract, createContractExecution } from "../util/transactions";
 
-describeDevMoonbeamAllEthTxTypes("Fibonacci", (context) => {
+describeDevAxtendAllEthTxTypes("Fibonacci", (context) => {
   it("should be able to call fibonacci", async function () {
     const { contract, rawTx } = await createContract(context, "Fibonacci");
     await context.createBlock({ transactions: [rawTx] });

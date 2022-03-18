@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import { createContract } from "../../util/transactions";
 import { Contract } from "web3-eth-contract";
 
-describeDevMoonbeam("Block Contract - Block variables", (context) => {
+describeDevAxtend("Block Contract - Block variables", (context) => {
   let blockContract: Contract;
 
   before("Setup: Creating contract with block variables", async function () {

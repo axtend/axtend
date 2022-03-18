@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { customWeb3Request } from "../util/providers";
-import { describeDevMoonbeamAllEthTxTypes } from "../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../util/setup-dev-tests";
 import { createContract, createContractExecution } from "../util/transactions";
 
-describeDevMoonbeamAllEthTxTypes("Trace filter - Gas Loop", (context) => {
+describeDevAxtendAllEthTxTypes("Trace filter - Gas Loop", (context) => {
   const testLoops: {
     count: number;
     txHash?: string;

@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 
-describeDevMoonbeam("Block 2", (context) => {
+describeDevAxtend("Block 2", (context) => {
   before("Setup: Create 2 empty blocks", async () => {
     await context.createBlock();
     await context.createBlock();

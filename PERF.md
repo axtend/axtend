@@ -11,7 +11,7 @@ In addition to `perf` itself, some tools like [speedscope](https://github.com/jl
 
 # Configuring axtend
 
-Moonbeam node built with `--release`, contains enough symbols to have meanigful report for perf.
+Axtend node built with `--release`, contains enough symbols to have meanigful report for perf.
 However it is suggest to also combine the build with additional frame pointers in order to capture the full stack:
 ```
 RUSTFLAGS="-C force-frame-pointers=yes" cargo build --release

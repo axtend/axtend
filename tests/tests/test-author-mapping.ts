@@ -11,7 +11,7 @@ import {
   DEFAULT_GENESIS_MAPPING,
   DEFAULT_GENESIS_STAKING,
 } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 
 const aliceAuthorId = "0xd43593c715fdd31c61141abd04a99fd6822c8558854ccde39a5684e7a56da27d";
@@ -32,7 +32,7 @@ async function getMappingInfo(
   return null;
 }
 
-describeDevMoonbeam("Author Mapping - simple association", (context) => {
+describeDevAxtend("Author Mapping - simple association", (context) => {
   it("should match genesis state", async function () {
     expect((await getMappingInfo(context, aliceAuthorId)).account).to.eq(ALITH);
     expect((await getMappingInfo(context, aliceAuthorId)).deposit).to.eq(DEFAULT_GENESIS_MAPPING);
@@ -74,7 +74,7 @@ describeDevMoonbeam("Author Mapping - simple association", (context) => {
   });
 });
 
-describeDevMoonbeam("Author Mapping - Fail to reassociate alice", (context) => {
+describeDevAxtend("Author Mapping - Fail to reassociate alice", (context) => {
   it("should fail in adding an association for a second time", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const baltathar = await keyring.addFromUri(BALTATHAR_PRIV_KEY, null, "ethereum");
@@ -127,7 +127,7 @@ describeDevMoonbeam("Author Mapping - Fail to reassociate alice", (context) => {
   });
 });
 
-describeDevMoonbeam("Author Mapping - Fail without deposit", (context) => {
+describeDevAxtend("Author Mapping - Fail without deposit", (context) => {
   before("setup association", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const rando = await keyring.addFromUri(RANDOM_PRIV_KEY, null, "ethereum");
@@ -193,7 +193,7 @@ describeDevMoonbeam("Author Mapping - Fail without deposit", (context) => {
   });
 });
 
-describeDevMoonbeam("Author Mapping - double registration", (context) => {
+describeDevAxtend("Author Mapping - double registration", (context) => {
   it("should succeed in adding an association for bob", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -229,7 +229,7 @@ describeDevMoonbeam("Author Mapping - double registration", (context) => {
   });
 });
 
-describeDevMoonbeam("Author Mapping - registered author can clear (de register)", (context) => {
+describeDevAxtend("Author Mapping - registered author can clear (de register)", (context) => {
   it("should succeed in clearing an association", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -257,7 +257,7 @@ describeDevMoonbeam("Author Mapping - registered author can clear (de register)"
   });
 });
 
-describeDevMoonbeam("Author Mapping - unregistered author cannot clear association", (context) => {
+describeDevAxtend("Author Mapping - unregistered author cannot clear association", (context) => {
   it("should not succeed in clearing an association for an unregistered author", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -276,7 +276,7 @@ describeDevMoonbeam("Author Mapping - unregistered author cannot clear associati
   });
 });
 
-describeDevMoonbeam("Author Mapping - non author clearing", (context) => {
+describeDevAxtend("Author Mapping - non author clearing", (context) => {
   it("should not succeed in clearing an association for a non-author", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -300,7 +300,7 @@ describeDevMoonbeam("Author Mapping - non author clearing", (context) => {
   });
 });
 
-describeDevMoonbeam("Author Mapping - registered can rotate", (context) => {
+describeDevAxtend("Author Mapping - registered can rotate", (context) => {
   it("should succeed in rotating account ids for an author", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -321,7 +321,7 @@ describeDevMoonbeam("Author Mapping - registered can rotate", (context) => {
   });
 });
 
-describeDevMoonbeam("Author Mapping - unregistered cannot rotate", (context) => {
+describeDevAxtend("Author Mapping - unregistered cannot rotate", (context) => {
   it("should fail rotating account ids if not registered", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -337,7 +337,7 @@ describeDevMoonbeam("Author Mapping - unregistered cannot rotate", (context) => 
   });
 });
 
-describeDevMoonbeam("Author Mapping - non-author cannot rotate", (context) => {
+describeDevAxtend("Author Mapping - non-author cannot rotate", (context) => {
   it("should fail rotating account ids if not an author", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const genesisAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");

@@ -1,18 +1,18 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
 use crowdloan_rewards_precompiles::CrowdloanRewardsWrapper;
 use fp_evm::Context;
@@ -94,8 +94,8 @@ where
 
 /// The following distribution has been decided for the precompiles
 /// 0-1023: Ethereum Mainnet Precompiles
-/// 1024-2047 Precompiles that are not in Ethereum Mainnet but are neither Moonbeam specific
-/// 2048-4095 Moonbeam specific precompiles
+/// 1024-2047 Precompiles that are not in Ethereum Mainnet but are neither Axtend specific
+/// 2048-4095 Axtend specific precompiles
 impl<R> PrecompileSet for MoonriverPrecompiles<R>
 where
 	Dispatch<R>: Precompile,
@@ -129,7 +129,7 @@ where
 			a if a == hash(7) => Some(Bn128Mul::execute(input, target_gas, context, is_static)),
 			a if a == hash(8) => Some(Bn128Pairing::execute(input, target_gas, context, is_static)),
 			a if a == hash(9) => Some(Blake2F::execute(input, target_gas, context, is_static)),
-			// Non-Moonbeam specific nor Ethereum precompiles :
+			// Non-Axtend specific nor Ethereum precompiles :
 			a if a == hash(1024) => {
 				Some(Sha3FIPS256::execute(input, target_gas, context, is_static))
 			}
@@ -139,7 +139,7 @@ where
 			a if a == hash(1026) => Some(ECRecoverPublicKey::execute(
 				input, target_gas, context, is_static,
 			)),
-			// Moonbeam specific precompiles :
+			// Axtend specific precompiles :
 			a if a == hash(2048) => Some(AllychainStakingWrapper::<R>::execute(
 				input, target_gas, context, is_static,
 			)),

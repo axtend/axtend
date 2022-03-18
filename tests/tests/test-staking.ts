@@ -11,9 +11,9 @@ import {
   MIN_GLMR_NOMINATOR,
   GLMR,
 } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 
-describeDevMoonbeam("Staking - Genesis", (context) => {
+describeDevAxtend("Staking - Genesis", (context) => {
   it("should match collator reserved bond reserved", async function () {
     const account = (await context.axiaApi.query.system.account(COLLATOR_ACCOUNT)) as any;
     const expectedReserved = DEFAULT_GENESIS_STAKING + DEFAULT_GENESIS_MAPPING;
@@ -62,7 +62,7 @@ describeDevMoonbeam("Staking - Genesis", (context) => {
   });
 });
 
-describeDevMoonbeam("Staking - Join Candidates", (context) => {
+describeDevAxtend("Staking - Join Candidates", (context) => {
   it("should successfully call joinCandidates on ETHAN", async function () {
     const keyring = new Keyring({ type: "ethereum" });
     const ethan = await keyring.addFromUri(ETHAN_PRIVKEY, null, "ethereum");
@@ -84,7 +84,7 @@ describeDevMoonbeam("Staking - Join Candidates", (context) => {
   });
 });
 
-describeDevMoonbeam("Staking - Join Delegators", (context) => {
+describeDevAxtend("Staking - Join Delegators", (context) => {
   let ethan;
   before("should successfully call delegate on ALITH", async function () {
     const keyring = new Keyring({ type: "ethereum" });

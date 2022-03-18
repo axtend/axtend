@@ -2,18 +2,18 @@ import { expect } from "chai";
 
 import { AnyTuple, IEvent } from "@axia/types/types";
 import { GENESIS_ACCOUNT } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import Keyring from "@axia/keyring";
 import { GENESIS_ACCOUNT_PRIVATE_KEY } from "../util/constants";
 
-describeDevMoonbeam("Axia API - Header", (context) => {
+describeDevAxtend("Axia API - Header", (context) => {
   it("should return genesis block", async function () {
     const lastHeader = await context.axiaApi.rpc.chain.getHeader();
     expect(Number(lastHeader.number) >= 0).to.be.true;
   });
 });
 
-describeDevMoonbeam("Axia API", (context) => {
+describeDevAxtend("Axia API", (context) => {
   before("Setup: Create empty block", async () => {
     await context.createBlock();
   });
@@ -29,7 +29,7 @@ describeDevMoonbeam("Axia API", (context) => {
   });
 });
 
-describeDevMoonbeam("Axia API - Transfers", (context) => {
+describeDevAxtend("Axia API - Transfers", (context) => {
   const testAccount = "0x1111111111111111111111111111111111111111";
   before("Setup: Create empty block with balance.transfer", async () => {
     const keyring = new Keyring({ type: "ethereum" });

@@ -1,18 +1,18 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
 //! This module constructs and executes the appropriate service components for the given subcommand
 
@@ -62,7 +62,7 @@ fn load_spec(
 		#[cfg(feature = "moonriver-native")]
 		"moonriver-local" => Box::new(chain_spec::moonriver::get_chain_spec(para_id)),
 
-		// Moonbeam networks
+		// Axtend networks
 		"axtend" | "" => Box::new(chain_spec::RawChainSpec::from_json_bytes(
 			&include_bytes!("../../../specs/axtend/allychain-embedded-specs.json")[..],
 		)?),
@@ -99,7 +99,7 @@ fn load_spec(
 
 impl SubstrateCli for Cli {
 	fn impl_name() -> String {
-		"Moonbeam Allychain Collator".into()
+		"Axtend Allychain Collator".into()
 	}
 
 	fn impl_version() -> String {
@@ -148,7 +148,7 @@ impl SubstrateCli for Cli {
 
 impl SubstrateCli for RelayChainCli {
 	fn impl_name() -> String {
-		"Moonbeam Allychain Collator".into()
+		"Axtend Allychain Collator".into()
 	}
 
 	fn impl_version() -> String {
@@ -156,7 +156,7 @@ impl SubstrateCli for RelayChainCli {
 	}
 
 	fn description() -> String {
-		"Moonbeam Allychain Collator\n\nThe command-line arguments provided first will be \
+		"Axtend Allychain Collator\n\nThe command-line arguments provided first will be \
 		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
 		allychain-collator [allychain-args] -- [relaychain-args]"
@@ -448,7 +448,7 @@ pub fn run() -> Result<()> {
 			match chain_spec {
 				#[cfg(feature = "axtend-native")]
 				spec if spec.is_axtend() => runner.sync_run(|config| {
-					cmd.run::<service::axtend_runtime::RuntimeApi, service::MoonbeamExecutor>(
+					cmd.run::<service::axtend_runtime::RuntimeApi, service::AxtendExecutor>(
 						&cmd, config,
 					)
 				}),
@@ -490,7 +490,7 @@ pub fn run() -> Result<()> {
 					#[cfg(feature = "axtend-native")]
 					spec if spec.is_axtend() => {
 						return runner.sync_run(|config| {
-							cmd.run::<service::axtend_runtime::Block, service::MoonbeamExecutor>(
+							cmd.run::<service::axtend_runtime::Block, service::AxtendExecutor>(
 								config,
 							)
 						})
@@ -548,7 +548,7 @@ pub fn run() -> Result<()> {
 							})?;
 
 					Ok((
-						cmd.run::<service::axtend_runtime::Block, service::MoonbeamExecutor>(
+						cmd.run::<service::axtend_runtime::Block, service::AxtendExecutor>(
 							config,
 						),
 						task_manager,
@@ -629,7 +629,7 @@ pub fn run() -> Result<()> {
 						#[cfg(feature = "axtend-native")]
 						spec if spec.is_axtend() => service::new_dev::<
 							service::axtend_runtime::RuntimeApi,
-							service::MoonbeamExecutor,
+							service::AxtendExecutor,
 						>(config, author_id, cli.run.sealing, rpc_config)
 						.map_err(Into::into),
 						#[cfg(feature = "moonbase-native")]
@@ -700,7 +700,7 @@ pub fn run() -> Result<()> {
 					#[cfg(feature = "axtend-native")]
 					spec if spec.is_axtend() => service::start_node::<
 						service::axtend_runtime::RuntimeApi,
-						service::MoonbeamExecutor,
+						service::AxtendExecutor,
 					>(config, axia_config, id, rpc_config)
 					.await
 					.map(|r| r.0)

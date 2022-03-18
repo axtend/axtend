@@ -1,18 +1,18 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
 //! Environmental-aware externalities for EVM tracing in Wasm runtime. This enables
 //! capturing the - potentially large - trace output data in the host and keep
@@ -31,7 +31,7 @@ use sp_std::vec::Vec;
 use evm_tracing_events::{Event, EvmEvent, GasometerEvent, RuntimeEvent, StepEventFilter};
 
 #[runtime_interface]
-pub trait MoonbeamExt {
+pub trait AxtendExt {
 	fn raw_step(&mut self, _data: Vec<u8>) {}
 
 	fn raw_gas(&mut self, _data: Vec<u8>) {}
@@ -43,7 +43,7 @@ pub trait MoonbeamExt {
 	fn call_list_new(&mut self) {}
 
 	// New design, proxy events.
-	/// An `Evm` event proxied by the Moonbeam runtime to this host function.
+	/// An `Evm` event proxied by the Axtend runtime to this host function.
 	/// evm -> axtend_runtime -> host.
 	fn evm_event(&mut self, event: Vec<u8>) {
 		if let Ok(event) = EvmEvent::decode(&mut &event[..]) {
@@ -51,7 +51,7 @@ pub trait MoonbeamExt {
 		}
 	}
 
-	/// A `Gasometer` event proxied by the Moonbeam runtime to this host function.
+	/// A `Gasometer` event proxied by the Axtend runtime to this host function.
 	/// evm_gasometer -> axtend_runtime -> host.
 	fn gasometer_event(&mut self, event: Vec<u8>) {
 		if let Ok(event) = GasometerEvent::decode(&mut &event[..]) {
@@ -59,7 +59,7 @@ pub trait MoonbeamExt {
 		}
 	}
 
-	/// A `Runtime` event proxied by the Moonbeam runtime to this host function.
+	/// A `Runtime` event proxied by the Axtend runtime to this host function.
 	/// evm_runtime -> axtend_runtime -> host.
 	fn runtime_event(&mut self, event: Vec<u8>) {
 		if let Ok(event) = RuntimeEvent::decode(&mut &event[..]) {

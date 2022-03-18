@@ -1,9 +1,9 @@
 import { expect } from "chai";
 import { customWeb3Request } from "../util/providers";
-import { describeDevMoonbeamAllEthTxTypes } from "../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../util/setup-dev-tests";
 import { createContract, createContractExecution } from "../util/transactions";
 
-describeDevMoonbeamAllEthTxTypes("Trace filter - Concurrency", (context) => {
+describeDevAxtendAllEthTxTypes("Trace filter - Concurrency", (context) => {
   before("Setup: Create 50 blocks with 1 contract loop execution each", async function () {
     const { contract, rawTx } = await createContract(context, "FiniteLoopContract");
     await context.createBlock({ transactions: [rawTx] });

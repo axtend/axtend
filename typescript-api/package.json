@@ -2,7 +2,7 @@
   "name": "@axtend-network/api-augment",
   "version": "0.0.1-beta.3",
   "private": true,
-  "description": "Moonbeam types augment for @axia/api",
+  "description": "Axtend types augment for @axia/api",
   "author": "PureStake",
   "license": "GPL-3.0-only",
   "homepage": "https://github.com/PureStake/axtend/tree/master/typescript-api#readme",

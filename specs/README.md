@@ -5,7 +5,7 @@ This directory contains chain specs for well-known public networks.
 ## Context
 
 The Moonbase node is designed to support multiple networks including Moonbase Alpha, MoonRiver
-(Kusama) and Moonbeam (Axia). Some of these networks are already live and others are planned.
+(Kusama) and Axtend (Axia). Some of these networks are already live and others are planned.
 
 In order to support multiple networks with the same binary, Moonbase relies on a chain specification
 to know which network to sync. Rather than require node operators to obtain spec files separately,
@@ -17,7 +17,7 @@ it is convenient to "bake" specs for popular networks into the node.
 - Moonbase Alpha V6 - live
 - MoonRock - Potential future deployment to Rococo
 - MoonRiver - Future Kusama Deployment
-- Moonbeam - Future Axia deployment
+- Axtend - Future Axia deployment
 
 ## Relay chain specs
 

@@ -31,10 +31,10 @@ import type {
   EvmCoreErrorExitReason,
   FrameSupportTokensMiscBalanceStatus,
   FrameSupportWeightsDispatchInfo,
-  MoonbeamRuntimeAssetRegistrarMetadata,
-  MoonbeamRuntimeAssetType,
-  MoonbeamRuntimeCurrencyId,
-  MoonbeamRuntimeProxyType,
+  AxtendRuntimeAssetRegistrarMetadata,
+  AxtendRuntimeAssetType,
+  AxtendRuntimeCurrencyId,
+  AxtendRuntimeProxyType,
   NimbusPrimitivesNimbusCryptoPublic,
   PalletDemocracyVoteAccountVote,
   PalletDemocracyVoteThreshold,
@@ -57,10 +57,10 @@ declare module "@axia/api-base/types/events" {
     assetManager: {
       AssetRegistered: AugmentedEvent<
         ApiType,
-        [u128, MoonbeamRuntimeAssetType, MoonbeamRuntimeAssetRegistrarMetadata]
+        [u128, AxtendRuntimeAssetType, AxtendRuntimeAssetRegistrarMetadata]
       >;
-      AssetTypeChanged: AugmentedEvent<ApiType, [u128, MoonbeamRuntimeAssetType]>;
-      UnitsPerSecondChanged: AugmentedEvent<ApiType, [MoonbeamRuntimeAssetType, u128]>;
+      AssetTypeChanged: AugmentedEvent<ApiType, [u128, AxtendRuntimeAssetType]>;
+      UnitsPerSecondChanged: AugmentedEvent<ApiType, [AxtendRuntimeAssetType, u128]>;
       /**
        * Generic event
        */
@@ -882,14 +882,14 @@ declare module "@axia/api-base/types/events" {
        */
       AnonymousCreated: AugmentedEvent<
         ApiType,
-        [AccountId20, AccountId20, MoonbeamRuntimeProxyType, u16]
+        [AccountId20, AccountId20, AxtendRuntimeProxyType, u16]
       >;
       /**
        * A proxy was added.
        */
       ProxyAdded: AugmentedEvent<
         ApiType,
-        [AccountId20, AccountId20, MoonbeamRuntimeProxyType, u32]
+        [AccountId20, AccountId20, AxtendRuntimeProxyType, u32]
       >;
       /**
        * A proxy was executed correctly, with the given.
@@ -1100,7 +1100,7 @@ declare module "@axia/api-base/types/events" {
        */
       Transferred: AugmentedEvent<
         ApiType,
-        [AccountId20, MoonbeamRuntimeCurrencyId, u128, XcmV1MultiLocation]
+        [AccountId20, AxtendRuntimeCurrencyId, u128, XcmV1MultiLocation]
       >;
       /**
        * Transferred `MultiAsset`. [sender, asset, dest]
@@ -1121,7 +1121,7 @@ declare module "@axia/api-base/types/events" {
        */
       TransferredWithFee: AugmentedEvent<
         ApiType,
-        [AccountId20, MoonbeamRuntimeCurrencyId, u128, u128, XcmV1MultiLocation]
+        [AccountId20, AxtendRuntimeCurrencyId, u128, u128, XcmV1MultiLocation]
       >;
       /**
        * Generic event

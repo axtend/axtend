@@ -43,7 +43,7 @@ import type {
   FrameSystemEventRecord,
   FrameSystemLastRuntimeUpgradeInfo,
   FrameSystemPhase,
-  MoonbeamRuntimeAssetType,
+  AxtendRuntimeAssetType,
   NimbusPrimitivesNimbusCryptoPublic,
   PalletAssetsApproval,
   PalletAssetsAssetBalance,
@@ -107,7 +107,7 @@ declare module "@axia/api-base/types/storage" {
        */
       assetIdType: AugmentedQuery<
         ApiType,
-        (arg: u128 | AnyNumber | Uint8Array) => Observable<Option<MoonbeamRuntimeAssetType>>,
+        (arg: u128 | AnyNumber | Uint8Array) => Observable<Option<AxtendRuntimeAssetType>>,
         [u128]
       > &
         QueryableStorageEntry<ApiType, [u128]>;
@@ -119,11 +119,11 @@ declare module "@axia/api-base/types/storage" {
       assetTypeId: AugmentedQuery<
         ApiType,
         (
-          arg: MoonbeamRuntimeAssetType | { Xcm: any } | string | Uint8Array
+          arg: AxtendRuntimeAssetType | { Xcm: any } | string | Uint8Array
         ) => Observable<Option<u128>>,
-        [MoonbeamRuntimeAssetType]
+        [AxtendRuntimeAssetType]
       > &
-        QueryableStorageEntry<ApiType, [MoonbeamRuntimeAssetType]>;
+        QueryableStorageEntry<ApiType, [AxtendRuntimeAssetType]>;
       /**
        * Stores the units per second for local execution for a AssetType. This
        * is used to know how to charge for XCM execution in a particular asset
@@ -132,11 +132,11 @@ declare module "@axia/api-base/types/storage" {
       assetTypeUnitsPerSecond: AugmentedQuery<
         ApiType,
         (
-          arg: MoonbeamRuntimeAssetType | { Xcm: any } | string | Uint8Array
+          arg: AxtendRuntimeAssetType | { Xcm: any } | string | Uint8Array
         ) => Observable<Option<u128>>,
-        [MoonbeamRuntimeAssetType]
+        [AxtendRuntimeAssetType]
       > &
-        QueryableStorageEntry<ApiType, [MoonbeamRuntimeAssetType]>;
+        QueryableStorageEntry<ApiType, [AxtendRuntimeAssetType]>;
       /**
        * Generic query
        */

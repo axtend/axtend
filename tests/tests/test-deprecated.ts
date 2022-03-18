@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { customWeb3Request } from "../util/providers";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 
-describeDevMoonbeam("Deprecated RPC", (context) => {
+describeDevAxtend("Deprecated RPC", (context) => {
   // List of deprecated methods
   [
     { method: "eth_getCompilers", params: [] },

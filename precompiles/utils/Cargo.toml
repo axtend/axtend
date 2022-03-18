@@ -10,7 +10,7 @@ log = "0.4"
 num_enum = { version = "0.5.3", default-features = false }
 sha3 = { version = "0.9", default-features = false }
 
-# Moonbeam
+# Axtend
 precompile-utils-macro = { path = "macro" }
 
 # Substrate

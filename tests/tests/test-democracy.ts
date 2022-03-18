@@ -12,12 +12,12 @@ import {
   ZERO_ADDRESS,
   MICROGLMR,
 } from "../util/constants";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { notePreimage } from "../util/governance";
 import { blake2AsHex } from "@axia/util-crypto";
 import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 
-describeDevMoonbeam("Democracy - genesis and preimage", (context) => {
+describeDevAxtend("Democracy - genesis and preimage", (context) => {
   let genesisAccount: KeyringPair;
 
   before("Setup genesis account for substrate", async () => {
@@ -52,7 +52,7 @@ describeDevMoonbeam("Democracy - genesis and preimage", (context) => {
   });
 });
 
-describeDevMoonbeam("Democracy - propose", (context) => {
+describeDevAxtend("Democracy - propose", (context) => {
   let genesisAccount: KeyringPair;
   let encodedHash: string;
 
@@ -95,7 +95,7 @@ describeDevMoonbeam("Democracy - propose", (context) => {
   });
 });
 
-describeDevMoonbeam("Democracy - second proposal", (context) => {
+describeDevAxtend("Democracy - second proposal", (context) => {
   let genesisAccount: KeyringPair, alith: KeyringPair;
   let encodedHash: string;
   let launchPeriod;
@@ -166,7 +166,7 @@ describeDevMoonbeam("Democracy - second proposal", (context) => {
   });
 });
 
-describeDevMoonbeam("Democracy - vote yes on referendum", (context) => {
+describeDevAxtend("Democracy - vote yes on referendum", (context) => {
   let genesisAccount: KeyringPair, alith: KeyringPair;
   let encodedHash: string;
   let enactmentPeriod, votingPeriod;
@@ -241,7 +241,7 @@ describeDevMoonbeam("Democracy - vote yes on referendum", (context) => {
   });
 });
 
-describeDevMoonbeam("Democracy - vote no on referendum", (context) => {
+describeDevAxtend("Democracy - vote no on referendum", (context) => {
   let genesisAccount: KeyringPair, alith: KeyringPair;
   let encodedHash: string;
   let enactmentPeriod, votingPeriod;
@@ -312,7 +312,7 @@ describeDevMoonbeam("Democracy - vote no on referendum", (context) => {
 // When forgetting to call notePreimage, all following steps should work as intended
 // until the end where the proposal is never enacted
 
-describeDevMoonbeam("Democracy - forget notePreimage", (context) => {
+describeDevAxtend("Democracy - forget notePreimage", (context) => {
   let genesisAccount: KeyringPair, alith: KeyringPair;
   let encodedHash: string;
   let enactmentPeriod, votingPeriod;

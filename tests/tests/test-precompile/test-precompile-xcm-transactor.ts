@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { customWeb3Request } from "../../util/providers";
 import { ethers } from "ethers";
 import { getCompiled } from "../../util/contracts";
@@ -86,7 +86,7 @@ const sourceLocationRelayVersioned = { v1: { parents: 1, interior: "Here" } };
 
 const sourceLocationRelayAssetType = { XCM: { parents: 1, interior: "Here" } };
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - xcm transactor", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - xcm transactor", (context) => {
   let sudoAccount, iFace, alith;
   before("Setup genesis account and relay accounts", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -247,7 +247,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - xcm transactor", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - xcm transactor", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - xcm transactor", (context) => {
   let sudoAccount, iFace, alith;
   before("Setup genesis account and relay accounts", async () => {
     const keyring = new Keyring({ type: "ethereum" });

@@ -1,20 +1,20 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Moonbeam Chain Specifications and utilities for building them.
+//! Axtend Chain Specifications and utilities for building them.
 //!
 //! Learn more about Substrate chain specifications at
 //! https://substrate.dev/docs/en/knowledgebase/integrate/chain-spec
@@ -52,7 +52,7 @@ pub fn development_chain_spec(mnemonic: Option<String>, num_accounts: Option<u32
 		"6Be02d1d3665660d22FF9624b7BE0551ee1Ac91b"
 	)));
 	ChainSpec::from_genesis(
-		"Moonbeam Development Testnet",
+		"Axtend Development Testnet",
 		"axtend_dev",
 		ChainType::Development,
 		move || {
@@ -105,7 +105,7 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 		// TODO Apps depends on this string to determine whether the chain is an ethereum compat
 		// or not. We should decide the proper strings, and update Apps accordingly.
 		// Or maybe Apps can be smart enough to say if the string contains "axtend" at all...
-		"Moonbeam Local Testnet",
+		"Axtend Local Testnet",
 		"axtend_local",
 		ChainType::Local,
 		move || {

@@ -3,7 +3,7 @@ import { JsonRpcResponse } from "web3-core-helpers";
 import type { BlockHash } from "@axia/types/interfaces/chain/types";
 
 import { ethers } from "ethers";
-import { startMoonbeamDevNode } from "./dev-node";
+import { startAxtendDevNode } from "./dev-node";
 import {
   provideWeb3Api,
   provideEthersApi,
@@ -51,7 +51,7 @@ interface InternalDevTestContext extends DevTestContext {
 
 type EthTransactionType = "Legacy" | "EIP2930" | "EIP1559";
 
-export function describeDevMoonbeam(
+export function describeDevAxtend(
   title: string,
   cb: (context: DevTestContext) => void,
   ethTransactionType: EthTransactionType = "Legacy",
@@ -68,11 +68,11 @@ export function describeDevMoonbeam(
     // The currently running node for this describe
     let axtendProcess: ChildProcess;
 
-    // Making sure the Moonbeam node has started
-    before("Starting Moonbeam Test Node", async function () {
+    // Making sure the Axtend node has started
+    before("Starting Axtend Test Node", async function () {
       this.timeout(SPAWNING_TIME);
       const init = !DEBUG_MODE
-        ? await startMoonbeamDevNode(withWasm)
+        ? await startAxtendDevNode(withWasm)
         : {
             runningNode: null,
             p2pPort: 19931,
@@ -153,13 +153,13 @@ export function describeDevMoonbeam(
   });
 }
 
-export function describeDevMoonbeamAllEthTxTypes(
+export function describeDevAxtendAllEthTxTypes(
   title: string,
   cb: (context: DevTestContext) => void,
   withWasm?: boolean
 ) {
   let wasm = withWasm !== undefined ? withWasm : false;
-  describeDevMoonbeam(title + " (Legacy)", cb, "Legacy", wasm);
-  describeDevMoonbeam(title + " (EIP1559)", cb, "EIP1559", wasm);
-  describeDevMoonbeam(title + " (EIP2930)", cb, "EIP2930", wasm);
+  describeDevAxtend(title + " (Legacy)", cb, "Legacy", wasm);
+  describeDevAxtend(title + " (EIP1559)", cb, "EIP1559", wasm);
+  describeDevAxtend(title + " (EIP2930)", cb, "EIP2930", wasm);
 }

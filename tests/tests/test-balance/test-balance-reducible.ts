@@ -6,10 +6,10 @@ import {
   GENESIS_ACCOUNT_PRIVATE_KEY,
 } from "../../util/constants";
 import type { SubmittableExtrinsic } from "@axia/api/promise/types";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import { blake2AsHex } from "@axia/util-crypto";
 
-describeDevMoonbeam("Reducible Balance", (context) => {
+describeDevAxtend("Reducible Balance", (context) => {
   const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";
   it("should show the reducible balanced when some amount is locked", async function () {
     const keyring = new Keyring({ type: "ethereum" });

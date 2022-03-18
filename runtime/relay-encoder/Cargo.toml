@@ -9,7 +9,7 @@ version = "0.1.0"
 
 [dependencies]
 
-# Moonbeam
+# Axtend
 relay-encoder-precompiles = { path = "../../precompiles/relay-encoder/", default-features = false }
 xcm-primitives = { path = "../../primitives/xcm", default-features = false }
 

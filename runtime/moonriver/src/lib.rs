@@ -1,18 +1,18 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The Moonriver Runtime.
 //!
@@ -364,9 +364,9 @@ pub const GAS_PER_SECOND: u64 = 40_000_000;
 /// u64 works for approximations because Weight is a very small unit compared to gas.
 pub const WEIGHT_PER_GAS: u64 = WEIGHT_PER_SECOND / GAS_PER_SECOND;
 
-pub struct MoonbeamGasWeightMapping;
+pub struct AxtendGasWeightMapping;
 
-impl pallet_evm::GasWeightMapping for MoonbeamGasWeightMapping {
+impl pallet_evm::GasWeightMapping for AxtendGasWeightMapping {
 	fn gas_to_weight(gas: u64) -> Weight {
 		gas.saturating_mul(WEIGHT_PER_GAS)
 	}
@@ -436,7 +436,7 @@ where
 
 impl pallet_evm::Config for Runtime {
 	type FeeCalculator = FixedGasPrice;
-	type GasWeightMapping = MoonbeamGasWeightMapping;
+	type GasWeightMapping = AxtendGasWeightMapping;
 	type BlockHashMapping = pallet_ethereum::EthereumBlockHashMapping<Self>;
 	type CallOrigin = EnsureAddressRoot<AccountId>;
 	type WithdrawOrigin = EnsureAddressNever<AccountId>;

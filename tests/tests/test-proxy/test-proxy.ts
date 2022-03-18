@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import Keyring from "@axia/keyring";
 import {
   ALITH_PRIVATE_KEY,
@@ -18,7 +18,7 @@ const alith = keyring.addFromUri(ALITH_PRIVATE_KEY, null, "ethereum");
 const baltathar = keyring.addFromUri(BALTATHAR_PRIVATE_KEY, null, "ethereum");
 const charleth = keyring.addFromUri(CHARLETH_PRIVATE_KEY, null, "ethereum");
 
-describeDevMoonbeam("Pallet proxy - shouldn't accept unknown proxy", (context) => {
+describeDevAxtend("Pallet proxy - shouldn't accept unknown proxy", (context) => {
   it("shouldn't accept unknown proxy", async function () {
     await expectBalanceDifference(
       context,
@@ -41,7 +41,7 @@ describeDevMoonbeam("Pallet proxy - shouldn't accept unknown proxy", (context) =
   });
 });
 
-describeDevMoonbeam("Pallet proxy - should accept known proxy", (context) => {
+describeDevAxtend("Pallet proxy - should accept known proxy", (context) => {
   it("should accept known proxy", async () => {
     await expectBalanceDifference(
       context,
@@ -75,7 +75,7 @@ describeDevMoonbeam("Pallet proxy - should accept known proxy", (context) => {
   });
 });
 
-describeDevMoonbeam("Pallet proxy - shouldn't accept removed proxy", (context) => {
+describeDevAxtend("Pallet proxy - shouldn't accept removed proxy", (context) => {
   it("shouldn't accept removed proxy", async () => {
     await expectBalanceDifference(
       context,
@@ -112,7 +112,7 @@ describeDevMoonbeam("Pallet proxy - shouldn't accept removed proxy", (context) =
   });
 });
 
-describeDevMoonbeam("Pallet proxy - shouldn't accept instant for delayed proxy", (context) => {
+describeDevAxtend("Pallet proxy - shouldn't accept instant for delayed proxy", (context) => {
   it("shouldn't accept instant for delayed proxy", async () => {
     await expectBalanceDifference(
       context,
@@ -142,7 +142,7 @@ describeDevMoonbeam("Pallet proxy - shouldn't accept instant for delayed proxy",
   });
 });
 
-describeDevMoonbeam("Pallet proxy - shouldn't accept early delayed proxy", (context) => {
+describeDevAxtend("Pallet proxy - shouldn't accept early delayed proxy", (context) => {
   it("shouldn't accept early delayed proxy", async () => {
     await expectBalanceDifference(
       context,
@@ -187,7 +187,7 @@ describeDevMoonbeam("Pallet proxy - shouldn't accept early delayed proxy", (cont
   });
 });
 
-describeDevMoonbeam("Pallet proxy - should accept on-time delayed proxy", (context) => {
+describeDevAxtend("Pallet proxy - should accept on-time delayed proxy", (context) => {
   it("should accept on-time delayed proxy ", async () => {
     await expectBalanceDifference(
       context,

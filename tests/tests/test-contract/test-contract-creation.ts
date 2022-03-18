@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import { verifyLatestBlockFees } from "../../util/block";
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createContract } from "../../util/transactions";
 import { customWeb3Request } from "../../util/providers";
 import { getCompiled } from "../../util/contracts";
 
-describeDevMoonbeamAllEthTxTypes("Contract creation", (context) => {
+describeDevAxtendAllEthTxTypes("Contract creation", (context) => {
   it("should return the transaction hash", async () => {
     const { rawTx } = await createContract(context, "TestContract");
     const { txResults } = await context.createBlock({ transactions: [rawTx] });
@@ -17,7 +17,7 @@ describeDevMoonbeamAllEthTxTypes("Contract creation", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("eth_call contract create", (context) => {
+describeDevAxtendAllEthTxTypes("eth_call contract create", (context) => {
   it("should return the contract code", async () => {
     const contractData = await getCompiled("TestContract");
     let callCode = await context.web3.eth.call({ data: contractData.byteCode });
@@ -29,7 +29,7 @@ describeDevMoonbeamAllEthTxTypes("eth_call contract create", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Contract creation", (context) => {
+describeDevAxtendAllEthTxTypes("Contract creation", (context) => {
   it("should not contain contract at genesis", async function () {
     const { contract } = await createContract(context, "TestContract");
     expect(await context.web3.eth.getCode(contract.options.address)).to.deep.equal("0x");
@@ -56,7 +56,7 @@ describeDevMoonbeamAllEthTxTypes("Contract creation", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Contract creation -block fees", (context) => {
+describeDevAxtendAllEthTxTypes("Contract creation -block fees", (context) => {
   it("should check latest block fees", async function () {
     const { rawTx } = await createContract(context, "TestContract");
     const {} = await context.createBlock({ transactions: [rawTx] });

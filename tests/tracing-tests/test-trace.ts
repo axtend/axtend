@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { customWeb3Request } from "../util/providers";
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../util/setup-dev-tests";
 import { ALITH, GENESIS_ACCOUNT, GENESIS_ACCOUNT_PRIVATE_KEY } from "../util/constants";
 import { createContract } from "../util/transactions";
 import { ethers } from "ethers";
@@ -62,7 +62,7 @@ async function nestedSingle(context) {
   );
 }
 
-describeDevMoonbeam(
+describeDevAxtend(
   "Trace",
   (context) => {
     // This test proves that Raw traces are now stored outside the runtime.
@@ -216,7 +216,7 @@ describeDevMoonbeam(
   true
 );
 
-describeDevMoonbeamAllEthTxTypes(
+describeDevAxtendAllEthTxTypes(
   "Trace blockscout v2",
   (context) => {
     it("should format as request (Blockscout v2)", async function () {
@@ -241,7 +241,7 @@ describeDevMoonbeamAllEthTxTypes(
   true
 );
 
-describeDevMoonbeamAllEthTxTypes("Trace (Blockscout v2)", (context) => {
+describeDevAxtendAllEthTxTypes("Trace (Blockscout v2)", (context) => {
   it("should trace correctly out of gas transaction execution (Blockscout v2)", async function () {
     this.timeout(10000);
 
@@ -297,7 +297,7 @@ describeDevMoonbeamAllEthTxTypes("Trace (Blockscout v2)", (context) => {
   });
 });
 
-describeDevMoonbeam("Trace", (context) => {
+describeDevAxtend("Trace", (context) => {
   it("should trace correctly out of gas transaction execution (Blockscout)", async function () {
     this.timeout(10000);
 
@@ -376,7 +376,7 @@ describeDevMoonbeam("Trace", (context) => {
   });
 });
 
-describeDevMoonbeam("Trace", (context) => {
+describeDevAxtend("Trace", (context) => {
   it("should format as request (callTrace Call)", async function () {
     const send = await nestedSingle(context);
     await context.createBlock();
@@ -512,7 +512,7 @@ describeDevMoonbeam("Trace", (context) => {
   });
 });
 
-describeDevMoonbeam("Trace", (context) => {
+describeDevAxtend("Trace", (context) => {
   it("should correctly trace subcall (call list)", async function () {
     this.timeout(10000);
 

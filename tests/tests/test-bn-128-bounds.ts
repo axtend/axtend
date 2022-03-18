@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { createContract } from "../util/transactions";
 import { GENESIS_ACCOUNT, GENESIS_ACCOUNT_PRIVATE_KEY } from "../util/constants";
 import { customWeb3Request } from "../util/providers";
@@ -12,7 +12,7 @@ import { customWeb3Request } from "../util/providers";
  * https://github.com/paritytech/frontier/pull/394
  */
 
-describeDevMoonbeam("bn128 precompile bounds check", (context) => {
+describeDevAxtend("bn128 precompile bounds check", (context) => {
   it("should fail gracefully (case 1)", async () => {
     const from = "0xed6cd71d72b116dda4e31f562f15116c34d084f9";
     // some call data which will cause bn128 to be called with insufficient input. this

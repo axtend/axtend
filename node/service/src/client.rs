@@ -1,18 +1,18 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 pub use axtend_core_primitives::{AccountId, Balance, Block, BlockNumber, Hash, Header, Index};
 use sc_client_api::{Backend as BackendT, BlockchainEvents, KeyIterator};
 use sp_api::{CallApiAt, NumberFor, ProvideRuntimeApi};
@@ -109,7 +109,7 @@ where
 
 /// Execute something with the client instance.
 ///
-/// As there exist multiple chains inside Moonbeam, like Moonbeam itself, Moonbase,
+/// As there exist multiple chains inside Axtend, like Axtend itself, Moonbase,
 /// Moonriver etc, there can exist different kinds of client types. As these
 /// client types differ in the generics that are being used, we can not easily
 /// return them from a function. For returning them from a function there exists
@@ -134,9 +134,9 @@ pub trait ExecuteWithClient {
 		Client: AbstractClient<Block, Backend, Api = Api> + 'static;
 }
 
-/// A handle to a Moonbeam client instance.
+/// A handle to a Axtend client instance.
 ///
-/// The Moonbeam service supports multiple different runtimes (Moonbase, Moonbeam
+/// The Axtend service supports multiple different runtimes (Moonbase, Axtend
 /// itself, etc). As each runtime has a specialized client, we need to hide them
 /// behind a trait. This is this trait.
 ///
@@ -146,11 +146,11 @@ pub trait ClientHandle {
 	fn execute_with<T: ExecuteWithClient>(&self, t: T) -> T::Output;
 }
 
-/// A client instance of Moonbeam.
+/// A client instance of Axtend.
 #[derive(Clone)]
 pub enum Client {
 	#[cfg(feature = "axtend-native")]
-	Moonbeam(Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::MoonbeamExecutor>>),
+	Axtend(Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::AxtendExecutor>>),
 	#[cfg(feature = "moonriver-native")]
 	Moonriver(Arc<crate::FullClient<moonriver_runtime::RuntimeApi, crate::MoonriverExecutor>>),
 	#[cfg(feature = "moonbase-native")]
@@ -158,13 +158,13 @@ pub enum Client {
 }
 
 #[cfg(feature = "axtend-native")]
-impl From<Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::MoonbeamExecutor>>>
+impl From<Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::AxtendExecutor>>>
 	for Client
 {
 	fn from(
-		client: Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::MoonbeamExecutor>>,
+		client: Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::AxtendExecutor>>,
 	) -> Self {
-		Self::Moonbeam(client)
+		Self::Axtend(client)
 	}
 }
 
@@ -194,7 +194,7 @@ impl ClientHandle for Client {
 	fn execute_with<T: ExecuteWithClient>(&self, t: T) -> T::Output {
 		match self {
 			#[cfg(feature = "axtend-native")]
-			Self::Moonbeam(client) => T::execute_with_client::<_, _, crate::FullBackend>(t, client.clone()),
+			Self::Axtend(client) => T::execute_with_client::<_, _, crate::FullBackend>(t, client.clone()),
 			#[cfg(feature = "moonriver-native")]
 			Self::Moonriver(client) => T::execute_with_client::<_, _, crate::FullBackend>(t, client.clone()),
 			#[cfg(feature = "moonbase-native")]
@@ -207,7 +207,7 @@ macro_rules! match_client {
 	($self:ident, $method:ident($($param:ident),*)) => {
 		match $self {
 			#[cfg(feature = "axtend-native")]
-			Self::Moonbeam(client) => client.$method($($param),*),
+			Self::Axtend(client) => client.$method($($param),*),
 			#[cfg(feature = "moonriver-native")]
 			Self::Moonriver(client) => client.$method($($param),*),
 			#[cfg(feature = "moonbase-native")]

@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 
-describeDevMoonbeam("RPC Constants", (context) => {
+describeDevAxtend("RPC Constants", (context) => {
   it("should have 0 hashrate", async function () {
     expect(await context.web3.eth.getHashrate()).to.equal(0);
   });

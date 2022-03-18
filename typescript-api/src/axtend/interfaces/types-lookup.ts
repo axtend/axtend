@@ -517,7 +517,7 @@ declare module "@axia/types/lookup" {
     readonly asAnonymousCreated: {
       readonly anonymous: AccountId20;
       readonly who: AccountId20;
-      readonly proxyType: MoonbeamRuntimeProxyType;
+      readonly proxyType: AxtendRuntimeProxyType;
       readonly disambiguationIndex: u16;
     } & Struct;
     readonly isAnnounced: boolean;
@@ -530,16 +530,16 @@ declare module "@axia/types/lookup" {
     readonly asProxyAdded: {
       readonly delegator: AccountId20;
       readonly delegatee: AccountId20;
-      readonly proxyType: MoonbeamRuntimeProxyType;
+      readonly proxyType: AxtendRuntimeProxyType;
       readonly delay: u32;
     } & Struct;
     readonly type: "ProxyExecuted" | "AnonymousCreated" | "Announced" | "ProxyAdded";
   }
 
   /**
-   * @name MoonbeamRuntimeProxyType (44)
+   * @name AxtendRuntimeProxyType (44)
    */
-  export interface MoonbeamRuntimeProxyType extends Enum {
+  export interface AxtendRuntimeProxyType extends Enum {
     readonly isAny: boolean;
     readonly isNonTransfer: boolean;
     readonly isGovernance: boolean;
@@ -2015,28 +2015,28 @@ declare module "@axia/types/lookup" {
   export interface PalletAssetManagerEvent extends Enum {
     readonly isAssetRegistered: boolean;
     readonly asAssetRegistered: ITuple<
-      [u128, MoonbeamRuntimeAssetType, MoonbeamRuntimeAssetRegistrarMetadata]
+      [u128, AxtendRuntimeAssetType, AxtendRuntimeAssetRegistrarMetadata]
     >;
     readonly isUnitsPerSecondChanged: boolean;
-    readonly asUnitsPerSecondChanged: ITuple<[MoonbeamRuntimeAssetType, u128]>;
+    readonly asUnitsPerSecondChanged: ITuple<[AxtendRuntimeAssetType, u128]>;
     readonly isAssetTypeChanged: boolean;
-    readonly asAssetTypeChanged: ITuple<[u128, MoonbeamRuntimeAssetType]>;
+    readonly asAssetTypeChanged: ITuple<[u128, AxtendRuntimeAssetType]>;
     readonly type: "AssetRegistered" | "UnitsPerSecondChanged" | "AssetTypeChanged";
   }
 
   /**
-   * @name MoonbeamRuntimeAssetType (123)
+   * @name AxtendRuntimeAssetType (123)
    */
-  export interface MoonbeamRuntimeAssetType extends Enum {
+  export interface AxtendRuntimeAssetType extends Enum {
     readonly isXcm: boolean;
     readonly asXcm: XcmV1MultiLocation;
     readonly type: "Xcm";
   }
 
   /**
-   * @name MoonbeamRuntimeAssetRegistrarMetadata (124)
+   * @name AxtendRuntimeAssetRegistrarMetadata (124)
    */
-  export interface MoonbeamRuntimeAssetRegistrarMetadata extends Struct {
+  export interface AxtendRuntimeAssetRegistrarMetadata extends Struct {
     readonly name: Bytes;
     readonly symbol: Bytes;
     readonly decimals: u8;
@@ -2049,11 +2049,11 @@ declare module "@axia/types/lookup" {
   export interface OrmlXtokensModuleEvent extends Enum {
     readonly isTransferred: boolean;
     readonly asTransferred: ITuple<
-      [AccountId20, MoonbeamRuntimeCurrencyId, u128, XcmV1MultiLocation]
+      [AccountId20, AxtendRuntimeCurrencyId, u128, XcmV1MultiLocation]
     >;
     readonly isTransferredWithFee: boolean;
     readonly asTransferredWithFee: ITuple<
-      [AccountId20, MoonbeamRuntimeCurrencyId, u128, u128, XcmV1MultiLocation]
+      [AccountId20, AxtendRuntimeCurrencyId, u128, u128, XcmV1MultiLocation]
     >;
     readonly isTransferredMultiAsset: boolean;
     readonly asTransferredMultiAsset: ITuple<[AccountId20, XcmV1MultiAsset, XcmV1MultiLocation]>;
@@ -2069,9 +2069,9 @@ declare module "@axia/types/lookup" {
   }
 
   /**
-   * @name MoonbeamRuntimeCurrencyId (126)
+   * @name AxtendRuntimeCurrencyId (126)
    */
-  export interface MoonbeamRuntimeCurrencyId extends Enum {
+  export interface AxtendRuntimeCurrencyId extends Enum {
     readonly isSelfReserve: boolean;
     readonly isOtherReserve: boolean;
     readonly asOtherReserve: u128;
@@ -3083,7 +3083,7 @@ declare module "@axia/types/lookup" {
     } & Struct;
     readonly isDispatchAs: boolean;
     readonly asDispatchAs: {
-      readonly asOrigin: MoonbeamRuntimeOriginCaller;
+      readonly asOrigin: AxtendRuntimeOriginCaller;
       readonly call: Call;
     } & Struct;
     readonly type: "Batch" | "AsDerivative" | "BatchAll" | "DispatchAs";
@@ -3096,32 +3096,32 @@ declare module "@axia/types/lookup" {
     readonly isProxy: boolean;
     readonly asProxy: {
       readonly real: AccountId20;
-      readonly forceProxyType: Option<MoonbeamRuntimeProxyType>;
+      readonly forceProxyType: Option<AxtendRuntimeProxyType>;
       readonly call: Call;
     } & Struct;
     readonly isAddProxy: boolean;
     readonly asAddProxy: {
       readonly delegate: AccountId20;
-      readonly proxyType: MoonbeamRuntimeProxyType;
+      readonly proxyType: AxtendRuntimeProxyType;
       readonly delay: u32;
     } & Struct;
     readonly isRemoveProxy: boolean;
     readonly asRemoveProxy: {
       readonly delegate: AccountId20;
-      readonly proxyType: MoonbeamRuntimeProxyType;
+      readonly proxyType: AxtendRuntimeProxyType;
       readonly delay: u32;
     } & Struct;
     readonly isRemoveProxies: boolean;
     readonly isAnonymous: boolean;
     readonly asAnonymous: {
-      readonly proxyType: MoonbeamRuntimeProxyType;
+      readonly proxyType: AxtendRuntimeProxyType;
       readonly delay: u32;
       readonly index: u16;
     } & Struct;
     readonly isKillAnonymous: boolean;
     readonly asKillAnonymous: {
       readonly spawner: AccountId20;
-      readonly proxyType: MoonbeamRuntimeProxyType;
+      readonly proxyType: AxtendRuntimeProxyType;
       readonly index: u16;
       readonly height: Compact<u32>;
       readonly extIndex: Compact<u32>;
@@ -3145,7 +3145,7 @@ declare module "@axia/types/lookup" {
     readonly asProxyAnnounced: {
       readonly delegate: AccountId20;
       readonly real: AccountId20;
-      readonly forceProxyType: Option<MoonbeamRuntimeProxyType>;
+      readonly forceProxyType: Option<AxtendRuntimeProxyType>;
       readonly call: Call;
     } & Struct;
     readonly type:
@@ -4409,20 +4409,20 @@ declare module "@axia/types/lookup" {
   export interface PalletAssetManagerCall extends Enum {
     readonly isRegisterAsset: boolean;
     readonly asRegisterAsset: {
-      readonly asset: MoonbeamRuntimeAssetType;
-      readonly metadata: MoonbeamRuntimeAssetRegistrarMetadata;
+      readonly asset: AxtendRuntimeAssetType;
+      readonly metadata: AxtendRuntimeAssetRegistrarMetadata;
       readonly minAmount: u128;
       readonly isSufficient: bool;
     } & Struct;
     readonly isSetAssetUnitsPerSecond: boolean;
     readonly asSetAssetUnitsPerSecond: {
-      readonly assetType: MoonbeamRuntimeAssetType;
+      readonly assetType: AxtendRuntimeAssetType;
       readonly unitsPerSecond: u128;
     } & Struct;
     readonly isChangeExistingAssetType: boolean;
     readonly asChangeExistingAssetType: {
       readonly assetId: u128;
-      readonly newAssetType: MoonbeamRuntimeAssetType;
+      readonly newAssetType: AxtendRuntimeAssetType;
     } & Struct;
     readonly type: "RegisterAsset" | "SetAssetUnitsPerSecond" | "ChangeExistingAssetType";
   }
@@ -4433,7 +4433,7 @@ declare module "@axia/types/lookup" {
   export interface OrmlXtokensModuleCall extends Enum {
     readonly isTransfer: boolean;
     readonly asTransfer: {
-      readonly currencyId: MoonbeamRuntimeCurrencyId;
+      readonly currencyId: AxtendRuntimeCurrencyId;
       readonly amount: u128;
       readonly dest: XcmVersionedMultiLocation;
       readonly destWeight: u64;
@@ -4446,7 +4446,7 @@ declare module "@axia/types/lookup" {
     } & Struct;
     readonly isTransferWithFee: boolean;
     readonly asTransferWithFee: {
-      readonly currencyId: MoonbeamRuntimeCurrencyId;
+      readonly currencyId: AxtendRuntimeCurrencyId;
       readonly amount: u128;
       readonly fee: u128;
       readonly dest: XcmVersionedMultiLocation;
@@ -4488,7 +4488,7 @@ declare module "@axia/types/lookup" {
     } & Struct;
     readonly isTransactThroughDerivativeMultilocation: boolean;
     readonly asTransactThroughDerivativeMultilocation: {
-      readonly dest: MoonbeamRuntimeTransactors;
+      readonly dest: AxtendRuntimeTransactors;
       readonly index: u16;
       readonly feeLocation: XcmVersionedMultiLocation;
       readonly destWeight: u64;
@@ -4496,9 +4496,9 @@ declare module "@axia/types/lookup" {
     } & Struct;
     readonly isTransactThroughDerivative: boolean;
     readonly asTransactThroughDerivative: {
-      readonly dest: MoonbeamRuntimeTransactors;
+      readonly dest: AxtendRuntimeTransactors;
       readonly index: u16;
-      readonly currencyId: MoonbeamRuntimeCurrencyId;
+      readonly currencyId: AxtendRuntimeCurrencyId;
       readonly destWeight: u64;
       readonly innerCall: Bytes;
     } & Struct;
@@ -4526,17 +4526,17 @@ declare module "@axia/types/lookup" {
   }
 
   /**
-   * @name MoonbeamRuntimeTransactors (342)
+   * @name AxtendRuntimeTransactors (342)
    */
-  export interface MoonbeamRuntimeTransactors extends Enum {
+  export interface AxtendRuntimeTransactors extends Enum {
     readonly isRelay: boolean;
     readonly type: "Relay";
   }
 
   /**
-   * @name MoonbeamRuntimeOriginCaller (343)
+   * @name AxtendRuntimeOriginCaller (343)
    */
-  export interface MoonbeamRuntimeOriginCaller extends Enum {
+  export interface AxtendRuntimeOriginCaller extends Enum {
     readonly isSystem: boolean;
     readonly asSystem: FrameSystemRawOrigin;
     readonly isVoid: boolean;
@@ -4631,7 +4631,7 @@ declare module "@axia/types/lookup" {
    */
   export interface PalletProxyProxyDefinition extends Struct {
     readonly delegate: AccountId20;
-    readonly proxyType: MoonbeamRuntimeProxyType;
+    readonly proxyType: AxtendRuntimeProxyType;
     readonly delay: u32;
   }
 
@@ -4845,7 +4845,7 @@ declare module "@axia/types/lookup" {
     readonly priority: u8;
     readonly call: Call;
     readonly maybePeriodic: Option<ITuple<[u32, u32]>>;
-    readonly origin: MoonbeamRuntimeOriginCaller;
+    readonly origin: AxtendRuntimeOriginCaller;
   }
 
   /**
@@ -5505,7 +5505,7 @@ declare module "@axia/types/lookup" {
   export interface PalletTransactionPaymentChargeTransactionPayment extends Compact<u128> {}
 
   /**
-   * @name MoonbeamRuntimeRuntime (479)
+   * @name AxtendRuntimeRuntime (479)
    */
-  export type MoonbeamRuntimeRuntime = Null;
+  export type AxtendRuntimeRuntime = Null;
 } // declare module

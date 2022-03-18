@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { GENESIS_ACCOUNT } from "../../util/constants";
 import { customWeb3Request } from "../../util/providers";
-import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createContract } from "../../util/transactions";
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - ripemd160 ", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - ripemd160 ", (context) => {
   it("should be valid", async function () {
     const txCall = await customWeb3Request(context.web3, "eth_call", [
       {
@@ -23,7 +23,7 @@ describeDevMoonbeamAllEthTxTypes("Precompiles - ripemd160 ", (context) => {
   });
 });
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - ripemd160 ", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - ripemd160 ", (context) => {
   it("should be accessible from a smart contract", async function () {
     const { contract, rawTx } = await createContract(context, "HashRipmd160");
     await context.createBlock({ transactions: [rawTx] });

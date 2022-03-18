@@ -1,8 +1,8 @@
 import { expect } from "chai";
 import { COLLATOR_ACCOUNT } from "../../util/constants";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 
-describeDevMoonbeam("Block 1", (context) => {
+describeDevAxtend("Block 1", (context) => {
   before("Setup: Create empty block", async () => {
     await context.createBlock();
   });

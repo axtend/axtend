@@ -1,6 +1,6 @@
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 
-describeDevMoonbeam("TxPool - Limits", (context) => {
+describeDevAxtend("TxPool - Limits", (context) => {
   it.skip("should be able to fill a block with 260 tx", async function () {});
 
   it.skip("should be able to fill a block with 64 contract creations tx", async function () {});

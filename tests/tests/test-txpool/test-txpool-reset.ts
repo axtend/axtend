@@ -1,10 +1,10 @@
 import { expect } from "chai";
 
 import { createContract } from "../../util/transactions";
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import { customWeb3Request } from "../../util/providers";
 
-describeDevMoonbeam("TxPool - Genesis", (context) => {
+describeDevAxtend("TxPool - Genesis", (context) => {
   it("should be empty", async function () {
     let inspect = await customWeb3Request(context.web3, "txpool_inspect", []);
     expect(inspect.result.pending).to.be.empty;
@@ -13,7 +13,7 @@ describeDevMoonbeam("TxPool - Genesis", (context) => {
   });
 });
 
-describeDevMoonbeam("TxPool - New block", (context) => {
+describeDevAxtend("TxPool - New block", (context) => {
   before("Setup: Create transaction and empty block", async () => {
     const { rawTx } = await createContract(context, "TestContract", {
       gas: 1048576,

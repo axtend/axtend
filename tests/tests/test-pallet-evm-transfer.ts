@@ -2,7 +2,7 @@ import Keyring from "@axia/keyring";
 import { expect } from "chai";
 import { ALITH, ALITH_PRIV_KEY } from "../util/constants";
 
-import { describeDevMoonbeam } from "../util/setup-dev-tests";
+import { describeDevAxtend } from "../util/setup-dev-tests";
 import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 
 const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";
@@ -10,7 +10,7 @@ const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";
 // A call from root (sudo) can make a transfer directly in pallet_evm
 // A signed call cannot make a transfer directly in pallet_evm
 
-describeDevMoonbeam("Pallet EVM transfer - no sudo", (context) => {
+describeDevAxtend("Pallet EVM transfer - no sudo", (context) => {
   let events;
   before("Send a simple transfer with pallet evm", async () => {
     const keyring = new Keyring({ type: "ethereum" });
@@ -37,7 +37,7 @@ describeDevMoonbeam("Pallet EVM transfer - no sudo", (context) => {
     expect(await context.web3.eth.getBalance(TEST_ACCOUNT)).to.equal("0");
   });
 });
-describeDevMoonbeam("Pallet EVM transfer - with sudo", (context) => {
+describeDevAxtend("Pallet EVM transfer - with sudo", (context) => {
   let events;
   before("Send a simple transfer with pallet evm with sudo", async () => {
     const keyring = new Keyring({ type: "ethereum" });

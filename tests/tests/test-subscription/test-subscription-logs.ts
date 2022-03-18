@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { web3Subscribe } from "../../util/providers";
 
-import { describeDevMoonbeam } from "../../util/setup-dev-tests";
+import { describeDevAxtend } from "../../util/setup-dev-tests";
 import { createContract } from "../../util/transactions";
 
-describeDevMoonbeam("Subscription - Logs", (context) => {
+describeDevAxtend("Subscription - Logs", (context) => {
   let web3Ws;
   before("Setup: Create empty block", async () => {
     web3Ws = await context.createWeb3("ws");
@@ -43,7 +43,7 @@ describeDevMoonbeam("Subscription - Logs", (context) => {
   });
 });
 
-describeDevMoonbeam("Subscription - Logs", (context) => {
+describeDevAxtend("Subscription - Logs", (context) => {
   let web3Ws;
 
   let subSingleAddPromise;
@@ -193,7 +193,7 @@ describeDevMoonbeam("Subscription - Logs", (context) => {
   });
 });
 
-describeDevMoonbeam("Subscription - Reverted transaction", (context) => {
+describeDevAxtend("Subscription - Reverted transaction", (context) => {
   // TODO: Telmo to verify if this statement is true
   it.skip("should not send logs", async function () {
     const web3Ws = await context.createWeb3("ws");

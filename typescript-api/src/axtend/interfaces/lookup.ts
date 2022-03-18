@@ -320,7 +320,7 @@ export default {
       AnonymousCreated: {
         anonymous: "AccountId20",
         who: "AccountId20",
-        proxyType: "MoonbeamRuntimeProxyType",
+        proxyType: "AxtendRuntimeProxyType",
         disambiguationIndex: "u16",
       },
       Announced: {
@@ -331,7 +331,7 @@ export default {
       ProxyAdded: {
         delegator: "AccountId20",
         delegatee: "AccountId20",
-        proxyType: "MoonbeamRuntimeProxyType",
+        proxyType: "AxtendRuntimeProxyType",
         delay: "u32",
       },
     },
@@ -339,7 +339,7 @@ export default {
   /**
    * Lookup44: axtend_runtime::ProxyType
    */
-  MoonbeamRuntimeProxyType: {
+  AxtendRuntimeProxyType: {
     _enum: [
       "Any",
       "NonTransfer",
@@ -1293,15 +1293,15 @@ export default {
    */
   PalletAssetManagerEvent: {
     _enum: {
-      AssetRegistered: "(u128,MoonbeamRuntimeAssetType,MoonbeamRuntimeAssetRegistrarMetadata)",
-      UnitsPerSecondChanged: "(MoonbeamRuntimeAssetType,u128)",
-      AssetTypeChanged: "(u128,MoonbeamRuntimeAssetType)",
+      AssetRegistered: "(u128,AxtendRuntimeAssetType,AxtendRuntimeAssetRegistrarMetadata)",
+      UnitsPerSecondChanged: "(AxtendRuntimeAssetType,u128)",
+      AssetTypeChanged: "(u128,AxtendRuntimeAssetType)",
     },
   },
   /**
    * Lookup123: axtend_runtime::AssetType
    */
-  MoonbeamRuntimeAssetType: {
+  AxtendRuntimeAssetType: {
     _enum: {
       Xcm: "XcmV1MultiLocation",
     },
@@ -1309,7 +1309,7 @@ export default {
   /**
    * Lookup124: axtend_runtime::AssetRegistrarMetadata
    */
-  MoonbeamRuntimeAssetRegistrarMetadata: {
+  AxtendRuntimeAssetRegistrarMetadata: {
     name: "Bytes",
     symbol: "Bytes",
     decimals: "u8",
@@ -1320,8 +1320,8 @@ export default {
    */
   OrmlXtokensModuleEvent: {
     _enum: {
-      Transferred: "(AccountId20,MoonbeamRuntimeCurrencyId,u128,XcmV1MultiLocation)",
-      TransferredWithFee: "(AccountId20,MoonbeamRuntimeCurrencyId,u128,u128,XcmV1MultiLocation)",
+      Transferred: "(AccountId20,AxtendRuntimeCurrencyId,u128,XcmV1MultiLocation)",
+      TransferredWithFee: "(AccountId20,AxtendRuntimeCurrencyId,u128,u128,XcmV1MultiLocation)",
       TransferredMultiAsset: "(AccountId20,XcmV1MultiAsset,XcmV1MultiLocation)",
       TransferredMultiAssetWithFee:
         "(AccountId20,XcmV1MultiAsset,XcmV1MultiAsset,XcmV1MultiLocation)",
@@ -1330,7 +1330,7 @@ export default {
   /**
    * Lookup126: axtend_runtime::CurrencyId
    */
-  MoonbeamRuntimeCurrencyId: {
+  AxtendRuntimeCurrencyId: {
     _enum: {
       SelfReserve: "Null",
       OtherReserve: "u128",
@@ -2130,7 +2130,7 @@ export default {
         calls: "Vec<Call>",
       },
       dispatch_as: {
-        asOrigin: "MoonbeamRuntimeOriginCaller",
+        asOrigin: "AxtendRuntimeOriginCaller",
         call: "Call",
       },
     },
@@ -2142,28 +2142,28 @@ export default {
     _enum: {
       proxy: {
         real: "AccountId20",
-        forceProxyType: "Option<MoonbeamRuntimeProxyType>",
+        forceProxyType: "Option<AxtendRuntimeProxyType>",
         call: "Call",
       },
       add_proxy: {
         delegate: "AccountId20",
-        proxyType: "MoonbeamRuntimeProxyType",
+        proxyType: "AxtendRuntimeProxyType",
         delay: "u32",
       },
       remove_proxy: {
         delegate: "AccountId20",
-        proxyType: "MoonbeamRuntimeProxyType",
+        proxyType: "AxtendRuntimeProxyType",
         delay: "u32",
       },
       remove_proxies: "Null",
       anonymous: {
-        proxyType: "MoonbeamRuntimeProxyType",
+        proxyType: "AxtendRuntimeProxyType",
         delay: "u32",
         index: "u16",
       },
       kill_anonymous: {
         spawner: "AccountId20",
-        proxyType: "MoonbeamRuntimeProxyType",
+        proxyType: "AxtendRuntimeProxyType",
         index: "u16",
         height: "Compact<u32>",
         extIndex: "Compact<u32>",
@@ -2183,7 +2183,7 @@ export default {
       proxy_announced: {
         delegate: "AccountId20",
         real: "AccountId20",
-        forceProxyType: "Option<MoonbeamRuntimeProxyType>",
+        forceProxyType: "Option<AxtendRuntimeProxyType>",
         call: "Call",
       },
     },
@@ -3243,18 +3243,18 @@ export default {
   PalletAssetManagerCall: {
     _enum: {
       register_asset: {
-        asset: "MoonbeamRuntimeAssetType",
-        metadata: "MoonbeamRuntimeAssetRegistrarMetadata",
+        asset: "AxtendRuntimeAssetType",
+        metadata: "AxtendRuntimeAssetRegistrarMetadata",
         minAmount: "u128",
         isSufficient: "bool",
       },
       set_asset_units_per_second: {
-        assetType: "MoonbeamRuntimeAssetType",
+        assetType: "AxtendRuntimeAssetType",
         unitsPerSecond: "u128",
       },
       change_existing_asset_type: {
         assetId: "u128",
-        newAssetType: "MoonbeamRuntimeAssetType",
+        newAssetType: "AxtendRuntimeAssetType",
       },
     },
   },
@@ -3264,7 +3264,7 @@ export default {
   OrmlXtokensModuleCall: {
     _enum: {
       transfer: {
-        currencyId: "MoonbeamRuntimeCurrencyId",
+        currencyId: "AxtendRuntimeCurrencyId",
         amount: "u128",
         dest: "XcmVersionedMultiLocation",
         destWeight: "u64",
@@ -3275,7 +3275,7 @@ export default {
         destWeight: "u64",
       },
       transfer_with_fee: {
-        currencyId: "MoonbeamRuntimeCurrencyId",
+        currencyId: "AxtendRuntimeCurrencyId",
         amount: "u128",
         fee: "u128",
         dest: "XcmVersionedMultiLocation",
@@ -3308,16 +3308,16 @@ export default {
         index: "u16",
       },
       transact_through_derivative_multilocation: {
-        dest: "MoonbeamRuntimeTransactors",
+        dest: "AxtendRuntimeTransactors",
         index: "u16",
         feeLocation: "XcmVersionedMultiLocation",
         destWeight: "u64",
         innerCall: "Bytes",
       },
       transact_through_derivative: {
-        dest: "MoonbeamRuntimeTransactors",
+        dest: "AxtendRuntimeTransactors",
         index: "u16",
-        currencyId: "MoonbeamRuntimeCurrencyId",
+        currencyId: "AxtendRuntimeCurrencyId",
         destWeight: "u64",
         innerCall: "Bytes",
       },
@@ -3339,13 +3339,13 @@ export default {
   /**
    * Lookup342: axtend_runtime::Transactors
    */
-  MoonbeamRuntimeTransactors: {
+  AxtendRuntimeTransactors: {
     _enum: ["Relay"],
   },
   /**
    * Lookup343: axtend_runtime::OriginCaller
    */
-  MoonbeamRuntimeOriginCaller: {
+  AxtendRuntimeOriginCaller: {
     _enum: {
       system: "FrameSystemRawOrigin",
       __Unused1: "Null",
@@ -3515,7 +3515,7 @@ export default {
    */
   PalletProxyProxyDefinition: {
     delegate: "AccountId20",
-    proxyType: "MoonbeamRuntimeProxyType",
+    proxyType: "AxtendRuntimeProxyType",
     delay: "u32",
   },
   /**
@@ -3684,7 +3684,7 @@ export default {
     priority: "u8",
     call: "Call",
     maybePeriodic: "Option<(u32,u32)>",
-    origin: "MoonbeamRuntimeOriginCaller",
+    origin: "AxtendRuntimeOriginCaller",
   },
   /**
    * Lookup395: pallet_scheduler::Releases
@@ -4160,5 +4160,5 @@ export default {
   /**
    * Lookup479: axtend_runtime::Runtime
    */
-  MoonbeamRuntimeRuntime: "Null",
+  AxtendRuntimeRuntime: "Null",
 };

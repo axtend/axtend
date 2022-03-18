@@ -12,7 +12,7 @@ npm i @axtend-network/api-augment
 
 Add to your codebase entry point before any imports from the API itself.
 
-- `import '@axtend-network/api-augment'` - applies Moonbeam types and endpoint augmentation
+- `import '@axtend-network/api-augment'` - applies Axtend types and endpoint augmentation
 - `import '@axtend-network/api-augment/moonriver'` - applies Moonriver types and endpoint augmentation
 - `import '@axtend-network/api-augment/moonbase'` - applies Moonbase Alpha types and endpoint augmentation
 

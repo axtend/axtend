@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createContract } from "../../util/transactions";
 import { Contract } from "web3-eth-contract";
 
-describeDevMoonbeamAllEthTxTypes("Contract creation", (context) => {
+describeDevAxtendAllEthTxTypes("Contract creation", (context) => {
   let testContract: Contract;
   let testContractTx: string;
 

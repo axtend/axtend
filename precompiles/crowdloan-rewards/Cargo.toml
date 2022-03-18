@@ -10,7 +10,7 @@ log = "0.4"
 num_enum = { version = "0.5.3", default-features = false }
 rustc-hex = { version = "2.0.1", default-features = false }
 
-# Moonbeam
+# Axtend
 precompile-utils = { path = "../utils", default-features = false }
 
 # Substrate

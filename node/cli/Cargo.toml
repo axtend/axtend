@@ -9,7 +9,7 @@ clap = { version = "3.1", features = ["derive"] }
 log = "0.4.8"
 parity-scale-codec = "2.2"
 
-# Moonbeam
+# Axtend
 cli-opt = { package = "axtend-cli-opt", path = "../cli-opt", default-features = false }
 perf-test = { path = "../perf-test" }
 service = { package = "axtend-service", path = "../service", default-features = false }

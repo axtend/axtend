@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { describeDevMoonbeam, describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtend, describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { createContract, createContractExecution } from "../../util/transactions";
 
 [
@@ -16,7 +16,7 @@ import { createContract, createContractExecution } from "../../util/transactions
     gas: 431754,
   },
 ].forEach(({ loop, gas }) => {
-  describeDevMoonbeamAllEthTxTypes("Contract loop", (context) => {
+  describeDevAxtendAllEthTxTypes("Contract loop", (context) => {
     it(`should consume ${gas} for ${loop} loop`, async function () {
       const { contract, rawTx } = await createContract(context, "FiniteLoopContract");
       await context.createBlock({ transactions: [rawTx] });

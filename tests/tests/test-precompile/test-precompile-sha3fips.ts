@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { describeDevMoonbeamAllEthTxTypes } from "../../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../../util/setup-dev-tests";
 import { customWeb3Request } from "../../util/providers";
 import { GENESIS_ACCOUNT } from "../../util/constants";
 
-describeDevMoonbeamAllEthTxTypes("Precompiles - sha3fips", (context) => {
+describeDevAxtendAllEthTxTypes("Precompiles - sha3fips", (context) => {
   // Test taken from https://github.com/binance-chain/bsc/pull/118
   it("sha3fips should be valid", async function () {
     const tx_call = await customWeb3Request(context.web3, "eth_call", [

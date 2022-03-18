@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { describeDevMoonbeamAllEthTxTypes } from "../util/setup-dev-tests";
+import { describeDevAxtendAllEthTxTypes } from "../util/setup-dev-tests";
 import { createContract } from "../util/transactions";
 import { GENESIS_ACCOUNT } from "../util/constants";
 
-describeDevMoonbeamAllEthTxTypes("Event - Contract", (context) => {
+describeDevAxtendAllEthTxTypes("Event - Contract", (context) => {
   it("should contain event", async function () {
     const { rawTx } = await createContract(context, "SingleEventContract", {
       from: GENESIS_ACCOUNT,
