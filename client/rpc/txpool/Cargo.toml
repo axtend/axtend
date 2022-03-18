@@ -1,6 +1,6 @@
 [package]
 name = "moonbeam-rpc-txpool"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 edition = "2018"
 homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
@@ -10,7 +10,7 @@ version = "0.6.0"
 [dependencies]
 jsonrpc-core = "18.0.0"
 rlp = "0.5"
-serde = { version = "1.0", features = [ "derive" ] }
+serde = { version = "1.0", features = ["derive"] }
 sha3 = "0.9"
 
 # Moonbeam
@@ -18,15 +18,17 @@ moonbeam-rpc-core-txpool = { path = "../../rpc-core/txpool" }
 moonbeam-rpc-primitives-txpool = { path = "../../../primitives/rpc/txpool" }
 
 # Substrate
-frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-transaction-pool = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-transaction-pool-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-blockchain = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-io = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-std = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
+frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-transaction-pool = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-transaction-pool-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-blockchain = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-io = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-runtime = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-std = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 # Frontier
 ethereum-types = "0.12.1"
-fc-rpc = { git = "https://github.com/purestake/frontier", branch = "moonbeam-axia-v0.9.17", features = [ "rpc_binary_search_estimate" ] }
+fc-rpc = { git = "https://github.com/axtend/frontier", branch = "frontier", features = [
+    "rpc_binary_search_estimate",
+] }

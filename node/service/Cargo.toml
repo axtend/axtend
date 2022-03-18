@@ -1,6 +1,6 @@
 [package]
 name = "moonbeam-service"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 edition = "2018"
 homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
@@ -13,21 +13,21 @@ async-trait = "0.1.42"
 derive_more = "0.99"
 exit-future = "0.1.4"
 flume = "0.10.9"
-futures = { version = "0.3.1", features = [ "compat" ] }
+futures = { version = "0.3.1", features = ["compat"] }
 hex-literal = "0.3.4"
 jsonrpc-core = "18.0.0"
 jsonrpc-pubsub = "18.0.0"
-libsecp256k1 = { version = "0.6", features = [ "hmac" ] }
+libsecp256k1 = { version = "0.6", features = ["hmac"] }
 log = "0.4"
 maplit = "1.0.2"
 parking_lot = "0.9.0"
-serde = { version = "1.0.101", features = [ "derive" ] }
+serde = { version = "1.0.101", features = ["derive"] }
 serde_json = "1.0"
 sha3 = { version = "0.9", default-features = false }
 structopt = "0.3"
 tiny-bip39 = { version = "0.8", default-features = false }
 tiny-hderive = { version = "0.3.0", default-features = false }
-tokio = { version = "1.13.0", features = [ "macros", "sync" ] }
+tokio = { version = "1.13.0", features = ["macros", "sync"] }
 trie-root = "0.15.2"
 
 # Moonbeam
@@ -49,84 +49,90 @@ moonbeam-runtime = { path = "../../runtime/moonbeam", optional = true }
 moonriver-runtime = { path = "../../runtime/moonriver", optional = true }
 
 # Substrate
-frame-system-rpc-runtime-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-pallet-transaction-payment-rpc = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
+frame-system-rpc-runtime-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+pallet-transaction-payment-rpc = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 parity-scale-codec = "2.2"
-sc-basic-authorship = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-chain-spec = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-cli = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", features = [ "wasmtime" ] }
-sc-client-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-client-db = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-consensus = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-consensus-manual-seal = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-executor = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", features = [ "wasmtime" ] }
-sc-finality-grandpa = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-informant = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-network = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-rpc = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-rpc-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-service = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-telemetry = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-tracing = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-transaction-pool = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sc-transaction-pool-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-api = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-block-builder = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-blockchain = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-consensus = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-core = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-inherents = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-io = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-keystore = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-offchain = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-session = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-storage = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-timestamp = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-transaction-pool = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-sp-trie = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-substrate-frame-rpc-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-substrate-prometheus-endpoint = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
+sc-basic-authorship = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-chain-spec = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-cli = { git = "https://github.com/axtend/axlib", branch = "axlib", features = [
+	"wasmtime",
+] }
+sc-client-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-client-db = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-consensus = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-consensus-manual-seal = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-executor = { git = "https://github.com/axtend/axlib", branch = "axlib", features = [
+	"wasmtime",
+] }
+sc-finality-grandpa = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-informant = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-network = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-rpc = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-rpc-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-service = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-telemetry = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-tracing = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-transaction-pool = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sc-transaction-pool-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-block-builder = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-blockchain = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-consensus = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-core = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-inherents = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-io = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-keystore = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-offchain = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-runtime = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-session = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-storage = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-timestamp = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-transaction-pool = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+sp-trie = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+substrate-frame-rpc-system = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+substrate-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 # Frontier
-fc-consensus = { git = "https://github.com/purestake/frontier", branch = "moonbeam-axia-v0.9.17" }
-fc-db = { git = "https://github.com/purestake/frontier", branch = "moonbeam-axia-v0.9.17" }
-fc-mapping-sync = { git = "https://github.com/purestake/frontier", branch = "moonbeam-axia-v0.9.17" }
-fc-rpc = { git = "https://github.com/purestake/frontier", branch = "moonbeam-axia-v0.9.17", features = [ "rpc_binary_search_estimate" ] }
-fc-rpc-core = { git = "https://github.com/purestake/frontier", branch = "moonbeam-axia-v0.9.17" }
-fp-consensus = { git = "https://github.com/purestake/frontier", branch = "moonbeam-axia-v0.9.17" }
-fp-rpc = { git = "https://github.com/purestake/frontier", branch = "moonbeam-axia-v0.9.17" }
-fp-storage = { git = "https://github.com/purestake/frontier", branch = "moonbeam-axia-v0.9.17" }
-pallet-ethereum = { git = "https://github.com/purestake/frontier", branch = "moonbeam-axia-v0.9.17" }
+fc-consensus = { git = "https://github.com/axtend/frontier", branch = "frontier" }
+fc-db = { git = "https://github.com/axtend/frontier", branch = "frontier" }
+fc-mapping-sync = { git = "https://github.com/axtend/frontier", branch = "frontier" }
+fc-rpc = { git = "https://github.com/axtend/frontier", branch = "frontier", features = [
+	"rpc_binary_search_estimate",
+] }
+fc-rpc-core = { git = "https://github.com/axtend/frontier", branch = "frontier" }
+fp-consensus = { git = "https://github.com/axtend/frontier", branch = "frontier" }
+fp-rpc = { git = "https://github.com/axtend/frontier", branch = "frontier" }
+fp-storage = { git = "https://github.com/axtend/frontier", branch = "frontier" }
+pallet-ethereum = { git = "https://github.com/axtend/frontier", branch = "frontier" }
 
 # Cumulus / Nimbus
-cumulus-client-cli = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17" }
-cumulus-client-collator = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17" }
-cumulus-client-consensus-common = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17" }
-cumulus-client-consensus-relay-chain = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17" }
-cumulus-client-network = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17" }
-cumulus-client-service = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17" }
-cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17" }
-cumulus-primitives-allychain-inherent = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17" }
-cumulus-relay-chain-interface = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17" }
-cumulus-relay-chain-local = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17" }
-cumulus-test-relay-sproof-builder = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17" }
-nimbus-consensus = { git = "https://github.com/purestake/nimbus", branch = "moonbeam-axia-v0.9.17" }
+cumulus-client-cli = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-client-collator = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-client-consensus-common = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-client-consensus-relay-chain = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-client-network = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-client-service = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-primitives-allychain-inherent = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-relay-chain-interface = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-relay-chain-local = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+cumulus-test-relay-sproof-builder = { git = "https://github.com/axtend/cumulus", branch = "cumulus" }
+nimbus-consensus = { git = "https://github.com/axtend/nimbus", branch = "nimbus" }
 # TODO we should be able to depend only on the primitives crate once we move the inherent data provider there.
-nimbus-primitives = { git = "https://github.com/purestake/nimbus", branch = "moonbeam-axia-v0.9.17" }
-pallet-author-inherent = { git = "https://github.com/purestake/nimbus", branch = "moonbeam-axia-v0.9.17" }
+nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "nimbus" }
+pallet-author-inherent = { git = "https://github.com/axtend/nimbus", branch = "nimbus" }
 
 # Axia
-axia-cli = { git = "https://github.com/purestake/axia", branch = "moonbeam-axia-v0.9.17" }
-axia-allychain = { git = "https://github.com/purestake/axia", branch = "moonbeam-axia-v0.9.17" }
-axia-primitives = { git = "https://github.com/purestake/axia", branch = "moonbeam-axia-v0.9.17" }
-axia-service = { git = "https://github.com/purestake/axia", branch = "moonbeam-axia-v0.9.17" }
-xcm = { git = "https://github.com/purestake/axia", branch = "moonbeam-axia-v0.9.17", default-features = false }
+axia-cli = { git = "https://github.com/axtend/axia", branch = "axia" }
+axia-allychain = { git = "https://github.com/axtend/axia", branch = "axia" }
+axia-primitives = { git = "https://github.com/axtend/axia", branch = "axia" }
+axia-service = { git = "https://github.com/axtend/axia", branch = "axia" }
+xcm = { git = "https://github.com/axtend/axia", branch = "axia", default-features = false }
 
 # Benchmarking
-frame-benchmarking = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-frame-benchmarking-cli = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
+frame-benchmarking = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+frame-benchmarking-cli = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 [dev-dependencies]
 assert_cmd = "0.12"
@@ -135,15 +141,15 @@ prometheus = { version = "0.13.0", default-features = false }
 rand = "0.7.3"
 
 # Axia dev-dependencies
-axia-runtime-common = { git = "https://github.com/purestake/axia", branch = "moonbeam-axia-v0.9.17" }
+axia-runtime-common = { git = "https://github.com/axtend/axia", branch = "axia" }
 
 # Substrate dev-dependencies
-pallet-sudo = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-substrate-test-client = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-substrate-test-runtime-client = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
+pallet-sudo = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+substrate-test-client = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+substrate-test-runtime-client = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 [build-dependencies]
-substrate-build-script-utils = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
+substrate-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 [features]
 default = [
@@ -155,13 +161,13 @@ default = [
 	"westend-native",
 ]
 
-kusama-native = [ "axia-cli/kusama-native", "axia-service/kusama-native" ]
-rococo-native = [ "axia-cli/rococo-native", "axia-service/rococo-native" ]
-westend-native = [ "axia-cli/westend-native", "axia-service/westend-native" ]
+kusama-native = ["axia-cli/kusama-native", "axia-service/kusama-native"]
+rococo-native = ["axia-cli/rococo-native", "axia-service/rococo-native"]
+westend-native = ["axia-cli/westend-native", "axia-service/westend-native"]
 
-moonbase-native = [ "moonbase-runtime", "westend-native" ]
-moonbeam-native = [ "moonbeam-runtime" ]
-moonriver-native = [ "moonriver-runtime" ]
+moonbase-native = ["moonbase-runtime", "westend-native"]
+moonbeam-native = ["moonbeam-runtime"]
+moonriver-native = ["moonriver-runtime"]
 
 test-spec = []
 
@@ -183,7 +189,4 @@ moonbase-runtime-benchmarks = [
 	"pallet-ethereum/runtime-benchmarks",
 ]
 
-try-runtime = [
-	"moonbase-runtime",
-	"moonbase-runtime/try-runtime",
-]
+try-runtime = ["moonbase-runtime", "moonbase-runtime/try-runtime"]

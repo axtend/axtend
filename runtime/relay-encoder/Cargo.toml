@@ -1,6 +1,6 @@
 [package]
 name = "moonbeam-relay-encoder"
-authors = [ "PureStake" ]
+authors = ["PureStake"]
 edition = "2018"
 homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
@@ -14,27 +14,29 @@ relay-encoder-precompiles = { path = "../../precompiles/relay-encoder/", default
 xcm-primitives = { path = "../../primitives/xcm", default-features = false }
 
 # Substrate
-frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", default-features = false }
-pallet-staking = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", default-features = false }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
-sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", default-features = false }
-sp-std = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17", default-features = false }
+frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
+pallet-staking = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
+parity-scale-codec = { version = "2.0.0", default-features = false, features = [
+	"derive",
+] }
+sp-runtime = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
+sp-std = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 
 # Cumulus
-cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-axia-v0.9.17", default-features = false }
+cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "cumulus", default-features = false }
 
 [dev-dependencies]
-frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-pallet-proxy = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
-pallet-utility = { git = "https://github.com/purestake/substrate", branch = "moonbeam-axia-v0.9.17" }
+frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+pallet-proxy = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+pallet-utility = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
-kusama-runtime = { git = "https://github.com/purestake/axia", branch = "moonbeam-axia-v0.9.17" }
-axia-runtime = { git = "https://github.com/purestake/axia", branch = "moonbeam-axia-v0.9.17" }
-rococo-runtime = { git = "https://github.com/purestake/axia", branch = "moonbeam-axia-v0.9.17" }
-westend-runtime = { git = "https://github.com/purestake/axia", branch = "moonbeam-axia-v0.9.17" }
+kusama-runtime = { git = "https://github.com/axtend/axia", branch = "axia" }
+axia-runtime = { git = "https://github.com/axtend/axia", branch = "axia" }
+rococo-runtime = { git = "https://github.com/axtend/axia", branch = "axia" }
+westend-runtime = { git = "https://github.com/axtend/axia", branch = "axia" }
 
 [features]
-default = [ "std" ]
+default = ["std"]
 std = [
 	"cumulus-primitives-core/std",
 	"frame-system/std",
