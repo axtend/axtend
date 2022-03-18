@@ -216,7 +216,7 @@ jobs:
     env:
       CARGO_SCCACHE_COMMIT: 90e1dc81
       RUSTFLAGS: "-C opt-level=3 -D warnings"
-      # MOONBEAM_LOG: info
+      # AXTEND_LOG: info
       # DEBUG: "test*"
     outputs:
       RUSTC: ${{ steps.get-rust-versions.outputs.rustc }}
@@ -431,7 +431,7 @@ jobs:
         env:
           OVERRIDE_RUNTIME_PATH: ./runtimes
           BINARY_PATH: ../build/axtend
-          MOONBEAM_LOG: info
+          AXTEND_LOG: info
           RELAY_BINARY_PATH: ../build/axia
         run: |
           chmod uog+x build/axia

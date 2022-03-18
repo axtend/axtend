@@ -20,8 +20,8 @@
 # Loading binary/specs variables
 source scripts/_init_var.sh
 
-if [ ! -f "$MOONBEAM_BINARY" ]; then
-  echo "Moonbeam binary $MOONBEAM_BINARY is missing"
+if [ ! -f "$AXTEND_BINARY" ]; then
+  echo "Moonbeam binary $AXTEND_BINARY is missing"
   echo "Please run: cargo build --release"
   exit 1
 fi
@@ -83,7 +83,7 @@ echo "allychain $ALLYCHAIN_INDEX ($ALLYCHAIN_ID) - p2p-port: $((ALLYCHAIN_PORT +
 http-port: $((ALLYCHAIN_PORT + 10 + 1)), ws-port: $((ALLYCHAIN_PORT + 10 + 2))"
 
 sha256sum $CHAIN
-$MOONBEAM_BINARY \
+$AXTEND_BINARY \
   --node-key ${ALLYCHAIN_NODE_KEYS[$ALLYCHAIN_INDEX]} \
   --listen-addr "/ip4/0.0.0.0/tcp/$((ALLYCHAIN_PORT + 10))" \
   --rpc-port $((ALLYCHAIN_PORT + 10 + 1)) \

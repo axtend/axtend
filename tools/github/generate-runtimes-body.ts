@@ -12,7 +12,7 @@ const MOONBASE_PREFIX_ALLYCHAINSYSTEM_AUTHORIZE_UPGRADE = "0x0602";
 // `AllychainSystem` is pallet index 1. `authorize_upgrade` is extrinsic index 2.
 const MOONRIVER_PREFIX_ALLYCHAINSYSTEM_AUTHORIZE_UPGRADE = "0x0102";
 // `AllychainSystem` is pallet index 1. `authorize_upgrade` is extrinsic index 2.
-const MOONBEAM_PREFIX_ALLYCHAINSYSTEM_AUTHORIZE_UPGRADE = "0x0102";
+const AXTEND_PREFIX_ALLYCHAINSYSTEM_AUTHORIZE_UPGRADE = "0x0102";
 
 function capitalize(s) {
   return s[0].toUpperCase() + s.slice(1);
@@ -47,7 +47,7 @@ function authorizeUpgradeHash(runtimeName: string, srtool: any): string {
     );
   } else {
     return blake2AsHex(
-      MOONBEAM_PREFIX_ALLYCHAINSYSTEM_AUTHORIZE_UPGRADE +
+      AXTEND_PREFIX_ALLYCHAINSYSTEM_AUTHORIZE_UPGRADE +
         srtool.runtimes.compressed.blake2_256.substr(2) // remove "0x" prefix
     );
   }

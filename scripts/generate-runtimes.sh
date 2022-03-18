@@ -9,7 +9,7 @@ for runtime in moonbase moonriver axtend; do
   mkdir -p $RUNTIME_BUILD_FOLDER
   RUNTIME_WASM="$RUNTIME_BUILD_FOLDER/${runtime}-runtime.wasm"
 
-  $MOONBEAM_BINARY export-genesis-wasm \
+  $AXTEND_BINARY export-genesis-wasm \
     --chain "${runtime}-local" \
     > $RUNTIME_WASM;
   echo $RUNTIME_WASM generated

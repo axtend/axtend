@@ -68,10 +68,10 @@ This script is prefixed with `DEBUG=test:substrateEvents ` to log events during 
 
 ## Verbose mode
 
-You can also add the node's logs to the output using the `MOONBEAM_LOG` env variable. Ex:
+You can also add the node's logs to the output using the `AXTEND_LOG` env variable. Ex:
 
 ```
-MOONBEAM_LOG="warn,rpc=trace" npm run test
+AXTEND_LOG="warn,rpc=trace" npm run test
 ```
 
 The test script will find available ports above 20000 in order to ensure that it doesn't conflict

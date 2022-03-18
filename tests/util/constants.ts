@@ -1,8 +1,8 @@
 export const SPECS_PATH = `./axtend-test-specs`;
 
 export const DEBUG_MODE = process.env.DEBUG_MODE || false;
-export const DISPLAY_LOG = process.env.MOONBEAM_LOG || false;
-export const MOONBEAM_LOG = process.env.MOONBEAM_LOG || "info";
+export const DISPLAY_LOG = process.env.AXTEND_LOG || false;
+export const AXTEND_LOG = process.env.AXTEND_LOG || "info";
 
 export const BINARY_PATH = process.env.BINARY_PATH || `../target/release/axtend`;
 export const RELAY_BINARY_PATH = process.env.RELAY_BINARY_PATH || `../target/release/axia`;

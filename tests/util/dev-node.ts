@@ -3,7 +3,7 @@ import { spawn, ChildProcess } from "child_process";
 import {
   BINARY_PATH,
   DISPLAY_LOG,
-  MOONBEAM_LOG,
+  AXTEND_LOG,
   SPAWNING_TIME,
   ETHAPI_CMD,
   WASM_RUNTIME_OVERRIDES,
@@ -72,7 +72,7 @@ export async function startMoonbeamDevNode(withWasm?: boolean): Promise<{
     `--no-prometheus`,
     `--dev`,
     `--sealing=manual`,
-    `-l${MOONBEAM_LOG}`,
+    `-l${AXTEND_LOG}`,
     `--port=${p2pPort}`,
     `--rpc-port=${rpcPort}`,
     `--ws-port=${wsPort}`,
