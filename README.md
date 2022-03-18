@@ -1,36 +1,36 @@
-# ![Moonbeam](media/moonbeam-cover.jpg)
+# ![Moonbeam](media/axtend-cover.jpg)
 
-![Tests](https://github.com/PureStake/moonbeam/workflows/Release/badge.svg)
+![Tests](https://github.com/PureStake/axtend/workflows/Release/badge.svg)
 
 **An Ethereum compatible [Allychain](https://axia.network/technology/) built with [Substrate](https://substrate.dev).**
 
-👉 _Discover the Moonbeam project at [moonbeam.network](https://moonbeam.network)._<br>
-👉 _Learn to [use the Moonbeam network](https://docs.moonbeam.network/) with our technical docs._<br>
-👉 _Reference our [crate-level docs (rustdocs)](https://purestake.github.io/moonbeam) to contribute._
+👉 _Discover the Moonbeam project at [axtend.network](https://axtend.network)._<br>
+👉 _Learn to [use the Moonbeam network](https://docs.axtend.network/) with our technical docs._<br>
+👉 _Reference our [crate-level docs (rustdocs)](https://purestake.github.io/axtend) to contribute._
 
 ## Run an alphanet node with Docker
 
-Docker images are published for every tagged release. Learn more with `moonbeam --help`.
+Docker images are published for every tagged release. Learn more with `axtend --help`.
 
 ```bash
 # Join the public testnet
-docker run --network="host" purestake/moonbeam:v0.21.1 --chain alphanet
+docker run --network="host" purestake/axtend:v0.21.1 --chain alphanet
 ```
 
-You can find more detailed instructions to [run a full node in our TestNet](https://docs.moonbeam.network/node-operators/networks/full-node/)
+You can find more detailed instructions to [run a full node in our TestNet](https://docs.axtend.network/node-operators/networks/full-node/)
 
 ## Run a local development node with Docker
 
-Developers who are building dApps to run on moonbeam, may want a lightweight node to work with
+Developers who are building dApps to run on axtend, may want a lightweight node to work with
 locally. You can quickly spin up a single node with no relay chain backing it using the development
 service.
 
 ```bash
 # Run a dev service node
-docker run --network="host" purestake/moonbeam:v0.21.1 --dev
+docker run --network="host" purestake/axtend:v0.21.1 --dev
 ```
 
-For more information, see our detailed instructions to [run a development node](https://docs.moonbeam.network/getting-started/local-node/setting-up-a-node/)
+For more information, see our detailed instructions to [run a development node](https://docs.axtend.network/getting-started/local-node/setting-up-a-node/)
 
 ### Sealing options
 
@@ -38,10 +38,10 @@ The command above will start the node in instant seal mode. It creates a block w
 
 ```bash
 # Author a block every 6 seconds.
-docker run --network="host" purestake/moonbeam:v0.21.1 --dev --sealing 6000
+docker run --network="host" purestake/axtend:v0.21.1 --dev --sealing 6000
 
 # Manually control the block authorship and finality
-docker run --network="host" purestake/moonbeam:v0.21.1 --dev --sealing manual
+docker run --network="host" purestake/axtend:v0.21.1 --dev --sealing manual
 ```
 
 ### Prefunded Development Addresses
@@ -101,16 +101,16 @@ Also, the prefunded default account for testing purposes is:
 
 ## Build the Moonbeam Node
 
-To build Moonbeam, you will need a proper Substrate development environment. If you've never worked with a Substrate-based blockchain before, you should probably try the [Setting Up a Moonbeam Node](https://docs.moonbeam.network/getting-started/local-node/setting-up-a-node/) docs first.
+To build Moonbeam, you will need a proper Substrate development environment. If you've never worked with a Substrate-based blockchain before, you should probably try the [Setting Up a Moonbeam Node](https://docs.axtend.network/getting-started/local-node/setting-up-a-node/) docs first.
 
 If you need a refresher setting up your Substrate environment, see [Substrate's Getting Started Guide](https://substrate.dev/docs/en/knowledgebase/getting-started/).
 
-Note that cloning master might result in an unstable build. If you want a stable version, check out the [latest releases](https://github.com/PureStake/moonbeam/releases).
+Note that cloning master might result in an unstable build. If you want a stable version, check out the [latest releases](https://github.com/PureStake/axtend/releases).
 
 ```bash
 # Fetch the code
-git clone https://github.com/PureStake/moonbeam
-cd moonbeam
+git clone https://github.com/PureStake/axtend
+cd axtend
 
 # Build the node (The first build will be long (~30min))
 cargo build --release
@@ -127,7 +127,7 @@ cargo test
 
 ```bash
 # Install dependencies for integration tests
-cd moonbeam-types-bundle
+cd axtend-types-bundle
 npm i
 
 cd ../tests
@@ -140,7 +140,7 @@ npm test
 ## Chain IDs
 
 The Ethereum specification described a numeric Chain Id. The Moonbeam mainnet Chain Id will be 1284
-because it takes 1284 milliseconds for a moonbeam to reach Earth.
+because it takes 1284 milliseconds for a axtend to reach Earth.
 
 Moonbeam nodes support multiple public chains and testnets, with the following Chain Ids.
 
@@ -191,4 +191,4 @@ The following pallets are stored in `pallets/`. They are designed for Moonbeam's
 Moonbeam is open source under the terms of the GPL3. We welcome contributions. Please review our
 [CONTRIBUTIONS.md](CONTRIBUTIONS.md) document for more information.
 
-Example of version bumping PR (runtime and node): https://github.com/PureStake/moonbeam/pull/601/files
+Example of version bumping PR (runtime and node): https://github.com/PureStake/axtend/pull/601/files

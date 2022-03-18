@@ -36,107 +36,107 @@ const allychains: { [name: string]: AllychainConfig } = {
   "moonriver-genesis": {
     relay: "kusama-9040",
     chain: "moonriver-local",
-    docker: "purestake/moonbeam:moonriver-genesis",
+    docker: "purestake/axtend:moonriver-genesis",
   },
   "moonriver-genesis-fast": {
     relay: "rococo-9004",
     chain: "moonriver-local",
-    docker: "purestake/moonbeam:sha-153c4c4a",
+    docker: "purestake/axtend:sha-153c4c4a",
   },
   "moonbase-0.8.2": {
     relay: "rococo-9004",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.8.2",
+    docker: "purestake/axtend:v0.8.2",
   },
   "moonbase-0.8.1": {
     relay: "rococo-9004",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.8.1",
+    docker: "purestake/axtend:v0.8.1",
   },
   "moonbase-0.8.0": {
     relay: "rococo-9001",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.8.0",
+    docker: "purestake/axtend:v0.8.0",
   },
   "moonbase-0.9.2": {
     relay: "rococo-9004",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.9.2",
+    docker: "purestake/axtend:v0.9.2",
   },
   "moonbase-0.9.4": {
     relay: "rococo-9004",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.9.4",
+    docker: "purestake/axtend:v0.9.4",
   },
   "moonbase-0.9.6": {
     relay: "rococo-9004",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.9.6",
+    docker: "purestake/axtend:v0.9.6",
   },
   "moonbase-0.10.0": {
     relay: "rococo-9004",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.10.0",
+    docker: "purestake/axtend:v0.10.0",
   },
   "moonbase-0.11.3": {
     relay: "rococo-9004",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.11.3",
+    docker: "purestake/axtend:v0.11.3",
   },
   "moonbase-0.12.3": {
     relay: "rococo-9102",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.12.3",
+    docker: "purestake/axtend:v0.12.3",
   },
   "moonbase-0.13.2": {
     relay: "rococo-9100",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.13.2",
+    docker: "purestake/axtend:v0.13.2",
   },
   "moonbase-0.14.2": {
     relay: "rococo-9111",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.14.2",
+    docker: "purestake/axtend:v0.14.2",
   },
   "moonbase-0.15.1": {
     relay: "rococo-9111",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.15.1",
+    docker: "purestake/axtend:v0.15.1",
   },
   "moonbase-0.16.0": {
     relay: "rococo-9130",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.16.0",
+    docker: "purestake/axtend:v0.16.0",
   },
   "moonbase-0.17.0": {
     relay: "rococo-9130",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.17.0",
+    docker: "purestake/axtend:v0.17.0",
   },
   "moonbase-0.18.1": {
     relay: "rococo-9130",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.18.1",
+    docker: "purestake/axtend:v0.18.1",
   },
   "moonbase-0.19.2": {
     relay: "rococo-9130",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.19.2",
+    docker: "purestake/axtend:v0.19.2",
   },
   "moonbase-0.20.1": {
     relay: "rococo-9140",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.20.1",
+    docker: "purestake/axtend:v0.20.1",
   },
   "moonbase-0.21.1": {
     relay: "rococo-9140",
     chain: "moonbase-local",
-    docker: "purestake/moonbeam:v0.21.1",
+    docker: "purestake/axtend:v0.21.1",
   },
   local: {
     relay: "rococo-9140",
     chain: "moonbase-local",
-    binary: "../target/release/moonbeam",
+    binary: "../target/release/axtend",
   },
 };
 const allychainNames = Object.keys(allychains);
@@ -219,9 +219,9 @@ const retrieveBinaryFromDocker = async (binaryPath: string, dockerImage: string)
   if (!fs.existsSync(allychainPath)) {
     console.log(`     Missing ${binaryPath} locally, downloading it...`);
     child_process.execSync(`mkdir -p ${path.dirname(allychainPath)} && \
-        docker create --name moonbeam-tmp ${dockerImage} && \
-        docker cp moonbeam-tmp:/moonbeam/moonbeam ${allychainPath} && \
-        docker rm moonbeam-tmp`);
+        docker create --name axtend-tmp ${dockerImage} && \
+        docker cp axtend-tmp:/axtend/axtend ${allychainPath} && \
+        docker rm axtend-tmp`);
     console.log(`${binaryPath} downloaded !`);
   }
 };
@@ -303,9 +303,9 @@ async function start() {
     const sha8 = sha.slice(0, 8);
     console.log(`Using runtime from sha: ${sha8}`);
 
-    const allychainBinary = `build/sha-${sha8}/moonbeam`;
+    const allychainBinary = `build/sha-${sha8}/axtend`;
     const allychainPath = path.join(__dirname, allychainBinary);
-    retrieveBinaryFromDocker(allychainBinary, `purestake/moonbeam:sha-${sha8}`);
+    retrieveBinaryFromDocker(allychainBinary, `purestake/axtend:sha-${sha8}`);
 
     child_process.execSync(
       `${allychainBinary} build-spec --chain moonbase-local --raw > ` +
@@ -388,7 +388,7 @@ async function start() {
       }
       allychainPaths.push(allychainPath);
     } else {
-      const allychainBinary = `build/${parasNames[i]}/moonbeam`;
+      const allychainBinary = `build/${parasNames[i]}/axtend`;
       const allychainPath = path.join(__dirname, allychainBinary);
 
       retrieveBinaryFromDocker(allychainBinary, paras[i].docker);

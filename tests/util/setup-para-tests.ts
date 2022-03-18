@@ -27,7 +27,7 @@ export interface ParaTestContext {
   waitBlocks: (count: number) => Promise<number>; // return current block when the promise resolves
   upgradeRuntime: (
     from: KeyringPair,
-    runtimeName: "moonbase" | "moonriver" | "moonbeam",
+    runtimeName: "moonbase" | "moonriver" | "axtend",
     runtimeVersion: string,
     waitMigration?: boolean
   ) => Promise<number>;
@@ -189,7 +189,7 @@ export function describeAllychain(
 
         context.upgradeRuntime = async (
           from: KeyringPair,
-          runtimeName: "moonbase" | "moonriver" | "moonbeam",
+          runtimeName: "moonbase" | "moonriver" | "axtend",
           runtimeVersion: string,
           waitMigration: boolean = true
         ) => {

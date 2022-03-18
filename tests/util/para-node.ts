@@ -70,9 +70,9 @@ export type ParaSpecOpt = {
 
 export type ParaTestOptions = {
   allychain: (ParaRuntimeOpt | ParaSpecOpt) & {
-    chain: "moonbase-local" | "moonriver-local" | "moonbeam-local";
+    chain: "moonbase-local" | "moonriver-local" | "axtend-local";
     // specify the version of the binary using tag. Ex: "v0.18.1"
-    // "local" uses target/release/moonbeam binary
+    // "local" uses target/release/axtend binary
     binary?: "local" | string;
   };
   relaychain?: {
@@ -100,7 +100,7 @@ const SPECS_DIRECTORY = "specs";
 
 // Downloads the runtime and return the filepath
 export async function getRuntimeWasm(
-  runtimeName: "moonbase" | "moonriver" | "moonbeam",
+  runtimeName: "moonbase" | "moonriver" | "axtend",
   runtimeTag: string
 ): Promise<string> {
   const runtimePath = path.join(RUNTIME_DIRECTORY, `${runtimeName}-${runtimeTag}.wasm`);
@@ -117,7 +117,7 @@ export async function getRuntimeWasm(
     console.log(`     Missing ${runtimePath} locally, downloading it...`);
     child_process.execSync(
       `mkdir -p ${path.dirname(runtimePath)} && ` +
-        `wget -q https://github.com/PureStake/moonbeam/releases/` +
+        `wget -q https://github.com/PureStake/axtend/releases/` +
         `download/${runtimeTag}/${runtimeName}-${runtimeTag}.wasm ` +
         `-O ${runtimePath}.bin`
     );
@@ -144,9 +144,9 @@ export async function getGithubReleaseBinary(url: string, binaryPath: string): P
 
 // Downloads the binary and return the filepath
 export async function getMoonbeamReleaseBinary(binaryTag: string): Promise<string> {
-  const binaryPath = path.join(BINARY_DIRECTORY, `moonbeam-${binaryTag}`);
+  const binaryPath = path.join(BINARY_DIRECTORY, `axtend-${binaryTag}`);
   return getGithubReleaseBinary(
-    `https://github.com/PureStake/moonbeam/releases/download/${binaryTag}/moonbeam`,
+    `https://github.com/PureStake/axtend/releases/download/${binaryTag}/axtend`,
     binaryPath
   );
 }
@@ -166,26 +166,26 @@ export async function getMoonbeamDockerBinary(binaryTag: string): Promise<string
   }
   const sha8 = sha.slice(0, 8);
 
-  const binaryPath = path.join(BINARY_DIRECTORY, `moonbeam-${sha8}`);
+  const binaryPath = path.join(BINARY_DIRECTORY, `axtend-${sha8}`);
   if (!fs.existsSync(binaryPath)) {
     if (process.platform != "linux") {
       console.error(`docker binaries are only supported on linux.`);
       process.exit(1);
     }
-    const dockerImage = `purestake/moonbeam:sha-${sha8}`;
+    const dockerImage = `purestake/axtend:sha-${sha8}`;
 
     console.log(`     Missing ${binaryPath} locally, downloading it...`);
     child_process.execSync(`mkdir -p ${path.dirname(binaryPath)} && \
-        docker create --name moonbeam-tmp ${dockerImage} && \
-        docker cp moonbeam-tmp:/moonbeam/moonbeam ${binaryPath} && \
-        docker rm moonbeam-tmp`);
+        docker create --name axtend-tmp ${dockerImage} && \
+        docker cp axtend-tmp:/axtend/axtend ${binaryPath} && \
+        docker rm axtend-tmp`);
     console.log(`${binaryPath} downloaded !`);
   }
   return binaryPath;
 }
 
 export async function getRawSpecsFromTag(
-  runtimeName: "moonbase" | "moonriver" | "moonbeam",
+  runtimeName: "moonbase" | "moonriver" | "axtend",
   tag: string
 ) {
   const specPath = path.join(SPECS_DIRECTORY, `${runtimeName}-${tag}-raw-specs.json`);
@@ -202,7 +202,7 @@ export async function getRawSpecsFromTag(
 
 export async function generateRawSpecs(
   binaryPath: string,
-  runtimeName: "moonbase-local" | "moonriver-local" | "moonbeam-local"
+  runtimeName: "moonbase-local" | "moonriver-local" | "axtend-local"
 ) {
   const specPath = path.join(SPECS_DIRECTORY, `${runtimeName}-raw-specs.json`);
   if (!fs.existsSync(specPath)) {

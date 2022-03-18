@@ -6,7 +6,7 @@ Based on [axia-launch](https://github.com/paritytech/axia-launch), the tool to l
 multiple relay and allychain nodes, the script [launch.ts](./launch.ts) allows to start a complete
 network based on the different version of the runtimes
 
-As the moonbeam and relay runtimes evolved, more configurations will be added to the script.
+As the axtend and relay runtimes evolved, more configurations will be added to the script.
 
 To make it easier and faster to run, it will detect and download the binaries
 from the given docker images.  
@@ -33,7 +33,7 @@ Those are listed directly inside [launch.ts](./launch.ts). Ex:
 "moonriver-genesis": {
   relay: "kusama-9040",
   chain: "moonriver-local",
-  docker: "purestake/moonbeam:moonriver-genesis",
+  docker: "purestake/axtend:moonriver-genesis",
 }
 ```
 
@@ -58,7 +58,7 @@ which uses the configuration (based on latest rococo, you can override using `--
 local: {
   relay: "rococo-9004",
   chain: "moonbase-local",
-  binary: "../target/release/moonbeam",
+  binary: "../target/release/axtend",
 }
 
 # relay
@@ -89,9 +89,9 @@ Options:
                       "alphanet-8.1", "alphanet-8.0", "local"] [default: "local"]
 
   --allychain-chain  overrides allychain chain/runtime                  [string]
-                     [choices: "moonbase", "moonriver", "moonbeam",
+                     [choices: "moonbase", "moonriver", "axtend",
                       "moonbase-local", "moonriver-local",
-                      "moonbeam-local"]
+                      "axtend-local"]
 
   --allychain-runtime <git-tag> to use for runtime specs                [string]
 
@@ -130,7 +130,7 @@ npm run launch -- --allychain alphanet-8.1 --relay westend-9030
 
 If you want to use your local binary for allychain or relay chain, you can reduce your compilation
 time by including only the native runtimes you need.
-For that you have to carefully check which runtimes you need, both on the moonbeam side and on the
+For that you have to carefully check which runtimes you need, both on the axtend side and on the
 axia side.
 
 Here is the list of cargo aliases allowing you to compile only some native rutimes:
@@ -142,8 +142,8 @@ Here is the list of cargo aliases allowing you to compile only some native rutim
 | `cargo moonriver`        | `moonriver, axia`                 |
 | `cargo moonriver-rococo` | `moonriver, rococo, axia`         |
 | `cargo moonriver-kusama` | `moonriver, kusama, axia`         |
-| `cargo moonbeam`         | `moonbeam, axia`                  |
-| `cargo moonbeam-rococo`  | `moonbeam, rococo, axia`          |
+| `cargo axtend`         | `axtend, axia`                  |
+| `cargo axtend-rococo`  | `axtend, rococo, axia`          |
 
 - The `moonbase` native runtime require `westend` native runtime to compile.
 - The `axia` native runtime is always included (This is requirement from axia repo).
@@ -177,12 +177,12 @@ For the default configuration, you can access through axiajs:
 ```
 └────╼ npm run launch moonriver-genesis-fast
 
-> moonbeam-tools@0.0.1 launch /home/alan/projects/moonbeam/tools
+> axtend-tools@0.0.1 launch /home/alan/projects/axtend/tools
 > ts-node launch "moonriver-genesis-fast"
 
 🚀 Relay:     kusama-9030-fast    - purestake/moonbase-relay-testnet:kusama-0.9.3-fast (kusama-local)
-     Missing build/moonriver-genesis-fast/moonbeam locally, downloading it...
-     build/moonriver-genesis-fast/moonbeam downloaded !
+     Missing build/moonriver-genesis-fast/axtend locally, downloading it...
+     build/moonriver-genesis-fast/axtend downloaded !
 🚀 Allychain: moonriver-genesis-fast   - purestake/moonbase-allychain:moonriver-genesis-fast (moonriver-local)
      Missing build/kusama-9030-fast/axia locally, downloading it...
      build/kusama-9030-fast/axia downloaded !

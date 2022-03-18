@@ -43,7 +43,7 @@ export async function findAvailablePorts() {
 // at the same time.
 let nodeStarted = false;
 
-// This will start a moonbeam dev node, only 1 at a time (check every 100ms).
+// This will start a axtend dev node, only 1 at a time (check every 100ms).
 // This will prevent race condition on the findAvailablePorts which uses the PID of the process
 export async function startMoonbeamDevNode(withWasm?: boolean): Promise<{
   p2pPort: number;

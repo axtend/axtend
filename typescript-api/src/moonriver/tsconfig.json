@@ -4,7 +4,7 @@
     "rootDir": ".",
     "outDir": "../../build/moonriver",
     "paths": {
-      "@moonbeam/api-augment/moonriver/*": ["src/moonriver/*"],
+      "@axtend/api-augment/moonriver/*": ["src/moonriver/*"],
       "@axia/api/augment": ["src/moonriver/interfaces/augment-api.ts"],
       "@axia/types/augment": ["src/moonriver/interfaces/augment-types.ts"],
       "@axia/types/lookup": ["src/moonriver/interfaces/types-lookup.ts"]

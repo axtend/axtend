@@ -45,11 +45,11 @@ use frame_support::{
 	PalletId,
 };
 use frame_system::{EnsureRoot, EnsureSigned};
-pub use moonbeam_core_primitives::{
+pub use axtend_core_primitives::{
 	AccountId, AccountIndex, Address, AssetId, Balance, BlockNumber, DigestItem, Hash, Header,
 	Index, Signature,
 };
-use moonbeam_rpc_primitives_txpool::TxPoolResponse;
+use axtend_rpc_primitives_txpool::TxPoolResponse;
 use pallet_balances::NegativeImbalance;
 use pallet_ethereum::Call::transact;
 use pallet_ethereum::Transaction as EthereumTransaction;
@@ -172,8 +172,8 @@ pub mod opaque {
 /// changes which can be skipped.
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("moonbeam"),
-	impl_name: create_runtime_str!("moonbeam"),
+	spec_name: create_runtime_str!("axtend"),
+	impl_name: create_runtime_str!("axtend"),
 	authoring_version: 3,
 	spec_version: 1300,
 	impl_version: 0,
@@ -785,7 +785,7 @@ parameter_types! {
 	pub const InitializationPayment: Perbill = Perbill::from_percent(30);
 	pub const MaxInitContributorsBatchSizes: u32 = 500;
 	pub const RelaySignaturesThreshold: Perbill = Perbill::from_percent(100);
-	pub const SignatureNetworkIdentifier:  &'static [u8] = b"moonbeam-";
+	pub const SignatureNetworkIdentifier:  &'static [u8] = b"axtend-";
 }
 
 impl pallet_crowdloan_rewards::Config for Runtime {
@@ -1404,7 +1404,7 @@ impl UtilityEncodeCall for Transactors {
 		match self {
 			// Shall we use westend for moonbase? The tests are probably based on rococo
 			// but moonbase-alpha is attached to westend-runtime I think
-			Transactors::Relay => moonbeam_relay_encoder::kusama::KusamaEncoder.encode_call(call),
+			Transactors::Relay => axtend_relay_encoder::kusama::KusamaEncoder.encode_call(call),
 		}
 	}
 }

@@ -24,7 +24,7 @@ use crate::chain_spec::{derive_bip44_pairs_from_mnemonic, get_account_id_from_pa
 use crate::chain_spec::{generate_accounts, get_from_seed, Extensions};
 use cumulus_primitives_core::ParaId;
 use hex_literal::hex;
-use moonbeam_runtime::{
+use axtend_runtime::{
 	currency::GLMR, currency::SUPPLY_FACTOR, AccountId, AuthorFilterConfig, AuthorMappingConfig,
 	Balance, BalancesConfig, CouncilCollectiveConfig, CrowdloanRewardsConfig, DemocracyConfig,
 	EVMConfig, EthereumChainIdConfig, EthereumConfig, GenesisAccount, GenesisConfig, InflationInfo,
@@ -53,7 +53,7 @@ pub fn development_chain_spec(mnemonic: Option<String>, num_accounts: Option<u32
 	)));
 	ChainSpec::from_genesis(
 		"Moonbeam Development Testnet",
-		"moonbeam_dev",
+		"axtend_dev",
 		ChainType::Development,
 		move || {
 			testnet_genesis(
@@ -104,9 +104,9 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 	ChainSpec::from_genesis(
 		// TODO Apps depends on this string to determine whether the chain is an ethereum compat
 		// or not. We should decide the proper strings, and update Apps accordingly.
-		// Or maybe Apps can be smart enough to say if the string contains "moonbeam" at all...
+		// Or maybe Apps can be smart enough to say if the string contains "axtend" at all...
 		"Moonbeam Local Testnet",
-		"moonbeam_local",
+		"axtend_local",
 		ChainType::Local,
 		move || {
 			testnet_genesis(
@@ -168,13 +168,13 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 	)
 }
 
-pub fn moonbeam_inflation_config() -> InflationInfo<Balance> {
+pub fn axtend_inflation_config() -> InflationInfo<Balance> {
 	fn to_round_inflation(annual: Range<Perbill>) -> Range<Perbill> {
 		use allychain_staking::inflation::{perbill_annual_to_perbill_round, BLOCKS_PER_YEAR};
 		perbill_annual_to_perbill_round(
 			annual,
 			// rounds per year
-			BLOCKS_PER_YEAR / moonbeam_runtime::DefaultBlocksPerRound::get(),
+			BLOCKS_PER_YEAR / axtend_runtime::DefaultBlocksPerRound::get(),
 		)
 	}
 	let annual = Range {
@@ -258,7 +258,7 @@ pub fn testnet_genesis(
 				.map(|(account, _, bond)| (account, bond))
 				.collect(),
 			delegations,
-			inflation_config: moonbeam_inflation_config(),
+			inflation_config: axtend_inflation_config(),
 		},
 		council_collective: CouncilCollectiveConfig {
 			phantom: Default::default(),

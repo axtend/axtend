@@ -1,6 +1,6 @@
 # Moonbeam Types Bundle
 
-Exports npm package `moonbeam-types-bundle`, formated as per axia-js specification to use
+Exports npm package `axtend-types-bundle`, formated as per axia-js specification to use
 with the app or the API.
 
 ## ⚠️Warning: Types deprecation⚠️
@@ -8,20 +8,20 @@ with the app or the API.
 Following runtime upgrade 900 (include substrate v0.9.11), types are now retrieved from the node, in
 a **camelCase** format
 
-A **new version** has been released `moonbeam-types-bundle@2.0.0`.
+A **new version** has been released `axtend-types-bundle@2.0.0`.
 
 The default export `typesBundle` has **been removed** to avoid confusion.  
 
 **2 new typesBundles** are available:
 
-* `import { typesBundlePre900 } from "moonbeam-types-bundle"` to use the new naming convention
-* `import { typesBundleDeprecated } from "moonbeam-types-bundle"` to keep using old naming convention that isn't camelCase (This will break at runtime 1000)
+* `import { typesBundlePre900 } from "axtend-types-bundle"` to use the new naming convention
+* `import { typesBundleDeprecated } from "axtend-types-bundle"` to keep using old naming convention that isn't camelCase (This will break at runtime 1000)
 
 The following package versions have been tested:
 
 ```
 "@axia/api": "^6.9.1",
-"moonbeam-types-bundle": "^2.0.1",
+"axtend-types-bundle": "^2.0.1",
 "typescript": "4.3.2"
 ```
 
@@ -60,7 +60,7 @@ Those types are being changed:
   }
 ```
 
-## How to upgrade your tools/scripts using moonbeam-types-bundle
+## How to upgrade your tools/scripts using axtend-types-bundle
 
 *(If your tool/script is not requesting past blocks, you can use the `typesBundleDeprecated` 
 for now and fully remove it once the network has been upgraded to runtime 900, 
@@ -70,7 +70,7 @@ The following package versions have been tested:
 
 ```
 "@axia/api": "^6.9.1",
-"moonbeam-types-bundle": "^2.0.1",
+"axtend-types-bundle": "^2.0.1",
 "typescript": "4.3.2"
 ```
 
@@ -79,23 +79,23 @@ Running the latest TypeScript version will not work.
 Ultimately it is necessary to use the new type naming as the previous one won't be supported, but
 you can import `typesBundleDeprecated` to buy yourself some time.
 
-* moonbeam-types-bundle v1.x.x will break on runtime upgrade 900
+* axtend-types-bundle v1.x.x will break on runtime upgrade 900
 (planned Thursday 18th November 2021 on Moonriver)
-* moonbeam-types-bundle v2.x.x `typesBundleDeprecated` (using previous naming case) 
+* axtend-types-bundle v2.x.x `typesBundleDeprecated` (using previous naming case) 
 will **break on runtime 1000**
-* **moonbeam-types-bundle v2.x.x** `typesBundlePre900` (using new naming case) 
+* **axtend-types-bundle v2.x.x** `typesBundlePre900` (using new naming case) 
 will be **maintained**.
 
 ### Step 1: Install new package
 
 ```
-npm install moonbeam-types-bundle@2
+npm install axtend-types-bundle@2
 ```
 
 ### Step 2: Change your import
 
 ```
-import { typesBundlePre900 } from "moonbeam-types-bundle"
+import { typesBundlePre900 } from "axtend-types-bundle"
 
 const api = await ApiPromise.create({
     provider: wsProvider,
@@ -142,7 +142,7 @@ console.log(ethereumEncode(address));
 
 `typesBundlePre900` is of type OverrideBundleType to associate runtime names with correct definitions.
 
-`moonbeamDefinitions` is of types OverrideBundleDefinition and returns a different set of types for
+`axtendDefinitions` is of types OverrideBundleDefinition and returns a different set of types for
 each runtime version.
 
 ## Print Types

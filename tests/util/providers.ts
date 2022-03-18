@@ -1,6 +1,6 @@
 import Web3 from "web3";
 import { ApiPromise, WsProvider } from "@axia/api";
-import { typesBundlePre900 } from "../../moonbeam-types-bundle";
+import { typesBundlePre900 } from "../../axtend-types-bundle";
 import { JsonRpcResponse } from "web3-core-helpers";
 import { ethers } from "ethers";
 import { GENESIS_ACCOUNT_PRIVATE_KEY } from "./constants";

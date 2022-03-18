@@ -26,15 +26,15 @@ LABEL maintainer "alan@purestake.com"
 LABEL description="Axia for Moonbeam Relay Chains"
 COPY --from=builder /axia/target/production/axia /usr/local/bin
 
-RUN useradd -m -u 1000 -U -s /bin/sh -d /moonbase-alphanet moonbeam && \
+RUN useradd -m -u 1000 -U -s /bin/sh -d /moonbase-alphanet axtend && \
 	mkdir -p /moonbase-alphanet/.local/share/moonbase-alphanet && \
-	chown -R moonbeam:moonbeam /moonbase-alphanet && \
+	chown -R axtend:axtend /moonbase-alphanet && \
 	ln -s /moonbase-alphanet/.local/share/moonbase-alphanet /data && \
 	rm -rf /usr/bin /usr/sbin
 
-USER moonbeam
+USER axtend
 
-COPY --chown=moonbeam specs/alphanet/westend-embedded-specs-v8.json /moonbase-alphanet/alphanet-relay-raw-specs.json
+COPY --chown=axtend specs/alphanet/westend-embedded-specs-v8.json /moonbase-alphanet/alphanet-relay-raw-specs.json
 RUN grep -v '/p2p/' /moonbase-alphanet/alphanet-relay-raw-specs.json > \
     /moonbase-alphanet/alphanet-relay-raw-specs-no-bootnodes.json
 

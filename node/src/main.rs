@@ -21,6 +21,6 @@
 #[cfg(test)]
 mod tests;
 
-fn main() -> moonbeam_cli::Result<()> {
-	moonbeam_cli::run()
+fn main() -> axtend_cli::Result<()> {
+	axtend_cli::run()
 }

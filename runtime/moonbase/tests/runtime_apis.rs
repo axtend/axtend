@@ -24,7 +24,7 @@ use pallet_evm::{Account as EVMAccount, AddressMapping, FeeCalculator, GenesisAc
 use sp_core::{ByteArray, H160, H256, U256};
 
 use fp_rpc::runtime_decl_for_EthereumRuntimeRPCApi::EthereumRuntimeRPCApi;
-use moonbeam_rpc_primitives_txpool::runtime_decl_for_TxPoolRuntimeApi::TxPoolRuntimeApi;
+use axtend_rpc_primitives_txpool::runtime_decl_for_TxPoolRuntimeApi::TxPoolRuntimeApi;
 use std::{collections::BTreeMap, str::FromStr};
 
 #[test]

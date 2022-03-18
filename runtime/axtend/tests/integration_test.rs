@@ -29,7 +29,7 @@ use frame_support::{
 	weights::{DispatchClass, Weight},
 	StorageHasher, Twox128,
 };
-use moonbeam_runtime::{
+use axtend_runtime::{
 	currency::GLMR, AccountId, Balances, BaseFee, BlockWeights, Call, CrowdloanRewards, CurrencyId,
 	Event, AllychainStaking, AxiaXcm, Precompiles, Runtime, System, XTokens, XcmTransactor,
 };
@@ -53,7 +53,7 @@ use xtokens_precompiles::Action as XtokensAction;
 
 #[test]
 fn fast_track_available() {
-	assert!(<moonbeam_runtime::Runtime as pallet_democracy::Config>::InstantAllowed::get());
+	assert!(<axtend_runtime::Runtime as pallet_democracy::Config>::InstantAllowed::get());
 }
 
 #[test]
@@ -65,32 +65,32 @@ fn verify_pallet_prefixes() {
 		// https://github.com/paritytech/substrate/blob/master/frame/support/procedural/src/pallet/
 		// expand/storage.rs#L389-L401
 		assert_eq!(
-			<moonbeam_runtime::Runtime as frame_system::Config>::PalletInfo::name::<P>(),
+			<axtend_runtime::Runtime as frame_system::Config>::PalletInfo::name::<P>(),
 			Some(name)
 		);
 	}
 	// TODO: use StorageInfoTrait once https://github.com/paritytech/substrate/pull/9246
 	// is pulled in substrate deps.
-	is_pallet_prefix::<moonbeam_runtime::System>("System");
-	is_pallet_prefix::<moonbeam_runtime::Utility>("Utility");
-	is_pallet_prefix::<moonbeam_runtime::RandomnessCollectiveFlip>("RandomnessCollectiveFlip");
-	is_pallet_prefix::<moonbeam_runtime::AllychainSystem>("AllychainSystem");
-	is_pallet_prefix::<moonbeam_runtime::TransactionPayment>("TransactionPayment");
-	is_pallet_prefix::<moonbeam_runtime::AllychainInfo>("AllychainInfo");
-	is_pallet_prefix::<moonbeam_runtime::EthereumChainId>("EthereumChainId");
-	is_pallet_prefix::<moonbeam_runtime::EVM>("EVM");
-	is_pallet_prefix::<moonbeam_runtime::Ethereum>("Ethereum");
-	is_pallet_prefix::<moonbeam_runtime::AllychainStaking>("AllychainStaking");
-	is_pallet_prefix::<moonbeam_runtime::Scheduler>("Scheduler");
-	is_pallet_prefix::<moonbeam_runtime::Democracy>("Democracy");
-	is_pallet_prefix::<moonbeam_runtime::CouncilCollective>("CouncilCollective");
-	is_pallet_prefix::<moonbeam_runtime::TechCommitteeCollective>("TechCommitteeCollective");
-	is_pallet_prefix::<moonbeam_runtime::Treasury>("Treasury");
-	is_pallet_prefix::<moonbeam_runtime::AuthorInherent>("AuthorInherent");
-	is_pallet_prefix::<moonbeam_runtime::AuthorFilter>("AuthorFilter");
-	is_pallet_prefix::<moonbeam_runtime::CrowdloanRewards>("CrowdloanRewards");
-	is_pallet_prefix::<moonbeam_runtime::AuthorMapping>("AuthorMapping");
-	is_pallet_prefix::<moonbeam_runtime::MaintenanceMode>("MaintenanceMode");
+	is_pallet_prefix::<axtend_runtime::System>("System");
+	is_pallet_prefix::<axtend_runtime::Utility>("Utility");
+	is_pallet_prefix::<axtend_runtime::RandomnessCollectiveFlip>("RandomnessCollectiveFlip");
+	is_pallet_prefix::<axtend_runtime::AllychainSystem>("AllychainSystem");
+	is_pallet_prefix::<axtend_runtime::TransactionPayment>("TransactionPayment");
+	is_pallet_prefix::<axtend_runtime::AllychainInfo>("AllychainInfo");
+	is_pallet_prefix::<axtend_runtime::EthereumChainId>("EthereumChainId");
+	is_pallet_prefix::<axtend_runtime::EVM>("EVM");
+	is_pallet_prefix::<axtend_runtime::Ethereum>("Ethereum");
+	is_pallet_prefix::<axtend_runtime::AllychainStaking>("AllychainStaking");
+	is_pallet_prefix::<axtend_runtime::Scheduler>("Scheduler");
+	is_pallet_prefix::<axtend_runtime::Democracy>("Democracy");
+	is_pallet_prefix::<axtend_runtime::CouncilCollective>("CouncilCollective");
+	is_pallet_prefix::<axtend_runtime::TechCommitteeCollective>("TechCommitteeCollective");
+	is_pallet_prefix::<axtend_runtime::Treasury>("Treasury");
+	is_pallet_prefix::<axtend_runtime::AuthorInherent>("AuthorInherent");
+	is_pallet_prefix::<axtend_runtime::AuthorFilter>("AuthorFilter");
+	is_pallet_prefix::<axtend_runtime::CrowdloanRewards>("CrowdloanRewards");
+	is_pallet_prefix::<axtend_runtime::AuthorMapping>("AuthorMapping");
+	is_pallet_prefix::<axtend_runtime::MaintenanceMode>("MaintenanceMode");
 	let prefix = |pallet_name, storage_name| {
 		let mut res = [0u8; 32];
 		res[0..16].copy_from_slice(&Twox128::hash(pallet_name));
@@ -98,7 +98,7 @@ fn verify_pallet_prefixes() {
 		res.to_vec()
 	};
 	assert_eq!(
-		<moonbeam_runtime::Timestamp as StorageInfoTrait>::storage_info(),
+		<axtend_runtime::Timestamp as StorageInfoTrait>::storage_info(),
 		vec![
 			StorageInfo {
 				pallet_name: b"Timestamp".to_vec(),
@@ -117,7 +117,7 @@ fn verify_pallet_prefixes() {
 		]
 	);
 	assert_eq!(
-		<moonbeam_runtime::Balances as StorageInfoTrait>::storage_info(),
+		<axtend_runtime::Balances as StorageInfoTrait>::storage_info(),
 		vec![
 			StorageInfo {
 				pallet_name: b"Balances".to_vec(),
@@ -157,7 +157,7 @@ fn verify_pallet_prefixes() {
 		]
 	);
 	assert_eq!(
-		<moonbeam_runtime::Proxy as StorageInfoTrait>::storage_info(),
+		<axtend_runtime::Proxy as StorageInfoTrait>::storage_info(),
 		vec![
 			StorageInfo {
 				pallet_name: b"Proxy".to_vec(),
@@ -176,7 +176,7 @@ fn verify_pallet_prefixes() {
 		]
 	);
 	assert_eq!(
-		<moonbeam_runtime::MaintenanceMode as StorageInfoTrait>::storage_info(),
+		<axtend_runtime::MaintenanceMode as StorageInfoTrait>::storage_info(),
 		vec![StorageInfo {
 			pallet_name: b"MaintenanceMode".to_vec(),
 			storage_name: b"MaintenanceMode".to_vec(),
@@ -190,13 +190,13 @@ fn verify_pallet_prefixes() {
 #[test]
 fn test_collectives_storage_item_prefixes() {
 	for StorageInfo { pallet_name, .. } in
-		<moonbeam_runtime::CouncilCollective as StorageInfoTrait>::storage_info()
+		<axtend_runtime::CouncilCollective as StorageInfoTrait>::storage_info()
 	{
 		assert_eq!(pallet_name, b"CouncilCollective".to_vec());
 	}
 
 	for StorageInfo { pallet_name, .. } in
-		<moonbeam_runtime::TechCommitteeCollective as StorageInfoTrait>::storage_info()
+		<axtend_runtime::TechCommitteeCollective as StorageInfoTrait>::storage_info()
 	{
 		assert_eq!(pallet_name, b"TechCommitteeCollective".to_vec());
 	}
@@ -206,54 +206,54 @@ fn test_collectives_storage_item_prefixes() {
 fn verify_pallet_indices() {
 	fn is_pallet_index<P: 'static>(index: usize) {
 		assert_eq!(
-			<moonbeam_runtime::Runtime as frame_system::Config>::PalletInfo::index::<P>(),
+			<axtend_runtime::Runtime as frame_system::Config>::PalletInfo::index::<P>(),
 			Some(index)
 		);
 	}
 
-	is_pallet_index::<moonbeam_runtime::System>(0);
-	is_pallet_index::<moonbeam_runtime::AllychainSystem>(1);
-	is_pallet_index::<moonbeam_runtime::RandomnessCollectiveFlip>(2);
-	is_pallet_index::<moonbeam_runtime::Timestamp>(3);
-	is_pallet_index::<moonbeam_runtime::AllychainInfo>(4);
+	is_pallet_index::<axtend_runtime::System>(0);
+	is_pallet_index::<axtend_runtime::AllychainSystem>(1);
+	is_pallet_index::<axtend_runtime::RandomnessCollectiveFlip>(2);
+	is_pallet_index::<axtend_runtime::Timestamp>(3);
+	is_pallet_index::<axtend_runtime::AllychainInfo>(4);
 	// Monetary
-	is_pallet_index::<moonbeam_runtime::Balances>(10);
-	is_pallet_index::<moonbeam_runtime::TransactionPayment>(11);
+	is_pallet_index::<axtend_runtime::Balances>(10);
+	is_pallet_index::<axtend_runtime::TransactionPayment>(11);
 	// Consensus support
-	is_pallet_index::<moonbeam_runtime::AllychainStaking>(20);
-	is_pallet_index::<moonbeam_runtime::AuthorInherent>(21);
-	is_pallet_index::<moonbeam_runtime::AuthorFilter>(22);
-	is_pallet_index::<moonbeam_runtime::AuthorMapping>(23);
+	is_pallet_index::<axtend_runtime::AllychainStaking>(20);
+	is_pallet_index::<axtend_runtime::AuthorInherent>(21);
+	is_pallet_index::<axtend_runtime::AuthorFilter>(22);
+	is_pallet_index::<axtend_runtime::AuthorMapping>(23);
 	// Handy utilities
-	is_pallet_index::<moonbeam_runtime::Utility>(30);
-	is_pallet_index::<moonbeam_runtime::Proxy>(31);
-	is_pallet_index::<moonbeam_runtime::MaintenanceMode>(32);
+	is_pallet_index::<axtend_runtime::Utility>(30);
+	is_pallet_index::<axtend_runtime::Proxy>(31);
+	is_pallet_index::<axtend_runtime::MaintenanceMode>(32);
 	// Sudo was previously index 40.
 	// Ethereum compatibility
-	is_pallet_index::<moonbeam_runtime::EthereumChainId>(50);
-	is_pallet_index::<moonbeam_runtime::EVM>(51);
-	is_pallet_index::<moonbeam_runtime::Ethereum>(52);
+	is_pallet_index::<axtend_runtime::EthereumChainId>(50);
+	is_pallet_index::<axtend_runtime::EVM>(51);
+	is_pallet_index::<axtend_runtime::Ethereum>(52);
 	// Governance
-	is_pallet_index::<moonbeam_runtime::Scheduler>(60);
-	is_pallet_index::<moonbeam_runtime::Democracy>(61);
+	is_pallet_index::<axtend_runtime::Scheduler>(60);
+	is_pallet_index::<axtend_runtime::Democracy>(61);
 	// Council
-	is_pallet_index::<moonbeam_runtime::CouncilCollective>(70);
-	is_pallet_index::<moonbeam_runtime::TechCommitteeCollective>(71);
+	is_pallet_index::<axtend_runtime::CouncilCollective>(70);
+	is_pallet_index::<axtend_runtime::TechCommitteeCollective>(71);
 	// Treasury
-	is_pallet_index::<moonbeam_runtime::Treasury>(80);
+	is_pallet_index::<axtend_runtime::Treasury>(80);
 	// Crowdloan
-	is_pallet_index::<moonbeam_runtime::CrowdloanRewards>(90);
+	is_pallet_index::<axtend_runtime::CrowdloanRewards>(90);
 }
 
 #[test]
 fn verify_proxy_type_indices() {
-	assert_eq!(moonbeam_runtime::ProxyType::Any as u8, 0);
-	assert_eq!(moonbeam_runtime::ProxyType::NonTransfer as u8, 1);
-	assert_eq!(moonbeam_runtime::ProxyType::Governance as u8, 2);
-	assert_eq!(moonbeam_runtime::ProxyType::Staking as u8, 3);
-	assert_eq!(moonbeam_runtime::ProxyType::CancelProxy as u8, 4);
-	assert_eq!(moonbeam_runtime::ProxyType::Balances as u8, 5);
-	assert_eq!(moonbeam_runtime::ProxyType::AuthorMapping as u8, 6);
+	assert_eq!(axtend_runtime::ProxyType::Any as u8, 0);
+	assert_eq!(axtend_runtime::ProxyType::NonTransfer as u8, 1);
+	assert_eq!(axtend_runtime::ProxyType::Governance as u8, 2);
+	assert_eq!(axtend_runtime::ProxyType::Staking as u8, 3);
+	assert_eq!(axtend_runtime::ProxyType::CancelProxy as u8, 4);
+	assert_eq!(axtend_runtime::ProxyType::Balances as u8, 5);
+	assert_eq!(axtend_runtime::ProxyType::AuthorMapping as u8, 6);
 }
 
 #[test]
@@ -615,7 +615,7 @@ fn initialize_crowdloan_address_and_change_with_relay_key_sig() {
 
 			// signature is new_account || previous_account
 			let mut message = pallet_crowdloan_rewards::WRAPPED_BYTES_PREFIX.to_vec();
-			message.append(&mut b"moonbeam-".to_vec());
+			message.append(&mut b"axtend-".to_vec());
 			message.append(&mut AccountId::from(DAVE).encode());
 			message.append(&mut AccountId::from(CHARLIE).encode());
 			message.append(&mut pallet_crowdloan_rewards::WRAPPED_BYTES_POSTFIX.to_vec());
@@ -1093,8 +1093,8 @@ where
 
 #[test]
 fn multiplier_can_grow_from_zero() {
-	let minimum_multiplier = moonbeam_runtime::MinimumMultiplier::get();
-	let target = moonbeam_runtime::TargetBlockFullness::get()
+	let minimum_multiplier = axtend_runtime::MinimumMultiplier::get();
+	let target = axtend_runtime::TargetBlockFullness::get()
 		* BlockWeights::get()
 			.get(DispatchClass::Normal)
 			.max_total
@@ -1102,7 +1102,7 @@ fn multiplier_can_grow_from_zero() {
 	// if the min is too small, then this will not change, and we are doomed forever.
 	// the weight is 1/100th bigger than target.
 	run_with_system_weight(target * 101 / 100, || {
-		let next = moonbeam_runtime::SlowAdjustingFeeUpdate::<Runtime>::convert(minimum_multiplier);
+		let next = axtend_runtime::SlowAdjustingFeeUpdate::<Runtime>::convert(minimum_multiplier);
 		assert!(
 			next > minimum_multiplier,
 			"{:?} !>= {:?}",
@@ -1117,8 +1117,8 @@ fn multiplier_can_grow_from_zero() {
 fn multiplier_growth_simulator() {
 	// assume the multiplier is initially set to its minimum. We update it with values twice the
 	//target (target is 25%, thus 50%) and we see at which point it reaches 1.
-	let mut multiplier = moonbeam_runtime::MinimumMultiplier::get();
-	let block_weight = moonbeam_runtime::TargetBlockFullness::get()
+	let mut multiplier = axtend_runtime::MinimumMultiplier::get();
+	let block_weight = axtend_runtime::TargetBlockFullness::get()
 		* BlockWeights::get()
 			.get(DispatchClass::Normal)
 			.max_total
@@ -1127,7 +1127,7 @@ fn multiplier_growth_simulator() {
 	let mut blocks = 0;
 	while multiplier <= Multiplier::one() {
 		run_with_system_weight(block_weight, || {
-			let next = moonbeam_runtime::SlowAdjustingFeeUpdate::<Runtime>::convert(multiplier);
+			let next = axtend_runtime::SlowAdjustingFeeUpdate::<Runtime>::convert(multiplier);
 			// ensure that it is growing as well.
 			assert!(next > multiplier, "{:?} !>= {:?}", next, multiplier);
 			multiplier = next;
@@ -1264,7 +1264,7 @@ fn root_can_change_default_xcm_vers() {
 					id: [1u8; 32],
 				}),
 			};
-			let source_id: moonbeam_runtime::AssetId = source_location.clone().into();
+			let source_id: axtend_runtime::AssetId = source_location.clone().into();
 			// Default XCM version is not set yet, so xtokens should fail because it does not
 			// know with which version to send
 			assert_noop!(
@@ -1299,7 +1299,7 @@ fn root_can_change_default_xcm_vers() {
 fn asset_can_be_registered() {
 	ExtBuilder::default().build().execute_with(|| {
 		let source_location = AssetType::Xcm(MultiLocation::parent());
-		let source_id: moonbeam_runtime::AssetId = source_location.clone().into();
+		let source_id: axtend_runtime::AssetId = source_location.clone().into();
 		let asset_metadata = AssetRegistrarMetadata {
 			name: b"RelayToken".to_vec(),
 			symbol: b"Relay".to_vec(),
@@ -1307,7 +1307,7 @@ fn asset_can_be_registered() {
 			is_frozen: false,
 		};
 		assert_ok!(AssetManager::register_asset(
-			moonbeam_runtime::Origin::root(),
+			axtend_runtime::Origin::root(),
 			source_location,
 			asset_metadata,
 			1u128,
@@ -1581,7 +1581,7 @@ fn xtokens_precompiles_transfer() {
 			let xtokens_precompile_address = H160::from_low_u64_be(2052);
 
 			// We have the assetId that corresponds to the relay chain registered
-			let relay_asset_id: moonbeam_runtime::AssetId =
+			let relay_asset_id: axtend_runtime::AssetId =
 				AssetType::Xcm(MultiLocation::parent()).into();
 
 			// Its address is
@@ -1711,7 +1711,7 @@ fn make_sure_glmr_cannot_be_transferred_precompile() {
 				XTokens::transfer_multiasset(
 					origin_of(AccountId::from(ALICE)),
 					Box::new(VersionedMultiAsset::V1(MultiAsset {
-						id: Concrete(moonbeam_runtime::SelfLocation::get()),
+						id: Concrete(axtend_runtime::SelfLocation::get()),
 						fun: Fungible(1000)
 					})),
 					Box::new(VersionedMultiLocation::V1(dest)),
@@ -1778,7 +1778,7 @@ fn make_sure_axia_xcm_cannot_be_called() {
 				}),
 			};
 			let multiassets: MultiAssets = [MultiAsset {
-				id: Concrete(moonbeam_runtime::SelfLocation::get()),
+				id: Concrete(axtend_runtime::SelfLocation::get()),
 				fun: Fungible(1000),
 			}]
 			.to_vec()
@@ -1819,7 +1819,7 @@ fn transactor_cannot_use_more_than_max_weight() {
 		.build()
 		.execute_with(|| {
 			let source_location = AssetType::Xcm(MultiLocation::parent());
-			let source_id: moonbeam_runtime::AssetId = source_location.clone().into();
+			let source_id: axtend_runtime::AssetId = source_location.clone().into();
 			assert_ok!(XcmTransactor::register(
 				root_origin(),
 				AccountId::from(ALICE),
@@ -1839,7 +1839,7 @@ fn transactor_cannot_use_more_than_max_weight() {
 			assert_noop!(
 				XcmTransactor::transact_through_derivative_multilocation(
 					origin_of(AccountId::from(ALICE)),
-					moonbeam_runtime::Transactors::Relay,
+					axtend_runtime::Transactors::Relay,
 					0,
 					Box::new(xcm::VersionedMultiLocation::V1(MultiLocation::parent())),
 					// 2000 is the max
@@ -1851,9 +1851,9 @@ fn transactor_cannot_use_more_than_max_weight() {
 			assert_noop!(
 				XcmTransactor::transact_through_derivative(
 					origin_of(AccountId::from(ALICE)),
-					moonbeam_runtime::Transactors::Relay,
+					axtend_runtime::Transactors::Relay,
 					0,
-					moonbeam_runtime::CurrencyId::OtherReserve(source_id),
+					axtend_runtime::CurrencyId::OtherReserve(source_id),
 					// 20000 is the max
 					17000,
 					vec![],
@@ -1892,7 +1892,7 @@ fn call_xtokens_with_fee() {
 					id: [1u8; 32],
 				}),
 			};
-			let source_id: moonbeam_runtime::AssetId = source_location.clone().into();
+			let source_id: axtend_runtime::AssetId = source_location.clone().into();
 
 			let before_balance = Assets::balance(source_id, &AccountId::from(ALICE));
 

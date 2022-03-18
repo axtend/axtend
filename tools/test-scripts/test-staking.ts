@@ -1,6 +1,6 @@
 import { ApiPromise, Keyring, WsProvider } from "@axia/api";
 import { start } from "axia-launch";
-import { typesBundlePre900 } from "../../moonbeam-types-bundle/dist";
+import { typesBundlePre900 } from "../../axtend-types-bundle/dist";
 import {
   ALITH,
   GERALD,
@@ -26,7 +26,7 @@ async function wait(duration: number) {
 }
 
 async function test() {
-  await start("config_moonbeam_staking.json");
+  await start("config_axtend_staking.json");
   const WS_PORT = 36946;
   const wsProviderUrl = `ws://localhost:${WS_PORT}`;
 

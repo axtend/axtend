@@ -66,7 +66,7 @@ export function describeDevMoonbeam(
     let context: InternalDevTestContext = { ethTransactionType } as InternalDevTestContext;
 
     // The currently running node for this describe
-    let moonbeamProcess: ChildProcess;
+    let axtendProcess: ChildProcess;
 
     // Making sure the Moonbeam node has started
     before("Starting Moonbeam Test Node", async function () {
@@ -79,7 +79,7 @@ export function describeDevMoonbeam(
             wsPort: 19933,
             rpcPort: 19932,
           };
-      moonbeamProcess = init.runningNode;
+      axtendProcess = init.runningNode;
       context.rpcPort = init.rpcPort;
 
       // Context is given prior to this assignement, so doing
@@ -87,7 +87,7 @@ export function describeDevMoonbeam(
 
       context._axiaApis = [];
       context._web3Providers = [];
-      moonbeamProcess = init.runningNode;
+      axtendProcess = init.runningNode;
 
       context.createWeb3 = async (protocol: "ws" | "http" = "http") => {
         const provider =
@@ -140,11 +140,11 @@ export function describeDevMoonbeam(
       await Promise.all(context._web3Providers.map((p) => p.disconnect()));
       await Promise.all(context._axiaApis.map((p) => p.disconnect()));
 
-      if (moonbeamProcess) {
+      if (axtendProcess) {
         await new Promise((resolve) => {
-          moonbeamProcess.once("exit", resolve);
-          moonbeamProcess.kill();
-          moonbeamProcess = null;
+          axtendProcess.once("exit", resolve);
+          axtendProcess.kill();
+          axtendProcess = null;
         });
       }
     });

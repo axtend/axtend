@@ -13,7 +13,7 @@ async function printInfo(octokit: Octokit, previousVersion: string, nextVersion:
     substrate: "axia-",
     axia: "release-",
     cumulus: "axia-",
-    nimbus: "moonbeam-axia-",
+    nimbus: "axtend-axia-",
   };
   console.log(`# Description\n`);
   console.log(`This ticket is automatically generated using\n`);

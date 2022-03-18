@@ -54,7 +54,7 @@ export default {
     },
   },
   /**
-   * Lookup17: frame_system::EventRecord<moonbeam_runtime::Event, primitive_types::H256>
+   * Lookup17: frame_system::EventRecord<axtend_runtime::Event, primitive_types::H256>
    */
   FrameSystemEventRecord: {
     phase: "FrameSystemPhase",
@@ -337,7 +337,7 @@ export default {
     },
   },
   /**
-   * Lookup44: moonbeam_runtime::ProxyType
+   * Lookup44: axtend_runtime::ProxyType
    */
   MoonbeamRuntimeProxyType: {
     _enum: [
@@ -1299,7 +1299,7 @@ export default {
     },
   },
   /**
-   * Lookup123: moonbeam_runtime::AssetType
+   * Lookup123: axtend_runtime::AssetType
    */
   MoonbeamRuntimeAssetType: {
     _enum: {
@@ -1307,7 +1307,7 @@ export default {
     },
   },
   /**
-   * Lookup124: moonbeam_runtime::AssetRegistrarMetadata
+   * Lookup124: axtend_runtime::AssetRegistrarMetadata
    */
   MoonbeamRuntimeAssetRegistrarMetadata: {
     name: "Bytes",
@@ -1328,7 +1328,7 @@ export default {
     },
   },
   /**
-   * Lookup126: moonbeam_runtime::CurrencyId
+   * Lookup126: axtend_runtime::CurrencyId
    */
   MoonbeamRuntimeCurrencyId: {
     _enum: {
@@ -3337,13 +3337,13 @@ export default {
     },
   },
   /**
-   * Lookup342: moonbeam_runtime::Transactors
+   * Lookup342: axtend_runtime::Transactors
    */
   MoonbeamRuntimeTransactors: {
     _enum: ["Relay"],
   },
   /**
-   * Lookup343: moonbeam_runtime::OriginCaller
+   * Lookup343: axtend_runtime::OriginCaller
    */
   MoonbeamRuntimeOriginCaller: {
     _enum: {
@@ -3511,7 +3511,7 @@ export default {
   },
   /**
    * Lookup354: pallet_proxy::ProxyDefinition<account::AccountId20,
-   * moonbeam_runtime::ProxyType, BlockNumber>
+   * axtend_runtime::ProxyType, BlockNumber>
    */
   PalletProxyProxyDefinition: {
     delegate: "AccountId20",
@@ -3676,8 +3676,8 @@ export default {
     _enum: ["InvalidSignature", "PreLogExists"],
   },
   /**
-   * Lookup394: pallet_scheduler::ScheduledV2<moonbeam_runtime::Call,
-   * BlockNumber, moonbeam_runtime::OriginCaller, account::AccountId20>
+   * Lookup394: pallet_scheduler::ScheduledV2<axtend_runtime::Call,
+   * BlockNumber, axtend_runtime::OriginCaller, account::AccountId20>
    */
   PalletSchedulerScheduledV2: {
     maybeId: "Option<Bytes>",
@@ -4158,7 +4158,7 @@ export default {
    */
   PalletTransactionPaymentChargeTransactionPayment: "Compact<u128>",
   /**
-   * Lookup479: moonbeam_runtime::Runtime
+   * Lookup479: axtend_runtime::Runtime
    */
   MoonbeamRuntimeRuntime: "Null",
 };

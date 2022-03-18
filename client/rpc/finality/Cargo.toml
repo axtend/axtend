@@ -1,11 +1,11 @@
 [package]
-name = "moonbeam-finality-rpc"
+name = "axtend-finality-rpc"
 authors = ["PureStake"]
-description = "An experimental RPC to check for block and transaction finality in the moonbeam allychain"
+description = "An experimental RPC to check for block and transaction finality in the axtend allychain"
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
-repository = "https://github.com/PureStake/moonbeam/"
+repository = "https://github.com/PureStake/axtend/"
 version = "0.1.0"
 
 [dependencies]

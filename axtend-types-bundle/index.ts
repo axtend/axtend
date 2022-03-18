@@ -416,7 +416,7 @@ const TYPES_POST_900: RegistryTypes = {
   },
 };
 
-export const moonbeamDefinitions = {
+export const axtendDefinitions = {
   alias: moduleDefinitions,
   rpc: rpcDefinitions,
   instances: {
@@ -479,10 +479,10 @@ export const moonbeamDefinitions = {
   ],
 } as OverrideBundleDefinition;
 
-export const moonbeamDefinitionsDeprecated = {
-  ...moonbeamDefinitions,
+export const axtendDefinitionsDeprecated = {
+  ...axtendDefinitions,
   types: [
-    ...(moonbeamDefinitions.types as OverrideVersionedType[]),
+    ...(axtendDefinitions.types as OverrideVersionedType[]),
     {
       minmax: [900, undefined],
       types: TYPES_900_undefined_deprecated,
@@ -492,18 +492,18 @@ export const moonbeamDefinitionsDeprecated = {
 
 export const typesBundlePre900 = {
   spec: {
-    moonbeam: moonbeamDefinitions,
-    moonbeamDefinitions,
-    moonbase: moonbeamDefinitions,
-    moonriver: moonbeamDefinitions,
+    axtend: axtendDefinitions,
+    axtendDefinitions,
+    moonbase: axtendDefinitions,
+    moonriver: axtendDefinitions,
   },
 } as OverrideBundleType;
 
 export const typesBundleDeprecated = {
   spec: {
-    moonbeam: moonbeamDefinitionsDeprecated,
-    moonbeamDefinitions: moonbeamDefinitionsDeprecated,
-    moonbase: moonbeamDefinitionsDeprecated,
-    moonriver: moonbeamDefinitionsDeprecated,
+    axtend: axtendDefinitionsDeprecated,
+    axtendDefinitions: axtendDefinitionsDeprecated,
+    moonbase: axtendDefinitionsDeprecated,
+    moonriver: axtendDefinitionsDeprecated,
   },
 } as OverrideBundleType;

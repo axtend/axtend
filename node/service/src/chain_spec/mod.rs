@@ -15,7 +15,7 @@
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 use bip39::{Language, Mnemonic, Seed};
 use log::debug;
-pub use moonbeam_core_primitives::AccountId;
+pub use axtend_core_primitives::AccountId;
 use sc_chain_spec::{ChainSpecExtension, ChainSpecGroup};
 use serde::{Deserialize, Serialize};
 use sha3::{Digest, Keccak256};
@@ -25,8 +25,8 @@ use tiny_hderive::bip32::ExtendedPrivKey;
 pub mod fake_spec;
 #[cfg(feature = "moonbase-native")]
 pub mod moonbase;
-#[cfg(feature = "moonbeam-native")]
-pub mod moonbeam;
+#[cfg(feature = "axtend-native")]
+pub mod axtend;
 #[cfg(feature = "moonriver-native")]
 pub mod moonriver;
 #[cfg(feature = "moonbase-native")]
@@ -52,14 +52,14 @@ pub mod moonriver {
 		panic!("moonriver runtime not enabled")
 	}
 }
-#[cfg(not(feature = "moonbeam-native"))]
-pub mod moonbeam {
+#[cfg(not(feature = "axtend-native"))]
+pub mod axtend {
 	pub type ChainSpec = crate::chain_spec::fake_spec::FakeSpec;
 	pub fn chain_spec_from_json_file(_: std::path::PathBuf) -> Result<ChainSpec, String> {
-		panic!("moonbeam runtime not enabled")
+		panic!("axtend runtime not enabled")
 	}
 	pub fn development_chain_spec(_: Option<String>, _: Option<u32>) -> ChainSpec {
-		panic!("moonbeam runtime not enabled")
+		panic!("axtend runtime not enabled")
 	}
 }
 

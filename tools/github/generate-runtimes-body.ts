@@ -84,7 +84,7 @@ async function main() {
   const previousTag = argv.from;
   const newTag = argv.to;
 
-  const runtimes = ["moonbase", "moonriver", "moonbeam"].map((runtimeName) =>
+  const runtimes = ["moonbase", "moonriver", "axtend"].map((runtimeName) =>
     getRuntimeInfo(argv["srtool-report-folder"], runtimeName)
   );
 
@@ -96,7 +96,7 @@ async function main() {
   const { prByLabels } = await getCommitAndLabels(
     octokit,
     "purestake",
-    "moonbeam",
+    "axtend",
     previousTag,
     newTag
   );
@@ -134,7 +134,7 @@ ${filteredPr.map((pr) => `* ${pr.title} (#${pr.number})`).join("\n")}
 
 ## Dependency changes
 
-Moonbeam: https://github.com/PureStake/moonbeam/compare/${previousTag}...${newTag}
+Moonbeam: https://github.com/PureStake/axtend/compare/${previousTag}...${newTag}
 ${moduleLinks.map((modules) => `${capitalize(modules.name)}: ${modules.link}`).join("\n")}
 `;
   console.log(template);

@@ -87,7 +87,7 @@ macro_rules! impl_runtime_apis_plus_common {
 				}
 			}
 
-			impl moonbeam_rpc_primitives_debug::DebugRuntimeApi<Block> for Runtime {
+			impl axtend_rpc_primitives_debug::DebugRuntimeApi<Block> for Runtime {
 				fn trace_transaction(
 					extrinsics: Vec<<Block as BlockT>::Extrinsic>,
 					traced_transaction: &EthereumTransaction,
@@ -97,7 +97,7 @@ macro_rules! impl_runtime_apis_plus_common {
 				> {
 					#[cfg(feature = "evm-tracing")]
 					{
-						use moonbeam_evm_tracer::tracer::EvmTracer;
+						use axtend_evm_tracer::tracer::EvmTracer;
 						// Apply the a subset of extrinsics: all the substrate-specific or ethereum
 						// transactions that preceded the requested transaction.
 						for ext in extrinsics.into_iter() {
@@ -133,7 +133,7 @@ macro_rules! impl_runtime_apis_plus_common {
 				> {
 					#[cfg(feature = "evm-tracing")]
 					{
-						use moonbeam_evm_tracer::tracer::EvmTracer;
+						use axtend_evm_tracer::tracer::EvmTracer;
 
 						let mut config = <Runtime as pallet_evm::Config>::config().clone();
 						config.estimate = true;
@@ -165,7 +165,7 @@ macro_rules! impl_runtime_apis_plus_common {
 				}
 			}
 
-			impl moonbeam_rpc_primitives_txpool::TxPoolRuntimeApi<Block> for Runtime {
+			impl axtend_rpc_primitives_txpool::TxPoolRuntimeApi<Block> for Runtime {
 				fn extrinsic_filter(
 					xts_ready: Vec<<Block as BlockT>::Extrinsic>,
 					xts_future: Vec<<Block as BlockT>::Extrinsic>,

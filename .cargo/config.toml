@@ -1,12 +1,12 @@
 [alias]
-moonbase = " build --release -p moonbeam --no-default-features --features moonbase-native"
-moonbase-benchmarks = " build --release -p moonbeam --no-default-features --features moonbase-runtime-benchmarks"
-moonbase-rococo = " build --release -p moonbeam --no-default-features --features moonbase-native,rococo-native"
-moonriver = " build --release -p moonbeam --no-default-features --features moonriver-native"
-moonriver-rococo = " build --release -p moonbeam --no-default-features --features moonriver-native,rococo-native"
-moonriver-kusama = " build --release -p moonbeam --no-default-features --features moonriver-native,kusama-native"
-moonbeam = " build --release -p moonbeam --no-default-features --features moonbeam-native"
-moonbeam-rococo = " build --release -p moonbeam --no-default-features --features moonbeam-native,rococo-native"
+moonbase = " build --release -p axtend --no-default-features --features moonbase-native"
+moonbase-benchmarks = " build --release -p axtend --no-default-features --features moonbase-runtime-benchmarks"
+moonbase-rococo = " build --release -p axtend --no-default-features --features moonbase-native,rococo-native"
+moonriver = " build --release -p axtend --no-default-features --features moonriver-native"
+moonriver-rococo = " build --release -p axtend --no-default-features --features moonriver-native,rococo-native"
+moonriver-kusama = " build --release -p axtend --no-default-features --features moonriver-native,kusama-native"
+axtend = " build --release -p axtend --no-default-features --features axtend-native"
+axtend-rococo = " build --release -p axtend --no-default-features --features axtend-native,rococo-native"
 
 #
 # An auto defined `clippy` feature was introduced,

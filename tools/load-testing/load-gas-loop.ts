@@ -25,7 +25,7 @@ contract Loop {
 
 init(
   argv["net"] == "stagenet"
-    ? "https://rpc.stagenet.moonbeam.gcp.purestake.run"
+    ? "https://rpc.stagenet.axtend.gcp.purestake.run"
     : argv["net"] == "localhost"
     ? "http://127.0.0.1:9933"
     : argv["net"] == "alan"

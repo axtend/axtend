@@ -16,9 +16,9 @@
 
 use super::*;
 
-use moonbeam_rpc_debug::DebugHandler;
-use moonbeam_rpc_debug::{Debug, DebugRequester, DebugServer};
-use moonbeam_rpc_trace::{
+use axtend_rpc_debug::DebugHandler;
+use axtend_rpc_debug::{Debug, DebugRequester, DebugServer};
+use axtend_rpc_trace::{
 	CacheRequester as TraceFilterCacheRequester, CacheTask, Trace, TraceServer,
 };
 use tokio::sync::Semaphore;
@@ -68,7 +68,7 @@ where
 	C: HeaderBackend<B> + HeaderMetadata<B, Error = BlockChainError> + 'static,
 	C: BlockchainEvents<B>,
 	C: Send + Sync + 'static,
-	C::Api: EthereumRuntimeRPCApi<B> + moonbeam_rpc_primitives_debug::DebugRuntimeApi<B>,
+	C::Api: EthereumRuntimeRPCApi<B> + axtend_rpc_primitives_debug::DebugRuntimeApi<B>,
 	C::Api: BlockBuilder<B>,
 	B: BlockT<Hash = H256> + Send + Sync + 'static,
 	B::Header: HeaderT<Number = u32>,

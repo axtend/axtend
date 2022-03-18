@@ -19,7 +19,7 @@
     },
     "test": {
       "patterns": [
-        "../target/release/moonbeam",
+        "../target/release/axtend",
         "./tests/**"
       ],
       "extensions": "ts,html,scss",

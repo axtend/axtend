@@ -1,8 +1,8 @@
 [package]
-name = "moonbeam-service"
+name = "axtend-service"
 authors = ["PureStake"]
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
 version = "0.21.1"
 
@@ -31,21 +31,21 @@ tokio = { version = "1.13.0", features = ["macros", "sync"] }
 trie-root = "0.15.2"
 
 # Moonbeam
-cli-opt = { package = "moonbeam-cli-opt", path = "../cli-opt" }
+cli-opt = { package = "axtend-cli-opt", path = "../cli-opt" }
 manual-xcm-rpc = { path = "../../client/rpc/manual-xcm" }
-moonbeam-core-primitives = { path = "../../core-primitives" }
-moonbeam-finality-rpc = { path = "../../client/rpc/finality" }
-moonbeam-primitives-ext = { path = "../../primitives/ext" }
-moonbeam-rpc-debug = { path = "../../client/rpc/debug" }
-moonbeam-rpc-primitives-debug = { path = "../../primitives/rpc/debug" }
-moonbeam-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool" }
-moonbeam-rpc-trace = { path = "../../client/rpc/trace" }
-moonbeam-rpc-txpool = { path = "../../client/rpc/txpool" }
+axtend-core-primitives = { path = "../../core-primitives" }
+axtend-finality-rpc = { path = "../../client/rpc/finality" }
+axtend-primitives-ext = { path = "../../primitives/ext" }
+axtend-rpc-debug = { path = "../../client/rpc/debug" }
+axtend-rpc-primitives-debug = { path = "../../primitives/rpc/debug" }
+axtend-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool" }
+axtend-rpc-trace = { path = "../../client/rpc/trace" }
+axtend-rpc-txpool = { path = "../../client/rpc/txpool" }
 allychain-staking = { path = "../../pallets/allychain-staking" }
 
 # Moonbeam runtimes
 moonbase-runtime = { path = "../../runtime/moonbase", optional = true }
-moonbeam-runtime = { path = "../../runtime/moonbeam", optional = true }
+axtend-runtime = { path = "../../runtime/axtend", optional = true }
 moonriver-runtime = { path = "../../runtime/moonriver", optional = true }
 
 # Substrate
@@ -155,7 +155,7 @@ substrate-build-script-utils = { git = "https://github.com/axtend/axlib", branch
 default = [
 	"kusama-native",
 	"moonbase-native",
-	"moonbeam-native",
+	"axtend-native",
 	"moonriver-native",
 	"rococo-native",
 	"westend-native",
@@ -166,7 +166,7 @@ rococo-native = ["axia-cli/rococo-native", "axia-service/rococo-native"]
 westend-native = ["axia-cli/westend-native", "axia-service/westend-native"]
 
 moonbase-native = ["moonbase-runtime", "westend-native"]
-moonbeam-native = ["moonbeam-runtime"]
+axtend-native = ["axtend-runtime"]
 moonriver-native = ["moonriver-runtime"]
 
 test-spec = []
@@ -174,8 +174,8 @@ test-spec = []
 runtime-benchmarks = [
 	"moonbase-native",
 	"moonbase-runtime/runtime-benchmarks",
-	"moonbeam-native",
-	"moonbeam-runtime/runtime-benchmarks",
+	"axtend-native",
+	"axtend-runtime/runtime-benchmarks",
 	"moonriver-native",
 	"moonriver-runtime/runtime-benchmarks",
 	"pallet-ethereum/runtime-benchmarks",

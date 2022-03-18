@@ -62,11 +62,11 @@ use xcm_builder::{
 use xcm_executor::traits::JustTry;
 
 use frame_system::{EnsureRoot, EnsureSigned};
-pub use moonbeam_core_primitives::{
+pub use axtend_core_primitives::{
 	AccountId, AccountIndex, Address, AssetId, Balance, BlockNumber, DigestItem, Hash, Header,
 	Index, Signature,
 };
-use moonbeam_rpc_primitives_txpool::TxPoolResponse;
+use axtend_rpc_primitives_txpool::TxPoolResponse;
 use pallet_balances::NegativeImbalance;
 use pallet_ethereum::Call::transact;
 use pallet_ethereum::Transaction as EthereumTransaction;
@@ -1514,7 +1514,7 @@ impl UtilityEncodeCall for Transactors {
 		match self {
 			// Shall we use westend for moonbase? The tests are probably based on rococo
 			// but moonbase-alpha is attached to westend-runtime I think
-			Transactors::Relay => moonbeam_relay_encoder::westend::WestendEncoder.encode_call(call),
+			Transactors::Relay => axtend_relay_encoder::westend::WestendEncoder.encode_call(call),
 		}
 	}
 }

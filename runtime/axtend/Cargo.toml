@@ -1,10 +1,10 @@
 [package]
-name = "moonbeam-runtime"
+name = "axtend-runtime"
 authors = ["PureStake"]
 build = "build.rs"
 description = "Moonbeam Runtime"
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
 version = "0.8.4"
 
@@ -19,8 +19,8 @@ sha3 = { version = "0.8", optional = true, default-features = false }
 
 # Moonbeam
 account = { path = "../../primitives/account/", default-features = false }
-moonbeam-core-primitives = { path = "../../core-primitives", default-features = false }
-moonbeam-relay-encoder = { path = "../relay-encoder", default-features = false }
+axtend-core-primitives = { path = "../../core-primitives", default-features = false }
+axtend-relay-encoder = { path = "../relay-encoder", default-features = false }
 precompile-utils = { path = "../../precompiles/utils", default-features = false }
 runtime-common = { path = "../common", default-features = false }
 xcm-primitives = { path = "../../primitives/xcm/", default-features = false }
@@ -50,9 +50,9 @@ xtokens-precompiles = { path = "../../precompiles/xtokens", default-features = f
 
 # Moonbeam tracing
 evm-tracing-events = { path = "../../primitives/rpc/evm-tracing-events", optional = true, default-features = false }
-moonbeam-evm-tracer = { path = "../evm_tracer", optional = true, default-features = false }
-moonbeam-rpc-primitives-debug = { path = "../../primitives/rpc/debug", default-features = false }
-moonbeam-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool", default-features = false }
+axtend-evm-tracer = { path = "../evm_tracer", optional = true, default-features = false }
+axtend-rpc-primitives-debug = { path = "../../primitives/rpc/debug", default-features = false }
+axtend-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool", default-features = false }
 
 # Substrate
 frame-executive = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
@@ -166,11 +166,11 @@ std = [
 	"frame-support/std",
 	"frame-system-rpc-runtime-api/std",
 	"frame-system/std",
-	"moonbeam-core-primitives/std",
-	"moonbeam-evm-tracer/std",
-	"moonbeam-relay-encoder/std",
-	"moonbeam-rpc-primitives-debug/std",
-	"moonbeam-rpc-primitives-txpool/std",
+	"axtend-core-primitives/std",
+	"axtend-evm-tracer/std",
+	"axtend-relay-encoder/std",
+	"axtend-rpc-primitives-debug/std",
+	"axtend-rpc-primitives-txpool/std",
 	"nimbus-primitives/std",
 	"orml-xtokens/std",
 	"pallet-asset-manager/std",
@@ -231,7 +231,7 @@ std = [
 	"xcm/std",
 	"xtokens-precompiles/std",
 ]
-evm-tracing = ["evm-tracing-events", "moonbeam-evm-tracer", "rlp", "sha3"]
+evm-tracing = ["evm-tracing-events", "axtend-evm-tracer", "rlp", "sha3"]
 
 # Will be enabled by the `wasm-builder` when building the runtime for WASM.
 runtime-wasm = []

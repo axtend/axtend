@@ -38,9 +38,9 @@ use fp_storage::EthereumStorageSchema;
 use futures::StreamExt;
 use jsonrpc_pubsub::manager::SubscriptionManager;
 use manual_xcm_rpc::{ManualXcm, ManualXcmApi};
-use moonbeam_core_primitives::{Block, Hash};
-use moonbeam_finality_rpc::{MoonbeamFinality, MoonbeamFinalityApi};
-use moonbeam_rpc_txpool::{TxPool, TxPoolServer};
+use axtend_core_primitives::{Block, Hash};
+use axtend_finality_rpc::{MoonbeamFinality, MoonbeamFinalityApi};
+use axtend_rpc_txpool::{TxPool, TxPoolServer};
 use pallet_transaction_payment_rpc::{TransactionPayment, TransactionPaymentApi};
 use sc_client_api::{
 	backend::{AuxStore, Backend, StateBackend, StorageProvider},

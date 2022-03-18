@@ -8,7 +8,7 @@ fi
 
 FROM=$1
 TO=$2
-sed -i "s/purestake\/moonbeam:v$FROM/purestake\/moonbeam:v$TO/" README.md
+sed -i "s/purestake\/axtend:v$FROM/purestake\/axtend:v$TO/" README.md
 sed -i "s/^version = '$FROM'$/version = '$TO'/" node/Cargo.toml
 sed -i "s/^version = '$FROM'$/version = '$TO'/" node/cli/Cargo.toml
 sed -i "s/^version = '$FROM'$/version = '$TO'/" node/cli-opt/Cargo.toml
@@ -16,6 +16,6 @@ sed -i "s/^version = '$FROM'$/version = '$TO'/" node/service/Cargo.toml
 
 sed -i "s/^version = '$FROM'$/version = '$TO'/" runtime/moonbase/Cargo.toml
 sed -i "s/^version = '$FROM'$/version = '$TO'/" runtime/moonriver/Cargo.toml
-sed -i "s/^version = '$FROM'$/version = '$TO'/" runtime/moonbeam/Cargo.toml
+sed -i "s/^version = '$FROM'$/version = '$TO'/" runtime/axtend/Cargo.toml
 
 cargo build --release

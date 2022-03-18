@@ -1,10 +1,10 @@
-export const SPECS_PATH = `./moonbeam-test-specs`;
+export const SPECS_PATH = `./axtend-test-specs`;
 
 export const DEBUG_MODE = process.env.DEBUG_MODE || false;
 export const DISPLAY_LOG = process.env.MOONBEAM_LOG || false;
 export const MOONBEAM_LOG = process.env.MOONBEAM_LOG || "info";
 
-export const BINARY_PATH = process.env.BINARY_PATH || `../target/release/moonbeam`;
+export const BINARY_PATH = process.env.BINARY_PATH || `../target/release/axtend`;
 export const RELAY_BINARY_PATH = process.env.RELAY_BINARY_PATH || `../target/release/axia`;
 
 // Is undefined by default as the path is dependent of the runtime.

@@ -24,7 +24,7 @@ use pallet_evm::{Account as EVMAccount, AddressMapping, FeeCalculator, GenesisAc
 use sp_core::{ByteArray, H160, H256, U256};
 
 use fp_rpc::runtime_decl_for_EthereumRuntimeRPCApi::EthereumRuntimeRPCApi;
-use moonbeam_rpc_primitives_txpool::runtime_decl_for_TxPoolRuntimeApi::TxPoolRuntimeApi;
+use axtend_rpc_primitives_txpool::runtime_decl_for_TxPoolRuntimeApi::TxPoolRuntimeApi;
 use std::{collections::BTreeMap, str::FromStr};
 
 #[test]
@@ -288,7 +288,7 @@ fn txpool_runtime_api_extrinsic_filter() {
 			.into(),
 		);
 		let eth_uxt = unchecked_eth_tx(VALID_ETH_TX);
-		let txpool = <Runtime as TxPoolRuntimeApi<moonbeam_runtime::Block>>::extrinsic_filter(
+		let txpool = <Runtime as TxPoolRuntimeApi<axtend_runtime::Block>>::extrinsic_filter(
 			vec![eth_uxt.clone(), non_eth_uxt.clone()],
 			vec![unchecked_eth_tx(VALID_ETH_TX), non_eth_uxt],
 		);

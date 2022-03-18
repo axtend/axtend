@@ -1,4 +1,4 @@
-# ![Moonbeam](media/moonbeam-cover.jpg)
+# ![Moonbeam](media/axtend-cover.jpg)
 
 ## Contributions
 
@@ -7,11 +7,11 @@ contribution, open a pull request and review the template, which explains how to
 proposal.
 
 You may also consider joining our [Discord server](https://discord.gg/PfpUATX) or
-[Element room](https://app.element.io/#/room/#moonbeam:matrix.org) to discuss your changes.
+[Element room](https://app.element.io/#/room/#axtend:matrix.org) to discuss your changes.
 
 ### Generated Documentation
 
-You can explore our [crate-level documentation](https://purestake.github.io/moonbeam).
+You can explore our [crate-level documentation](https://purestake.github.io/axtend).
 This documentation is
 automatically built and reflects the latest `master` commit.
 
@@ -36,7 +36,7 @@ The following is a list of directories of interest in development.
 | --------------------- | -------------------------------------------------------------------------- |
 |client/                | Debug & Trace related code (rust)                                          |
 |docker/                | Dockerfiles for running Moonbeam                                           |
-|moonbeam-types-bundle/ | AxiaJs types definitions for Moonbeam (typescript)                     |
+|axtend-types-bundle/ | AxiaJs types definitions for Moonbeam (typescript)                     |
 |node/                  | Moonbeam's main node (rust)                                                |
 |pallets/               | Moonmeam's Substrate runtime pallets (rust)                                |
 |primitives/            | More Debug & Trace related code (rust)                                     |

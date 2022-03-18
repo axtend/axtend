@@ -10,19 +10,19 @@ FROM debian:buster-slim
 LABEL maintainer "alan@purestake.com"
 LABEL description="Binary for Moonbeam Collator"
 
-RUN useradd -m -u 1000 -U -s /bin/sh -d /moonbeam moonbeam && \
-	mkdir -p /moonbeam/.local/share && \
+RUN useradd -m -u 1000 -U -s /bin/sh -d /axtend axtend && \
+	mkdir -p /axtend/.local/share && \
 	mkdir /data && \
-	chown -R moonbeam:moonbeam /data && \
-	ln -s /data /moonbeam/.local/share/moonbeam && \
+	chown -R axtend:axtend /data && \
+	ln -s /data /axtend/.local/share/axtend && \
 	rm -rf /usr/bin /usr/sbin
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
-USER moonbeam
+USER axtend
 
-COPY --chown=moonbeam build/* /moonbeam
-RUN chmod uog+x /moonbeam/moonbeam*
+COPY --chown=axtend build/* /axtend
+RUN chmod uog+x /axtend/axtend*
 
 # 30333 for allychain p2p
 # 30334 for relaychain p2p
@@ -33,4 +33,4 @@ EXPOSE 30333 30334 9933 9944 9615
 
 VOLUME ["/data"]
 
-ENTRYPOINT ["/moonbeam/moonbeam"]
+ENTRYPOINT ["/axtend/axtend"]

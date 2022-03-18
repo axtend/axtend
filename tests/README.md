@@ -44,12 +44,12 @@ scripts/run-para-test-single.sh moonriver/test-balance-genesis.ts
 
 ### Requirements
 
-First make sure you have compiled moonbeam with `cargo build --release` and also copied
+First make sure you have compiled axtend with `cargo build --release` and also copied
 the axia executable (built with `cargo build --release`) into the same folder as
-the moonbeam executable: `./target/release`
-(`cp ./target/release/axia ../moonbeam/target/release/axia`).
+the axtend executable: `./target/release`
+(`cp ./target/release/axia ../axtend/target/release/axia`).
 
-Also don't forget to build `moonbeam-types-bundle` with `yarn run build` in that folder.
+Also don't forget to build `axtend-types-bundle` with `yarn run build` in that folder.
 
 ### Execution
 

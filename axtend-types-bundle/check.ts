@@ -1,8 +1,8 @@
 // Script to make sure types are accurate
 
 import _ from "underscore";
-import { moonbeamDefinitions } from ".";
-// import { moonbeamDefinitions_old } from "./index_old";
+import { axtendDefinitions } from ".";
+// import { axtendDefinitions_old } from "./index_old";
 
 function logDif(obj1: any, obj2: any) {
   console.log("+different objects+");
@@ -82,19 +82,19 @@ function compare(obj1: any, obj2: any) {
   console.log("isSame", isSame);
 }
 // compare(
-//   moonbeamDefinitions_old.types ? moonbeamDefinitions_old.types[6].types : {},
-//   moonbeamDefinitions_old.types ? moonbeamDefinitions_old.types[7].types : {}
+//   axtendDefinitions_old.types ? axtendDefinitions_old.types[6].types : {},
+//   axtendDefinitions_old.types ? axtendDefinitions_old.types[7].types : {}
 // );
 // compare(
-//   moonbeamDefinitions.types ? moonbeamDefinitions.types[7].types : {},
-//   moonbeamDefinitions_old.types ? moonbeamDefinitions_old.types[7].types : {}
+//   axtendDefinitions.types ? axtendDefinitions.types[7].types : {},
+//   axtendDefinitions_old.types ? axtendDefinitions_old.types[7].types : {}
 // );
 
 // Uncomment to compare different versions
 
 // [0, 1, 2, 3, 4, 5, 6, 7].forEach((i) => {
 //   deepEqual(
-//     moonbeamDefinitions.types ? moonbeamDefinitions.types[i].types : {},
-//     moonbeamDefinitions_old.types ? moonbeamDefinitions_old.types[i].types : {}
+//     axtendDefinitions.types ? axtendDefinitions.types[i].types : {},
+//     axtendDefinitions_old.types ? axtendDefinitions_old.types[i].types : {}
 //   );
 // });
