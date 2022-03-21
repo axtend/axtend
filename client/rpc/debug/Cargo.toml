@@ -19,7 +19,7 @@ axtend-rpc-core-debug = { path = "../../rpc-core/debug" }
 axtend-rpc-core-types = { path = "../../rpc-core/types" }
 axtend-rpc-primitives-debug = { path = "../../../primitives/rpc/debug" }
 
-# Substrate
+# Axlib
 sc-client-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-utils = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sp-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }

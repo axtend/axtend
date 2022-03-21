@@ -193,7 +193,7 @@ where
 		service::rpc::spawn_essential_tasks(service::rpc::SpawnTasksParams {
 			task_manager: &task_manager,
 			client: client.clone(),
-			substrate_backend: backend.clone(),
+			axlib_backend: backend.clone(),
 			frontier_backend: frontier_backend.clone(),
 			filter_pool: filter_pool.clone(),
 			overrides: overrides.clone(),
@@ -467,8 +467,8 @@ impl PerfCmd {
 			RuntimeApiCollection<StateBackend = sc_client_api::StateBackendFor<FullBackend, Block>>,
 		Executor: NativeExecutionDispatch + 'static,
 	{
-		// TODO: Joshy suggested looking at the substrate browser "test":
-		// <substrate_repo>/bin/node/browser-testing/src/lib.rs
+		// TODO: Joshy suggested looking at the axlib browser "test":
+		// <axlib_repo>/bin/node/browser-testing/src/lib.rs
 		let runner = TestContext::<RuntimeApi, Executor>::from_cmd(config, &self)?;
 
 		// create an empty block to warm the runtime cache...

@@ -1,7 +1,7 @@
 [package]
 name = "pallet-democracy-precompiles"
 authors = ["PureStake"]
-description = "A Precompile to make Substrate's pallet-democracy accessible to pallet-evm"
+description = "A Precompile to make Axlib's pallet-democracy accessible to pallet-evm"
 edition = "2018"
 version = "0.2.0"
 
@@ -12,7 +12,7 @@ num_enum = { version = "0.5.3", default-features = false }
 # Axtend
 precompile-utils = { path = "../utils", default-features = false }
 
-# Substrate
+# Axlib
 codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false }
 fp-evm = { git = "https://github.com/axtend/frontier", branch = "frontier", default-features = false }
 frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
@@ -31,7 +31,7 @@ derive_more = "0.99"
 hex-literal = "0.3.4"
 serde = "1.0.100"
 
-# Substrate
+# Axlib
 pallet-balances = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 pallet-scheduler = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 pallet-timestamp = { git = "https://github.com/axtend/axlib", branch = "axlib" }

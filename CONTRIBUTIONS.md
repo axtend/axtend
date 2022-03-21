@@ -18,7 +18,7 @@ automatically built and reflects the latest `master` commit.
 ### Code style
 
 Axtend is following the
-[Substrate code style](https://github.com/paritytech/substrate/blob/master/docs/STYLE_GUIDE.md).
+[Axlib code style](https://github.com/paritytech/axlib/blob/master/docs/STYLE_GUIDE.md).
 
 In addition, we incorporate several tools to improve code quality. These are integrated into our CI
 and are expected to pass before a PR is considered mergeable. They can also be run locally.
@@ -38,7 +38,7 @@ The following is a list of directories of interest in development.
 |docker/                | Dockerfiles for running Axtend                                           |
 |axtend-types-bundle/ | AxiaJs types definitions for Axtend (typescript)                     |
 |node/                  | Axtend's main node (rust)                                                |
-|pallets/               | Moonmeam's Substrate runtime pallets (rust)                                |
+|pallets/               | Moonmeam's Axlib runtime pallets (rust)                                |
 |primitives/            | More Debug & Trace related code (rust)                                     |
 |runtime/               | Axtend's runtime (on-chain) code (rust, compiled to WASM)                |
 |scripts/               | Utilities for launching and interacting with a Axtend chain (typescript) |

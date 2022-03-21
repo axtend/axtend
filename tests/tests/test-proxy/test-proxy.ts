@@ -8,7 +8,7 @@ import {
   CHARLETH_ADDRESS,
 } from "../../util/constants";
 import { expectBalanceDifference } from "../../util/balances";
-import { substrateTransaction } from "../../util/transactions";
+import { axlibTransaction } from "../../util/transactions";
 const debug = require("debug")("test:proxy");
 
 // In these tests Alith will allow Baltathar to perform calls on her behalf.
@@ -25,7 +25,7 @@ describeDevAxtend("Pallet proxy - shouldn't accept unknown proxy", (context) => 
       CHARLETH_ADDRESS,
       0,
       async () => {
-        const events = await substrateTransaction(
+        const events = await axlibTransaction(
           context,
           baltathar,
           context.axiaApi.tx.proxy.proxy(
@@ -48,7 +48,7 @@ describeDevAxtend("Pallet proxy - should accept known proxy", (context) => {
       CHARLETH_ADDRESS,
       100,
       async () => {
-        const events = await substrateTransaction(
+        const events = await axlibTransaction(
           context,
           alith,
           context.axiaApi.tx.proxy.addProxy(baltathar.address, "Any", 0)
@@ -57,7 +57,7 @@ describeDevAxtend("Pallet proxy - should accept known proxy", (context) => {
         expect(events[2].data[2].toString()).to.be.eq("Any"); //ProxyType
         expect(events[7].method).to.be.eq("ExtrinsicSuccess");
 
-        const events2 = await substrateTransaction(
+        const events2 = await axlibTransaction(
           context,
           baltathar,
           context.axiaApi.tx.proxy.proxy(
@@ -82,21 +82,21 @@ describeDevAxtend("Pallet proxy - shouldn't accept removed proxy", (context) => 
       CHARLETH_ADDRESS,
       0,
       async () => {
-        const events = await substrateTransaction(
+        const events = await axlibTransaction(
           context,
           alith,
           context.axiaApi.tx.proxy.addProxy(baltathar.address, "Any", 0)
         );
         expect(events[7].method).to.be.eq("ExtrinsicSuccess");
 
-        const events2 = await substrateTransaction(
+        const events2 = await axlibTransaction(
           context,
           alith,
           context.axiaApi.tx.proxy.removeProxy(baltathar.address, "Any", 0)
         );
         expect(events2[4].method).to.be.eq("ExtrinsicSuccess");
 
-        const events3 = await substrateTransaction(
+        const events3 = await axlibTransaction(
           context,
           baltathar,
           context.axiaApi.tx.proxy.proxy(
@@ -119,14 +119,14 @@ describeDevAxtend("Pallet proxy - shouldn't accept instant for delayed proxy", (
       CHARLETH_ADDRESS,
       0,
       async () => {
-        const events = await substrateTransaction(
+        const events = await axlibTransaction(
           context,
           alith,
           context.axiaApi.tx.proxy.addProxy(baltathar.address, "Any", 2)
         );
         expect(events[7].method).to.be.eq("ExtrinsicSuccess");
 
-        const events2 = await substrateTransaction(
+        const events2 = await axlibTransaction(
           context,
           baltathar,
           context.axiaApi.tx.proxy.proxy(
@@ -149,7 +149,7 @@ describeDevAxtend("Pallet proxy - shouldn't accept early delayed proxy", (contex
       CHARLETH_ADDRESS,
       0,
       async () => {
-        const events = await substrateTransaction(
+        const events = await axlibTransaction(
           context,
           alith,
           context.axiaApi.tx.proxy.addProxy(baltathar.address, "Any", 6)
@@ -159,7 +159,7 @@ describeDevAxtend("Pallet proxy - shouldn't accept early delayed proxy", (contex
 
         const transfer = context.axiaApi.tx.balances.transfer(charleth.address, 100);
 
-        const events2 = await substrateTransaction(
+        const events2 = await axlibTransaction(
           context,
           baltathar,
           context.axiaApi.tx.proxy.announce(alith.address, transfer.hash)
@@ -169,7 +169,7 @@ describeDevAxtend("Pallet proxy - shouldn't accept early delayed proxy", (contex
         expect(events2[5].method).to.be.eq("ExtrinsicSuccess");
 
         // Too early.
-        const events3 = await substrateTransaction(
+        const events3 = await axlibTransaction(
           context,
           baltathar,
           context.axiaApi.tx.proxy.proxyAnnounced(
@@ -194,7 +194,7 @@ describeDevAxtend("Pallet proxy - should accept on-time delayed proxy", (context
       CHARLETH_ADDRESS,
       100,
       async () => {
-        const events = await substrateTransaction(
+        const events = await axlibTransaction(
           context,
           alith,
           context.axiaApi.tx.proxy.addProxy(baltathar.address, "Any", 2)
@@ -209,7 +209,7 @@ describeDevAxtend("Pallet proxy - should accept on-time delayed proxy", (context
         const u8a = transfer.method.toU8a();
         const transfer_hash = transfer.registry.hash(u8a).toHex();
 
-        const events2 = await substrateTransaction(
+        const events2 = await axlibTransaction(
           context,
           baltathar,
           context.axiaApi.tx.proxy.announce(alith.address, transfer_hash)
@@ -223,7 +223,7 @@ describeDevAxtend("Pallet proxy - should accept on-time delayed proxy", (context
         await context.createBlock();
 
         // On time.
-        const events3 = await substrateTransaction(
+        const events3 = await axlibTransaction(
           context,
           baltathar,
           context.axiaApi.tx.proxy.proxyAnnounced(

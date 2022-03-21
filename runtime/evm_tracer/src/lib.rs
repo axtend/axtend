@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Substrate EVM tracing.
+//! Axlib EVM tracing.
 //!
 //! The purpose of this crate is enable tracing the EVM opcode execution and will be used by
 //! both Dapp developers - to get a granular view on their transactions - and indexers to access

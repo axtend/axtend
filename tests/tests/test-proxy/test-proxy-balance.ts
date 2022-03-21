@@ -10,7 +10,7 @@ import {
 } from "../../util/constants";
 import { getMappingInfo } from "./test-proxy-author-mapping";
 import { expectBalanceDifference } from "../../util/balances";
-import { substrateTransaction } from "../../util/transactions";
+import { axlibTransaction } from "../../util/transactions";
 const debug = require("debug")("test:proxy");
 
 // In these tests Alith will allow Baltathar to perform calls on her behalf.
@@ -27,7 +27,7 @@ describeDevAxtend("Proxy: Balances - should accept known proxy", (context) => {
       CHARLETH_ADDRESS,
       100,
       async () => {
-        const events = await substrateTransaction(
+        const events = await axlibTransaction(
           context,
           alith,
           // @ts-ignore //TODO: this is because of https://github.com/axia-js/api/issues/4264
@@ -37,7 +37,7 @@ describeDevAxtend("Proxy: Balances - should accept known proxy", (context) => {
         expect(events[2].data[2].toString()).to.be.eq("Balances"); //ProxyType
         expect(events[7].method).to.be.eq("ExtrinsicSuccess");
 
-        const events2 = await substrateTransaction(
+        const events2 = await axlibTransaction(
           context,
           baltathar,
           context.axiaApi.tx.proxy.proxy(
@@ -58,7 +58,7 @@ describeDevAxtend("Proxy: Balances - should accept known proxy", (context) => {
 
 describeDevAxtend("Proxy: Balances - shouldn't accept other proxy types", (context) => {
   before("first add proxy", async () => {
-    await substrateTransaction(
+    await axlibTransaction(
       context,
       alith,
       // @ts-ignore
@@ -71,7 +71,7 @@ describeDevAxtend("Proxy: Balances - shouldn't accept other proxy types", (conte
       alith.address,
       0,
       async () => {
-        const events2 = await substrateTransaction(
+        const events2 = await axlibTransaction(
           context,
           baltathar,
           context.axiaApi.tx.proxy.proxy(

@@ -18,7 +18,7 @@ serde = { version = "1.0.101", optional = true, default-features = false, featur
 ] }
 sha3 = { version = "0.8", default-features = false }
 
-# Substrate
+# Axlib
 frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 parity-scale-codec = { version = "2.2", default-features = false, features = [

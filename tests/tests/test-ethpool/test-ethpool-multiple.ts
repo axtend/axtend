@@ -6,7 +6,7 @@ import { Transaction } from "web3-core";
 
 /*
   At rpc-level, there is no interface for retrieving emulated pending transactions - emulated
-    transactions that exist in the Substrate's pending transaction pool. Instead they are added to a
+    transactions that exist in the Axlib's pending transaction pool. Instead they are added to a
     shared collection (Mutex) with get/set locking to serve requests that ask for this transactions
     information before they are included in a block.
     We want to test that:

@@ -69,7 +69,7 @@ pub const ASSET_PRECOMPILE_ADDRESS_PREFIX: &[u8] = &[255u8; 4];
 /// The PrecompileSet installed in the Moonbase runtime.
 /// We include the nine Istanbul precompiles
 /// (https://github.com/ethereum/go-ethereum/blob/3c46f557/core/vm/contracts.go#L69)
-/// as well as a special precompile for dispatching Substrate extrinsics
+/// as well as a special precompile for dispatching Axlib extrinsics
 #[derive(Debug, Clone, Copy)]
 pub struct MoonbasePrecompiles<R>(PhantomData<R>);
 

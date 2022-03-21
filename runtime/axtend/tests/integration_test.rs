@@ -62,15 +62,15 @@ fn verify_pallet_prefixes() {
 		// Compares the unhashed pallet prefix in the `StorageInstance` implementation by every
 		// storage item in the pallet P. This pallet prefix is used in conjunction with the
 		// item name to get the unique storage key: hash(PalletPrefix) + hash(StorageName)
-		// https://github.com/paritytech/substrate/blob/master/frame/support/procedural/src/pallet/
+		// https://github.com/paritytech/axlib/blob/master/frame/support/procedural/src/pallet/
 		// expand/storage.rs#L389-L401
 		assert_eq!(
 			<axtend_runtime::Runtime as frame_system::Config>::PalletInfo::name::<P>(),
 			Some(name)
 		);
 	}
-	// TODO: use StorageInfoTrait once https://github.com/paritytech/substrate/pull/9246
-	// is pulled in substrate deps.
+	// TODO: use StorageInfoTrait once https://github.com/paritytech/axlib/pull/9246
+	// is pulled in axlib deps.
 	is_pallet_prefix::<axtend_runtime::System>("System");
 	is_pallet_prefix::<axtend_runtime::Utility>("Utility");
 	is_pallet_prefix::<axtend_runtime::RandomnessCollectiveFlip>("RandomnessCollectiveFlip");
@@ -1154,7 +1154,7 @@ fn ethereum_invalid_transaction() {
 }
 
 #[test]
-fn transfer_ed_0_substrate() {
+fn transfer_ed_0_axlib() {
 	ExtBuilder::default()
 		.with_balances(vec![
 			(AccountId::from(ALICE), (1 * GLMR) + (1 * WEI)),
@@ -1162,7 +1162,7 @@ fn transfer_ed_0_substrate() {
 		])
 		.build()
 		.execute_with(|| {
-			// Substrate transfer
+			// Axlib transfer
 			assert_ok!(Balances::transfer(
 				origin_of(AccountId::from(ALICE)),
 				AccountId::from(BOB),

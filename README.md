@@ -2,7 +2,7 @@
 
 ![Tests](https://github.com/PureStake/axtend/workflows/Release/badge.svg)
 
-**An Ethereum compatible [Allychain](https://axia.network/technology/) built with [Substrate](https://substrate.dev).**
+**An Ethereum compatible [Allychain](https://axia.network/technology/) built with [Axlib](https://axlib.dev).**
 
 👉 _Discover the Axtend project at [axtend.network](https://axtend.network)._<br>
 👉 _Learn to [use the Axtend network](https://docs.axtend.network/) with our technical docs._<br>
@@ -47,7 +47,7 @@ docker run --network="host" purestake/axtend:v0.21.1 --dev --sealing manual
 ### Prefunded Development Addresses
 
 Running Axtend in development mode will pre-fund several well-known addresses that (mostly) contain the letters "th" in their names to remind you that they are for ethereum-compatible usage. These addresses are derived from
-Substrate's canonical mnemonic: `bottom drive obey lake curtain smoke basket hold race lonely fit walk`
+Axlib's canonical mnemonic: `bottom drive obey lake curtain smoke basket hold race lonely fit walk`
 
 ```
 # Alith:
@@ -101,9 +101,9 @@ Also, the prefunded default account for testing purposes is:
 
 ## Build the Axtend Node
 
-To build Axtend, you will need a proper Substrate development environment. If you've never worked with a Substrate-based blockchain before, you should probably try the [Setting Up a Axtend Node](https://docs.axtend.network/getting-started/local-node/setting-up-a-node/) docs first.
+To build Axtend, you will need a proper Axlib development environment. If you've never worked with a Axlib-based blockchain before, you should probably try the [Setting Up a Axtend Node](https://docs.axtend.network/getting-started/local-node/setting-up-a-node/) docs first.
 
-If you need a refresher setting up your Substrate environment, see [Substrate's Getting Started Guide](https://substrate.dev/docs/en/knowledgebase/getting-started/).
+If you need a refresher setting up your Axlib environment, see [Axlib's Getting Started Guide](https://axlib.dev/docs/en/knowledgebase/getting-started/).
 
 Note that cloning master might result in an unstable build. If you want a stable version, check out the [latest releases](https://github.com/PureStake/axtend/releases).
 
@@ -157,9 +157,9 @@ Axtend nodes support multiple public chains and testnets, with the following Cha
 
 ## Runtime Architecture
 
-The Axtend Runtime is built using FRAME and consists of pallets from substrate, frontier, cumulus, and `pallets/`.
+The Axtend Runtime is built using FRAME and consists of pallets from axlib, frontier, cumulus, and `pallets/`.
 
-From substrate:
+From axlib:
 
 - _Utility_: Allows users to use derivative accounts, and batch calls
 - _Balances_: Tracks GLMR token balances

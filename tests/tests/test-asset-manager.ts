@@ -5,7 +5,7 @@ import { KeyringPair } from "@axia/keyring/types";
 
 import { ALITH_PRIV_KEY } from "../util/constants";
 import { describeDevAxtend } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { verifyLatestBlockFees } from "../util/block";
 
 const palletId = "0x6D6f646c617373746d6E67720000000000000000";

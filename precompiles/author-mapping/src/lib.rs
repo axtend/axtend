@@ -86,7 +86,7 @@ where
 	Runtime::Call: From<AuthorMappingCall<Runtime>>,
 	Runtime::Hash: From<H256>,
 {
-	// The dispatchable wrappers are next. They dispatch a Substrate inner Call.
+	// The dispatchable wrappers are next. They dispatch a Axlib inner Call.
 	fn add_association(
 		input: &mut EvmDataReader,
 		gasometer: &mut Gasometer,

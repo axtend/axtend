@@ -217,7 +217,7 @@ Here `34101` is the rpcPort for the collator.
 Using script [github/list-pr-labels.ts]:
 
 ```
-npm run list-pull-request-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/substrate
+npm run list-pull-request-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/axlib
 ```
 
 ### Parameters
@@ -228,7 +228,7 @@ Options:
   --from        commit-sha/tag of range start                [string] [required]
   --to          commit-sha/tag of range end                  [string] [required]
   --repo        which repository to read                     [string] [required]
-                [choices: "paritytech/substrate", "paritytech/axia"]
+                [choices: "paritytech/axlib", "paritytech/axia"]
   --only-label  filter specific labels (using grep)                      [array]
   --help        Show help                                              [boolean]
 ```
@@ -236,16 +236,16 @@ Options:
 ### Expected output
 
 ```
-> npm run list-pr-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/substrate --only-label runtime
+> npm run list-pr-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/axlib --only-label runtime
 
-found 55 total commits in https://github.com/paritytech/substrate/compare/axia-v0.9.4...axia-v0.9.5
+found 55 total commits in https://github.com/paritytech/axlib/compare/axia-v0.9.4...axia-v0.9.5
 ===== E1-runtimemigration
-  (paritytech/substrate#9061) Migrate pallet-randomness-collective-flip to pallet attribute macro
+  (paritytech/axlib#9061) Migrate pallet-randomness-collective-flip to pallet attribute macro
 ===== B7-runtimenoteworthy
-  (paritytech/substrate#7778) Named reserve
-  (paritytech/substrate#8955) update ss58 type to u16
-  (paritytech/substrate#8909) contracts: Add new `seal_call` that offers new features
-  (paritytech/substrate#9083) Migrate pallet-staking to pallet attribute macro
-  (paritytech/substrate#9085) Enforce pub calls in pallets
-  (paritytech/substrate#8912) staking/election: prolonged era and emergency mode for governance submission.
+  (paritytech/axlib#7778) Named reserve
+  (paritytech/axlib#8955) update ss58 type to u16
+  (paritytech/axlib#8909) contracts: Add new `seal_call` that offers new features
+  (paritytech/axlib#9083) Migrate pallet-staking to pallet attribute macro
+  (paritytech/axlib#9085) Enforce pub calls in pallets
+  (paritytech/axlib#8912) staking/election: prolonged era and emergency mode for governance submission.
 ```

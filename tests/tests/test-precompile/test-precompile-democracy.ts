@@ -16,7 +16,7 @@ import { describeDevAxtend, DevTestContext } from "../../util/setup-dev-tests";
 import { ApiTypes, SubmittableExtrinsic } from "@axia/api/types";
 
 import { blake2AsHex } from "@axia/util-crypto";
-import { createBlockWithExtrinsic } from "../../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../../util/axlib-rpc";
 import {
   callPrecompile,
   createContract,
@@ -101,7 +101,7 @@ describeDevAxtend("Democracy - genesis and preimage", (context) => {
   let genesisAccount: KeyringPair;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     iFace = await deployAndInterfaceContract(context, "Democracy");
@@ -141,7 +141,7 @@ describeDevAxtend("Democracy - propose", (context) => {
   let encodedHash: `0x${string}`;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     iFace = await deployAndInterfaceContract(context, "Democracy");
@@ -191,7 +191,7 @@ describeDevAxtend("Democracy - second proposal", (context) => {
   let launchPeriod;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -274,7 +274,7 @@ describeDevAxtend("Democracy - vote on referendum", (context) => {
   let enactmentPeriod, votingPeriod;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -370,7 +370,7 @@ describeDevAxtend("Democracy - forget notePreimage", (context) => {
   let enactmentPeriod, votingPeriod;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");

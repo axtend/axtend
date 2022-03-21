@@ -28,7 +28,7 @@ cli-opt = { package = "axtend-cli-opt", path = "../cli-opt", default-features = 
 moonbase-runtime = { path = "../../runtime/moonbase" }
 service = { package = "axtend-service", path = "../service", default-features = false }
 
-# Substrate
+# Axlib
 sc-basic-authorship = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-cli = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-client-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }

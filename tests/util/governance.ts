@@ -9,7 +9,7 @@ import {
   DOROTHY_PRIV_KEY,
 } from "./constants";
 import { DevTestContext } from "./setup-dev-tests";
-import { createBlockWithExtrinsic } from "./substrate-rpc";
+import { createBlockWithExtrinsic } from "./axlib-rpc";
 
 const keyring = new Keyring({ type: "ethereum" });
 

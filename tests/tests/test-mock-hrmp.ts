@@ -5,7 +5,7 @@ import { BN, u8aToHex } from "@axia/util";
 
 import { ALITH_PRIV_KEY, RANDOM_PRIV_KEY } from "../util/constants";
 import { describeDevAxtend } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { customWeb3Request } from "../util/providers";
 import type { XcmVersionedXcm } from "@axia/types/lookup";
 

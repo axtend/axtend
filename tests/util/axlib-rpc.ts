@@ -5,7 +5,7 @@ import { AnyTuple } from "@axia/types/types";
 import { Event, EventRecord } from "@axia/types/interfaces";
 import { u8aToHex } from "@axia/util";
 import { DevTestContext } from "./setup-dev-tests";
-const debug = require("debug")("test:substrateEvents");
+const debug = require("debug")("test:axlibEvents");
 
 // DEV LOCAL TESTING
 

@@ -29,7 +29,7 @@ use sp_runtime::traits::Block;
 /// An RPC endpoint to check for finality of blocks and transactions in Axtend
 #[rpc(server)]
 pub trait AxtendFinalityApi {
-	/// Reports whether a Substrate or Ethereum block is finalized.
+	/// Reports whether a Axlib or Ethereum block is finalized.
 	/// Returns false if the block is not found.
 	#[rpc(name = "moon_isBlockFinalized")]
 	fn is_block_finalized(&self, block_hash: H256) -> BoxFuture<'static, RpcResult<bool>>;
@@ -92,23 +92,23 @@ fn is_block_finalized_inner<B: Block<Hash = H256>, C: HeaderBackend<B> + 'static
 	client: &C,
 	raw_hash: H256,
 ) -> RpcResult<bool> {
-	let substrate_hash = match frontier_backend_client::load_hash::<B>(backend, raw_hash)? {
+	let axlib_hash = match frontier_backend_client::load_hash::<B>(backend, raw_hash)? {
 		// If we find this hash in the frontier data base, we know it is an eth hash
 		Some(BlockId::Hash(hash)) => hash,
 		Some(BlockId::Number(_)) => panic!("is_canon test only works with hashes."),
-		// Otherwise, we assume this is a Substrate hash.
+		// Otherwise, we assume this is a Axlib hash.
 		None => raw_hash,
 	};
 
 	// First check whether the block is in the best chain
-	if !is_canon(client, substrate_hash) {
+	if !is_canon(client, axlib_hash) {
 		return Ok(false);
 	}
 
 	// At this point we know the block in question is in the current best chain.
 	// It's just a question of whether it is in the finalized prefix or not
 	let query_height = client
-		.number(substrate_hash)
+		.number(axlib_hash)
 		.expect("No sp_blockchain::Error should be thrown when looking up hash")
 		.expect("Block is already known to be canon, so it must be in the chain");
 	let finalized_height = client.info().finalized_number;

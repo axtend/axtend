@@ -17,6 +17,6 @@ serde_json = { version = "1.0" }
 evm-tracing-events = { path = "../../primitives/rpc/evm-tracing-events" }
 axtend-rpc-primitives-debug = { path = "../../primitives/rpc/debug" }
 
-# Substrate
+# Axlib
 codec = { package = "parity-scale-codec", version = "2.2", default-features = false }
 sp-std = { git = "https://github.com/axtend/axlib", branch = "axlib" }

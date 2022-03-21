@@ -261,7 +261,7 @@ parameter_types! {
 	pub const PrecompilesValue: TestPrecompiles<Runtime> = TestPrecompiles(PhantomData);
 }
 
-/// A mapping function that converts Ethereum gas to Substrate weight
+/// A mapping function that converts Ethereum gas to Axlib weight
 /// We are mocking this 1-1 to test db read charges too
 pub struct MockGasWeightMapping;
 impl GasWeightMapping for MockGasWeightMapping {
@@ -287,7 +287,7 @@ impl pallet_evm::Config for Runtime {
 	type ChainId = ();
 	type OnChargeTransaction = ();
 	type BlockGasLimit = ();
-	type BlockHashMapping = pallet_evm::SubstrateBlockHashMapping<Self>;
+	type BlockHashMapping = pallet_evm::AxlibBlockHashMapping<Self>;
 	type FindAuthor = ();
 	type WeightInfo = ();
 }

@@ -14,7 +14,7 @@ cli-opt = { package = "axtend-cli-opt", path = "../cli-opt", default-features = 
 perf-test = { path = "../perf-test" }
 service = { package = "axtend-service", path = "../service", default-features = false }
 
-# Substrate
+# Axlib
 frame-benchmarking-cli = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-cli = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-service = { git = "https://github.com/axtend/axlib", branch = "axlib" }
@@ -22,7 +22,7 @@ sc-telemetry = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-tracing = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sp-core = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sp-runtime = { git = "https://github.com/axtend/axlib", branch = "axlib" }
-substrate-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+axlib-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 try-runtime-cli = { git = "https://github.com/axtend/axlib", branch = "axlib", optional = true }
 
 # Cumulus / Nimbus
@@ -38,7 +38,7 @@ axia-primitives = { git = "https://github.com/axtend/axia", branch = "axia" }
 axia-service = { git = "https://github.com/axtend/axia", branch = "axia" }
 
 [build-dependencies]
-substrate-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+axlib-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 [features]
 default = [

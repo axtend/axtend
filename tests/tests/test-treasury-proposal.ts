@@ -8,7 +8,7 @@ import {
   ETHAN_PRIVKEY,
 } from "../util/constants";
 import { describeDevAxtend } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 
 describeDevAxtend("Treasury proposal #1", (context) => {
   it("should not be able to be approved by a non-council member", async function () {

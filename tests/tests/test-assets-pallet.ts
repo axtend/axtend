@@ -4,7 +4,7 @@ import { BN } from "@axia/util";
 import { ALITH, ALITH_PRIV_KEY, BALTATHAR } from "../util/constants";
 
 import { describeDevAxtend } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { mockAssetBalance } from "./test-precompile/test-precompile-assets-erc20";
 
 const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";

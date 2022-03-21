@@ -36,7 +36,7 @@ jobs:
           args: --all --no-deps
 
       # Make an index.html file so we start at the axtend_runtime page
-      # Copied from https://github.com/substrate-developer-hub/rustdocs/blob/master/index.html
+      # Copied from https://github.com/axlib-developer-hub/rustdocs/blob/master/index.html
       - name: Make index.html
         run: echo "<meta http-equiv=refresh content=0;url=axtend_runtime/index.html>" > ./target/doc/index.html
 
