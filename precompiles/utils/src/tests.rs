@@ -986,8 +986,8 @@ fn network_id_decoder_works() {
 	);
 
 	assert_eq!(
-		network_id_from_bytes(gm, network_id_to_bytes(NetworkId::Kusama)),
-		Ok(NetworkId::Kusama)
+		network_id_from_bytes(gm, network_id_to_bytes(NetworkId::AxiaTest)),
+		Ok(NetworkId::AxiaTest)
 	);
 
 	assert_eq!(

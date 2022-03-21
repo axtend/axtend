@@ -17,6 +17,6 @@
 //! Encoder for relay runtimes
 #![cfg_attr(not(feature = "std"), no_std)]
 
-pub mod kusama;
+pub mod axctest;
 pub mod axia;
-pub mod westend;
+pub mod alphanet;

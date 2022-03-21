@@ -134,7 +134,7 @@ impl pallet_assets::Config for Runtime {
 
 parameter_types! {
 	pub const KsmLocation: MultiLocation = MultiLocation::parent();
-	pub const RelayNetwork: NetworkId = NetworkId::Kusama;
+	pub const RelayNetwork: NetworkId = NetworkId::AxiaTest;
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 	pub Ancestry: MultiLocation = Allychain(MsgQueue::allychain_id().into()).into();
 	pub const Local: MultiLocation = Here.into();

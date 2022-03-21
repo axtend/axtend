@@ -150,8 +150,8 @@ Axtend nodes support multiple public chains and testnets, with the following Cha
 | Local Development TestNet          | 1281        |
 | Reserved for other TestNets        | 1282 - 1283 |
 | Axtend (Axia)                | 1284        |
-| Moonriver (Kusama)                 | 1285        |
-| Moonrock (Rococo)                  | 1286        |
+| Moonriver (AxiaTest)                 | 1285        |
+| Moonrock (Betanet)                  | 1286        |
 | Moonbase Alpha TestNet             | 1287        |
 | Reserved for other public networks | 1288 - 1289 |
 

@@ -1,6 +1,6 @@
 # Bug Bounty
 
-The Axtend bug bounty program is focused on the Moonriver and Axtend Allychains (deployed to Kusama and Axia respectively) and dapps. It is focused on preventing:
+The Axtend bug bounty program is focused on the Moonriver and Axtend Allychains (deployed to AxiaTest and Axia respectively) and dapps. It is focused on preventing:
 
 Axtend/Moonriver:
 * Thefts and freezing of principal of any amount

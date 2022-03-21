@@ -965,7 +965,7 @@ impl pallet_migrations::Config for Runtime {
 
 parameter_types! {
 	// The network Id of the relay
-	pub const RelayNetwork: NetworkId = NetworkId::Kusama;
+	pub const RelayNetwork: NetworkId = NetworkId::AxiaTest;
 	// The relay chain Origin type
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 	// The ancestry, defines the multilocation describing this consensus system
@@ -1250,9 +1250,9 @@ impl pallet_assets::Config for Runtime {
 }
 
 parameter_types! {
-	// Statemine ParaId in kusama
+	// Statemine ParaId in axctest
 	pub StatemineParaId: u32 = 1000;
-	// Assets Pallet instance in Statemine kusama
+	// Assets Pallet instance in Statemine axctest
 	pub StatemineAssetPalletInstance: u8 = 50;
 }
 
@@ -1491,9 +1491,9 @@ impl TryFrom<u8> for Transactors {
 impl UtilityEncodeCall for Transactors {
 	fn encode_call(self, call: UtilityAvailableCalls) -> Vec<u8> {
 		match self {
-			// Shall we use westend for moonbase? The tests are probably based on rococo
-			// but moonbase-alpha is attached to westend-runtime I think
-			Transactors::Relay => axtend_relay_encoder::kusama::KusamaEncoder.encode_call(call),
+			// Shall we use alphanet for moonbase? The tests are probably based on betanet
+			// but moonbase-alpha is attached to alphanet-runtime I think
+			Transactors::Relay => axtend_relay_encoder::axctest::AxiaTestEncoder.encode_call(call),
 		}
 	}
 }

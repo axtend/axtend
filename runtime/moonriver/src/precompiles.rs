@@ -16,7 +16,7 @@
 
 use crowdloan_rewards_precompiles::CrowdloanRewardsWrapper;
 use fp_evm::Context;
-use axtend_relay_encoder::kusama::KusamaEncoder;
+use axtend_relay_encoder::axctest::AxiaTestEncoder;
 use pallet_author_mapping_precompiles::AuthorMappingWrapper;
 use pallet_democracy_precompiles::DemocracyWrapper;
 use pallet_evm::{AddressMapping, Precompile, PrecompileResult, PrecompileSet};
@@ -104,7 +104,7 @@ where
 	Erc20BalancesPrecompile<R, NativeErc20Metadata>: Precompile,
 	Erc20AssetsPrecompileSet<R>: PrecompileSet,
 	XtokensWrapper<R>: Precompile,
-	RelayEncoderWrapper<R, KusamaEncoder>: Precompile,
+	RelayEncoderWrapper<R, AxiaTestEncoder>: Precompile,
 	XcmTransactorWrapper<R>: Precompile,
 	DemocracyWrapper<R>: Precompile,
 	AuthorMappingWrapper<R>: Precompile,
@@ -157,7 +157,7 @@ where
 			a if a == hash(2052) => Some(XtokensWrapper::<R>::execute(
 				input, target_gas, context, is_static,
 			)),
-			a if a == hash(2053) => Some(RelayEncoderWrapper::<R, KusamaEncoder>::execute(
+			a if a == hash(2053) => Some(RelayEncoderWrapper::<R, AxiaTestEncoder>::execute(
 				input, target_gas, context, is_static,
 			)),
 			a if a == hash(2054) => Some(XcmTransactorWrapper::<R>::execute(

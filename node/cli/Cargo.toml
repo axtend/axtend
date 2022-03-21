@@ -46,12 +46,12 @@ default = [
 	"axtend-native",
 	"moonriver-native",
 	"wasmtime",
-	"westend-native",
+	"alphanet-native",
 ]
 
-westend-native = ["axia-service/westend-native"]
+alphanet-native = ["axia-service/alphanet-native"]
 
-moonbase-native = ["service/moonbase-native", "westend-native"]
+moonbase-native = ["service/moonbase-native", "alphanet-native"]
 axtend-native = ["service/axtend-native"]
 moonriver-native = ["service/moonriver-native"]
 

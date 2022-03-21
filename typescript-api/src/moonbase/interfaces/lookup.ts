@@ -846,7 +846,7 @@ export default {
       Any: "Null",
       Named: "Bytes",
       Axia: "Null",
-      Kusama: "Null",
+      AxiaTest: "Null",
     },
   },
   /**

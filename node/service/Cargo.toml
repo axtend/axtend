@@ -153,19 +153,19 @@ substrate-build-script-utils = { git = "https://github.com/axtend/axlib", branch
 
 [features]
 default = [
-	"kusama-native",
+	"axctest-native",
 	"moonbase-native",
 	"axtend-native",
 	"moonriver-native",
-	"rococo-native",
-	"westend-native",
+	"betanet-native",
+	"alphanet-native",
 ]
 
-kusama-native = ["axia-cli/kusama-native", "axia-service/kusama-native"]
-rococo-native = ["axia-cli/rococo-native", "axia-service/rococo-native"]
-westend-native = ["axia-cli/westend-native", "axia-service/westend-native"]
+axctest-native = ["axia-cli/axctest-native", "axia-service/axctest-native"]
+betanet-native = ["axia-cli/betanet-native", "axia-service/betanet-native"]
+alphanet-native = ["axia-cli/alphanet-native", "axia-service/alphanet-native"]
 
-moonbase-native = ["moonbase-runtime", "westend-native"]
+moonbase-native = ["moonbase-runtime", "alphanet-native"]
 axtend-native = ["axtend-runtime"]
 moonriver-native = ["moonriver-runtime"]
 

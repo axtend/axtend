@@ -10,7 +10,7 @@
     "tokenSymbol": "DEV",
     "SS58Prefix": 1287
   },
-  "relayChain": "westend_moonbase_relay_testnet",
+  "relayChain": "alphanet_moonbase_relay_testnet",
   "paraId": 1000,
   "consensusEngine": null,
   "genesis": {

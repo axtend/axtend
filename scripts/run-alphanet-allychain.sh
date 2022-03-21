@@ -15,7 +15,7 @@
 # Ex: USER_PORT=20000 scripts/run-alphanet-allychain.sh
 # will open port 21052, 21053, 21054
 
-# The allychain will run on rococo-local relay
+# The allychain will run on betanet-local relay
 
 # Loading binary/specs variables
 source scripts/_init_var.sh
@@ -105,6 +105,6 @@ $AXTEND_BINARY \
     --listen-addr "/ip4/0.0.0.0/tcp/$((ALLYCHAIN_PORT))" \
     --rpc-port $((ALLYCHAIN_PORT + 1)) \
     --ws-port $((ALLYCHAIN_PORT + 2)) \
-    --chain $ROCOCO_LOCAL_RAW_SPEC \
+    --chain $BETANET_LOCAL_RAW_SPEC \
   $RELAY_BOOTNODES_ARGS;
   

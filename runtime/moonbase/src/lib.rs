@@ -1512,9 +1512,9 @@ impl TryFrom<u8> for Transactors {
 impl UtilityEncodeCall for Transactors {
 	fn encode_call(self, call: UtilityAvailableCalls) -> Vec<u8> {
 		match self {
-			// Shall we use westend for moonbase? The tests are probably based on rococo
-			// but moonbase-alpha is attached to westend-runtime I think
-			Transactors::Relay => axtend_relay_encoder::westend::WestendEncoder.encode_call(call),
+			// Shall we use alphanet for moonbase? The tests are probably based on betanet
+			// but moonbase-alpha is attached to alphanet-runtime I think
+			Transactors::Relay => axtend_relay_encoder::alphanet::AlphanetEncoder.encode_call(call),
 		}
 	}
 }

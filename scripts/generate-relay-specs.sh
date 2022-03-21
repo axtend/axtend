@@ -9,13 +9,13 @@ fi
 
 echo "Using Axia revision #${AXIA_VERSION}"
 
-echo "=================== Rococo-Local ==================="
+echo "=================== Betanet-Local ==================="
 docker run -it -v $(pwd)/build:/build purestake/moonbase-relay-testnet:$AXIA_VERSION \
   /usr/local/bin/axia \
     build-spec \
-      --chain rococo-local \
+      --chain betanet-local \
       -lerror \
       --disable-default-bootnode \
       --raw \
-    > $ROCOCO_LOCAL_RAW_SPEC
-echo $ROCOCO_LOCAL_RAW_SPEC generated
+    > $BETANET_LOCAL_RAW_SPEC
+echo $BETANET_LOCAL_RAW_SPEC generated

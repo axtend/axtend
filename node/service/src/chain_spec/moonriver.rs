@@ -164,7 +164,7 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 		),
 		// Extensions
 		Extensions {
-			relay_chain: "kusama-local".into(),
+			relay_chain: "axctest-local".into(),
 			para_id: para_id.into(),
 		},
 	)

@@ -10,7 +10,7 @@
     "tokenSymbol": "MOVR",
     "SS58Prefix": 1285
   },
-  "relayChain": "kusama",
+  "relayChain": "axctest",
   "paraId": 2023,
   "consensusEngine": null,
   "codeSubstitutes": {},

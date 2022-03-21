@@ -30,10 +30,10 @@ frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 pallet-proxy = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 pallet-utility = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
-kusama-runtime = { git = "https://github.com/axtend/axia", branch = "axia" }
+axctest-runtime = { git = "https://github.com/axtend/axia", branch = "axia" }
 axia-runtime = { git = "https://github.com/axtend/axia", branch = "axia" }
-rococo-runtime = { git = "https://github.com/axtend/axia", branch = "axia" }
-westend-runtime = { git = "https://github.com/axtend/axia", branch = "axia" }
+betanet-runtime = { git = "https://github.com/axtend/axia", branch = "axia" }
+alphanet-runtime = { git = "https://github.com/axtend/axia", branch = "axia" }
 
 [features]
 default = ["std"]

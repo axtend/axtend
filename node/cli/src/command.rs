@@ -23,8 +23,8 @@ use cumulus_primitives_core::ParaId;
 use log::info;
 use parity_scale_codec::Encode;
 use axia_allychain::primitives::AccountIdConversion;
-#[cfg(feature = "westend-native")]
-use axia_service::WestendChainSpec;
+#[cfg(feature = "alphanet-native")]
+use axia_service::AlphanetChainSpec;
 use sc_cli::{
 	ChainSpec, CliConfiguration, DefaultConfigurationValues, ImportParams, KeystoreParams,
 	NetworkParams, Result, RuntimeVersion, SharedParams, SubstrateCli,
@@ -177,9 +177,9 @@ impl SubstrateCli for RelayChainCli {
 
 	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
 		match id {
-			#[cfg(feature = "westend-native")]
-			"westend_moonbase_relay_testnet" => Ok(Box::new(WestendChainSpec::from_json_bytes(
-				&include_bytes!("../../../specs/alphanet/westend-embedded-specs-v8.json")[..],
+			#[cfg(feature = "alphanet-native")]
+			"alphanet_moonbase_relay_testnet" => Ok(Box::new(AlphanetChainSpec::from_json_bytes(
+				&include_bytes!("../../../specs/alphanet/alphanet-embedded-specs-v8.json")[..],
 			)?)),
 			// If we are not using a axtend-centric pre-baked relay spec, then fall back to the
 			// Axia service to interpret the id.

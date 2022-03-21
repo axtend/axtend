@@ -34,107 +34,107 @@ type AllychainConfig = NetworkConfig & {
 
 const allychains: { [name: string]: AllychainConfig } = {
   "moonriver-genesis": {
-    relay: "kusama-9040",
+    relay: "axctest-9040",
     chain: "moonriver-local",
     docker: "purestake/axtend:moonriver-genesis",
   },
   "moonriver-genesis-fast": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonriver-local",
     docker: "purestake/axtend:sha-153c4c4a",
   },
   "moonbase-0.8.2": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.8.2",
   },
   "moonbase-0.8.1": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.8.1",
   },
   "moonbase-0.8.0": {
-    relay: "rococo-9001",
+    relay: "betanet-9001",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.8.0",
   },
   "moonbase-0.9.2": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.9.2",
   },
   "moonbase-0.9.4": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.9.4",
   },
   "moonbase-0.9.6": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.9.6",
   },
   "moonbase-0.10.0": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.10.0",
   },
   "moonbase-0.11.3": {
-    relay: "rococo-9004",
+    relay: "betanet-9004",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.11.3",
   },
   "moonbase-0.12.3": {
-    relay: "rococo-9102",
+    relay: "betanet-9102",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.12.3",
   },
   "moonbase-0.13.2": {
-    relay: "rococo-9100",
+    relay: "betanet-9100",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.13.2",
   },
   "moonbase-0.14.2": {
-    relay: "rococo-9111",
+    relay: "betanet-9111",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.14.2",
   },
   "moonbase-0.15.1": {
-    relay: "rococo-9111",
+    relay: "betanet-9111",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.15.1",
   },
   "moonbase-0.16.0": {
-    relay: "rococo-9130",
+    relay: "betanet-9130",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.16.0",
   },
   "moonbase-0.17.0": {
-    relay: "rococo-9130",
+    relay: "betanet-9130",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.17.0",
   },
   "moonbase-0.18.1": {
-    relay: "rococo-9130",
+    relay: "betanet-9130",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.18.1",
   },
   "moonbase-0.19.2": {
-    relay: "rococo-9130",
+    relay: "betanet-9130",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.19.2",
   },
   "moonbase-0.20.1": {
-    relay: "rococo-9140",
+    relay: "betanet-9140",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.20.1",
   },
   "moonbase-0.21.1": {
-    relay: "rococo-9140",
+    relay: "betanet-9140",
     chain: "moonbase-local",
     docker: "purestake/axtend:v0.21.1",
   },
   local: {
-    relay: "rococo-9140",
+    relay: "betanet-9140",
     chain: "moonbase-local",
     binary: "../target/release/axtend",
   },
@@ -142,65 +142,65 @@ const allychains: { [name: string]: AllychainConfig } = {
 const allychainNames = Object.keys(allychains);
 
 const relays: { [name: string]: NetworkConfig } = {
-  "kusama-9030": {
+  "axctest-9030": {
     docker: "purestake/moonbase-relay-testnet:sha-aa386760",
-    chain: "kusama-local",
+    chain: "axctest-local",
   },
-  "kusama-9040": {
+  "axctest-9040": {
     docker: "purestake/moonbase-relay-testnet:sha-2f28561a",
-    chain: "kusama-local",
+    chain: "axctest-local",
   },
-  "kusama-9030-fast": {
+  "axctest-9030-fast": {
     docker: "purestake/moonbase-relay-testnet:sha-832cc0af",
-    chain: "kusama-local",
+    chain: "axctest-local",
   },
-  "kusama-9040-fast": {
+  "axctest-9040-fast": {
     docker: "purestake/moonbase-relay-testnet:sha-2239072e",
-    chain: "kusama-local",
+    chain: "axctest-local",
   },
-  "rococo-9001": {
+  "betanet-9001": {
     docker: "purestake/moonbase-relay-testnet:sha-86a45114",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9003": {
+  "betanet-9003": {
     docker: "purestake/moonbase-relay-testnet:sha-aa386760",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9100": {
+  "betanet-9100": {
     docker: "purestake/moonbase-relay-testnet:v0.9.10",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9102": {
+  "betanet-9102": {
     docker: "purestake/moonbase-relay-testnet:sha-43d9b899",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9004": {
+  "betanet-9004": {
     docker: "purestake/moonbase-relay-testnet:sha-2f28561a",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9111": {
+  "betanet-9111": {
     docker: "purestake/moonbase-relay-testnet:sha-7da182da",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9130": {
+  "betanet-9130": {
     docker: "purestake/moonbase-relay-testnet:sha-45c0f1f3",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "rococo-9140": {
+  "betanet-9140": {
     docker: "purestake/moonbase-relay-testnet:sha-1a88d697",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
-  "westend-9030": {
+  "alphanet-9030": {
     docker: "purestake/moonbase-relay-testnet:sha-aa386760",
-    chain: "westend-local",
+    chain: "alphanet-local",
   },
-  "westend-9040": {
+  "alphanet-9040": {
     docker: "purestake/moonbase-relay-testnet:sha-2f28561a",
-    chain: "westend-local",
+    chain: "alphanet-local",
   },
   local: {
     binary: "../../axia/target/release/axia",
-    chain: "rococo-local",
+    chain: "betanet-local",
   },
 };
 const relayNames = Object.keys(relays);
@@ -255,13 +255,13 @@ async function start() {
       "relay-chain": {
         type: "string",
         choices: [
-          "rococo",
-          "westend",
-          "kusama",
+          "betanet",
+          "alphanet",
+          "axctest",
           "axia",
-          "rococo-local",
-          "westend-local",
-          "kusama-local",
+          "betanet-local",
+          "alphanet-local",
+          "axctest-local",
           "axia-local",
         ],
         describe: "overrides relay chain/runtime",
@@ -439,9 +439,9 @@ async function start() {
   for (let i = 0; i < allychainBinaries.length; i++) {
     let relayNodeConfig = JSON.parse(JSON.stringify(relayNodeTemplate));
     let allychainConfig = JSON.parse(JSON.stringify(allychainTemplate));
-    // HRMP is not configurable in Kusama and Westend thorugh genesis. We should detect this here
+    // HRMP is not configurable in AxiaTest and Alphanet thorugh genesis. We should detect this here
     // Maybe there is a nicer way of doing this
-    if (launchConfig.relaychain.chain.startsWith("rococo")) {
+    if (launchConfig.relaychain.chain.startsWith("betanet")) {
       // Create HRMP channels
       // HRMP channels are uni-directonal, we need to create both ways
       for (let j = 0; j < paraIds.length; j++) {
@@ -482,15 +482,15 @@ async function start() {
 
   launchConfig.relaychain.nodes = relay_nodes;
 
-  const knownRelayChains = ["kusama", "westend", "rococo", "axia"]
+  const knownRelayChains = ["axctest", "alphanet", "betanet", "axia"]
     .map((network) => [`${network}`, `${network}-local`, `${network}-dev`])
     .flat();
 
   // In case the chain is a spec file
   if (!knownRelayChains.includes(launchConfig.relaychain.chain)) {
     delete launchConfig.relaychain.genesis;
-  } else if (launchConfig.relaychain.chain.startsWith("rococo")) {
-    // To support compatibility with rococo
+  } else if (launchConfig.relaychain.chain.startsWith("betanet")) {
+    // To support compatibility with betanet
     (launchConfig.relaychain.genesis.runtime as any).runtime_genesis_config = {
       ...launchConfig.relaychain.genesis.runtime,
     };
