@@ -26,8 +26,8 @@ interface AssetMetadata {
 }
 
 const relayAssetMetadata: AssetMetadata = {
-  name: "DOT",
-  symbol: "DOT",
+  name: "AXC",
+  symbol: "AXC",
   decimals: new BN(12),
   isFrozen: false,
 };
@@ -159,7 +159,7 @@ describeDevAxtendAllEthTxTypes(
         },
       ]);
 
-      let expected = stringToHex("DOT");
+      let expected = stringToHex("AXC");
       let offset = numberToHex(32).slice(2).padStart(64, "0");
       let length = numberToHex(3).slice(2).padStart(64, "0");
       // Bytes are padded at the end
@@ -185,7 +185,7 @@ describeDevAxtendAllEthTxTypes(
         },
       ]);
 
-      let expected = stringToHex("DOT");
+      let expected = stringToHex("AXC");
       let offset = numberToHex(32).slice(2).padStart(64, "0");
       let length = numberToHex(3).slice(2).padStart(64, "0");
       // Bytes are padded at the end

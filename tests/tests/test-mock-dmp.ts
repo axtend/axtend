@@ -14,8 +14,8 @@ const RELAY_TOKEN = 1_000_000_000_000n;
 const palletId = "0x6D6f646c617373746d6E67720000000000000000";
 
 const assetMetadata = {
-  name: "DOT",
-  symbol: "DOT",
+  name: "AXC",
+  symbol: "AXC",
   decimals: new BN(12),
   isFrozen: false,
 };
@@ -69,7 +69,7 @@ describeDevAxtend("Mock XCM - receive downward transfer", (context) => {
     expect(registeredAsset.owner.toHex()).to.eq(palletId.toLowerCase());
   });
 
-  it("Should receive a downward transfer of 10 DOTs to Alith", async function () {
+  it("Should receive a downward transfer of 10 AXCs to Alith", async function () {
     // Send RPC call to inject XCM message
     // You can provide a message, but if you don't a downward transfer is the default
     await customWeb3Request(context.web3, "xcm_injectDownwardMessage", [[]]);
@@ -77,7 +77,7 @@ describeDevAxtend("Mock XCM - receive downward transfer", (context) => {
     // Create a block in which the XCM will be executed
     await context.createBlock();
 
-    // Make sure the state has ALITH's to DOT tokens
+    // Make sure the state has ALITH's to AXC tokens
     let alith_dot_balance = (
       (await context.axiaApi.query.assets.account(assetId, alith.address)) as any
     )

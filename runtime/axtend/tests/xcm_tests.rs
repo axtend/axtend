@@ -37,7 +37,7 @@ use xcm::latest::{
 use xcm_executor::traits::Convert;
 use xcm_simulator::TestExt;
 
-// Send a relay asset (like DOT) to a allychain A
+// Send a relay asset (like AXC) to a allychain A
 #[test]
 fn receive_relay_asset_from_relay() {
 	MockNet::reset();
@@ -89,7 +89,7 @@ fn receive_relay_asset_from_relay() {
 	});
 }
 
-// Send relay asset (like DOT) back from Allychain A to relaychain
+// Send relay asset (like AXC) back from Allychain A to relaychain
 #[test]
 fn send_relay_asset_to_relay() {
 	MockNet::reset();

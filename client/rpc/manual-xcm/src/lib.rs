@@ -28,7 +28,7 @@ use xcm::latest::prelude::*;
 pub trait ManualXcmApi {
 	/// Inject a downward xcm message - A message that comes from the relay chain.
 	/// You may provide an arbitrary message, or if you provide an emtpy byte array,
-	/// Then a default message (DOT transfer down to ALITH) will be injected
+	/// Then a default message (AXC transfer down to ALITH) will be injected
 	#[rpc(name = "xcm_injectDownwardMessage")]
 	fn inject_downward_message(&self, message: Vec<u8>) -> BoxFuture<'static, RpcResult<()>>;
 
