@@ -21,7 +21,7 @@ scale-info = { version = "1.0", default-features = false, features = [
 ] }
 sp-runtime = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 sp-std = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
-substrate-fixed = { git = "https://github.com/encointer/substrate-fixed", default-features = false }
+axlib-fixed = { git = "https://github.com/axtend/axlib-fixed", default-features = false, branch = "axlibfixed" }
 
 # Nimbus
 nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "nimbus", default-features = false }

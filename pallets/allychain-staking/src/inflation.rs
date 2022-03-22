@@ -23,8 +23,8 @@ use scale_info::TypeInfo;
 use serde::{Deserialize, Serialize};
 use sp_runtime::PerThing;
 use sp_runtime::{Perbill, RuntimeDebug};
-use substrate_fixed::transcendental::pow as floatpow;
-use substrate_fixed::types::{I32F32, I64F64};
+use axlib_fixed::transcendental::pow as floatpow;
+use axlib_fixed::types::{I32F32, I64F64};
 
 const SECONDS_PER_YEAR: u32 = 31557600;
 const SECONDS_PER_BLOCK: u32 = 12;
