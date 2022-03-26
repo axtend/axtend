@@ -61,7 +61,7 @@ jobs:
         id: check-docker-image
         run: |
           TAG=sha-${{ steps.get-sha.outputs.sha8 }}
-          echo ::set-output name=image_exists::$(docker manifest inspect purestake/moonbeam:$TAG > /dev/null && echo "true" || echo "false")
+          echo ::set-output name=image_exists::$(docker manifest inspect purestake/axtend:$TAG > /dev/null && echo "true" || echo "false")
       - name: Display variables
         run: |
           echo git_ref: ${{ steps.check-git-ref.outputs.git_ref }}
@@ -171,7 +171,7 @@ jobs:
   prepare-axia:
     runs-on: self-hosted
     needs: ["set-tags"]
-    if: github.repository == 'purestake/moonbeam'
+    if: github.repository == 'purestake/axtend'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -260,7 +260,7 @@ jobs:
       - name: Verify node version
         run: |
           GIT_COMMIT=`git log -1 --format="%H" | cut -c1-7`
-          MB_VERSION=`./target/release/moonbeam --version`
+          MB_VERSION=`./target/release/axtend --version`
           echo "Checking $MB_VERSION contains $GIT_COMMIT"
           echo "$MB_VERSION" | grep $GIT_COMMIT
       - name: Unit tests
@@ -290,14 +290,14 @@ jobs:
           fi
       - name: Ensure benchmarking compiles
         run: cargo check --release --features=runtime-benchmarks
-      - name: Save moonbeam binary
+      - name: Save axtend binary
         run: |
           mkdir -p build
-          cp target/release/moonbeam build/moonbeam;
+          cp target/release/axtend build/axtend;
       - name: Upload binary
         uses: actions/upload-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
       - name: Save runtime wasm
         run: |
@@ -319,7 +319,7 @@ jobs:
           ref: ${{ needs.set-tags.outputs.git_ref }}
       - uses: actions/download-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2
@@ -327,10 +327,10 @@ jobs:
           node-version: 14.x
       - name: Typescript integration tests (against dev service)
         env:
-          BINARY_PATH: ../build/moonbeam
+          BINARY_PATH: ../build/axtend
         run: |
-          chmod uog+x build/moonbeam
-          cd moonbeam-types-bundle
+          chmod uog+x build/axtend
+          cd axtend-types-bundle
           npm install
           npm run build
           cd ../tests
@@ -373,7 +373,7 @@ jobs:
           ref: ${{ needs.set-tags.outputs.git_ref }}
       - uses: actions/download-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2
@@ -386,13 +386,13 @@ jobs:
           mv build/wasm/moonbase-runtime-local-substitute-tracing.wasm tests/moonbase-overrides/
       - name: Typescript tracing tests (against dev service)
         env:
-          BINARY_PATH: ../build/moonbeam
+          BINARY_PATH: ../build/axtend
           ETHAPI_CMD: --ethapi=txpool,debug,trace
           FORCE_WASM_EXECUTION: true
           WASM_RUNTIME_OVERRIDES: moonbase-overrides
         run: |
-          chmod uog+x build/moonbeam
-          cd moonbeam-types-bundle
+          chmod uog+x build/axtend
+          cd axtend-types-bundle
           npm install
           npm run build
           cd ../tests
@@ -410,7 +410,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/download-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
       - uses: actions/download-artifact@v2
         with:
@@ -430,13 +430,13 @@ jobs:
       - name: Typescript integration tests (against dev service)
         env:
           OVERRIDE_RUNTIME_PATH: ./runtimes
-          BINARY_PATH: ../build/moonbeam
+          BINARY_PATH: ../build/axtend
           MOONBEAM_LOG: info
           RELAY_BINARY_PATH: ../build/axia
         run: |
           chmod uog+x build/axia
-          chmod uog+x build/moonbeam
-          cd moonbeam-types-bundle
+          chmod uog+x build/axtend
+          cd axtend-types-bundle
           npm install
           cd ../tests
           npm install
@@ -445,7 +445,7 @@ jobs:
   docker-allychain:
     runs-on: ubuntu-latest
     needs: ["set-tags", "build"]
-    if: ${{ needs.set-tags.outputs.image_exists }} == false && github.repository == 'purestake/moonbeam'
+    if: ${{ needs.set-tags.outputs.image_exists }} == false && github.repository == 'purestake/axtend'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -453,7 +453,7 @@ jobs:
           ref: ${{ needs.set-tags.outputs.git_ref }}
       - uses: actions/download-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
       - name: Prepare
         id: prep
@@ -493,10 +493,10 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             org.opencontainers.image.licenses=${{ github.event.repository.license.spdx_id }}
 
-  docker-moonbeam:
+  docker-axtend:
     runs-on: ubuntu-latest
     needs: ["set-tags", "build"]
-    if: ${{ needs.set-tags.outputs.image_exists }} == false && github.repository == 'purestake/moonbeam'
+    if: ${{ needs.set-tags.outputs.image_exists }} == false && github.repository == 'purestake/axtend'
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -504,12 +504,12 @@ jobs:
           ref: ${{ needs.set-tags.outputs.git_ref }}
       - uses: actions/download-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=purestake/moonbeam
+          DOCKER_IMAGE=purestake/axtend
           TAGS="${DOCKER_IMAGE}:sha-${{ needs.set-tags.outputs.sha8 }}"
           echo ::set-output name=tags::${TAGS}
           echo ::set-output name=created::$(date -u +'%Y-%m-%dT%H:%M:%SZ')
@@ -526,12 +526,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push moonbeam
+      - name: Build and push axtend
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./docker/moonbeam.Dockerfile
+          file: ./docker/axtend.Dockerfile
           platforms: linux/amd64
           push: true
           tags: ${{ steps.prep.outputs.tags }}

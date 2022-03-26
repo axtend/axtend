@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo 'Make sure you have built moonbeam-types-bundle and run "npm install" in the test/ folder.'
+echo 'Make sure you have built axtend-types-bundle and run "npm install" in the test/ folder.'
 
 BUILD_LAST_TRACING_RUNTIME="no"
 

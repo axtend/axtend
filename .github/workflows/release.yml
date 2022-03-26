@@ -56,11 +56,11 @@ jobs:
       - name: Save allychain binary
         run: |
           mkdir -p build
-          cp target/release/moonbeam build/moonbeam;
+          cp target/release/axtend build/axtend;
       - name: Upload binary
         uses: actions/upload-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
 
   ####### Prepare and Deploy Docker images #######
@@ -75,24 +75,24 @@ jobs:
           ref: ${{ github.event.inputs.tag }}
       - uses: actions/download-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
-      - name: Make moonbeam executable
+      - name: Make axtend executable
         run: |
-          chmod uog+x build/moonbeam
+          chmod uog+x build/axtend
       - name: Generate specs
         run: |
-          MOONBEAM_BINARY=build/moonbeam scripts/generate-allychain-specs.sh
+          MOONBEAM_BINARY=build/axtend scripts/generate-allychain-specs.sh
       - name: Generate runtimes
         run: |
-          MOONBEAM_BINARY=build/moonbeam scripts/generate-runtimes.sh
+          MOONBEAM_BINARY=build/axtend scripts/generate-runtimes.sh
       - name: Upload allychain specs
         uses: actions/upload-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
 
-  docker-moonbeam:
+  docker-axtend:
     runs-on: ubuntu-latest
     needs: ["build", "generate-allychain-specs"]
     steps:
@@ -102,12 +102,12 @@ jobs:
           ref: ${{ github.event.inputs.tag }}
       - uses: actions/download-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
       - name: Prepare
         id: prep
         run: |
-          DOCKER_IMAGE=purestake/moonbeam
+          DOCKER_IMAGE=purestake/axtend
           VERSION=${{ github.event.inputs.tag }}
           TAGS="${DOCKER_IMAGE}:${VERSION}"
           if [[ $VERSION =~ ^v[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}$ ]]; then
@@ -133,12 +133,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-      - name: Build and push moonbeam
+      - name: Build and push axtend
         id: docker_build
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./docker/moonbeam.Dockerfile
+          file: ./docker/axtend.Dockerfile
           platforms: linux/amd64
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.prep.outputs.tags }}
@@ -158,7 +158,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        chain: ["moonbase", "moonriver", "moonbeam"]
+        chain: ["moonbase", "moonriver", "axtend"]
     steps:
       - name: Get Timestamp
         run: echo "TMSP=$(date '+%Y%m%d_%H%M%S')" >> $GITHUB_ENV
@@ -200,7 +200,7 @@ jobs:
           fetch-depth: 0
       - uses: actions/download-artifact@v2
         with:
-          name: moonbeam
+          name: axtend
           path: build
       - name: Download moonbase runtime
         uses: actions/download-artifact@v2
@@ -212,10 +212,10 @@ jobs:
         with:
           name: moonriver-runtime
           path: build
-      - name: Download moonbeam runtime
+      - name: Download axtend runtime
         uses: actions/download-artifact@v2
         with:
-          name: moonbeam-runtime
+          name: axtend-runtime
           path: build
       - name: Use Node.js 14.x
         uses: actions/setup-node@v2
@@ -240,11 +240,11 @@ jobs:
           echo "::set-output name=runtime_moonriver_ver::$runtime_moonriver_ver"
           mv build/moonriver-runtime.compact.wasm moonriver-runtime-${runtime_moonriver_ver}.wasm
           mv build/moonriver-srtool-digest.json moonriver-runtime-${runtime_moonriver_ver}-srtool-digest.json
-          runtime_moonbeam_ver="$(cat ./runtime/moonbeam/src/lib.rs | grep -o 'spec_version: [0-9]*' | tail -1 | grep -o '[0-9]*')"
+          runtime_axtend_ver="$(cat ./runtime/axtend/src/lib.rs | grep -o 'spec_version: [0-9]*' | tail -1 | grep -o '[0-9]*')"
 
-          echo "::set-output name=runtime_moonbeam_ver::$runtime_moonbeam_ver"
-          mv build/moonbeam-runtime.compact.wasm moonbeam-runtime-${runtime_moonbeam_ver}.wasm
-          mv build/moonbeam-srtool-digest.json moonbeam-runtime-${runtime_moonbeam_ver}-srtool-digest.json
+          echo "::set-output name=runtime_axtend_ver::$runtime_axtend_ver"
+          mv build/axtend-runtime.compact.wasm axtend-runtime-${runtime_axtend_ver}.wasm
+          mv build/axtend-srtool-digest.json axtend-runtime-${runtime_axtend_ver}-srtool-digest.json
 
       - name: Create draft release
         id: create-release
@@ -292,30 +292,30 @@ jobs:
           asset_path: moonriver-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonriver_ver }}-srtool-digest.json
           asset_name: moonriver-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonriver_ver }}.srtool-digest.json
           asset_content_type: application/json
-      - name: Upload moonbeam wasm
+      - name: Upload axtend wasm
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: moonbeam-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonbeam_ver }}.wasm
-          asset_name: moonbeam-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonbeam_ver }}.wasm
+          asset_path: axtend-runtime-${{ steps.get-runtime-ver.outputs.runtime_axtend_ver }}.wasm
+          asset_name: axtend-runtime-${{ steps.get-runtime-ver.outputs.runtime_axtend_ver }}.wasm
           asset_content_type: application/octet-stream
-      - name: Upload moonbeam srtool digest
+      - name: Upload axtend srtool digest
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: moonbeam-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonbeam_ver }}-srtool-digest.json
-          asset_name: moonbeam-runtime-${{ steps.get-runtime-ver.outputs.runtime_moonbeam_ver }}.srtool-digest.json
+          asset_path: axtend-runtime-${{ steps.get-runtime-ver.outputs.runtime_axtend_ver }}-srtool-digest.json
+          asset_name: axtend-runtime-${{ steps.get-runtime-ver.outputs.runtime_axtend_ver }}.srtool-digest.json
           asset_content_type: application/json
-      - name: Upload moonbeam
+      - name: Upload axtend
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: build/moonbeam
-          asset_name: moonbeam
+          asset_path: build/axtend
+          asset_name: axtend
           asset_content_type: application/octet-stream

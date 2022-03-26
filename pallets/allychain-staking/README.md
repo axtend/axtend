@@ -15,7 +15,7 @@ Implements Delegated Proof of Stake to
 
 Links:
 
-- [Rust Documentation](https://purestake.github.io/moonbeam/allychain_staking/index.html)
+- [Rust Documentation](https://purestake.github.io/axtend/allychain_staking/index.html)
 - [Unofficial Documentation](https://meta5.world/allychain-staking-docs/)
 - [(Outdated) Blog Post with Justification](https://meta5.world/posts/allychain-staking)
 

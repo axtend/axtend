@@ -21,7 +21,7 @@
 //! EXECUTION: Some(Wasm), WASM-EXECUTION: Compiled, CHAIN: Some("dev"), DB CACHE: 1024
 
 // Executed Command:
-// ./target/release/moonbeam
+// ./target/release/axtend
 // benchmark
 // --chain
 // dev

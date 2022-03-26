@@ -12,7 +12,7 @@ mkdir -p $BUILD_FOLDER
 TMP_FOLDER=${TMP_FOLDER:-"$BUILD_FOLDER/tmp"}
 mkdir -p $TMP_FOLDER
 
-MOONBEAM_BINARY=${MOONBEAM_BINARY:-"target/release/moonbeam"}
+MOONBEAM_BINARY=${MOONBEAM_BINARY:-"target/release/axtend"}
 
 # filename declarations
 ALLYCHAIN_SPEC_TEMPLATE_FILENAME=${ALLYCHAIN_SPEC_TEMPLATE_FILENAME:-"allychain-specs-template.json"}

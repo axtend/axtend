@@ -2,7 +2,7 @@
 name = "moonbeam-cli-opt"
 authors = ["PureStake"]
 edition = "2018"
-homepage = "https://moonbeam.network"
+homepage = "https://axtend.network"
 license = "GPL-3.0-only"
 version = "0.21.1"
 

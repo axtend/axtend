@@ -1,4 +1,4 @@
-# ![Axtend](media/moonbeam-cover.jpg)
+# ![Axtend](media/axtend-cover.jpg)
 
 ## Contributions
 
@@ -7,11 +7,11 @@ contribution, open a pull request and review the template, which explains how to
 proposal.
 
 You may also consider joining our [Discord server](https://discord.gg/PfpUATX) or
-[Element room](https://app.element.io/#/room/#moonbeam:matrix.org) to discuss your changes.
+[Element room](https://app.element.io/#/room/#axtend:matrix.org) to discuss your changes.
 
 ### Generated Documentation
 
-You can explore our [crate-level documentation](https://purestake.github.io/moonbeam).
+You can explore our [crate-level documentation](https://purestake.github.io/axtend).
 This documentation is
 automatically built and reflects the latest `master` commit.
 
@@ -32,18 +32,18 @@ and are expected to pass before a PR is considered mergeable. They can also be r
 
 The following is a list of directories of interest in development.
 
-| Directory              | Purpose                                                                  |
-| ---------------------- | ------------------------------------------------------------------------ |
-| client/                | Debug & Trace related code (rust)                                        |
-| docker/                | Dockerfiles for running Axtend                                           |
-| moonbeam-types-bundle/ | AxiaJs types definitions for Axtend (typescript)                         |
-| node/                  | Axtend's main node (rust)                                                |
-| pallets/               | Moonmeam's Axlib runtime pallets (rust)                                  |
-| primitives/            | More Debug & Trace related code (rust)                                   |
-| runtime/               | Axtend's runtime (on-chain) code (rust, compiled to WASM)                |
-| scripts/               | Utilities for launching and interacting with a Axtend chain (typescript) |
-| specs/                 | Spec files used to generate genesis for well-known Axtend networks       |
-| tools/                 | Various tools generally related to development (typescript)              |
+| Directory            | Purpose                                                                  |
+| -------------------- | ------------------------------------------------------------------------ |
+| client/              | Debug & Trace related code (rust)                                        |
+| docker/              | Dockerfiles for running Axtend                                           |
+| axtend-types-bundle/ | AxiaJs types definitions for Axtend (typescript)                         |
+| node/                | Axtend's main node (rust)                                                |
+| pallets/             | Moonmeam's Axlib runtime pallets (rust)                                  |
+| primitives/          | More Debug & Trace related code (rust)                                   |
+| runtime/             | Axtend's runtime (on-chain) code (rust, compiled to WASM)                |
+| scripts/             | Utilities for launching and interacting with a Axtend chain (typescript) |
+| specs/               | Spec files used to generate genesis for well-known Axtend networks       |
+| tools/               | Various tools generally related to development (typescript)              |
 
 ### PR labels conventions
 

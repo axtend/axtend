@@ -5,11 +5,11 @@ LOCAL_GIT_BRANCH=${LOCAL_GIT_BRANCH##refs/heads/}
 
 echo ${1:-"$LOCAL_GIT_BRANCH"}
 
-rm -rf build/{moonbeam-runtime-overrides,wasm}
+rm -rf build/{axtend-runtime-overrides,wasm}
 mkdir -p build/wasm
-git clone --depth 1 -b master-without-wasm https://github.com/PureStake/moonbeam-runtime-overrides build/moonbeam-runtime-overrides
+git clone --depth 1 -b master-without-wasm https://github.com/PureStake/axtend-runtime-overrides build/axtend-runtime-overrides
 
-cd build/moonbeam-runtime-overrides
+cd build/axtend-runtime-overrides
 ./scripts/import-tracing-runtime.sh local ${1:-"$LOCAL_GIT_BRANCH"}
 cd tracing/local && cargo update -p evm && cd ../..
 ./scripts/build-tracing-runtime.sh local moonbase

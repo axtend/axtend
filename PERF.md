@@ -9,7 +9,7 @@ This roughly corresponds to how much cpu time is spent in each of them.
 
 In addition to `perf` itself, some tools like [speedscope](https://github.com/jlfwong/speedscope) (or directly on https://www.speedscope.app/) allow to visualize the perf data under different dimensions (time-based, thread-based,...)
 
-# Configuring moonbeam
+# Configuring axtend
 
 Axtend node built with `--release`, contains enough symbols to have meanigful report for perf.
 However it is suggest to also combine the build with additional frame pointers in order to capture the full stack:
@@ -27,22 +27,22 @@ with a command. Ex:
 
 ```
 # if you have only 1 node running
-pgrep moonbeam
+pgrep axtend
 
 # if you have multiple nodes, use tricks to retrieve only the given node (port, command parameters...). Ex:
-ps aux | grep moonbeam | grep -e 56772 | grep db-cache | tr -s " " | cut -d' ' -f 2
+ps aux | grep axtend | grep -e 56772 | grep db-cache | tr -s " " | cut -d' ' -f 2
 ```
 
 To start perf:
 
 ```
-perf record -F 20000 -p $(pgrep moonbeam) --call-graph fp
+perf record -F 20000 -p $(pgrep axtend) --call-graph fp
 ```
 
 To start perf with jitdump :
 
 ```
-perf record -F 20000 -p $(pgrep moonbeam) -k mono --call-graph fp
+perf record -F 20000 -p $(pgrep axtend) -k mono --call-graph fp
 ```
 
 (`-k mono` allows jit injection later)
@@ -89,12 +89,12 @@ then search (`/` key) for the function. Ex for `execute_in_transaction`:
 
 ```
 tokio-runtime-w 16503 2925245.809827:     100010 cpu-clock:pppH:
-        562394235bb6 wasmtime::func::Func::invoke+0x126 (...get/release/moonbeam)
-        56239422a831 wasmtime::func::Func::new::_...87d04f+0x81 (...get/release/moonbeam)
+        562394235bb6 wasmtime::func::Func::invoke+0x126 (...get/release/axtend)
+        56239422a831 wasmtime::func::Func::new::_...87d04f+0x81 (...get/release/axtend)
         ...
-        56239098dcff <sc_service::client::client::Clie...at+0xff (...get/release/moonbeam)
-        5623900a6c0c sp_block_builder::runtime_d...all_api_at+0x28c (...get/release/moonbeam)
-        56238fe47751 <moonbase_runtime::Runtim...>>::execute_in_transaction+0x201 (...get/release/moonbeam)
+        56239098dcff <sc_service::client::client::Clie...at+0xff (...get/release/axtend)
+        5623900a6c0c sp_block_builder::runtime_d...all_api_at+0x28c (...get/release/axtend)
+        56238fe47751 <moonbase_runtime::Runtim...>>::execute_in_transaction+0x201 (...get/release/axtend)
 ```
 
 (The thread is `16503`, written on the first line of the block)
@@ -137,7 +137,7 @@ Either start the node with your synced chain, or launch a new one with `yarn run
 Open 3 terminals:
 
 1.  with the node logs (`tail -f 12102.log` if using local allychain)
-2.  with the command line ready to perf record (`perf record -F 9999 -p $(ps aux | grep moonbeam | grep 12102 | grep unsafe | tr -s " " | cut -d' ' -f 2) --call-graph fp`)
+2.  with the command line ready to perf record (`perf record -F 9999 -p $(ps aux | grep axtend | grep 12102 | grep unsafe | tr -s " " | cut -d' ' -f 2) --call-graph fp`)
 3.  in the tools folder to generate some load
 
 You can generate the load in many different way, ex: sending a bunch of request (`yarn ts-node scenarios/flood-evm-transfers.ts --url ws://localhost:12102 --eth-url http://localhost:12101 --amount 2 --count 1000`);
