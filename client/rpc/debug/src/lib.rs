@@ -15,7 +15,7 @@
 // along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 use futures::{future::BoxFuture, FutureExt, SinkExt, StreamExt};
 use jsonrpc_core::Result as RpcResult;
-pub use moonbeam_rpc_core_debug::{Debug as DebugT, DebugServer, TraceParams};
+pub use axtend_rpc_core_debug::{Debug as DebugT, DebugServer, TraceParams};
 
 use tokio::{
 	self,
@@ -26,8 +26,8 @@ use ethereum_types::H256;
 use fc_rpc::{frontier_backend_client, internal_err, OverrideHandle};
 use fp_rpc::EthereumRuntimeRPCApi;
 use axtend_client_evm_tracing::{formatters::ResponseFormatter, types::single};
-use moonbeam_rpc_core_types::{RequestBlockId, RequestBlockTag};
-use moonbeam_rpc_primitives_debug::{DebugRuntimeApi, TracerInput};
+use axtend_rpc_core_types::{RequestBlockId, RequestBlockTag};
+use axtend_rpc_primitives_debug::{DebugRuntimeApi, TracerInput};
 use sc_client_api::backend::{Backend, StateBackend, StorageProvider};
 use sc_utils::mpsc::TracingUnboundedSender;
 use sp_api::{ApiExt, BlockId, Core, HeaderT, ProvideRuntimeApi};
@@ -383,7 +383,7 @@ where
 						reference_id, e
 					))
 				})?;
-			Ok(moonbeam_rpc_primitives_debug::Response::Block)
+			Ok(axtend_rpc_primitives_debug::Response::Block)
 		};
 
 		return match trace_type {
@@ -533,7 +533,7 @@ where
 						};
 					}
 
-					Ok(moonbeam_rpc_primitives_debug::Response::Single)
+					Ok(axtend_rpc_primitives_debug::Response::Single)
 				};
 
 				return match trace_type {

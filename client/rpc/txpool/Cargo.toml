@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam-rpc-txpool"
+name = "axtend-rpc-txpool"
 authors = ["PureStake"]
 edition = "2018"
 homepage = "https://axtend.network"
@@ -14,8 +14,8 @@ serde = { version = "1.0", features = ["derive"] }
 sha3 = "0.9"
 
 # Axtend
-moonbeam-rpc-core-txpool = { path = "../../rpc-core/txpool" }
-moonbeam-rpc-primitives-txpool = { path = "../../../primitives/rpc/txpool" }
+axtend-rpc-core-txpool = { path = "../../rpc-core/txpool" }
+axtend-rpc-primitives-txpool = { path = "../../../primitives/rpc/txpool" }
 
 # Axlib
 frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib" }

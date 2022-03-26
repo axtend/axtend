@@ -18,7 +18,7 @@ use futures::future::BoxFuture;
 use jsonrpc_core::Result as RpcResult;
 use jsonrpc_derive::rpc;
 use axtend_client_evm_tracing::types::single;
-use moonbeam_rpc_core_types::RequestBlockId;
+use axtend_rpc_core_types::RequestBlockId;
 use serde::Deserialize;
 
 pub use rpc_impl_Debug::gen_server::Debug as DebugServer;

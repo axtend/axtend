@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam-rpc-core-debug"
+name = "axtend-rpc-core-debug"
 authors = ["PureStake"]
 edition = "2018"
 homepage = "https://axtend.network"
@@ -14,7 +14,7 @@ jsonrpc-core = "18.0.0"
 jsonrpc-core-client = "18.0.0"
 jsonrpc-derive = "18.0.0"
 axtend-client-evm-tracing = { path = "../../evm-tracing" }
-moonbeam-rpc-core-types = { path = "../types" }
+axtend-rpc-core-types = { path = "../types" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 

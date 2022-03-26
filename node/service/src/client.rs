@@ -41,8 +41,8 @@ pub trait RuntimeApiCollection:
 	+ sp_session::SessionKeys<Block>
 	+ fp_rpc::ConvertTransactionRuntimeApi<Block>
 	+ fp_rpc::EthereumRuntimeRPCApi<Block>
-	+ moonbeam_rpc_primitives_debug::DebugRuntimeApi<Block>
-	+ moonbeam_rpc_primitives_txpool::TxPoolRuntimeApi<Block>
+	+ axtend_rpc_primitives_debug::DebugRuntimeApi<Block>
+	+ axtend_rpc_primitives_txpool::TxPoolRuntimeApi<Block>
 	+ nimbus_primitives::NimbusApi<Block>
 	+ nimbus_primitives::AuthorFilterAPI<Block, nimbus_primitives::NimbusId>
 	+ cumulus_primitives_core::CollectCollationInfo<Block>
@@ -63,8 +63,8 @@ where
 		+ sp_session::SessionKeys<Block>
 		+ fp_rpc::ConvertTransactionRuntimeApi<Block>
 		+ fp_rpc::EthereumRuntimeRPCApi<Block>
-		+ moonbeam_rpc_primitives_debug::DebugRuntimeApi<Block>
-		+ moonbeam_rpc_primitives_txpool::TxPoolRuntimeApi<Block>
+		+ axtend_rpc_primitives_debug::DebugRuntimeApi<Block>
+		+ axtend_rpc_primitives_txpool::TxPoolRuntimeApi<Block>
 		+ nimbus_primitives::NimbusApi<Block>
 		+ nimbus_primitives::AuthorFilterAPI<Block, nimbus_primitives::NimbusId>
 		+ cumulus_primitives_core::CollectCollationInfo<Block>,

@@ -50,7 +50,7 @@ pub use moonbeam_core_primitives::{
 	AccountId, AccountIndex, Address, AssetId, Balance, BlockNumber, DigestItem, Hash, Header,
 	Index, Signature,
 };
-use moonbeam_rpc_primitives_txpool::TxPoolResponse;
+use axtend_rpc_primitives_txpool::TxPoolResponse;
 use pallet_balances::NegativeImbalance;
 use pallet_ethereum::Call::transact;
 use pallet_ethereum::Transaction as EthereumTransaction;

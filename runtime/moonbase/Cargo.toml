@@ -55,8 +55,8 @@ xtokens-precompiles = { path = "../../precompiles/xtokens", default-features = f
 # Axtend tracing
 evm-tracing-events = { path = "../../primitives/rpc/evm-tracing-events", optional = true, default-features = false }
 moonbeam-evm-tracer = { path = "../evm_tracer", optional = true, default-features = false }
-moonbeam-rpc-primitives-debug = { path = "../../primitives/rpc/debug", default-features = false }
-moonbeam-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool", default-features = false }
+axtend-rpc-primitives-debug = { path = "../../primitives/rpc/debug", default-features = false }
+axtend-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool", default-features = false }
 
 # Axlib
 frame-executive = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
@@ -174,8 +174,8 @@ std = [
 	"frame-system/std",
 	"moonbeam-core-primitives/std",
 	"moonbeam-evm-tracer/std",
-	"moonbeam-rpc-primitives-debug/std",
-	"moonbeam-rpc-primitives-txpool/std",
+	"axtend-rpc-primitives-debug/std",
+	"axtend-rpc-primitives-txpool/std",
 	"nimbus-primitives/std",
 	"orml-xtokens/std",
 	"pallet-asset-manager/std",

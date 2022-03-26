@@ -1969,13 +1969,179 @@ dependencies = [
 name = "axtend-client-evm-tracing"
 version = "0.1.0"
 dependencies = [
+ "axtend-rpc-primitives-debug",
  "ethereum-types",
  "evm-tracing-events",
  "hex",
- "moonbeam-rpc-primitives-debug",
  "parity-scale-codec 2.3.1",
  "serde",
  "serde_json",
+ "sp-std",
+]
+
+[[package]]
+name = "axtend-rpc-core-debug"
+version = "0.1.0"
+dependencies = [
+ "axtend-client-evm-tracing",
+ "axtend-rpc-core-types",
+ "ethereum-types",
+ "futures 0.3.21",
+ "jsonrpc-core",
+ "jsonrpc-core-client",
+ "jsonrpc-derive",
+ "serde",
+ "serde_json",
+ "sp-core",
+]
+
+[[package]]
+name = "axtend-rpc-core-trace"
+version = "0.6.0"
+dependencies = [
+ "axtend-client-evm-tracing",
+ "axtend-rpc-core-types",
+ "ethereum-types",
+ "futures 0.3.21",
+ "jsonrpc-core",
+ "jsonrpc-core-client",
+ "jsonrpc-derive",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "axtend-rpc-core-txpool"
+version = "0.6.0"
+dependencies = [
+ "ethereum",
+ "ethereum-types",
+ "fc-rpc-core",
+ "jsonrpc-core",
+ "jsonrpc-core-client",
+ "jsonrpc-derive",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "axtend-rpc-core-types"
+version = "0.1.0"
+dependencies = [
+ "ethereum-types",
+ "serde",
+ "serde_json",
+]
+
+[[package]]
+name = "axtend-rpc-debug"
+version = "0.1.0"
+dependencies = [
+ "axtend-client-evm-tracing",
+ "axtend-rpc-core-debug",
+ "axtend-rpc-core-types",
+ "axtend-rpc-primitives-debug",
+ "ethereum",
+ "ethereum-types",
+ "fc-consensus",
+ "fc-db",
+ "fc-rpc",
+ "fp-rpc",
+ "futures 0.3.21",
+ "hex-literal",
+ "jsonrpc-core",
+ "sc-client-api",
+ "sc-utils",
+ "sp-api",
+ "sp-block-builder",
+ "sp-blockchain",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "tokio",
+]
+
+[[package]]
+name = "axtend-rpc-primitives-debug"
+version = "0.1.0"
+dependencies = [
+ "environmental",
+ "ethereum",
+ "ethereum-types",
+ "hex",
+ "parity-scale-codec 2.3.1",
+ "serde",
+ "serde_json",
+ "sp-api",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "axtend-rpc-primitives-txpool"
+version = "0.6.0"
+dependencies = [
+ "ethereum",
+ "parity-scale-codec 2.3.1",
+ "sp-api",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "axtend-rpc-trace"
+version = "0.6.0"
+dependencies = [
+ "axtend-client-evm-tracing",
+ "axtend-rpc-core-trace",
+ "axtend-rpc-core-types",
+ "axtend-rpc-primitives-debug",
+ "ethereum",
+ "ethereum-types",
+ "fc-consensus",
+ "fc-rpc",
+ "fc-rpc-core",
+ "fp-rpc",
+ "futures 0.3.21",
+ "jsonrpc-core",
+ "sc-client-api",
+ "sc-network",
+ "sc-utils",
+ "serde",
+ "sha3 0.9.1",
+ "sp-api",
+ "sp-block-builder",
+ "sp-blockchain",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+ "sp-transaction-pool",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
+name = "axtend-rpc-txpool"
+version = "0.6.0"
+dependencies = [
+ "axtend-rpc-core-txpool",
+ "axtend-rpc-primitives-txpool",
+ "ethereum-types",
+ "fc-rpc",
+ "frame-system",
+ "jsonrpc-core",
+ "rlp",
+ "sc-transaction-pool",
+ "sc-transaction-pool-api",
+ "serde",
+ "sha3 0.9.1",
+ "sp-api",
+ "sp-blockchain",
+ "sp-io",
+ "sp-runtime",
  "sp-std",
 ]
 
@@ -6723,6 +6889,8 @@ dependencies = [
  "axia-core-primitives",
  "axia-runtime-allychains",
  "axlib-wasm-builder",
+ "axtend-rpc-primitives-debug",
+ "axtend-rpc-primitives-txpool",
  "crowdloan-rewards-precompiles",
  "cumulus-pallet-allychain-system",
  "cumulus-pallet-dmp-queue",
@@ -6750,8 +6918,6 @@ dependencies = [
  "moonbeam-core-primitives",
  "moonbeam-evm-tracer",
  "moonbeam-relay-encoder",
- "moonbeam-rpc-primitives-debug",
- "moonbeam-rpc-primitives-txpool",
  "nimbus-primitives",
  "orml-xtokens",
  "pallet-asset-manager",
@@ -6921,172 +7087,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "moonbeam-rpc-core-debug"
-version = "0.1.0"
-dependencies = [
- "axtend-client-evm-tracing",
- "ethereum-types",
- "futures 0.3.21",
- "jsonrpc-core",
- "jsonrpc-core-client",
- "jsonrpc-derive",
- "moonbeam-rpc-core-types",
- "serde",
- "serde_json",
- "sp-core",
-]
-
-[[package]]
-name = "moonbeam-rpc-core-trace"
-version = "0.6.0"
-dependencies = [
- "axtend-client-evm-tracing",
- "ethereum-types",
- "futures 0.3.21",
- "jsonrpc-core",
- "jsonrpc-core-client",
- "jsonrpc-derive",
- "moonbeam-rpc-core-types",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "moonbeam-rpc-core-txpool"
-version = "0.6.0"
-dependencies = [
- "ethereum",
- "ethereum-types",
- "fc-rpc-core",
- "jsonrpc-core",
- "jsonrpc-core-client",
- "jsonrpc-derive",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "moonbeam-rpc-core-types"
-version = "0.1.0"
-dependencies = [
- "ethereum-types",
- "serde",
- "serde_json",
-]
-
-[[package]]
-name = "moonbeam-rpc-debug"
-version = "0.1.0"
-dependencies = [
- "axtend-client-evm-tracing",
- "ethereum",
- "ethereum-types",
- "fc-consensus",
- "fc-db",
- "fc-rpc",
- "fp-rpc",
- "futures 0.3.21",
- "hex-literal",
- "jsonrpc-core",
- "moonbeam-rpc-core-debug",
- "moonbeam-rpc-core-types",
- "moonbeam-rpc-primitives-debug",
- "sc-client-api",
- "sc-utils",
- "sp-api",
- "sp-block-builder",
- "sp-blockchain",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "tokio",
-]
-
-[[package]]
-name = "moonbeam-rpc-primitives-debug"
-version = "0.1.0"
-dependencies = [
- "environmental",
- "ethereum",
- "ethereum-types",
- "hex",
- "parity-scale-codec 2.3.1",
- "serde",
- "serde_json",
- "sp-api",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "moonbeam-rpc-primitives-txpool"
-version = "0.6.0"
-dependencies = [
- "ethereum",
- "parity-scale-codec 2.3.1",
- "sp-api",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "moonbeam-rpc-trace"
-version = "0.6.0"
-dependencies = [
- "axtend-client-evm-tracing",
- "ethereum",
- "ethereum-types",
- "fc-consensus",
- "fc-rpc",
- "fc-rpc-core",
- "fp-rpc",
- "futures 0.3.21",
- "jsonrpc-core",
- "moonbeam-rpc-core-trace",
- "moonbeam-rpc-core-types",
- "moonbeam-rpc-primitives-debug",
- "sc-client-api",
- "sc-network",
- "sc-utils",
- "serde",
- "sha3 0.9.1",
- "sp-api",
- "sp-block-builder",
- "sp-blockchain",
- "sp-io",
- "sp-runtime",
- "sp-std",
- "sp-transaction-pool",
- "tokio",
- "tracing",
-]
-
-[[package]]
-name = "moonbeam-rpc-txpool"
-version = "0.6.0"
-dependencies = [
- "ethereum-types",
- "fc-rpc",
- "frame-system",
- "jsonrpc-core",
- "moonbeam-rpc-core-txpool",
- "moonbeam-rpc-primitives-txpool",
- "rlp",
- "sc-transaction-pool",
- "sc-transaction-pool-api",
- "serde",
- "sha3 0.9.1",
- "sp-api",
- "sp-blockchain",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
 name = "moonbeam-runtime"
 version = "0.8.4"
 dependencies = [
@@ -7098,6 +7098,8 @@ dependencies = [
  "axia-core-primitives",
  "axia-runtime-allychains",
  "axlib-wasm-builder",
+ "axtend-rpc-primitives-debug",
+ "axtend-rpc-primitives-txpool",
  "crowdloan-rewards-precompiles",
  "cumulus-pallet-allychain-system",
  "cumulus-pallet-dmp-queue",
@@ -7125,8 +7127,6 @@ dependencies = [
  "moonbeam-core-primitives",
  "moonbeam-evm-tracer",
  "moonbeam-relay-encoder",
- "moonbeam-rpc-primitives-debug",
- "moonbeam-rpc-primitives-txpool",
  "nimbus-primitives",
  "orml-xtokens",
  "pallet-asset-manager",
@@ -7215,6 +7215,11 @@ dependencies = [
  "axlib-test-client",
  "axlib-test-runtime-client",
  "axtend-cli-opt",
+ "axtend-rpc-debug",
+ "axtend-rpc-primitives-debug",
+ "axtend-rpc-primitives-txpool",
+ "axtend-rpc-trace",
+ "axtend-rpc-txpool",
  "cumulus-client-cli",
  "cumulus-client-collator",
  "cumulus-client-consensus-common",
@@ -7252,11 +7257,6 @@ dependencies = [
  "moonbeam-core-primitives",
  "moonbeam-finality-rpc",
  "moonbeam-primitives-ext",
- "moonbeam-rpc-debug",
- "moonbeam-rpc-primitives-debug",
- "moonbeam-rpc-primitives-txpool",
- "moonbeam-rpc-trace",
- "moonbeam-rpc-txpool",
  "moonbeam-runtime",
  "moonriver-runtime",
  "nimbus-consensus",
@@ -7335,6 +7335,8 @@ dependencies = [
  "axia-core-primitives",
  "axia-runtime-allychains",
  "axlib-wasm-builder",
+ "axtend-rpc-primitives-debug",
+ "axtend-rpc-primitives-txpool",
  "crowdloan-rewards-precompiles",
  "cumulus-pallet-allychain-system",
  "cumulus-pallet-dmp-queue",
@@ -7362,8 +7364,6 @@ dependencies = [
  "moonbeam-core-primitives",
  "moonbeam-evm-tracer",
  "moonbeam-relay-encoder",
- "moonbeam-rpc-primitives-debug",
- "moonbeam-rpc-primitives-txpool",
  "nimbus-primitives",
  "orml-xtokens",
  "pallet-asset-manager",

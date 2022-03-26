@@ -18,7 +18,7 @@ use ethereum_types::H160;
 use futures::future::BoxFuture;
 use jsonrpc_derive::rpc;
 use axtend_client_evm_tracing::types::block::TransactionTrace;
-use moonbeam_rpc_core_types::RequestBlockId;
+use axtend_rpc_core_types::RequestBlockId;
 use serde::Deserialize;
 
 pub use rpc_impl_Trace::gen_server::Trace as TraceServer;

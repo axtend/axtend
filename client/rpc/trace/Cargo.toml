@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam-rpc-trace"
+name = "axtend-rpc-trace"
 authors = ["PureStake"]
 edition = "2018"
 homepage = "https://axtend.network"
@@ -19,9 +19,9 @@ tracing = "0.1.25"
 
 # Axtend
 axtend-client-evm-tracing = { path = "../../evm-tracing" }
-moonbeam-rpc-core-trace = { path = "../../rpc-core/trace" }
-moonbeam-rpc-core-types = { path = "../../rpc-core/types" }
-moonbeam-rpc-primitives-debug = { path = "../../../primitives/rpc/debug" }
+axtend-rpc-core-trace = { path = "../../rpc-core/trace" }
+axtend-rpc-core-types = { path = "../../rpc-core/types" }
+axtend-rpc-primitives-debug = { path = "../../../primitives/rpc/debug" }
 
 # Axlib
 sc-client-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }

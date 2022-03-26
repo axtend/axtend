@@ -36,11 +36,11 @@ manual-xcm-rpc = { path = "../../client/rpc/manual-xcm" }
 moonbeam-core-primitives = { path = "../../core-primitives" }
 moonbeam-finality-rpc = { path = "../../client/rpc/finality" }
 moonbeam-primitives-ext = { path = "../../primitives/ext" }
-moonbeam-rpc-debug = { path = "../../client/rpc/debug" }
-moonbeam-rpc-primitives-debug = { path = "../../primitives/rpc/debug" }
-moonbeam-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool" }
-moonbeam-rpc-trace = { path = "../../client/rpc/trace" }
-moonbeam-rpc-txpool = { path = "../../client/rpc/txpool" }
+axtend-rpc-debug = { path = "../../client/rpc/debug" }
+axtend-rpc-primitives-debug = { path = "../../primitives/rpc/debug" }
+axtend-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool" }
+axtend-rpc-trace = { path = "../../client/rpc/trace" }
+axtend-rpc-txpool = { path = "../../client/rpc/txpool" }
 allychain-staking = { path = "../../pallets/allychain-staking" }
 
 # Axtend runtimes

@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam-rpc-primitives-debug"
+name = "axtend-rpc-primitives-debug"
 authors = ["PureStake"]
 edition = "2018"
 homepage = "https://axtend.network"
