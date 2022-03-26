@@ -57,7 +57,7 @@ use xcm_simulator::{
 	XcmpMessageHandlerT as XcmpMessageHandler,
 };
 
-pub type AccountId = moonbeam_core_primitives::AccountId;
+pub type AccountId = axtend_core_primitives::AccountId;
 pub type Balance = u128;
 pub type AssetId = u128;
 

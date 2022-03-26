@@ -22,7 +22,7 @@ use frame_support::{
 	dispatch::Dispatchable,
 	traits::{GenesisBuild, OnFinalize, OnInitialize},
 };
-pub use moonbeam_runtime::{
+pub use axtend_runtime::{
 	currency::{GIGAWEI, GLMR, SUPPLY_FACTOR, WEI},
 	AccountId, AssetId, AssetManager, AssetRegistrarMetadata, AssetType, Assets, AuthorInherent,
 	Balance, Balances, Call, CrowdloanRewards, Ethereum, Event, Executive, FixedGasPrice,

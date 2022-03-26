@@ -137,7 +137,7 @@ impl AxlibCli for Cli {
 			#[cfg(feature = "moonriver-native")]
 			spec if spec.is_moonriver() => return &service::moonriver_runtime::VERSION,
 			#[cfg(feature = "axtend-native")]
-			spec if spec.is_moonbeam() => return &service::moonbeam_runtime::VERSION,
+			spec if spec.is_moonbeam() => return &service::axtend_runtime::VERSION,
 			#[cfg(feature = "moonbase-native")]
 			_ => return &service::moonbase_runtime::VERSION,
 			#[cfg(not(feature = "moonbase-native"))]
@@ -373,7 +373,7 @@ pub fn run() -> Result<()> {
 				}
 				#[cfg(feature = "axtend-native")]
 				chain_spec if chain_spec.is_moonbeam() => {
-					let block: service::moonbeam_runtime::Block =
+					let block: service::axtend_runtime::Block =
 						generate_genesis_block(&chain_spec, state_version)?;
 					let raw_header = block.header().encode();
 					let output_buf = if params.raw {
@@ -448,7 +448,7 @@ pub fn run() -> Result<()> {
 			match chain_spec {
 				#[cfg(feature = "axtend-native")]
 				spec if spec.is_moonbeam() => runner.sync_run(|config| {
-					cmd.run::<service::moonbeam_runtime::RuntimeApi, service::AxtendExecutor>(
+					cmd.run::<service::axtend_runtime::RuntimeApi, service::AxtendExecutor>(
 						&cmd, config,
 					)
 				}),
@@ -490,7 +490,7 @@ pub fn run() -> Result<()> {
 					#[cfg(feature = "axtend-native")]
 					spec if spec.is_moonbeam() => {
 						return runner.sync_run(|config| {
-							cmd.run::<service::moonbeam_runtime::Block, service::AxtendExecutor>(
+							cmd.run::<service::axtend_runtime::Block, service::AxtendExecutor>(
 								config,
 							)
 						})
@@ -548,7 +548,7 @@ pub fn run() -> Result<()> {
 							})?;
 
 					Ok((
-						cmd.run::<service::moonbeam_runtime::Block, service::AxtendExecutor>(
+						cmd.run::<service::axtend_runtime::Block, service::AxtendExecutor>(
 							config,
 						),
 						task_manager,
@@ -628,7 +628,7 @@ pub fn run() -> Result<()> {
 						.map_err(Into::into),
 						#[cfg(feature = "axtend-native")]
 						spec if spec.is_moonbeam() => service::new_dev::<
-							service::moonbeam_runtime::RuntimeApi,
+							service::axtend_runtime::RuntimeApi,
 							service::AxtendExecutor,
 						>(config, author_id, cli.run.sealing, rpc_config)
 						.map_err(Into::into),
@@ -665,7 +665,7 @@ pub fn run() -> Result<()> {
 					}
 					#[cfg(feature = "axtend-native")]
 					spec if spec.is_moonbeam() => {
-						let block: service::moonbeam_runtime::Block =
+						let block: service::axtend_runtime::Block =
 							generate_genesis_block(&spec, state_version)?;
 						format!("0x{:?}", HexDisplay::from(&block.header().encode()))
 					}
@@ -699,7 +699,7 @@ pub fn run() -> Result<()> {
 					.map_err(Into::into),
 					#[cfg(feature = "axtend-native")]
 					spec if spec.is_moonbeam() => service::start_node::<
-						service::moonbeam_runtime::RuntimeApi,
+						service::axtend_runtime::RuntimeApi,
 						service::AxtendExecutor,
 					>(config, axia_config, id, rpc_config)
 					.await

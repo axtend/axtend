@@ -62,7 +62,7 @@ use xcm_builder::{
 use xcm_executor::traits::JustTry;
 
 use frame_system::{EnsureRoot, EnsureSigned};
-pub use moonbeam_core_primitives::{
+pub use axtend_core_primitives::{
 	AccountId, AccountIndex, Address, AssetId, Balance, BlockNumber, DigestItem, Hash, Header,
 	Index, Signature,
 };

@@ -30,7 +30,7 @@ use maplit::hashmap;
 #[cfg(feature = "moonbase-native")]
 pub use moonbase_runtime;
 #[cfg(feature = "axtend-native")]
-pub use moonbeam_runtime;
+pub use axtend_runtime;
 #[cfg(feature = "moonriver-native")]
 pub use moonriver_runtime;
 use std::{collections::BTreeMap, sync::Mutex, time::Duration};
@@ -85,11 +85,11 @@ impl sc_executor::NativeExecutionDispatch for AxtendExecutor {
 	type ExtendHostFunctions = HostFunctions;
 
 	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
-		moonbeam_runtime::api::dispatch(method, data)
+		axtend_runtime::api::dispatch(method, data)
 	}
 
 	fn native_version() -> sc_executor::NativeVersion {
-		moonbeam_runtime::native_version()
+		axtend_runtime::native_version()
 	}
 }
 
@@ -234,7 +234,7 @@ pub fn new_chain_ops(
 		}
 		#[cfg(feature = "axtend-native")]
 		spec if spec.is_moonbeam() => {
-			new_chain_ops_inner::<moonbeam_runtime::RuntimeApi, AxtendExecutor>(config)
+			new_chain_ops_inner::<axtend_runtime::RuntimeApi, AxtendExecutor>(config)
 		}
 		#[cfg(feature = "moonbase-native")]
 		_ => new_chain_ops_inner::<moonbase_runtime::RuntimeApi, MoonbaseExecutor>(config),

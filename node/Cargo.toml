@@ -15,7 +15,7 @@ path = 'src/main.rs'
 futures = { version = "0.3.1", features = ["compat"] }
 
 axtend-cli = { path = "cli", default-features = false }
-moonbeam-service = { path = "service", default-features = false }
+axtend-service = { path = "service", default-features = false }
 
 [dev-dependencies]
 assert_cmd = "0.12"
@@ -32,21 +32,21 @@ xcm-builder = { git = "https://github.com/axtend/axia", branch = "axia" }
 [features]
 default = ["moonbase-native", "axtend-native", "moonriver-native"]
 
-axctest-native = ["moonbeam-service/axctest-native"]
-betanet-native = ["moonbeam-service/betanet-native"]
+axctest-native = ["axtend-service/axctest-native"]
+betanet-native = ["axtend-service/betanet-native"]
 alphanet-native = [
 	"axtend-cli/alphanet-native",
-	"moonbeam-service/alphanet-native",
+	"axtend-service/alphanet-native",
 ]
 
 moonbase-native = [
 	"axtend-cli/moonbase-native",
-	"moonbeam-service/moonbase-native",
+	"axtend-service/moonbase-native",
 ]
-axtend-native = ["axtend-cli/axtend-native", "moonbeam-service/axtend-native"]
+axtend-native = ["axtend-cli/axtend-native", "axtend-service/axtend-native"]
 moonriver-native = [
 	"axtend-cli/moonriver-native",
-	"moonbeam-service/moonriver-native",
+	"axtend-service/moonriver-native",
 ]
 
 test-spec = []

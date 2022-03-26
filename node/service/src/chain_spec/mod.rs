@@ -15,7 +15,7 @@
 // along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 use bip39::{Language, Mnemonic, Seed};
 use log::debug;
-pub use moonbeam_core_primitives::AccountId;
+pub use axtend_core_primitives::AccountId;
 use sc_chain_spec::{ChainSpecExtension, ChainSpecGroup};
 use serde::{Deserialize, Serialize};
 use sha3::{Digest, Keccak256};

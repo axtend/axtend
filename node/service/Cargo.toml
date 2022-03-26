@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam-service"
+name = "axtend-service"
 authors = ["PureStake"]
 edition = "2018"
 homepage = "https://axtend.network"
@@ -33,7 +33,7 @@ trie-root = "0.15.2"
 # Axtend
 cli-opt = { package = "axtend-cli-opt", path = "../cli-opt" }
 manual-xcm-rpc = { path = "../../client/rpc/manual-xcm" }
-moonbeam-core-primitives = { path = "../../core-primitives" }
+axtend-core-primitives = { path = "../../core-primitives" }
 moonbeam-finality-rpc = { path = "../../client/rpc/finality" }
 moonbeam-primitives-ext = { path = "../../primitives/ext" }
 axtend-rpc-debug = { path = "../../client/rpc/debug" }
@@ -45,7 +45,7 @@ allychain-staking = { path = "../../pallets/allychain-staking" }
 
 # Axtend runtimes
 moonbase-runtime = { path = "../../runtime/moonbase", optional = true }
-moonbeam-runtime = { path = "../../runtime/moonbeam", optional = true }
+axtend-runtime = { path = "../../runtime/moonbeam", optional = true }
 moonriver-runtime = { path = "../../runtime/moonriver", optional = true }
 
 # Axlib
@@ -166,7 +166,7 @@ betanet-native = ["axia-cli/betanet-native", "axia-service/betanet-native"]
 alphanet-native = ["axia-cli/alphanet-native", "axia-service/alphanet-native"]
 
 moonbase-native = ["moonbase-runtime", "alphanet-native"]
-axtend-native = ["moonbeam-runtime"]
+axtend-native = ["axtend-runtime"]
 moonriver-native = ["moonriver-runtime"]
 
 test-spec = []
@@ -175,7 +175,7 @@ runtime-benchmarks = [
 	"moonbase-native",
 	"moonbase-runtime/runtime-benchmarks",
 	"axtend-native",
-	"moonbeam-runtime/runtime-benchmarks",
+	"axtend-runtime/runtime-benchmarks",
 	"moonriver-native",
 	"moonriver-runtime/runtime-benchmarks",
 	"pallet-ethereum/runtime-benchmarks",

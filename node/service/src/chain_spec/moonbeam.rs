@@ -24,7 +24,7 @@ use crate::chain_spec::{derive_bip44_pairs_from_mnemonic, get_account_id_from_pa
 use crate::chain_spec::{generate_accounts, get_from_seed, Extensions};
 use cumulus_primitives_core::ParaId;
 use hex_literal::hex;
-use moonbeam_runtime::{
+use axtend_runtime::{
 	currency::GLMR, currency::SUPPLY_FACTOR, AccountId, AuthorFilterConfig, AuthorMappingConfig,
 	Balance, BalancesConfig, CouncilCollectiveConfig, CrowdloanRewardsConfig, DemocracyConfig,
 	EVMConfig, EthereumChainIdConfig, EthereumConfig, GenesisAccount, GenesisConfig, InflationInfo,
@@ -174,7 +174,7 @@ pub fn moonbeam_inflation_config() -> InflationInfo<Balance> {
 		perbill_annual_to_perbill_round(
 			annual,
 			// rounds per year
-			BLOCKS_PER_YEAR / moonbeam_runtime::DefaultBlocksPerRound::get(),
+			BLOCKS_PER_YEAR / axtend_runtime::DefaultBlocksPerRound::get(),
 		)
 	}
 	let annual = Range {

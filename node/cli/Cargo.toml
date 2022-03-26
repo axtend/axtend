@@ -12,7 +12,7 @@ parity-scale-codec = "2.2"
 # Axtend
 cli-opt = { package = "axtend-cli-opt", path = "../cli-opt", default-features = false }
 perf-test = { path = "../perf-test" }
-service = { package = "moonbeam-service", path = "../service", default-features = false }
+service = { package = "axtend-service", path = "../service", default-features = false }
 
 # Axlib
 frame-benchmarking-cli = { git = "https://github.com/axtend/axlib", branch = "axlib" }

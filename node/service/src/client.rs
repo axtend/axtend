@@ -13,7 +13,7 @@
 
 // You should have received a copy of the GNU General Public License
 // along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
-pub use moonbeam_core_primitives::{AccountId, Balance, Block, BlockNumber, Hash, Header, Index};
+pub use axtend_core_primitives::{AccountId, Balance, Block, BlockNumber, Hash, Header, Index};
 use sc_client_api::{Backend as BackendT, BlockchainEvents, KeyIterator};
 use sp_api::{CallApiAt, NumberFor, ProvideRuntimeApi};
 use sp_blockchain::HeaderBackend;
@@ -150,7 +150,7 @@ pub trait ClientHandle {
 #[derive(Clone)]
 pub enum Client {
 	#[cfg(feature = "axtend-native")]
-	Axtend(Arc<crate::FullClient<moonbeam_runtime::RuntimeApi, crate::AxtendExecutor>>),
+	Axtend(Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::AxtendExecutor>>),
 	#[cfg(feature = "moonriver-native")]
 	Moonriver(Arc<crate::FullClient<moonriver_runtime::RuntimeApi, crate::MoonriverExecutor>>),
 	#[cfg(feature = "moonbase-native")]
@@ -158,11 +158,11 @@ pub enum Client {
 }
 
 #[cfg(feature = "axtend-native")]
-impl From<Arc<crate::FullClient<moonbeam_runtime::RuntimeApi, crate::AxtendExecutor>>>
+impl From<Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::AxtendExecutor>>>
 	for Client
 {
 	fn from(
-		client: Arc<crate::FullClient<moonbeam_runtime::RuntimeApi, crate::AxtendExecutor>>,
+		client: Arc<crate::FullClient<axtend_runtime::RuntimeApi, crate::AxtendExecutor>>,
 	) -> Self {
 		Self::Axtend(client)
 	}

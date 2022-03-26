@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam-runtime"
+name = "axtend-runtime"
 authors = ["PureStake"]
 build = "build.rs"
 description = "Axtend Runtime"
@@ -19,7 +19,7 @@ sha3 = { version = "0.8", optional = true, default-features = false }
 
 # Axtend
 account = { path = "../../primitives/account/", default-features = false }
-moonbeam-core-primitives = { path = "../../core-primitives", default-features = false }
+axtend-core-primitives = { path = "../../core-primitives", default-features = false }
 moonbeam-relay-encoder = { path = "../relay-encoder", default-features = false }
 precompile-utils = { path = "../../precompiles/utils", default-features = false }
 runtime-common = { path = "../common", default-features = false }
@@ -166,7 +166,7 @@ std = [
 	"frame-support/std",
 	"frame-system-rpc-runtime-api/std",
 	"frame-system/std",
-	"moonbeam-core-primitives/std",
+	"axtend-core-primitives/std",
 	"moonbeam-evm-tracer/std",
 	"moonbeam-relay-encoder/std",
 	"axtend-rpc-primitives-debug/std",

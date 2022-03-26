@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam-core-primitives"
+name = "axtend-core-primitives"
 authors = ["PureStake"]
 edition = "2018"
 homepage = "https://axtend.network"
