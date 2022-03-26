@@ -15,7 +15,7 @@
 # Generated test specs
 /tests/moonbeam-test-specs/*.json
 
-# Moonbeam-Launch
+# Axtend-Launch
 *.log
 tools/specFiles
 tools/*-local.json

@@ -9,7 +9,7 @@ version = "0.1.0"
 
 [dependencies]
 
-# Moonbeam
+# Axtend
 evm-tracing-events = { path = "../../primitives/rpc/evm-tracing-events", default-features = false, features = [
 	"evm-tracing",
 ] }

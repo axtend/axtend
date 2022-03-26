@@ -17,7 +17,7 @@ sha3 = "0.9"
 tokio = { version = "1.10", features = ["sync", "time"] }
 tracing = "0.1.25"
 
-# Moonbeam
+# Axtend
 moonbeam-client-evm-tracing = { path = "../../evm-tracing" }
 moonbeam-rpc-core-trace = { path = "../../rpc-core/trace" }
 moonbeam-rpc-core-types = { path = "../../rpc-core/types" }

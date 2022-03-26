@@ -30,7 +30,7 @@ tiny-hderive = { version = "0.3.0", default-features = false }
 tokio = { version = "1.13.0", features = ["macros", "sync"] }
 trie-root = "0.15.2"
 
-# Moonbeam
+# Axtend
 cli-opt = { package = "moonbeam-cli-opt", path = "../cli-opt" }
 manual-xcm-rpc = { path = "../../client/rpc/manual-xcm" }
 moonbeam-core-primitives = { path = "../../core-primitives" }
@@ -43,7 +43,7 @@ moonbeam-rpc-trace = { path = "../../client/rpc/trace" }
 moonbeam-rpc-txpool = { path = "../../client/rpc/txpool" }
 allychain-staking = { path = "../../pallets/allychain-staking" }
 
-# Moonbeam runtimes
+# Axtend runtimes
 moonbase-runtime = { path = "../../runtime/moonbase", optional = true }
 moonbeam-runtime = { path = "../../runtime/moonbeam", optional = true }
 moonriver-runtime = { path = "../../runtime/moonriver", optional = true }

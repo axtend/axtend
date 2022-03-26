@@ -1,18 +1,18 @@
 // Copyright 2019-2022 PureStake Inc.
-// This file is part of Moonbeam.
+// This file is part of Axtend.
 
-// Moonbeam is free software: you can redistribute it and/or modify
+// Axtend is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
 
-// Moonbeam is distributed in the hope that it will be useful,
+// Axtend is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
 
 // You should have received a copy of the GNU General Public License
-// along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
+// along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
 //! The Ethereum Signature implementation.
 //!
@@ -32,7 +32,7 @@ pub use serde::{de::DeserializeOwned, Deserialize, Serialize};
 // be used in palletEVM as well. It may also need more traits such as AsRef, AsMut, etc like
 // AccountId32 has.
 
-/// The account type to be used in Moonbeam. It is a wrapper for 20 fixed bytes. We prefer to use
+/// The account type to be used in Axtend. It is a wrapper for 20 fixed bytes. We prefer to use
 /// a dedicated type to prevent using arbitrary 20 byte arrays were AccountIds are expected. With
 /// the introduction of the `scale-info` crate this benefit extends even to non-Rust tools like
 /// Axia JS.

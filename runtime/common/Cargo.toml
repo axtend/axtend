@@ -11,7 +11,7 @@ version = "0.8.0-dev"
 impl-trait-for-tuples = "0.2.1"
 log = "0.4"
 
-# Moonbeam
+# Axtend
 pallet-asset-manager = { path = "../../pallets/asset-manager", optional = true, default-features = false }
 pallet-author-mapping = { path = "../../pallets/author-mapping", default-features = false }
 pallet-migrations = { path = "../../pallets/migrations", default-features = false }

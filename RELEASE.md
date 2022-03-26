@@ -1,4 +1,4 @@
-## Moonbeam Release Process
+## Axtend Release Process
 
 ### Branches
 
