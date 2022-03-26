@@ -2,7 +2,7 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Build Moonbeam (debug symbols)",
+      "label": "Build Axtend (debug symbols)",
       "type": "shell",
       "command": "RUSTFLAGS=-g cargo build --release",
       "presentation": {
@@ -11,7 +11,7 @@
       }
     },
     {
-      "label": "Build Moonbeam (debug symbols + tracing)",
+      "label": "Build Axtend (debug symbols + tracing)",
       "type": "shell",
       "command": "RUSTFLAGS=-g cargo build --release --features=evm-tracing",
       "presentation": {

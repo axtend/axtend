@@ -1,6 +1,6 @@
 {
-  "name": "Moonbeam",
-  "id": "moonbeam",
+  "name": "Axtend",
+  "id": "axtend",
   "chainType": "Live",
   "bootNodes": [],
   "telemetryEndpoints": [["ws://localhost:8001/submit/", 0]],

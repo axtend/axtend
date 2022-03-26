@@ -31,7 +31,7 @@ use sp_std::vec::Vec;
 use evm_tracing_events::{Event, EvmEvent, GasometerEvent, RuntimeEvent, StepEventFilter};
 
 #[runtime_interface]
-pub trait MoonbeamExt {
+pub trait AxtendExt {
 	fn raw_step(&mut self, _data: Vec<u8>) {}
 
 	fn raw_gas(&mut self, _data: Vec<u8>) {}
@@ -43,7 +43,7 @@ pub trait MoonbeamExt {
 	fn call_list_new(&mut self) {}
 
 	// New design, proxy events.
-	/// An `Evm` event proxied by the Moonbeam runtime to this host function.
+	/// An `Evm` event proxied by the Axtend runtime to this host function.
 	/// evm -> moonbeam_runtime -> host.
 	fn evm_event(&mut self, event: Vec<u8>) {
 		if let Ok(event) = EvmEvent::decode(&mut &event[..]) {
@@ -51,7 +51,7 @@ pub trait MoonbeamExt {
 		}
 	}
 
-	/// A `Gasometer` event proxied by the Moonbeam runtime to this host function.
+	/// A `Gasometer` event proxied by the Axtend runtime to this host function.
 	/// evm_gasometer -> moonbeam_runtime -> host.
 	fn gasometer_event(&mut self, event: Vec<u8>) {
 		if let Ok(event) = GasometerEvent::decode(&mut &event[..]) {
@@ -59,7 +59,7 @@ pub trait MoonbeamExt {
 		}
 	}
 
-	/// A `Runtime` event proxied by the Moonbeam runtime to this host function.
+	/// A `Runtime` event proxied by the Axtend runtime to this host function.
 	/// evm_runtime -> moonbeam_runtime -> host.
 	fn runtime_event(&mut self, event: Vec<u8>) {
 		if let Ok(event) = RuntimeEvent::decode(&mut &event[..]) {

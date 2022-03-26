@@ -99,7 +99,7 @@ fn load_spec(
 
 impl AxlibCli for Cli {
 	fn impl_name() -> String {
-		"Moonbeam Allychain Collator".into()
+		"Axtend Allychain Collator".into()
 	}
 
 	fn impl_version() -> String {
@@ -148,7 +148,7 @@ impl AxlibCli for Cli {
 
 impl AxlibCli for RelayChainCli {
 	fn impl_name() -> String {
-		"Moonbeam Allychain Collator".into()
+		"Axtend Allychain Collator".into()
 	}
 
 	fn impl_version() -> String {
@@ -156,7 +156,7 @@ impl AxlibCli for RelayChainCli {
 	}
 
 	fn description() -> String {
-		"Moonbeam Allychain Collator\n\nThe command-line arguments provided first will be \
+		"Axtend Allychain Collator\n\nThe command-line arguments provided first will be \
 		passed to the allychain node, while the arguments provided after -- will be passed \
 		to the relaychain node.\n\n\
 		allychain-collator [allychain-args] -- [relaychain-args]"

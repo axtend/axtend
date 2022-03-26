@@ -24,7 +24,7 @@ pub mod migrations;
 
 //TODO maybe this should be upstreamed into Frontier.
 
-/// And ipmlementation of Frontier's AddressMapping trait for Moonbeam Accounts.
+/// And ipmlementation of Frontier's AddressMapping trait for Axtend Accounts.
 /// This is basically identical to Frontier's own IdentityAddressMapping, but it works for any type
 /// that is Into<H160> like AccountId20 for example.
 pub struct IntoAddressMapping;

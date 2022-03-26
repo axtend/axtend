@@ -57,7 +57,7 @@ pub fn extend_with_tracing<C, BE>(
 	}
 }
 
-// Spawn the tasks that are required to run a Moonbeam tracing node.
+// Spawn the tasks that are required to run a Axtend tracing node.
 pub fn spawn_tracing_tasks<B, C, BE>(
 	rpc_config: &cli_opt::RpcConfig,
 	params: SpawnTasksParams<B, C, BE>,

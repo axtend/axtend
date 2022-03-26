@@ -26,7 +26,7 @@ use sp_api::BlockId;
 use sp_blockchain::HeaderBackend;
 use sp_runtime::traits::Block;
 
-/// An RPC endpoint to check for finality of blocks and transactions in Moonbeam
+/// An RPC endpoint to check for finality of blocks and transactions in Axtend
 #[rpc(server)]
 pub trait MoonbeamFinalityApi {
 	/// Reports whether a Axlib or Ethereum block is finalized.

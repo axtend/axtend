@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-//! This module assembles the Moonbeam service components, executes them, and manages communication
+//! This module assembles the Axtend service components, executes them, and manages communication
 //! between them. This is the backbone of the client-side node implementation.
 //!
 //! This module can assemble:
@@ -74,7 +74,7 @@ type MaybeSelectChain = Option<sc_consensus::LongestChain<FullBackend, Block>>;
 
 pub type HostFunctions = (
 	frame_benchmarking::benchmarking::HostFunctions,
-	moonbeam_primitives_ext::moonbeam_ext::HostFunctions,
+	moonbeam_primitives_ext::axtend_ext::HostFunctions,
 );
 
 #[cfg(feature = "moonbeam-native")]
