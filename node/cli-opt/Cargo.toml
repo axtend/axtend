@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam-cli-opt"
+name = "axtend-cli-opt"
 authors = ["PureStake"]
 edition = "2018"
 homepage = "https://axtend.network"

@@ -12,8 +12,8 @@
 # Loading binary/specs variables
 source scripts/_init_var.sh
 
-if [ ! -f "$MOONBEAM_BINARY" ]; then
-  echo "Axtend binary $MOONBEAM_BINARY is missing"
+if [ ! -f "$AXTEND_BINARY" ]; then
+  echo "Axtend binary $AXTEND_BINARY is missing"
   echo "Please run: cargo build --release"
   exit 1
 fi
@@ -45,9 +45,9 @@ else
   BASE_PATH="$BASE_PREFIX-relay-$STANDALONE_INDEX"
 fi
 
-EXECUTABLE=$MOONBEAM_BINARY
+EXECUTABLE=$AXTEND_BINARY
 if [ ! -z "$PERF" ]; then
-  EXECUTABLE="$PERF $MOONBEAM_BINARY"
+  EXECUTABLE="$PERF $AXTEND_BINARY"
 fi
 
 $EXECUTABLE \

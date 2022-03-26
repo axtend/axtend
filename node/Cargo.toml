@@ -14,7 +14,7 @@ path = 'src/main.rs'
 [dependencies]
 futures = { version = "0.3.1", features = ["compat"] }
 
-moonbeam-cli = { path = "cli", default-features = false }
+axtend-cli = { path = "cli", default-features = false }
 moonbeam-service = { path = "service", default-features = false }
 
 [dev-dependencies]
@@ -30,38 +30,35 @@ pallet-xcm = { git = "https://github.com/axtend/axia", branch = "axia" }
 xcm-builder = { git = "https://github.com/axtend/axia", branch = "axia" }
 
 [features]
-default = ["moonbase-native", "moonbeam-native", "moonriver-native"]
+default = ["moonbase-native", "axtend-native", "moonriver-native"]
 
 axctest-native = ["moonbeam-service/axctest-native"]
 betanet-native = ["moonbeam-service/betanet-native"]
 alphanet-native = [
-	"moonbeam-cli/alphanet-native",
+	"axtend-cli/alphanet-native",
 	"moonbeam-service/alphanet-native",
 ]
 
 moonbase-native = [
-	"moonbeam-cli/moonbase-native",
+	"axtend-cli/moonbase-native",
 	"moonbeam-service/moonbase-native",
 ]
-moonbeam-native = [
-	"moonbeam-cli/moonbeam-native",
-	"moonbeam-service/moonbeam-native",
-]
+axtend-native = ["axtend-cli/axtend-native", "moonbeam-service/axtend-native"]
 moonriver-native = [
-	"moonbeam-cli/moonriver-native",
+	"axtend-cli/moonriver-native",
 	"moonbeam-service/moonriver-native",
 ]
 
 test-spec = []
 
 runtime-benchmarks = [
-	"moonbeam-cli/runtime-benchmarks",
+	"axtend-cli/runtime-benchmarks",
 	"pallet-xcm/runtime-benchmarks",
 	"xcm-builder/runtime-benchmarks",
 ]
 
 moonbase-runtime-benchmarks = [
-	"moonbeam-cli/moonbase-runtime-benchmarks",
+	"axtend-cli/moonbase-runtime-benchmarks",
 	"pallet-xcm/runtime-benchmarks",
 	"xcm-builder/runtime-benchmarks",
 ]

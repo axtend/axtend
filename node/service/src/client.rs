@@ -149,7 +149,7 @@ pub trait ClientHandle {
 /// A client instance of Axtend.
 #[derive(Clone)]
 pub enum Client {
-	#[cfg(feature = "moonbeam-native")]
+	#[cfg(feature = "axtend-native")]
 	Axtend(Arc<crate::FullClient<moonbeam_runtime::RuntimeApi, crate::AxtendExecutor>>),
 	#[cfg(feature = "moonriver-native")]
 	Moonriver(Arc<crate::FullClient<moonriver_runtime::RuntimeApi, crate::MoonriverExecutor>>),
@@ -157,7 +157,7 @@ pub enum Client {
 	Moonbase(Arc<crate::FullClient<moonbase_runtime::RuntimeApi, crate::MoonbaseExecutor>>),
 }
 
-#[cfg(feature = "moonbeam-native")]
+#[cfg(feature = "axtend-native")]
 impl From<Arc<crate::FullClient<moonbeam_runtime::RuntimeApi, crate::AxtendExecutor>>>
 	for Client
 {
@@ -193,7 +193,7 @@ impl From<Arc<crate::FullClient<moonbase_runtime::RuntimeApi, crate::MoonbaseExe
 impl ClientHandle for Client {
 	fn execute_with<T: ExecuteWithClient>(&self, t: T) -> T::Output {
 		match self {
-			#[cfg(feature = "moonbeam-native")]
+			#[cfg(feature = "axtend-native")]
 			Self::Axtend(client) => T::execute_with_client::<_, _, crate::FullBackend>(t, client.clone()),
 			#[cfg(feature = "moonriver-native")]
 			Self::Moonriver(client) => T::execute_with_client::<_, _, crate::FullBackend>(t, client.clone()),
@@ -206,7 +206,7 @@ impl ClientHandle for Client {
 macro_rules! match_client {
 	($self:ident, $method:ident($($param:ident),*)) => {
 		match $self {
-			#[cfg(feature = "moonbeam-native")]
+			#[cfg(feature = "axtend-native")]
 			Self::Axtend(client) => client.$method($($param),*),
 			#[cfg(feature = "moonriver-native")]
 			Self::Moonriver(client) => client.$method($($param),*),

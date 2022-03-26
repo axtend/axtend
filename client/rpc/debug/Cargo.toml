@@ -14,7 +14,7 @@ jsonrpc-core = "18.0.0"
 tokio = { version = "1.10", features = ["sync", "time"] }
 
 # Axtend
-moonbeam-client-evm-tracing = { path = "../../evm-tracing" }
+axtend-client-evm-tracing = { path = "../../evm-tracing" }
 moonbeam-rpc-core-debug = { path = "../../rpc-core/debug" }
 moonbeam-rpc-core-types = { path = "../../rpc-core/types" }
 moonbeam-rpc-primitives-debug = { path = "../../../primitives/rpc/debug" }

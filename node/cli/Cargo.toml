@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam-cli"
+name = "axtend-cli"
 authors = ["PureStake"]
 edition = "2018"
 version = "0.21.1"
@@ -10,7 +10,7 @@ log = "0.4.8"
 parity-scale-codec = "2.2"
 
 # Axtend
-cli-opt = { package = "moonbeam-cli-opt", path = "../cli-opt", default-features = false }
+cli-opt = { package = "axtend-cli-opt", path = "../cli-opt", default-features = false }
 perf-test = { path = "../perf-test" }
 service = { package = "moonbeam-service", path = "../service", default-features = false }
 
@@ -43,7 +43,7 @@ axlib-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "
 [features]
 default = [
 	"moonbase-native",
-	"moonbeam-native",
+	"axtend-native",
 	"moonriver-native",
 	"wasmtime",
 	"alphanet-native",
@@ -52,7 +52,7 @@ default = [
 alphanet-native = ["axia-service/alphanet-native"]
 
 moonbase-native = ["service/moonbase-native", "alphanet-native"]
-moonbeam-native = ["service/moonbeam-native"]
+axtend-native = ["service/axtend-native"]
 moonriver-native = ["service/moonriver-native"]
 
 moonbase-runtime-benchmarks = ["service/moonbase-runtime-benchmarks"]

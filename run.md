@@ -185,11 +185,11 @@ intact tuition pattern icon trophy typical pipe since merry notable cute brush
 --alice \
 --chain axtend-dev
 
-/home/sankar/Zeeve/axtend/target/release/axtend \
+/home/sankar/Zeeve/axtend/target/release/moonbeam \
 --tmp \
---name axtend_test \
+--name moonbeam_test \
 --port 30334 \
 --ws-port 9944 \
 --rpc-port 9934 \
 --alice \
---chain axtend-dev
+--chain moonbeam-dev

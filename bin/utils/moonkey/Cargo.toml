@@ -13,4 +13,4 @@ path = "src/main.rs"
 
 [dependencies]
 clap = { version = "3.1", features = ["derive"] }
-cli-opt = { package = "moonbeam-cli-opt", path = "../../../node/cli-opt", default-features = false }
+cli-opt = { package = "axtend-cli-opt", path = "../../../node/cli-opt", default-features = false }

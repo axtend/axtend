@@ -1922,6 +1922,64 @@ dependencies = [
 ]
 
 [[package]]
+name = "axtend-cli"
+version = "0.21.1"
+dependencies = [
+ "axia-allychain",
+ "axia-cli",
+ "axia-primitives",
+ "axia-service",
+ "axlib-build-script-utils",
+ "axlib-prometheus-endpoint",
+ "axtend-cli-opt",
+ "clap 3.1.6",
+ "cumulus-client-cli",
+ "cumulus-client-service",
+ "cumulus-primitives-core",
+ "frame-benchmarking-cli",
+ "log",
+ "moonbeam-service",
+ "nimbus-primitives",
+ "parity-scale-codec 2.3.1",
+ "perf-test",
+ "sc-cli",
+ "sc-service",
+ "sc-telemetry",
+ "sc-tracing",
+ "sp-core",
+ "sp-runtime",
+ "try-runtime-cli",
+]
+
+[[package]]
+name = "axtend-cli-opt"
+version = "0.21.1"
+dependencies = [
+ "account",
+ "clap 3.1.6",
+ "libsecp256k1 0.6.0",
+ "primitive-types",
+ "sha3 0.9.1",
+ "sp-runtime",
+ "tiny-bip39",
+ "tiny-hderive",
+]
+
+[[package]]
+name = "axtend-client-evm-tracing"
+version = "0.1.0"
+dependencies = [
+ "ethereum-types",
+ "evm-tracing-events",
+ "hex",
+ "moonbeam-rpc-primitives-debug",
+ "parity-scale-codec 2.3.1",
+ "serde",
+ "serde_json",
+ "sp-std",
+]
+
+[[package]]
 name = "backtrace"
 version = "0.3.64"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -6771,9 +6829,9 @@ name = "moonbeam"
 version = "0.12.3"
 dependencies = [
  "assert_cmd",
+ "axtend-cli",
  "futures 0.3.21",
  "hex",
- "moonbeam-cli",
  "moonbeam-service",
  "nix 0.17.0",
  "pallet-xcm",
@@ -6781,64 +6839,6 @@ dependencies = [
  "serde_json",
  "tempfile",
  "xcm-builder",
-]
-
-[[package]]
-name = "moonbeam-cli"
-version = "0.21.1"
-dependencies = [
- "axia-allychain",
- "axia-cli",
- "axia-primitives",
- "axia-service",
- "axlib-build-script-utils",
- "axlib-prometheus-endpoint",
- "clap 3.1.6",
- "cumulus-client-cli",
- "cumulus-client-service",
- "cumulus-primitives-core",
- "frame-benchmarking-cli",
- "log",
- "moonbeam-cli-opt",
- "moonbeam-service",
- "nimbus-primitives",
- "parity-scale-codec 2.3.1",
- "perf-test",
- "sc-cli",
- "sc-service",
- "sc-telemetry",
- "sc-tracing",
- "sp-core",
- "sp-runtime",
- "try-runtime-cli",
-]
-
-[[package]]
-name = "moonbeam-cli-opt"
-version = "0.21.1"
-dependencies = [
- "account",
- "clap 3.1.6",
- "libsecp256k1 0.6.0",
- "primitive-types",
- "sha3 0.9.1",
- "sp-runtime",
- "tiny-bip39",
- "tiny-hderive",
-]
-
-[[package]]
-name = "moonbeam-client-evm-tracing"
-version = "0.1.0"
-dependencies = [
- "ethereum-types",
- "evm-tracing-events",
- "hex",
- "moonbeam-rpc-primitives-debug",
- "parity-scale-codec 2.3.1",
- "serde",
- "serde_json",
- "sp-std",
 ]
 
 [[package]]
@@ -6924,12 +6924,12 @@ dependencies = [
 name = "moonbeam-rpc-core-debug"
 version = "0.1.0"
 dependencies = [
+ "axtend-client-evm-tracing",
  "ethereum-types",
  "futures 0.3.21",
  "jsonrpc-core",
  "jsonrpc-core-client",
  "jsonrpc-derive",
- "moonbeam-client-evm-tracing",
  "moonbeam-rpc-core-types",
  "serde",
  "serde_json",
@@ -6940,12 +6940,12 @@ dependencies = [
 name = "moonbeam-rpc-core-trace"
 version = "0.6.0"
 dependencies = [
+ "axtend-client-evm-tracing",
  "ethereum-types",
  "futures 0.3.21",
  "jsonrpc-core",
  "jsonrpc-core-client",
  "jsonrpc-derive",
- "moonbeam-client-evm-tracing",
  "moonbeam-rpc-core-types",
  "serde",
  "serde_json",
@@ -6978,6 +6978,7 @@ dependencies = [
 name = "moonbeam-rpc-debug"
 version = "0.1.0"
 dependencies = [
+ "axtend-client-evm-tracing",
  "ethereum",
  "ethereum-types",
  "fc-consensus",
@@ -6987,7 +6988,6 @@ dependencies = [
  "futures 0.3.21",
  "hex-literal",
  "jsonrpc-core",
- "moonbeam-client-evm-tracing",
  "moonbeam-rpc-core-debug",
  "moonbeam-rpc-core-types",
  "moonbeam-rpc-primitives-debug",
@@ -7036,6 +7036,7 @@ dependencies = [
 name = "moonbeam-rpc-trace"
 version = "0.6.0"
 dependencies = [
+ "axtend-client-evm-tracing",
  "ethereum",
  "ethereum-types",
  "fc-consensus",
@@ -7044,7 +7045,6 @@ dependencies = [
  "fp-rpc",
  "futures 0.3.21",
  "jsonrpc-core",
- "moonbeam-client-evm-tracing",
  "moonbeam-rpc-core-trace",
  "moonbeam-rpc-core-types",
  "moonbeam-rpc-primitives-debug",
@@ -7214,6 +7214,7 @@ dependencies = [
  "axlib-prometheus-endpoint",
  "axlib-test-client",
  "axlib-test-runtime-client",
+ "axtend-cli-opt",
  "cumulus-client-cli",
  "cumulus-client-collator",
  "cumulus-client-consensus-common",
@@ -7248,7 +7249,6 @@ dependencies = [
  "manual-xcm-rpc",
  "maplit",
  "moonbase-runtime",
- "moonbeam-cli-opt",
  "moonbeam-core-primitives",
  "moonbeam-finality-rpc",
  "moonbeam-primitives-ext",
@@ -7319,8 +7319,8 @@ dependencies = [
 name = "moonkey"
 version = "0.1.1"
 dependencies = [
+ "axtend-cli-opt",
  "clap 3.1.6",
- "moonbeam-cli-opt",
 ]
 
 [[package]]
@@ -9506,6 +9506,7 @@ name = "perf-test"
 version = "0.1.0"
 dependencies = [
  "async-io",
+ "axtend-cli-opt",
  "clap 3.1.6",
  "cli-table",
  "cumulus-primitives-allychain-inherent",
@@ -9519,7 +9520,6 @@ dependencies = [
  "libsecp256k1 0.5.0",
  "log",
  "moonbase-runtime",
- "moonbeam-cli-opt",
  "moonbeam-service",
  "nimbus-primitives",
  "num_cpus",

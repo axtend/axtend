@@ -31,7 +31,7 @@ tokio = { version = "1.13.0", features = ["macros", "sync"] }
 trie-root = "0.15.2"
 
 # Axtend
-cli-opt = { package = "moonbeam-cli-opt", path = "../cli-opt" }
+cli-opt = { package = "axtend-cli-opt", path = "../cli-opt" }
 manual-xcm-rpc = { path = "../../client/rpc/manual-xcm" }
 moonbeam-core-primitives = { path = "../../core-primitives" }
 moonbeam-finality-rpc = { path = "../../client/rpc/finality" }
@@ -155,7 +155,7 @@ axlib-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "
 default = [
 	"axctest-native",
 	"moonbase-native",
-	"moonbeam-native",
+	"axtend-native",
 	"moonriver-native",
 	"betanet-native",
 	"alphanet-native",
@@ -166,7 +166,7 @@ betanet-native = ["axia-cli/betanet-native", "axia-service/betanet-native"]
 alphanet-native = ["axia-cli/alphanet-native", "axia-service/alphanet-native"]
 
 moonbase-native = ["moonbase-runtime", "alphanet-native"]
-moonbeam-native = ["moonbeam-runtime"]
+axtend-native = ["moonbeam-runtime"]
 moonriver-native = ["moonriver-runtime"]
 
 test-spec = []
@@ -174,7 +174,7 @@ test-spec = []
 runtime-benchmarks = [
 	"moonbase-native",
 	"moonbase-runtime/runtime-benchmarks",
-	"moonbeam-native",
+	"axtend-native",
 	"moonbeam-runtime/runtime-benchmarks",
 	"moonriver-native",
 	"moonriver-runtime/runtime-benchmarks",

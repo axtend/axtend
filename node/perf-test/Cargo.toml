@@ -23,7 +23,7 @@ sha3 = { version = "0.8" }
 
 # Axtend
 
-cli-opt = { package = "moonbeam-cli-opt", path = "../cli-opt", default-features = false }
+cli-opt = { package = "axtend-cli-opt", path = "../cli-opt", default-features = false }
 # TODO: handle different runtime builds
 moonbase-runtime = { path = "../../runtime/moonbase" }
 service = { package = "moonbeam-service", path = "../service", default-features = false }

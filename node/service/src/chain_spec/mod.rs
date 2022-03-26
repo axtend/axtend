@@ -25,7 +25,7 @@ use tiny_hderive::bip32::ExtendedPrivKey;
 pub mod fake_spec;
 #[cfg(feature = "moonbase-native")]
 pub mod moonbase;
-#[cfg(feature = "moonbeam-native")]
+#[cfg(feature = "axtend-native")]
 pub mod moonbeam;
 #[cfg(feature = "moonriver-native")]
 pub mod moonriver;
@@ -52,7 +52,7 @@ pub mod moonriver {
 		panic!("moonriver runtime not enabled")
 	}
 }
-#[cfg(not(feature = "moonbeam-native"))]
+#[cfg(not(feature = "axtend-native"))]
 pub mod moonbeam {
 	pub type ChainSpec = crate::chain_spec::fake_spec::FakeSpec;
 	pub fn chain_spec_from_json_file(_: std::path::PathBuf) -> Result<ChainSpec, String> {

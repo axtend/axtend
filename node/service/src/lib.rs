@@ -29,7 +29,7 @@ use futures::StreamExt;
 use maplit::hashmap;
 #[cfg(feature = "moonbase-native")]
 pub use moonbase_runtime;
-#[cfg(feature = "moonbeam-native")]
+#[cfg(feature = "axtend-native")]
 pub use moonbeam_runtime;
 #[cfg(feature = "moonriver-native")]
 pub use moonriver_runtime;
@@ -77,10 +77,10 @@ pub type HostFunctions = (
 	moonbeam_primitives_ext::axtend_ext::HostFunctions,
 );
 
-#[cfg(feature = "moonbeam-native")]
+#[cfg(feature = "axtend-native")]
 pub struct AxtendExecutor;
 
-#[cfg(feature = "moonbeam-native")]
+#[cfg(feature = "axtend-native")]
 impl sc_executor::NativeExecutionDispatch for AxtendExecutor {
 	type ExtendHostFunctions = HostFunctions;
 
@@ -128,7 +128,7 @@ impl sc_executor::NativeExecutionDispatch for MoonbaseExecutor {
 /// Trivial enum representing runtime variant
 #[derive(Clone)]
 pub enum RuntimeVariant {
-	#[cfg(feature = "moonbeam-native")]
+	#[cfg(feature = "axtend-native")]
 	Axtend,
 	#[cfg(feature = "moonriver-native")]
 	Moonriver,
@@ -140,7 +140,7 @@ pub enum RuntimeVariant {
 impl RuntimeVariant {
 	pub fn from_chain_spec(chain_spec: &Box<dyn ChainSpec>) -> Self {
 		match chain_spec {
-			#[cfg(feature = "moonbeam-native")]
+			#[cfg(feature = "axtend-native")]
 			spec if spec.is_moonbeam() => Self::Axtend,
 			#[cfg(feature = "moonriver-native")]
 			spec if spec.is_moonriver() => Self::Moonriver,
@@ -232,7 +232,7 @@ pub fn new_chain_ops(
 		spec if spec.is_moonriver() => {
 			new_chain_ops_inner::<moonriver_runtime::RuntimeApi, MoonriverExecutor>(config)
 		}
-		#[cfg(feature = "moonbeam-native")]
+		#[cfg(feature = "axtend-native")]
 		spec if spec.is_moonbeam() => {
 			new_chain_ops_inner::<moonbeam_runtime::RuntimeApi, AxtendExecutor>(config)
 		}
