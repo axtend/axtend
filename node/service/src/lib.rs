@@ -152,12 +152,12 @@ impl RuntimeVariant {
 }
 
 /// Can be called for a `Configuration` to check if it is a configuration for
-/// the `Moonbeam` network.
+/// the `Axtend` network.
 pub trait IdentifyVariant {
 	/// Returns `true` if this is a configuration for the `Moonbase` network.
 	fn is_moonbase(&self) -> bool;
 
-	/// Returns `true` if this is a configuration for the `Moonbeam` network.
+	/// Returns `true` if this is a configuration for the `Axtend` network.
 	fn is_moonbeam(&self) -> bool;
 
 	/// Returns `true` if this is a configuration for the `Moonriver` network.

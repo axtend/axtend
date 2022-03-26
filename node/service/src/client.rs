@@ -109,7 +109,7 @@ where
 
 /// Execute something with the client instance.
 ///
-/// As there exist multiple chains inside Moonbeam, like Moonbeam itself, Moonbase,
+/// As there exist multiple chains inside Axtend, like Axtend itself, Moonbase,
 /// Moonriver etc, there can exist different kinds of client types. As these
 /// client types differ in the generics that are being used, we can not easily
 /// return them from a function. For returning them from a function there exists
@@ -134,9 +134,9 @@ pub trait ExecuteWithClient {
 		Client: AbstractClient<Block, Backend, Api = Api> + 'static;
 }
 
-/// A handle to a Moonbeam client instance.
+/// A handle to a Axtend client instance.
 ///
-/// The Moonbeam service supports multiple different runtimes (Moonbase, Moonbeam
+/// The Axtend service supports multiple different runtimes (Moonbase, Axtend
 /// itself, etc). As each runtime has a specialized client, we need to hide them
 /// behind a trait. This is this trait.
 ///

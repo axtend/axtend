@@ -14,9 +14,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Moonbeam CLI Library. Built with clap
+//! Axtend CLI Library. Built with clap
 //!
-//! This module defines the Moonbeam node's Command Line Interface (CLI)
+//! This module defines the Axtend node's Command Line Interface (CLI)
 //! It is built using clap and inherits behavior from Axlib's sc_cli crate.
 
 use clap::Parser;

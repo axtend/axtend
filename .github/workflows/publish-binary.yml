@@ -82,7 +82,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.event.inputs.to }}
-          release_name: Moonbeam ${{ github.event.inputs.to }}
+          release_name: Axtend ${{ github.event.inputs.to }}
           body_path: body.md
           draft: true
       - name: Upload moonbeam

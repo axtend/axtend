@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Moonbeam EVM tracing Integration Tests
+//! Axtend EVM tracing Integration Tests
 
 mod common;
 

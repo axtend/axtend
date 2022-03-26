@@ -356,7 +356,7 @@ macro_rules! impl_runtime_apis_plus_common {
 				) -> bool {
 					let block_number = parent_header.number + 1;
 
-					// The Moonbeam runtimes use an entropy source that needs to do some accounting
+					// The Axtend runtimes use an entropy source that needs to do some accounting
 					// work during block initialization. Therefore we initialize it here to match
 					// the state it will be in when the next block is being executed.
 					use frame_support::traits::OnInitialize;

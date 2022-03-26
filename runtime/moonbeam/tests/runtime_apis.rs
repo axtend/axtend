@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Moonbeam Runtime Api Integration Tests
+//! Axtend Runtime Api Integration Tests
 
 mod common;
 use common::*;

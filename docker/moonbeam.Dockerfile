@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y ca-certificates && update-ca-certificat
 
 FROM debian:buster-slim
 LABEL maintainer "alan@purestake.com"
-LABEL description="Binary for Moonbeam Collator"
+LABEL description="Binary for Axtend Collator"
 
 RUN useradd -m -u 1000 -U -s /bin/sh -d /moonbeam moonbeam && \
 	mkdir -p /moonbeam/.local/share && \

@@ -127,7 +127,7 @@ where
 			a if a == hash(7) => Some(Bn128Mul::execute(input, target_gas, context, is_static)),
 			a if a == hash(8) => Some(Bn128Pairing::execute(input, target_gas, context, is_static)),
 			a if a == hash(9) => Some(Blake2F::execute(input, target_gas, context, is_static)),
-			// Non-Moonbeam specific nor Ethereum precompiles :
+			// Non-Axtend specific nor Ethereum precompiles :
 			a if a == hash(1024) => {
 				Some(Sha3FIPS256::execute(input, target_gas, context, is_static))
 			}

@@ -14,11 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-//! The Moonbeam Runtime.
+//! The Axtend Runtime.
 //!
 //! Primary features of this runtime include:
 //! * Ethereum compatibility
-//! * Moonbeam tokenomics
+//! * Axtend tokenomics
 
 #![cfg_attr(not(feature = "std"), no_std)]
 // `construct_runtime!` does a lot of recursion and requires us to increase the limit to 256.

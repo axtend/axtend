@@ -23,7 +23,7 @@ RUN cargo build --profile production --locked
 
 FROM debian:buster-slim
 LABEL maintainer "alan@purestake.com"
-LABEL description="Axia for Moonbeam Relay Chains"
+LABEL description="Axia for Axtend Relay Chains"
 COPY --from=builder /axia/target/production/axia /usr/local/bin
 
 RUN useradd -m -u 1000 -U -s /bin/sh -d /moonbase-alphanet moonbeam && \

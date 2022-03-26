@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-//! Moonbeam Chain Specifications and utilities for building them.
+//! Axtend Chain Specifications and utilities for building them.
 //!
 //! Learn more about Axlib chain specifications at
 //! https://axlib.dev/docs/en/knowledgebase/integrate/chain-spec

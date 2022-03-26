@@ -13,7 +13,7 @@
 source scripts/_init_var.sh
 
 if [ ! -f "$MOONBEAM_BINARY" ]; then
-  echo "Moonbeam binary $MOONBEAM_BINARY is missing"
+  echo "Axtend binary $MOONBEAM_BINARY is missing"
   echo "Please run: cargo build --release"
   exit 1
 fi

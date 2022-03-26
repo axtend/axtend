@@ -1,6 +1,6 @@
 # Scripts
 
-This folder contains a list of script useful to develop/test the Moonbeam Node
+This folder contains a list of script useful to develop/test the Axtend Node
 
 ## Requirements
 
@@ -73,7 +73,7 @@ You can change this behavior by providing `--sealing 12000`
 
 ## Running complete local network
 
-Moonbeam rely on `axia-launch` to provide a simple command to create a local network including
+Axtend rely on `axia-launch` to provide a simple command to create a local network including
 the relay and the allychain nodes.
 
 The script [tools/launch.ts] contains a list of presets to execute the different possible networks.
