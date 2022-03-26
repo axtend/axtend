@@ -113,11 +113,11 @@ describeDevMoonbeam("Balance transfer - txwrapper", (context) => {
     const block1Hash = await context.polkadotApi.rpc.chain.getBlockHash(1);
     expect(await context.web3.eth.getBalance(GENESIS_ACCOUNT, 1)).to.equal(
       (
-        await context.polkadotApi.query.system.account.at(block1Hash, GENESIS_ACCOUNT)
+        (await context.polkadotApi.query.system.account.at(block1Hash, GENESIS_ACCOUNT)) as any
       ).data.free.toString()
     );
   });
   it("should check fees", async function () {
-    await verifyLatestBlockFees(context.polkadotApi, expect, BigInt(512));
+    await verifyLatestBlockFees(context, expect, BigInt(512));
   });
 });

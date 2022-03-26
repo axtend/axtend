@@ -1,4 +1,4 @@
-// Copyright 2019-2021 PureStake Inc.
+// Copyright 2019-2022 PureStake Inc.
 // This file is part of Moonbeam.
 
 // Moonbeam is free software: you can redistribute it and/or modify
@@ -38,20 +38,10 @@ pub use serde::{de::DeserializeOwned, Deserialize, Serialize};
 /// Polkadot JS.
 
 #[derive(
-	Eq,
-	PartialEq,
-	Copy,
-	Clone,
-	Encode,
-	Decode,
-	Debug,
-	TypeInfo,
-	MaxEncodedLen,
-	Default,
-	PartialOrd,
-	Ord,
+	Eq, PartialEq, Copy, Clone, Encode, Decode, TypeInfo, MaxEncodedLen, Default, PartialOrd, Ord,
 )]
 pub struct AccountId20(pub [u8; 20]);
+
 #[cfg(feature = "std")]
 impl_serde::impl_fixed_hash_serde!(AccountId20, 20);
 
@@ -65,6 +55,12 @@ impl std::fmt::Display for AccountId20 {
 	}
 }
 
+impl core::fmt::Debug for AccountId20 {
+	fn fmt(&self, f: &mut core::fmt::Formatter<'_>) -> core::fmt::Result {
+		write!(f, "{:?}", H160(self.0))
+	}
+}
+
 impl From<[u8; 20]> for AccountId20 {
 	fn from(bytes: [u8; 20]) -> Self {
 		Self(bytes)
@@ -72,7 +68,7 @@ impl From<[u8; 20]> for AccountId20 {
 }
 
 impl Into<[u8; 20]> for AccountId20 {
-	fn into(self: Self) -> [u8; 20] {
+	fn into(self) -> [u8; 20] {
 		self.0
 	}
 }
@@ -84,7 +80,7 @@ impl From<H160> for AccountId20 {
 }
 
 impl Into<H160> for AccountId20 {
-	fn into(self: Self) -> H160 {
+	fn into(self) -> H160 {
 		H160(self.0)
 	}
 }

@@ -1,6 +1,6 @@
 [package]
 name = "moonbeam-relay-encoder"
-authors = ["PureStake"]
+authors = [ "PureStake" ]
 edition = "2018"
 homepage = "https://moonbeam.network"
 license = "GPL-3.0-only"
@@ -14,29 +14,27 @@ relay-encoder-precompiles = { path = "../../precompiles/relay-encoder/", default
 xcm-primitives = { path = "../../primitives/xcm", default-features = false }
 
 # Substrate
-frame-system = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
-pallet-staking = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
-parity-scale-codec = { version = "2.0.0", default-features = false, features = [
-	"derive",
-] }
-sp-runtime = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
-sp-std = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
+frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+pallet-staking = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+parity-scale-codec = { version = "2.0.0", default-features = false, features = [ "derive" ] }
+sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+sp-std = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
 
 # Cumulus
-cumulus-primitives-core = { git = "https://github.com/axtend/cumulus", branch = "1cb6d23", default-features = false }
+cumulus-primitives-core = { git = "https://github.com/purestake/cumulus", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
 
 [dev-dependencies]
-frame-support = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
-pallet-proxy = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
-pallet-utility = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
+pallet-proxy = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
+pallet-utility = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
 
-kusama-runtime = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
-polkadot-runtime = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
-rococo-runtime = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
-westend-runtime = { git = "https://github.com/axtend/axia", branch = "415ce0d" }
+kusama-runtime = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.17" }
+polkadot-runtime = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.17" }
+rococo-runtime = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.17" }
+westend-runtime = { git = "https://github.com/purestake/polkadot", branch = "moonbeam-polkadot-v0.9.17" }
 
 [features]
-default = ["std"]
+default = [ "std" ]
 std = [
 	"cumulus-primitives-core/std",
 	"frame-system/std",

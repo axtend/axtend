@@ -57,7 +57,7 @@ export const deployAndInterfaceContract = async (
   contractName: string
 ): Promise<Interface> => {
   // deploy contract
-  const { rawTx } = await createContract(context.web3, contractName);
+  const { rawTx } = await createContract(context, contractName);
   await context.createBlock({ transactions: [rawTx] });
   // Instantiate interface
   const contractData = await getCompiled(contractName);
@@ -80,7 +80,7 @@ export const notePreimagePrecompile = async <
     [encodedProposal]
   );
 
-  const tx = await createTransaction(context.web3, {
+  const tx = await createTransaction(context, {
     from: GENESIS_ACCOUNT,
     privateKey: GENESIS_ACCOUNT_PRIVATE_KEY,
     value: "0x0",
@@ -124,7 +124,9 @@ describeDevMoonbeam("Democracy - genesis and preimage", (context) => {
       context.polkadotApi.tx.parachainStaking.setParachainBondAccount(GENESIS_ACCOUNT)
     );
 
-    const preimageStatus = await context.polkadotApi.query.democracy.preimages(encodedHash);
+    const preimageStatus = (await context.polkadotApi.query.democracy.preimages(
+      encodedHash
+    )) as any;
     expect(
       preimageStatus.unwrap().isAvailable && preimageStatus.unwrap().asAvailable.provider.toString()
     ).to.equal(GENESIS_ACCOUNT);

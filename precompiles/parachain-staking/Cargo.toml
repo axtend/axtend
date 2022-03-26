@@ -1,6 +1,6 @@
 [package]
 name = "parachain-staking-precompiles"
-authors = ["PureStake"]
+authors = [ "PureStake" ]
 description = "A Precompile to make parachain staking accessible to pallet-evm"
 edition = "2018"
 version = "1.0.0"
@@ -15,19 +15,17 @@ parachain-staking = { path = "../../pallets/parachain-staking", default-features
 precompile-utils = { path = "../utils", default-features = false }
 
 # Substrate
-codec = { package = "parity-scale-codec", version = "2.2", default-features = false, features = [
-	"max-encoded-len",
-] }
-frame-support = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
-frame-system = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
-sp-core = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
-sp-io = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
-sp-std = { git = "https://github.com/axtend/axlib", branch = "e09e70a", default-features = false }
+codec = { package = "parity-scale-codec", version = "2.2", default-features = false, features = [ "max-encoded-len" ] }
+frame-support = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+frame-system = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+sp-core = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+sp-io = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+sp-std = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
 
 
 # Frontier
-fp-evm = { git = "https://github.com/axtend/frontier", branch = "2da9bb8", default-features = false }
-pallet-evm = { git = "https://github.com/axtend/frontier", branch = "2da9bb8", default-features = false }
+fp-evm = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
+pallet-evm = { git = "https://github.com/purestake/frontier", branch = "moonbeam-polkadot-v0.9.17", default-features = false }
 
 [dev-dependencies]
 derive_more = "0.99"
@@ -35,15 +33,13 @@ serde = "1.0.100"
 sha3 = "0.9"
 
 # Substrate
-pallet-balances = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
-pallet-timestamp = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
-scale-info = { version = "1.0", default-features = false, features = [
-	"derive",
-] }
-sp-runtime = { git = "https://github.com/axtend/axlib", branch = "e09e70a" }
+pallet-balances = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
+pallet-timestamp = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
+scale-info = { version = "1.0", default-features = false, features = [ "derive" ] }
+sp-runtime = { git = "https://github.com/purestake/substrate", branch = "moonbeam-polkadot-v0.9.17" }
 
 [features]
-default = ["std"]
+default = [ "std" ]
 std = [
 	"codec/std",
 	"fp-evm/std",

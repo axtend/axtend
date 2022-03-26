@@ -79,7 +79,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
       .signAndSend(sudoAccount);
     await context.createBlock();
 
-    await verifyLatestBlockFees(context.polkadotApi, expect, 3_000_000n);
+    await verifyLatestBlockFees(context, expect, 3_000_000n);
 
     let initBlock = (await context.polkadotApi.query.crowdloanRewards.initRelayBlock()) as any;
 
@@ -158,7 +158,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
     expect(
       BigInt(await context.web3.eth.getBalance(GENESIS_ACCOUNT)) - GENESIS_ACCOUNT_BALANCE
     ).to.equal(claimed - claimFee); // reduce the claim fee part;
-    const account = await context.polkadotApi.query.system.account(GENESIS_ACCOUNT);
+    const account = (await context.polkadotApi.query.system.account(GENESIS_ACCOUNT)) as any;
     expect(account.data.free.toBigInt() - GENESIS_ACCOUNT_BALANCE).to.equal(claimed - claimFee);
   });
 });
@@ -583,7 +583,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
     expect(reward_info_unassociated.claimedReward.toBigInt()).to.equal(0n);
 
     // check balances
-    const account = await context.polkadotApi.query.system.account(GENESIS_ACCOUNT);
+    const account = (await context.polkadotApi.query.system.account(GENESIS_ACCOUNT)) as any;
     expect(account.data.free.toBigInt() - GENESIS_ACCOUNT_BALANCE).to.equal(
       reward_info_associated.claimedReward.toBigInt()
     );
@@ -1047,7 +1047,7 @@ describeDevMoonbeam("Crowdloan", (context) => {
       )
     );
     expect(events[1].toHuman().method).to.eq("ProxyExecuted");
-    expect(events[1].data.toJSON()[0]["err"].hasOwnProperty("badOrigin")).to.eq(true);
+    expect(events[1].data[0].toString()).to.be.eq(`{"err":{"module":{"index":0,"error":5}}}`);
 
     // Genesis account still has the money
     rewardInfo = await getAccountPayable(context, GENESIS_ACCOUNT);
