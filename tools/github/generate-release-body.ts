@@ -34,7 +34,7 @@ async function main() {
   const previousTag = argv.from;
   const newTag = argv.to;
 
-  const moduleLinks = ["substrate", "axia", "cumulus", "frontier"].map((repoName) => ({
+  const moduleLinks = ["axlib", "axia", "cumulus", "frontier"].map((repoName) => ({
     name: repoName,
     link: getCompareLink(repoName, previousTag, newTag),
   }));

@@ -17,12 +17,12 @@
 //! Moonbeam CLI Library. Built with clap
 //!
 //! This module defines the Moonbeam node's Command Line Interface (CLI)
-//! It is built using clap and inherits behavior from Substrate's sc_cli crate.
+//! It is built using clap and inherits behavior from Axlib's sc_cli crate.
 
 use clap::Parser;
 use cli_opt::{account_key::GenerateAccountKey, EthApi, Sealing};
 use perf_test::PerfCmd;
-use sc_cli::{Error as CliError, SubstrateCli};
+use sc_cli::{Error as CliError, AxlibCli};
 use service::chain_spec;
 use std::path::PathBuf;
 
@@ -219,7 +219,7 @@ pub enum KeyCmd {
 
 impl KeyCmd {
 	/// run the key subcommands
-	pub fn run<C: SubstrateCli>(&self, cli: &C) -> Result<(), CliError> {
+	pub fn run<C: AxlibCli>(&self, cli: &C) -> Result<(), CliError> {
 		match self {
 			KeyCmd::BaseCli(cmd) => cmd.run(cli),
 			KeyCmd::GenerateAccountKey(cmd) => {

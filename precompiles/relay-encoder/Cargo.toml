@@ -13,7 +13,7 @@ rustc-hex = { version = "2.0.1", default-features = false }
 # Moonbeam
 precompile-utils = { path = "../utils", default-features = false }
 
-# Substrate
+# Axlib
 frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 pallet-staking = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
@@ -38,7 +38,7 @@ hex-literal = "0.3.3"
 serde = "1.0.100"
 sha3 = "0.9"
 
-# Substrate
+# Axlib
 pallet-balances = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 pallet-timestamp = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 scale-info = { version = "1.0", default-features = false, features = [

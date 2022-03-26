@@ -98,7 +98,7 @@ macro_rules! impl_runtime_apis_plus_common {
 					#[cfg(feature = "evm-tracing")]
 					{
 						use moonbeam_evm_tracer::tracer::EvmTracer;
-						// Apply the a subset of extrinsics: all the substrate-specific or ethereum
+						// Apply the a subset of extrinsics: all the axlib-specific or ethereum
 						// transactions that preceded the requested transaction.
 						for ext in extrinsics.into_iter() {
 							let _ = match &ext.0.function {

@@ -2,7 +2,7 @@
 
 ![Tests](https://github.com/PureStake/moonbeam/workflows/Release/badge.svg)
 
-**An Ethereum compatible [Allychain](https://axia.network/technology/) built with [Substrate](https://substrate.dev).**
+**An Ethereum compatible [Allychain](https://axia.network/technology/) built with [Axlib](https://axlib.dev).**
 
 👉 _Discover the Moonbeam project at [moonbeam.network](https://moonbeam.network)._<br>
 👉 _Learn to [use the Moonbeam network](https://docs.moonbeam.network/) with our technical docs._<br>
@@ -47,7 +47,7 @@ docker run --network="host" purestake/moonbeam:v0.21.1 --dev --sealing manual
 ### Prefunded Development Addresses
 
 Running Moonbeam in development mode will pre-fund several well-known addresses that (mostly) contain the letters "th" in their names to remind you that they are for ethereum-compatible usage. These addresses are derived from
-Substrate's canonical mnemonic: `bottom drive obey lake curtain smoke basket hold race lonely fit walk`
+Axlib's canonical mnemonic: `bottom drive obey lake curtain smoke basket hold race lonely fit walk`
 
 ```
 # Alith:
@@ -101,9 +101,9 @@ Also, the prefunded default account for testing purposes is:
 
 ## Build the Moonbeam Node
 
-To build Moonbeam, you will need a proper Substrate development environment. If you've never worked with a Substrate-based blockchain before, you should probably try the [Setting Up a Moonbeam Node](https://docs.moonbeam.network/getting-started/local-node/setting-up-a-node/) docs first.
+To build Moonbeam, you will need a proper Axlib development environment. If you've never worked with a Axlib-based blockchain before, you should probably try the [Setting Up a Moonbeam Node](https://docs.moonbeam.network/getting-started/local-node/setting-up-a-node/) docs first.
 
-If you need a refresher setting up your Substrate environment, see [Substrate's Getting Started Guide](https://substrate.dev/docs/en/knowledgebase/getting-started/).
+If you need a refresher setting up your Axlib environment, see [Axlib's Getting Started Guide](https://axlib.dev/docs/en/knowledgebase/getting-started/).
 
 Note that cloning master might result in an unstable build. If you want a stable version, check out the [latest releases](https://github.com/PureStake/moonbeam/releases).
 
@@ -149,17 +149,17 @@ Moonbeam nodes support multiple public chains and testnets, with the following C
 | Local Allychain TestNet            | 1280        |
 | Local Development TestNet          | 1281        |
 | Reserved for other TestNets        | 1282 - 1283 |
-| Moonbeam (Axia)                | 1284        |
-| Moonriver (Kusama)                 | 1285        |
-| Moonrock (Rococo)                  | 1286        |
+| Moonbeam (Axia)                    | 1284        |
+| Moonriver (AxiaTest)               | 1285        |
+| Moonrock (Betanet)                 | 1286        |
 | Moonbase Alpha TestNet             | 1287        |
 | Reserved for other public networks | 1288 - 1289 |
 
 ## Runtime Architecture
 
-The Moonbeam Runtime is built using FRAME and consists of pallets from substrate, frontier, cumulus, and `pallets/`.
+The Moonbeam Runtime is built using FRAME and consists of pallets from axlib, frontier, cumulus, and `pallets/`.
 
-From substrate:
+From axlib:
 
 - _Utility_: Allows users to use derivative accounts, and batch calls
 - _Balances_: Tracks GLMR token balances

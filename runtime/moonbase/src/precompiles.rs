@@ -16,7 +16,7 @@
 
 use crowdloan_rewards_precompiles::CrowdloanRewardsWrapper;
 use fp_evm::Context;
-use moonbeam_relay_encoder::westend::WestendEncoder;
+use moonbeam_relay_encoder::alphanet::AlphanetEncoder;
 use pallet_author_mapping_precompiles::AuthorMappingWrapper;
 use pallet_democracy_precompiles::DemocracyWrapper;
 use pallet_evm::{AddressMapping, Precompile, PrecompileResult, PrecompileSet};
@@ -69,7 +69,7 @@ pub const ASSET_PRECOMPILE_ADDRESS_PREFIX: &[u8] = &[255u8; 4];
 /// The PrecompileSet installed in the Moonbase runtime.
 /// We include the nine Istanbul precompiles
 /// (https://github.com/ethereum/go-ethereum/blob/3c46f557/core/vm/contracts.go#L69)
-/// as well as a special precompile for dispatching Substrate extrinsics
+/// as well as a special precompile for dispatching Axlib extrinsics
 #[derive(Debug, Clone, Copy)]
 pub struct MoonbasePrecompiles<R>(PhantomData<R>);
 
@@ -103,7 +103,7 @@ where
 	Erc20AssetsPrecompileSet<R>: PrecompileSet,
 	DemocracyWrapper<R>: Precompile,
 	XtokensWrapper<R>: Precompile,
-	RelayEncoderWrapper<R, WestendEncoder>: Precompile,
+	RelayEncoderWrapper<R, AlphanetEncoder>: Precompile,
 	XcmTransactorWrapper<R>: Precompile,
 	AuthorMappingWrapper<R>: Precompile,
 	R: pallet_evm::Config,
@@ -155,7 +155,7 @@ where
 			a if a == hash(2052) => Some(XtokensWrapper::<R>::execute(
 				input, target_gas, context, is_static,
 			)),
-			a if a == hash(2053) => Some(RelayEncoderWrapper::<R, WestendEncoder>::execute(
+			a if a == hash(2053) => Some(RelayEncoderWrapper::<R, AlphanetEncoder>::execute(
 				input, target_gas, context, is_static,
 			)),
 			a if a == hash(2054) => Some(XcmTransactorWrapper::<R>::execute(

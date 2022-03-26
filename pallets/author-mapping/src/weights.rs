@@ -56,9 +56,9 @@ pub trait WeightInfo {
 	fn clear_association() -> Weight;
 }
 
-/// Weights for pallet_author_mapping using the Substrate node and recommended hardware.
-pub struct SubstrateWeight<T>(PhantomData<T>);
-impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
+/// Weights for pallet_author_mapping using the Axlib node and recommended hardware.
+pub struct AxlibWeight<T>(PhantomData<T>);
+impl<T: frame_system::Config> WeightInfo for AxlibWeight<T> {
 	fn add_association() -> Weight {
 		(44_032_000 as Weight)
 			.saturating_add(T::DbWeight::get().reads(6 as Weight))

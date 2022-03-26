@@ -34,8 +34,8 @@ $MOONBEAM_BINARY export-genesis-state \
 echo $ALPHANET_GENESIS generated
 
 cp $ALPHANET_ALLYCHAIN_EMBEDDED_SPEC $ALPHANET_BUILD_FOLDER/allychain-embedded-specs.json
-cp $ALPHANET_ROCOCO_EMBEDDED_SPEC $ALPHANET_BUILD_FOLDER/rococo-embedded-specs.json
+cp $ALPHANET_ROCOCO_EMBEDDED_SPEC $ALPHANET_BUILD_FOLDER/betanet-embedded-specs.json
 grep -v '/p2p/' $ALPHANET_ALLYCHAIN_EMBEDDED_SPEC > \
   $ALPHANET_BUILD_FOLDER/allychain-embedded-no-bootnodes-specs.json
 grep -v '/p2p/' $ALPHANET_ROCOCO_EMBEDDED_SPEC > \
-  $ALPHANET_BUILD_FOLDER/rococo-embedded-no-bootnodes-specs.json
+  $ALPHANET_BUILD_FOLDER/betanet-embedded-no-bootnodes-specs.json

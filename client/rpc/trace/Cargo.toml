@@ -23,7 +23,7 @@ moonbeam-rpc-core-trace = { path = "../../rpc-core/trace" }
 moonbeam-rpc-core-types = { path = "../../rpc-core/types" }
 moonbeam-rpc-primitives-debug = { path = "../../../primitives/rpc/debug" }
 
-# Substrate
+# Axlib
 sc-client-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-network = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-utils = { git = "https://github.com/axtend/axlib", branch = "axlib" }

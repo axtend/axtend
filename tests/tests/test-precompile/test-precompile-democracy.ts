@@ -16,7 +16,7 @@ import { describeDevMoonbeam, DevTestContext } from "../../util/setup-dev-tests"
 import { ApiTypes, SubmittableExtrinsic } from "@axia/api/types";
 
 import { blake2AsHex } from "@axia/util-crypto";
-import { createBlockWithExtrinsic } from "../../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../../util/axlib-rpc";
 import {
   callPrecompile,
   createContract,
@@ -101,7 +101,7 @@ describeDevMoonbeam("Democracy - genesis and preimage", (context) => {
   let genesisAccount: KeyringPair;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     iFace = await deployAndInterfaceContract(context, "Democracy");
@@ -124,9 +124,7 @@ describeDevMoonbeam("Democracy - genesis and preimage", (context) => {
       context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT)
     );
 
-    const preimageStatus = (await context.axiaApi.query.democracy.preimages(
-      encodedHash
-    )) as any;
+    const preimageStatus = (await context.axiaApi.query.democracy.preimages(encodedHash)) as any;
     expect(
       preimageStatus.unwrap().isAvailable && preimageStatus.unwrap().asAvailable.provider.toString()
     ).to.equal(GENESIS_ACCOUNT);
@@ -141,7 +139,7 @@ describeDevMoonbeam("Democracy - propose", (context) => {
   let encodedHash: `0x${string}`;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     iFace = await deployAndInterfaceContract(context, "Democracy");
@@ -191,7 +189,7 @@ describeDevMoonbeam("Democracy - second proposal", (context) => {
   let launchPeriod;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -274,7 +272,7 @@ describeDevMoonbeam("Democracy - vote on referendum", (context) => {
   let enactmentPeriod, votingPeriod;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -370,7 +368,7 @@ describeDevMoonbeam("Democracy - forget notePreimage", (context) => {
   let enactmentPeriod, votingPeriod;
   let iFace: Interface;
 
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -379,9 +377,8 @@ describeDevMoonbeam("Democracy - forget notePreimage", (context) => {
     // notePreimage
     // compute proposal hash but don't submit it
     const encodedProposal =
-      context.axiaApi.tx.allychainStaking
-        .setAllychainBondAccount(GENESIS_ACCOUNT)
-        .method.toHex() || "";
+      context.axiaApi.tx.allychainStaking.setAllychainBondAccount(GENESIS_ACCOUNT).method.toHex() ||
+      "";
     encodedHash = blake2AsHex(encodedProposal);
   });
   it("vote", async function () {

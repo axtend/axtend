@@ -61,7 +61,7 @@ use sp_blockchain::{
 use sp_core::H256;
 use sp_runtime::traits::{BlakeTwo256, Block as BlockT};
 use std::collections::BTreeMap;
-use substrate_frame_rpc_system::{FullSystem, SystemApi};
+use axlib_frame_rpc_system::{FullSystem, SystemApi};
 
 /// Full client dependencies.
 pub struct FullDeps<C, P, A: ChainApi, BE> {
@@ -270,7 +270,7 @@ where
 pub struct SpawnTasksParams<'a, B: BlockT, C, BE> {
 	pub task_manager: &'a TaskManager,
 	pub client: Arc<C>,
-	pub substrate_backend: Arc<BE>,
+	pub axlib_backend: Arc<BE>,
 	pub frontier_backend: Arc<fc_db::Backend<B>>,
 	pub filter_pool: Option<FilterPool>,
 	pub overrides: Arc<OverrideHandle<B>>,
@@ -293,7 +293,7 @@ where
 	BE::State: StateBackend<BlakeTwo256>,
 {
 	// Frontier offchain DB task. Essential.
-	// Maps emulated ethereum data to substrate native data.
+	// Maps emulated ethereum data to axlib native data.
 	params.task_manager.spawn_essential_handle().spawn(
 		"frontier-mapping-sync-worker",
 		Some("frontier"),
@@ -301,7 +301,7 @@ where
 			params.client.import_notification_stream(),
 			Duration::new(6, 0),
 			params.client.clone(),
-			params.substrate_backend.clone(),
+			params.axlib_backend.clone(),
 			params.frontier_backend.clone(),
 			SyncStrategy::Allychain,
 		)

@@ -61,13 +61,13 @@ pub const SELECTOR_LOG_DEPOSIT: [u8; 32] = keccak256!("Deposit(address,uint256)"
 pub const SELECTOR_LOG_WITHDRAWAL: [u8; 32] = keccak256!("Withdrawal(address,uint256)");
 
 /// Associates pallet Instance to a prefix used for the Approves storage.
-/// This trait is implemented for () and the 16 substrate Instance.
+/// This trait is implemented for () and the 16 axlib Instance.
 pub trait InstanceToPrefix {
 	/// Prefix used for the Approves storage.
 	type ApprovesPrefix: StorageInstance;
 }
 
-// We use a macro to implement the trait for () and the 16 substrate Instance.
+// We use a macro to implement the trait for () and the 16 axlib Instance.
 macro_rules! impl_prefix {
 	($instance:ident, $name:literal) => {
 		// Using `paste!` we generate a dedicated module to avoid collisions

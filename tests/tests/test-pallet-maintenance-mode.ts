@@ -15,7 +15,7 @@ import {
 import { execFromAllMembersOfTechCommittee } from "../util/governance";
 
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic, createBlockWithExtrinsicAllychain } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic, createBlockWithExtrinsicAllychain } from "../util/axlib-rpc";
 import { createTransfer } from "../util/transactions";
 import { VESTING_PERIOD } from "./test-crowdloan";
 import { mockAssetBalance } from "./test-precompile/test-precompile-assets-erc20";
@@ -63,9 +63,7 @@ describeDevMoonbeam("Pallet Maintenance Mode - with sudo shouldn't work", (conte
     ({ events } = await createBlockWithExtrinsic(
       context,
       alith,
-      context.axiaApi.tx.sudo.sudo(
-        context.axiaApi.tx.maintenanceMode.enterMaintenanceMode()
-      )
+      context.axiaApi.tx.sudo.sudo(context.axiaApi.tx.maintenanceMode.enterMaintenanceMode())
     ));
   });
 
@@ -611,9 +609,9 @@ describeDevMoonbeam(
       await context.createBlock();
 
       // Make sure the state has ALITH's to foreign assets tokens
-      alithBalance = (
-        (await context.axiaApi.query.assets.account(assetId, ALITH)) as any
-      ).unwrap()["balance"];
+      alithBalance = ((await context.axiaApi.query.assets.account(assetId, ALITH)) as any).unwrap()[
+        "balance"
+      ];
 
       expect(alithBalance.toBigInt()).to.eq(BigInt(10000000000000));
     });

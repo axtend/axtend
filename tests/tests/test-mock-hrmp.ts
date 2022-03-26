@@ -5,7 +5,7 @@ import { BN, u8aToHex } from "@axia/util";
 
 import { ALITH_PRIV_KEY, RANDOM_PRIV_KEY } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { customWeb3Request } from "../util/providers";
 import type { XcmVersionedXcm } from "@axia/types/lookup";
 
@@ -93,9 +93,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     expect(events[4].method.toString()).to.eq("ExtrinsicSuccess");
 
     // check asset in storage
-    const registeredAsset = (
-      (await context.axiaApi.query.assets.asset(assetId)) as any
-    ).unwrap();
+    const registeredAsset = ((await context.axiaApi.query.assets.asset(assetId)) as any).unwrap();
     expect(registeredAsset.owner.toHex()).to.eq(palletId.toLowerCase());
   });
 
@@ -160,9 +158,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     expect(events[4].method.toString()).to.eq("ExtrinsicSuccess");
 
     // check asset in storage
-    const registeredAsset = (
-      (await context.axiaApi.query.assets.asset(assetId)) as any
-    ).unwrap();
+    const registeredAsset = ((await context.axiaApi.query.assets.asset(assetId)) as any).unwrap();
     expect(registeredAsset.owner.toHex()).to.eq(palletId.toLowerCase());
   });
 
@@ -288,9 +284,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
     expect(events[4].method.toString()).to.eq("ExtrinsicSuccess");
 
     // check asset in storage
-    const registeredAsset = (
-      (await context.axiaApi.query.assets.asset(assetId)) as any
-    ).unwrap();
+    const registeredAsset = ((await context.axiaApi.query.assets.asset(assetId)) as any).unwrap();
     expect(registeredAsset.owner.toHex()).to.eq(palletId.toLowerCase());
   });
 
@@ -705,11 +699,7 @@ describeDevMoonbeam("Mock XCM - receive horizontal transfer", (context) => {
         context,
         alith,
         context.axiaApi.tx.sudo.sudo(
-          context.axiaApi.tx.assetManager.setAssetUnitsPerSecond(
-            statemintLocationAssetOne,
-            0,
-            0
-          )
+          context.axiaApi.tx.assetManager.setAssetUnitsPerSecond(statemintLocationAssetOne, 0, 0)
         )
       );
       expect(events[1].method.toString()).to.eq("UnitsPerSecondChanged");

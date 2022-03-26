@@ -4,13 +4,13 @@ import { getCommitAndLabels } from "./github-utils";
 
 async function printInfo(octokit: Octokit, previousVersion: string, nextVersion: string) {
   const owners = {
-    substrate: "paritytech",
+    axlib: "paritytech",
     axia: "paritytech",
     cumulus: "paritytech",
     nimbus: "purestake",
   };
   const prefixes = {
-    substrate: "axia-",
+    axlib: "axia-",
     axia: "release-",
     cumulus: "axia-",
     nimbus: "moonbeam-axia-",
@@ -101,8 +101,8 @@ async function printInfo(octokit: Octokit, previousVersion: string, nextVersion:
     }
   }
 
-  console.log(`\n## Review 'substrate-migrations' repo\n`);
-  console.log(`https://github.com/apopiak/substrate-migrations#frame-migrations`);
+  console.log(`\n## Review 'axlib-migrations' repo\n`);
+  console.log(`https://github.com/apopiak/axlib-migrations#frame-migrations`);
   console.log(`\nThis repository contains a list of FRAME-related migrations which might be`);
   console.log(`relevant to Moonbeam.`);
 }

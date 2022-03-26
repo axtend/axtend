@@ -5,7 +5,7 @@ import { KeyringPair } from "@axia/keyring/types";
 
 import { ALITH_PRIV_KEY } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { verifyLatestBlockFees } from "../util/block";
 
 const palletId = "0x6D6f646c617373746d6E67720000000000000000";
@@ -123,9 +123,7 @@ describeDevMoonbeam("XCM - asset manager - register asset", (context) => {
 
     // asset units per second changed
     let assetUnitsPerSecond = (
-      (await context.axiaApi.query.assetManager.assetTypeUnitsPerSecond(
-        newSourceLocation
-      )) as any
+      (await context.axiaApi.query.assetManager.assetTypeUnitsPerSecond(newSourceLocation)) as any
     ).unwrap();
 
     // Supported assets

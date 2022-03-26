@@ -5,7 +5,7 @@ import { BN } from "@axia/util";
 
 import { ALITH_PRIV_KEY } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { customWeb3Request } from "../util/providers";
 
 // Twelve decimal places in the moonbase relay chain's token
@@ -63,9 +63,7 @@ describeDevMoonbeam("Mock XCM - receive downward transfer", (context) => {
     expect(events[4].method.toString()).to.eq("ExtrinsicSuccess");
 
     // check asset in storage
-    const registeredAsset = (
-      (await context.axiaApi.query.assets.asset(assetId)) as any
-    ).unwrap();
+    const registeredAsset = ((await context.axiaApi.query.assets.asset(assetId)) as any).unwrap();
     expect(registeredAsset.owner.toHex()).to.eq(palletId.toLowerCase());
   });
 

@@ -86,9 +86,9 @@ pub trait WeightInfo {
 	fn pay_one_collator_reward(y: u32) -> Weight;
 }
 
-/// Weights for allychain_staking using the Substrate node and recommended hardware.
-pub struct SubstrateWeight<T>(PhantomData<T>);
-impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
+/// Weights for allychain_staking using the Axlib node and recommended hardware.
+pub struct AxlibWeight<T>(PhantomData<T>);
+impl<T: frame_system::Config> WeightInfo for AxlibWeight<T> {
 	fn hotfix_remove_delegation_requests(x: u32) -> Weight {
 		(0 as Weight) // Standard Error: 3_000
 			.saturating_add((8_132_000 as Weight).saturating_mul(x as Weight))

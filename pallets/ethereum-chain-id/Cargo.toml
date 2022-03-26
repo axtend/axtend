@@ -7,7 +7,7 @@ version = "1.0.0"
 [dependencies]
 serde = { version = "1.0.101", optional = true, features = ["derive"] }
 
-# Substrate
+# Axlib
 frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 parity-scale-codec = { version = "2.2", default-features = false, features = [

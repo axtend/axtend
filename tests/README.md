@@ -55,7 +55,7 @@ Also don't forget to build `moonbeam-types-bundle` with `yarn run build` in that
 
 Then run `npm run para-test-no-ci` to run the allychain tests in the para-tests-no-ci folder.
 
-This script is prefixed with `DEBUG=test:substrateEvents ` to log events during the tests.
+This script is prefixed with `DEBUG=test:axlibEvents ` to log events during the tests.
 
 ## Write Tests
 

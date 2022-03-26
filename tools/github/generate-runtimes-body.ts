@@ -88,7 +88,7 @@ async function main() {
     getRuntimeInfo(argv["srtool-report-folder"], runtimeName)
   );
 
-  const moduleLinks = ["substrate", "axia", "cumulus", "frontier"].map((repoName) => ({
+  const moduleLinks = ["axlib", "axia", "cumulus", "frontier"].map((repoName) => ({
     name: repoName,
     link: getCompareLink(repoName, previousTag, newTag),
   }));

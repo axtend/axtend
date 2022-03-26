@@ -8,7 +8,7 @@ version = "0.1.0"
 [dependencies]
 log = "0.4"
 
-# Substrate
+# Axlib
 frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 parity-scale-codec = { version = "2.2", default-features = false }

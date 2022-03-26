@@ -192,7 +192,7 @@ export const verifyBlockFees = async (
                 : (event.data[1] as DispatchInfo);
 
             // We are only interested in fee paying extrinsics:
-            // Either ethereum transactions or signed extrinsics with fees (substrate tx)
+            // Either ethereum transactions or signed extrinsics with fees (axlib tx)
             // TODO: sudo should not have paysFee
             if (
               dispatchInfo.paysFee.isYes &&
@@ -223,7 +223,7 @@ export const verifyBlockFees = async (
                 // And then multiplying by gasPrice
                 txFees = gasFee * gasPrice;
               } else {
-                // For a regular substrate tx, we use the partialFee
+                // For a regular axlib tx, we use the partialFee
                 txFees = fee.partialFee.toBigInt();
               }
               txBurnt += (txFees * 80n) / 100n; // 20% goes to treasury

@@ -23,11 +23,11 @@ use cumulus_primitives_core::ParaId;
 use log::info;
 use parity_scale_codec::Encode;
 use axia_allychain::primitives::AccountIdConversion;
-#[cfg(feature = "westend-native")]
-use axia_service::WestendChainSpec;
+#[cfg(feature = "alphanet-native")]
+use axia_service::AlphanetChainSpec;
 use sc_cli::{
 	ChainSpec, CliConfiguration, DefaultConfigurationValues, ImportParams, KeystoreParams,
-	NetworkParams, Result, RuntimeVersion, SharedParams, SubstrateCli,
+	NetworkParams, Result, RuntimeVersion, SharedParams, AxlibCli,
 };
 use sc_service::config::{BasePath, PrometheusConfig};
 use service::{chain_spec, frontier_database_dir, IdentifyVariant};
@@ -97,7 +97,7 @@ fn load_spec(
 	})
 }
 
-impl SubstrateCli for Cli {
+impl AxlibCli for Cli {
 	fn impl_name() -> String {
 		"Moonbeam Allychain Collator".into()
 	}
@@ -146,7 +146,7 @@ impl SubstrateCli for Cli {
 	}
 }
 
-impl SubstrateCli for RelayChainCli {
+impl AxlibCli for RelayChainCli {
 	fn impl_name() -> String {
 		"Moonbeam Allychain Collator".into()
 	}
@@ -177,9 +177,9 @@ impl SubstrateCli for RelayChainCli {
 
 	fn load_spec(&self, id: &str) -> std::result::Result<Box<dyn sc_service::ChainSpec>, String> {
 		match id {
-			#[cfg(feature = "westend-native")]
-			"westend_moonbase_relay_testnet" => Ok(Box::new(WestendChainSpec::from_json_bytes(
-				&include_bytes!("../../../specs/alphanet/westend-embedded-specs-v8.json")[..],
+			#[cfg(feature = "alphanet-native")]
+			"alphanet_moonbase_relay_testnet" => Ok(Box::new(AlphanetChainSpec::from_json_bytes(
+				&include_bytes!("../../../specs/alphanet/alphanet-embedded-specs-v8.json")[..],
 			)?)),
 			// If we are not using a moonbeam-centric pre-baked relay spec, then fall back to the
 			// Axia service to interpret the id.
@@ -328,7 +328,7 @@ pub fn run() -> Result<()> {
 						.chain(cli.relaychain_args.iter()),
 				);
 
-				let axia_config = SubstrateCli::create_configuration(
+				let axia_config = AxlibCli::create_configuration(
 					&axia_cli,
 					&axia_cli,
 					config.tokio_handle.clone(),
@@ -681,7 +681,7 @@ pub fn run() -> Result<()> {
 
 				let tokio_handle = config.tokio_handle.clone();
 				let axia_config =
-					SubstrateCli::create_configuration(&axia_cli, &axia_cli, tokio_handle)
+					AxlibCli::create_configuration(&axia_cli, &axia_cli, tokio_handle)
 						.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
 				info!("Allychain id: {:?}", id);

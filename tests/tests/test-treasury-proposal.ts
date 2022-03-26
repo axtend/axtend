@@ -8,7 +8,7 @@ import {
   ETHAN_PRIVKEY,
 } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 
 describeDevMoonbeam("Treasury proposal #1", (context) => {
   it("should not be able to be approved by a non-council member", async function () {
@@ -196,9 +196,7 @@ describeDevMoonbeam("Treasury proposal #7", (context) => {
       .data[2].toHex() as string;
 
     // Charleth & Dorothy vote for this proposal and close it
-    await context.axiaApi.tx.councilCollective
-      .vote(proposalHash, 0, true)
-      .signAndSend(charleth);
+    await context.axiaApi.tx.councilCollective.vote(proposalHash, 0, true).signAndSend(charleth);
     await context.axiaApi.tx.councilCollective.vote(proposalHash, 0, true).signAndSend(dorothy);
     await context.createBlock();
     await context.createBlock();
@@ -245,12 +243,8 @@ describeDevMoonbeam("Treasury proposal #8", (context) => {
 
     // Charleth & Dorothy vote for against proposal and close it
     await Promise.all([
-      context.axiaApi.tx.councilCollective
-        .vote(councilProposalHash, 0, true)
-        .signAndSend(charleth),
-      context.axiaApi.tx.councilCollective
-        .vote(councilProposalHash, 0, true)
-        .signAndSend(dorothy),
+      context.axiaApi.tx.councilCollective.vote(councilProposalHash, 0, true).signAndSend(charleth),
+      context.axiaApi.tx.councilCollective.vote(councilProposalHash, 0, true).signAndSend(dorothy),
     ]);
 
     await context.createBlock();

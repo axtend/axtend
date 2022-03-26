@@ -48,7 +48,7 @@ moonbase-runtime = { path = "../../runtime/moonbase", optional = true }
 moonbeam-runtime = { path = "../../runtime/moonbeam", optional = true }
 moonriver-runtime = { path = "../../runtime/moonriver", optional = true }
 
-# Substrate
+# Axlib
 frame-system-rpc-runtime-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 pallet-transaction-payment-rpc = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 pallet-transaction-payment-rpc-runtime-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }
@@ -90,8 +90,8 @@ sp-storage = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sp-timestamp = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sp-transaction-pool = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sp-trie = { git = "https://github.com/axtend/axlib", branch = "axlib" }
-substrate-frame-rpc-system = { git = "https://github.com/axtend/axlib", branch = "axlib" }
-substrate-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+axlib-frame-rpc-system = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+axlib-prometheus-endpoint = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 # Frontier
 fc-consensus = { git = "https://github.com/axtend/frontier", branch = "frontier" }
@@ -143,29 +143,29 @@ rand = "0.7.3"
 # Axia dev-dependencies
 axia-runtime-common = { git = "https://github.com/axtend/axia", branch = "axia" }
 
-# Substrate dev-dependencies
+# Axlib dev-dependencies
 pallet-sudo = { git = "https://github.com/axtend/axlib", branch = "axlib" }
-substrate-test-client = { git = "https://github.com/axtend/axlib", branch = "axlib" }
-substrate-test-runtime-client = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+axlib-test-client = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+axlib-test-runtime-client = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 [build-dependencies]
-substrate-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+axlib-build-script-utils = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 [features]
 default = [
-	"kusama-native",
+	"axctest-native",
 	"moonbase-native",
 	"moonbeam-native",
 	"moonriver-native",
-	"rococo-native",
-	"westend-native",
+	"betanet-native",
+	"alphanet-native",
 ]
 
-kusama-native = ["axia-cli/kusama-native", "axia-service/kusama-native"]
-rococo-native = ["axia-cli/rococo-native", "axia-service/rococo-native"]
-westend-native = ["axia-cli/westend-native", "axia-service/westend-native"]
+axctest-native = ["axia-cli/axctest-native", "axia-service/axctest-native"]
+betanet-native = ["axia-cli/betanet-native", "axia-service/betanet-native"]
+alphanet-native = ["axia-cli/alphanet-native", "axia-service/alphanet-native"]
 
-moonbase-native = ["moonbase-runtime", "westend-native"]
+moonbase-native = ["moonbase-runtime", "alphanet-native"]
 moonbeam-native = ["moonbeam-runtime"]
 moonriver-native = ["moonriver-runtime"]
 

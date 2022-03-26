@@ -132,7 +132,7 @@ impl pallet_assets::Config for Runtime {
 	type StringLimit = AssetsStringLimit;
 	type Freezer = ();
 	type Extra = ();
-	type WeightInfo = pallet_assets::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_assets::weights::AxlibWeight<Runtime>;
 	type AssetAccountDeposit = AssetAccountDeposit;
 }
 
@@ -716,7 +716,7 @@ impl pallet_evm::Config for Runtime {
 	type ChainId = ();
 	type BlockGasLimit = ();
 	type OnChargeTransaction = ();
-	type BlockHashMapping = pallet_evm::SubstrateBlockHashMapping<Self>;
+	type BlockHashMapping = pallet_evm::AxlibBlockHashMapping<Self>;
 	type FindAuthor = ();
 	type WeightInfo = ();
 }

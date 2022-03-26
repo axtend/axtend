@@ -14,8 +14,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Moonbeam.  If not, see <http://www.gnu.org/licenses/>.
 
-// We want to avoid including the rococo-runtime here.
-// TODO: whenever a conclusion is taken from https://github.com/paritytech/substrate/issues/8158
+// We want to avoid including the betanet-runtime here.
+// TODO: whenever a conclusion is taken from https://github.com/paritytech/axlib/issues/8158
 
 use parity_scale_codec::{Decode, Encode};
 use sp_runtime::traits::{AccountIdLookup, StaticLookup};
@@ -67,9 +67,9 @@ pub enum StakeCall {
 	Rebond(#[codec(compact)] cumulus_primitives_core::relay_chain::Balance),
 }
 
-pub struct KusamaEncoder;
+pub struct AxiaTestEncoder;
 
-impl xcm_primitives::UtilityEncodeCall for KusamaEncoder {
+impl xcm_primitives::UtilityEncodeCall for AxiaTestEncoder {
 	fn encode_call(self, call: xcm_primitives::UtilityAvailableCalls) -> Vec<u8> {
 		match call {
 			xcm_primitives::UtilityAvailableCalls::AsDerivative(a, b) => {
@@ -83,7 +83,7 @@ impl xcm_primitives::UtilityEncodeCall for KusamaEncoder {
 	}
 }
 
-impl relay_encoder_precompiles::StakeEncodeCall for KusamaEncoder {
+impl relay_encoder_precompiles::StakeEncodeCall for AxiaTestEncoder {
 	fn encode_call(call: relay_encoder_precompiles::AvailableStakeCalls) -> Vec<u8> {
 		match call {
 			relay_encoder_precompiles::AvailableStakeCalls::Bond(a, b, c) => {
@@ -135,7 +135,7 @@ impl relay_encoder_precompiles::StakeEncodeCall for KusamaEncoder {
 #[cfg(test)]
 mod tests {
 	use super::*;
-	use crate::kusama::KusamaEncoder;
+	use crate::axctest::AxiaTestEncoder;
 	use frame_support::traits::PalletInfo;
 	use relay_encoder_precompiles::StakeEncodeCall;
 	use sp_runtime::Perbill;
@@ -143,23 +143,23 @@ mod tests {
 	#[test]
 	fn test_as_derivative() {
 		let mut expected_encoded: Vec<u8> = Vec::new();
-		let index = <kusama_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
-			kusama_runtime::Utility,
+		let index = <axctest_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
+			axctest_runtime::Utility,
 		>()
 		.unwrap() as u8;
 		expected_encoded.push(index);
 
-		let mut expected = pallet_utility::Call::<kusama_runtime::Runtime>::as_derivative {
+		let mut expected = pallet_utility::Call::<axctest_runtime::Runtime>::as_derivative {
 			index: 1,
-			call: kusama_runtime::Call::Staking(
-				pallet_staking::Call::<kusama_runtime::Runtime>::chill {},
+			call: axctest_runtime::Call::Staking(
+				pallet_staking::Call::<axctest_runtime::Runtime>::chill {},
 			)
 			.into(),
 		}
 		.encode();
 		expected_encoded.append(&mut expected);
 
-		let call_bytes = <KusamaEncoder as StakeEncodeCall>::encode_call(
+		let call_bytes = <AxiaTestEncoder as StakeEncodeCall>::encode_call(
 			relay_encoder_precompiles::AvailableStakeCalls::Chill,
 		);
 
@@ -167,7 +167,7 @@ mod tests {
 
 		assert_eq!(
 			xcm_primitives::UtilityEncodeCall::encode_call(
-				KusamaEncoder,
+				AxiaTestEncoder,
 				xcm_primitives::UtilityAvailableCalls::AsDerivative(1, call_bytes)
 			),
 			expected_encoded
@@ -179,13 +179,13 @@ mod tests {
 		let mut expected_encoded: Vec<u8> = Vec::new();
 		let relay_account: AccountId32 = [1u8; 32].into();
 
-		let index = <kusama_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
-			kusama_runtime::Staking,
+		let index = <axctest_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
+			axctest_runtime::Staking,
 		>()
 		.unwrap() as u8;
 		expected_encoded.push(index);
 
-		let mut expected = pallet_staking::Call::<kusama_runtime::Runtime>::bond {
+		let mut expected = pallet_staking::Call::<axctest_runtime::Runtime>::bond {
 			controller: relay_account.clone().into(),
 			value: 100u32.into(),
 			payee: pallet_staking::RewardDestination::Controller,
@@ -194,7 +194,7 @@ mod tests {
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<KusamaEncoder as StakeEncodeCall>::encode_call(
+			<AxiaTestEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Bond(
 					relay_account.into(),
 					100u32.into(),
@@ -208,20 +208,20 @@ mod tests {
 	fn test_stake_bond_extra() {
 		let mut expected_encoded: Vec<u8> = Vec::new();
 
-		let index = <kusama_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
-			kusama_runtime::Staking,
+		let index = <axctest_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
+			axctest_runtime::Staking,
 		>()
 		.unwrap() as u8;
 		expected_encoded.push(index);
 
-		let mut expected = pallet_staking::Call::<kusama_runtime::Runtime>::bond_extra {
+		let mut expected = pallet_staking::Call::<axctest_runtime::Runtime>::bond_extra {
 			max_additional: 100u32.into(),
 		}
 		.encode();
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<KusamaEncoder as StakeEncodeCall>::encode_call(
+			<AxiaTestEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::BondExtra(100u32.into(),)
 			),
 			expected_encoded
@@ -231,20 +231,20 @@ mod tests {
 	fn test_stake_unbond() {
 		let mut expected_encoded: Vec<u8> = Vec::new();
 
-		let index = <kusama_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
-			kusama_runtime::Staking,
+		let index = <axctest_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
+			axctest_runtime::Staking,
 		>()
 		.unwrap() as u8;
 		expected_encoded.push(index);
 
-		let mut expected = pallet_staking::Call::<kusama_runtime::Runtime>::unbond {
+		let mut expected = pallet_staking::Call::<axctest_runtime::Runtime>::unbond {
 			value: 100u32.into(),
 		}
 		.encode();
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<KusamaEncoder as StakeEncodeCall>::encode_call(
+			<AxiaTestEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Unbond(100u32.into(),)
 			),
 			expected_encoded
@@ -254,20 +254,20 @@ mod tests {
 	fn test_stake_withdraw_unbonded() {
 		let mut expected_encoded: Vec<u8> = Vec::new();
 
-		let index = <kusama_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
-			kusama_runtime::Staking,
+		let index = <axctest_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
+			axctest_runtime::Staking,
 		>()
 		.unwrap() as u8;
 		expected_encoded.push(index);
 
-		let mut expected = pallet_staking::Call::<kusama_runtime::Runtime>::withdraw_unbonded {
+		let mut expected = pallet_staking::Call::<axctest_runtime::Runtime>::withdraw_unbonded {
 			num_slashing_spans: 100u32,
 		}
 		.encode();
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<KusamaEncoder as StakeEncodeCall>::encode_call(
+			<AxiaTestEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::WithdrawUnbonded(100u32,)
 			),
 			expected_encoded
@@ -277,8 +277,8 @@ mod tests {
 	fn test_stake_validate() {
 		let mut expected_encoded: Vec<u8> = Vec::new();
 
-		let index = <kusama_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
-			kusama_runtime::Staking,
+		let index = <axctest_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
+			axctest_runtime::Staking,
 		>()
 		.unwrap() as u8;
 		expected_encoded.push(index);
@@ -288,14 +288,14 @@ mod tests {
 			blocked: true,
 		};
 
-		let mut expected = pallet_staking::Call::<kusama_runtime::Runtime>::validate {
+		let mut expected = pallet_staking::Call::<axctest_runtime::Runtime>::validate {
 			prefs: validator_prefs.clone(),
 		}
 		.encode();
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<KusamaEncoder as StakeEncodeCall>::encode_call(
+			<AxiaTestEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Validate(validator_prefs)
 			),
 			expected_encoded
@@ -306,20 +306,20 @@ mod tests {
 		let mut expected_encoded: Vec<u8> = Vec::new();
 		let relay_account: AccountId32 = [1u8; 32].into();
 
-		let index = <kusama_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
-			kusama_runtime::Staking,
+		let index = <axctest_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
+			axctest_runtime::Staking,
 		>()
 		.unwrap() as u8;
 		expected_encoded.push(index);
 
-		let mut expected = pallet_staking::Call::<kusama_runtime::Runtime>::nominate {
+		let mut expected = pallet_staking::Call::<axctest_runtime::Runtime>::nominate {
 			targets: vec![relay_account.clone().into()],
 		}
 		.encode();
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<KusamaEncoder as StakeEncodeCall>::encode_call(
+			<AxiaTestEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Nominate(
 					vec![relay_account.into()]
 				)
@@ -331,17 +331,17 @@ mod tests {
 	fn test_stake_chill() {
 		let mut expected_encoded: Vec<u8> = Vec::new();
 
-		let index = <kusama_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
-			kusama_runtime::Staking,
+		let index = <axctest_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
+			axctest_runtime::Staking,
 		>()
 		.unwrap() as u8;
 		expected_encoded.push(index);
 
-		let mut expected = pallet_staking::Call::<kusama_runtime::Runtime>::chill {}.encode();
+		let mut expected = pallet_staking::Call::<axctest_runtime::Runtime>::chill {}.encode();
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<KusamaEncoder as StakeEncodeCall>::encode_call(
+			<AxiaTestEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Chill
 			),
 			expected_encoded
@@ -352,20 +352,20 @@ mod tests {
 	fn test_set_payee() {
 		let mut expected_encoded: Vec<u8> = Vec::new();
 
-		let index = <kusama_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
-			kusama_runtime::Staking,
+		let index = <axctest_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
+			axctest_runtime::Staking,
 		>()
 		.unwrap() as u8;
 		expected_encoded.push(index);
 
-		let mut expected = pallet_staking::Call::<kusama_runtime::Runtime>::set_payee {
+		let mut expected = pallet_staking::Call::<axctest_runtime::Runtime>::set_payee {
 			payee: pallet_staking::RewardDestination::Controller,
 		}
 		.encode();
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<KusamaEncoder as StakeEncodeCall>::encode_call(
+			<AxiaTestEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::SetPayee(
 					pallet_staking::RewardDestination::Controller
 				)
@@ -379,20 +379,20 @@ mod tests {
 		let mut expected_encoded: Vec<u8> = Vec::new();
 		let relay_account: AccountId32 = [1u8; 32].into();
 
-		let index = <kusama_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
-			kusama_runtime::Staking,
+		let index = <axctest_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
+			axctest_runtime::Staking,
 		>()
 		.unwrap() as u8;
 		expected_encoded.push(index);
 
-		let mut expected = pallet_staking::Call::<kusama_runtime::Runtime>::set_controller {
+		let mut expected = pallet_staking::Call::<axctest_runtime::Runtime>::set_controller {
 			controller: relay_account.clone().into(),
 		}
 		.encode();
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<KusamaEncoder as StakeEncodeCall>::encode_call(
+			<AxiaTestEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::SetController(
 					relay_account.clone().into()
 				)
@@ -404,20 +404,20 @@ mod tests {
 	fn test_rebond() {
 		let mut expected_encoded: Vec<u8> = Vec::new();
 
-		let index = <kusama_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
-			kusama_runtime::Staking,
+		let index = <axctest_runtime::Runtime as frame_system::Config>::PalletInfo::index::<
+			axctest_runtime::Staking,
 		>()
 		.unwrap() as u8;
 		expected_encoded.push(index);
 
-		let mut expected = pallet_staking::Call::<kusama_runtime::Runtime>::rebond {
+		let mut expected = pallet_staking::Call::<axctest_runtime::Runtime>::rebond {
 			value: 100u32.into(),
 		}
 		.encode();
 		expected_encoded.append(&mut expected);
 
 		assert_eq!(
-			<KusamaEncoder as StakeEncodeCall>::encode_call(
+			<AxiaTestEncoder as StakeEncodeCall>::encode_call(
 				relay_encoder_precompiles::AvailableStakeCalls::Rebond(100u32.into())
 			),
 			expected_encoded

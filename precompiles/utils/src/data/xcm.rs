@@ -47,7 +47,7 @@ pub(crate) fn network_id_to_bytes(network_id: NetworkId) -> Vec<u8> {
 			encoded.push(2u8);
 			encoded
 		}
-		NetworkId::Kusama => {
+		NetworkId::AxiaTest => {
 			encoded.push(3u8);
 			encoded
 		}
@@ -73,7 +73,7 @@ pub(crate) fn network_id_from_bytes(
 			encoded_network_id.read_till_end(gasometer)?.to_vec(),
 		)),
 		2 => Ok(NetworkId::Axia),
-		3 => Ok(NetworkId::Kusama),
+		3 => Ok(NetworkId::AxiaTest),
 		_ => Err(gasometer.revert("Non-valid Network Id")),
 	}
 }

@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [[ -z "$1" ]]; then
-  echo "usage: ./scripts/create-substrate-fork.sh <new_branch> [<base_branch>]";
+  echo "usage: ./scripts/create-axlib-fork.sh <new_branch> [<base_branch>]";
   exit 1;
 fi
 
@@ -12,7 +12,7 @@ mkdir -p scripts/tmp
 cd scripts/tmp
 
 REPOS=(
-  substrate
+  axlib
   axia
   cumulus
   nimbus

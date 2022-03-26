@@ -6,7 +6,7 @@
 //     staking.delegate(target, msg.value);
 //     revert("By reverting this transaction, we return the eth to the caller");
 // }
-// Would the delegation pass in substrate but get the eth back in the evm?
+// Would the delegation pass in axlib but get the eth back in the evm?
 // We have to make sure that's not possible
 
 import { expect } from "chai";

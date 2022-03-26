@@ -32,11 +32,11 @@ xcm-builder = { git = "https://github.com/axtend/axia", branch = "axia" }
 [features]
 default = ["moonbase-native", "moonbeam-native", "moonriver-native"]
 
-kusama-native = ["moonbeam-service/kusama-native"]
-rococo-native = ["moonbeam-service/rococo-native"]
-westend-native = [
-	"moonbeam-cli/westend-native",
-	"moonbeam-service/westend-native",
+axctest-native = ["moonbeam-service/axctest-native"]
+betanet-native = ["moonbeam-service/betanet-native"]
+alphanet-native = [
+	"moonbeam-cli/alphanet-native",
+	"moonbeam-service/alphanet-native",
 ]
 
 moonbase-native = [

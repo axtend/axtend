@@ -10,7 +10,7 @@ import { customWeb3Request } from "./providers";
 // Ethers is used to handle post-london transactions
 import { ethers } from "ethers";
 import { AccessListish } from "@ethersproject/transactions";
-import { createBlockWithExtrinsic } from "./substrate-rpc";
+import { createBlockWithExtrinsic } from "./axlib-rpc";
 import type { ApiPromise } from "@axia/api";
 import type { SubmittableExtrinsic } from "@axia/api/promise/types";
 const debug = require("debug")("test:transaction");
@@ -290,9 +290,9 @@ export async function callPrecompile(
   ]);
 }
 
-/// Sign and send Substrate transaction and then create a block.
+/// Sign and send Axlib transaction and then create a block.
 /// Will provide events emited by the transaction to check if they match what is expected.
-export async function substrateTransaction(context, sender, axiaCall): Promise<Event[]> {
+export async function axlibTransaction(context, sender, axiaCall): Promise<Event[]> {
   const { events } = await createBlockWithExtrinsic(context, sender, axiaCall);
   return events;
 }

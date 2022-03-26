@@ -1354,8 +1354,8 @@ declare module "@axia/types/lookup" {
     readonly isNamed: boolean;
     readonly asNamed: Bytes;
     readonly isAxia: boolean;
-    readonly isKusama: boolean;
-    readonly type: "Any" | "Named" | "Axia" | "Kusama";
+    readonly isAxiaTest: boolean;
+    readonly type: "Any" | "Named" | "Axia" | "AxiaTest";
   }
 
   /**

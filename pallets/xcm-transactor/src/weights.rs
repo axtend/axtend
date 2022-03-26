@@ -57,9 +57,9 @@ pub trait WeightInfo {
 	fn remove_transact_info() -> Weight;
 }
 
-/// Weights for xcm_transactor using the Substrate node and recommended hardware.
-pub struct SubstrateWeight<T>(PhantomData<T>);
-impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
+/// Weights for xcm_transactor using the Axlib node and recommended hardware.
+pub struct AxlibWeight<T>(PhantomData<T>);
+impl<T: frame_system::Config> WeightInfo for AxlibWeight<T> {
 	fn register() -> Weight {
 		(19_613_000 as Weight)
 			.saturating_add(T::DbWeight::get().reads(5 as Weight))

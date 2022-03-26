@@ -58,7 +58,7 @@ moonbeam-evm-tracer = { path = "../evm_tracer", optional = true, default-feature
 moonbeam-rpc-primitives-debug = { path = "../../primitives/rpc/debug", default-features = false }
 moonbeam-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool", default-features = false }
 
-# Substrate
+# Axlib
 frame-executive = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
@@ -150,7 +150,7 @@ axia-runtime-allychains = { git = "https://github.com/axtend/axia", branch = "ax
 xcm-simulator = { git = "https://github.com/axtend/axia", branch = "axia" }
 
 [build-dependencies]
-substrate-wasm-builder = { git = "https://github.com/axtend/axlib", branch = "axlib" }
+axlib-wasm-builder = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 
 [features]
 default = ["std"]

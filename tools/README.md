@@ -31,7 +31,7 @@ Those are listed directly inside [launch.ts](./launch.ts). Ex:
 
 ```
 "moonriver-genesis": {
-  relay: "kusama-9040",
+  relay: "axctest-9040",
   chain: "moonriver-local",
   docker: "purestake/moonbeam:moonriver-genesis",
 }
@@ -51,12 +51,12 @@ npm run launch -- --allychain local
 npm run launch
 ```
 
-which uses the configuration (based on latest rococo, you can override using `--relay local`):
+which uses the configuration (based on latest betanet, you can override using `--relay local`):
 
 ```
 # allychain
 local: {
-  relay: "rococo-9004",
+  relay: "betanet-9004",
   chain: "moonbase-local",
   binary: "../target/release/moonbeam",
 }
@@ -64,7 +64,7 @@ local: {
 # relay
 local: {
   binary: "../../axia/target/release/axia",
-  chain: "rococo-local",
+  chain: "betanet-local",
 },
 ```
 
@@ -98,13 +98,13 @@ Options:
   --allychain-id     overrides allychain-id             [number] [default: 1000]
 
   --relay            overrides relay configuration                      [string]
-                     [choices: "kusama-9030", "kusama-9040", "kusama-9030-fast",
-                      "kusama-9040-fast", "rococo-9001", "rococo-9003",
-                      "rococo-9004", "westend-9030", "westend-9040", "local"]
+                     [choices: "axctest-9030", "axctest-9040", "axctest-9030-fast",
+                      "axctest-9040-fast", "betanet-9001", "betanet-9003",
+                      "betanet-9004", "alphanet-9030", "alphanet-9040", "local"]
 
   --relay-chain      overrides relay chain/runtime                      [string]
-                     [choices: "rococo", "westend", "kusama", "axia",
-                      "rococo-local", "westend-local", "kusama-local",
+                     [choices: "betanet", "alphanet", "axctest", "axia",
+                      "betanet-local", "alphanet-local", "axctest-local",
                       "axia-local"]
 
   --port-prefix      provides port prefix for nodes       [number] [default: 34]
@@ -112,18 +112,18 @@ Options:
   --help             Show help
 ```
 
-Ex: _Run only local binaries (with runtime moonriver and relay runtime kusama)_
+Ex: _Run only local binaries (with runtime moonriver and relay runtime axctest)_
 
 ```
-npm run launch -- --allychain-chain moonriver-local --relay local --relay-chain kusama-local
+npm run launch -- --allychain-chain moonriver-local --relay local --relay-chain axctest-local
 ```
 
 (no --allychain defaults to `--allychain local`)
 
-Ex: _Run alphanet-8.1 with westend 9030 runtime_
+Ex: _Run alphanet-8.1 with alphanet 9030 runtime_
 
 ```
-npm run launch -- --allychain alphanet-8.1 --relay westend-9030
+npm run launch -- --allychain alphanet-8.1 --relay alphanet-9030
 ```
 
 ### Fast local build
@@ -135,17 +135,17 @@ axia side.
 
 Here is the list of cargo aliases allowing you to compile only some native rutimes:
 
-| command                  | native runtimes                       |
-| ------------------------ | ------------------------------------- |
-| `cargo moonbase`         | `moonbase, westend, axia`         |
-| `cargo moonbase-rococo`  | `moonbase, rococo, westend, axia` |
-| `cargo moonriver`        | `moonriver, axia`                 |
-| `cargo moonriver-rococo` | `moonriver, rococo, axia`         |
-| `cargo moonriver-kusama` | `moonriver, kusama, axia`         |
-| `cargo moonbeam`         | `moonbeam, axia`                  |
-| `cargo moonbeam-rococo`  | `moonbeam, rococo, axia`          |
+| command                   | native runtimes                     |
+| ------------------------- | ----------------------------------- |
+| `cargo moonbase`          | `moonbase, alphanet, axia`          |
+| `cargo moonbase-betanet`  | `moonbase, betanet, alphanet, axia` |
+| `cargo moonriver`         | `moonriver, axia`                   |
+| `cargo moonriver-betanet` | `moonriver, betanet, axia`          |
+| `cargo moonriver-axctest` | `moonriver, axctest, axia`          |
+| `cargo moonbeam`          | `moonbeam, axia`                    |
+| `cargo moonbeam-betanet`  | `moonbeam, betanet, axia`           |
 
-- The `moonbase` native runtime require `westend` native runtime to compile.
+- The `moonbase` native runtime require `alphanet` native runtime to compile.
 - The `axia` native runtime is always included (This is requirement from axia repo).
 
 ### Port assignments
@@ -180,12 +180,12 @@ For the default configuration, you can access through axiajs:
 > moonbeam-tools@0.0.1 launch /home/alan/projects/moonbeam/tools
 > ts-node launch "moonriver-genesis-fast"
 
-🚀 Relay:     kusama-9030-fast    - purestake/moonbase-relay-testnet:kusama-0.9.3-fast (kusama-local)
+🚀 Relay:     axctest-9030-fast    - purestake/moonbase-relay-testnet:axctest-0.9.3-fast (axctest-local)
      Missing build/moonriver-genesis-fast/moonbeam locally, downloading it...
      build/moonriver-genesis-fast/moonbeam downloaded !
 🚀 Allychain: moonriver-genesis-fast   - purestake/moonbase-allychain:moonriver-genesis-fast (moonriver-local)
-     Missing build/kusama-9030-fast/axia locally, downloading it...
-     build/kusama-9030-fast/axia downloaded !
+     Missing build/axctest-9030-fast/axia locally, downloading it...
+     build/axctest-9030-fast/axia downloaded !
 
 2021-06-06 04:28:46  Building chain spec
 
@@ -217,7 +217,7 @@ Here `34101` is the rpcPort for the collator.
 Using script [github/list-pr-labels.ts]:
 
 ```
-npm run list-pull-request-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/substrate
+npm run list-pull-request-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/axlib
 ```
 
 ### Parameters
@@ -228,7 +228,7 @@ Options:
   --from        commit-sha/tag of range start                [string] [required]
   --to          commit-sha/tag of range end                  [string] [required]
   --repo        which repository to read                     [string] [required]
-                [choices: "paritytech/substrate", "paritytech/axia"]
+                [choices: "paritytech/axlib", "paritytech/axia"]
   --only-label  filter specific labels (using grep)                      [array]
   --help        Show help                                              [boolean]
 ```
@@ -236,16 +236,16 @@ Options:
 ### Expected output
 
 ```
-> npm run list-pr-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/substrate --only-label runtime
+> npm run list-pr-labels -- --from axia-v0.9.4 --to axia-v0.9.5 --repo paritytech/axlib --only-label runtime
 
-found 55 total commits in https://github.com/paritytech/substrate/compare/axia-v0.9.4...axia-v0.9.5
+found 55 total commits in https://github.com/paritytech/axlib/compare/axia-v0.9.4...axia-v0.9.5
 ===== E1-runtimemigration
-  (paritytech/substrate#9061) Migrate pallet-randomness-collective-flip to pallet attribute macro
+  (paritytech/axlib#9061) Migrate pallet-randomness-collective-flip to pallet attribute macro
 ===== B7-runtimenoteworthy
-  (paritytech/substrate#7778) Named reserve
-  (paritytech/substrate#8955) update ss58 type to u16
-  (paritytech/substrate#8909) contracts: Add new `seal_call` that offers new features
-  (paritytech/substrate#9083) Migrate pallet-staking to pallet attribute macro
-  (paritytech/substrate#9085) Enforce pub calls in pallets
-  (paritytech/substrate#8912) staking/election: prolonged era and emergency mode for governance submission.
+  (paritytech/axlib#7778) Named reserve
+  (paritytech/axlib#8955) update ss58 type to u16
+  (paritytech/axlib#8909) contracts: Add new `seal_call` that offers new features
+  (paritytech/axlib#9083) Migrate pallet-staking to pallet attribute macro
+  (paritytech/axlib#9085) Enforce pub calls in pallets
+  (paritytech/axlib#8912) staking/election: prolonged era and emergency mode for governance submission.
 ```

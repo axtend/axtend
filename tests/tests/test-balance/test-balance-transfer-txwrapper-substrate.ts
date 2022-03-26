@@ -2,17 +2,17 @@
 // This flow is used by some exchange partners like kraken
 
 import { expect } from "chai";
-import { methods as substrateMethods } from "@substrate/txwrapper-substrate";
-import { createMetadata, KeyringPair, OptionsWithMeta } from "@substrate/txwrapper-core";
+import { methods as axlibMethods } from "@axlib/txwrapper-axlib";
+import { createMetadata, KeyringPair, OptionsWithMeta } from "@axlib/txwrapper-core";
 import { Keyring } from "@axia/api";
-import { getRegistry } from "@substrate/txwrapper-registry";
+import { getRegistry } from "@axlib/txwrapper-registry";
 
 import { GENESIS_ACCOUNT, GENESIS_ACCOUNT_PRIVATE_KEY } from "../../util/constants";
 
 import { describeDevMoonbeam } from "../../util/setup-dev-tests";
 import { rpcToLocalNode } from "../../util/transactions";
 import { EXTRINSIC_VERSION } from "@axia/types/extrinsic/v4/Extrinsic";
-import { createSignedTx, createSigningPayload } from "@substrate/txwrapper-core/lib/core/construct";
+import { createSignedTx, createSigningPayload } from "@axlib/txwrapper-core/lib/core/construct";
 import { verifyLatestBlockFees } from "../../util/block";
 
 /**
@@ -67,7 +67,7 @@ describeDevMoonbeam("Balance transfer - txwrapper", (context) => {
       specVersion,
       metadataRpc,
     });
-    const unsigned = substrateMethods.balances.transfer(
+    const unsigned = axlibMethods.balances.transfer(
       {
         dest: TEST_ACCOUNT,
         value: 512,

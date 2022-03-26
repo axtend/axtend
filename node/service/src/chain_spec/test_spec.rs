@@ -85,7 +85,7 @@ pub fn staking_spec(para_id: ParaId) -> ChainSpec {
 		Some(serde_json::from_str("{\"tokenDecimals\": 18}").expect("Provided valid json map")),
 		// Extensions
 		Extensions {
-			relay_chain: "westend_local".into(),
+			relay_chain: "alphanet_local".into(),
 			para_id: para_id.into(),
 		},
 	)

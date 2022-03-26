@@ -4,7 +4,7 @@ import { BN } from "@axia/util";
 import { ALITH, ALITH_PRIV_KEY, BALTATHAR } from "../util/constants";
 
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { mockAssetBalance } from "./test-precompile/test-precompile-assets-erc20";
 
 const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";
@@ -22,10 +22,7 @@ describeDevMoonbeam("Pallet Assets Pallet - assets transfer", (context) => {
       balance: balance,
     });
 
-    assetId = context.axiaApi.createType(
-      "u128",
-      new BN("42259045809535163221576417993425387648")
-    );
+    assetId = context.axiaApi.createType("u128", new BN("42259045809535163221576417993425387648"));
     const assetDetails = context.axiaApi.createType("PalletAssetsAssetDetails", {
       supply: balance,
     });
@@ -41,10 +38,7 @@ describeDevMoonbeam("Pallet Assets Pallet - assets transfer", (context) => {
 
   it("should query asset balance", async function () {
     // Baltathar balance is 1000
-    let baltatharBalance = (await context.axiaApi.query.assets.account(
-      assetId,
-      BALTATHAR
-    )) as any;
+    let baltatharBalance = (await context.axiaApi.query.assets.account(assetId, BALTATHAR)) as any;
     expect(baltatharBalance.unwrap()["balance"].eq(new BN(1000))).to.equal(true);
   });
 });

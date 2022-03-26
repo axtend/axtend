@@ -243,7 +243,7 @@ impl frame_system::Config for Runtime {
 	type DbWeight = RocksDbWeight;
 	type BaseCallFilter = MaintenanceMode;
 	type SystemWeightInfo = ();
-	/// This is used as an identifier of the chain. 42 is the generic substrate prefix.
+	/// This is used as an identifier of the chain. 42 is the generic axlib prefix.
 	type SS58Prefix = SS58Prefix;
 	type OnSetCode = cumulus_pallet_allychain_system::AllychainSetCode<Self>;
 	type MaxConsumers = frame_support::traits::ConstU32<16>;
@@ -253,7 +253,7 @@ impl pallet_utility::Config for Runtime {
 	type Event = Event;
 	type Call = Call;
 	type PalletsOrigin = OriginCaller;
-	type WeightInfo = pallet_utility::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_utility::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
@@ -265,7 +265,7 @@ impl pallet_timestamp::Config for Runtime {
 	type Moment = u64;
 	type OnTimestampSet = ();
 	type MinimumPeriod = MinimumPeriod;
-	type WeightInfo = pallet_timestamp::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_timestamp::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
@@ -285,7 +285,7 @@ impl pallet_balances::Config for Runtime {
 	type DustRemoval = ();
 	type ExistentialDeposit = ExistentialDeposit;
 	type AccountStore = System;
-	type WeightInfo = pallet_balances::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_balances::weights::AxlibWeight<Runtime>;
 }
 
 pub struct DealWithFees<R>(sp_std::marker::PhantomData<R>);
@@ -294,7 +294,7 @@ where
 	R: pallet_balances::Config + pallet_treasury::Config,
 	pallet_treasury::Pallet<R>: OnUnbalanced<NegativeImbalance<R>>,
 {
-	// this seems to be called for substrate-based transactions
+	// this seems to be called for axlib-based transactions
 	fn on_unbalanceds<B>(mut fees_then_tips: impl Iterator<Item = NegativeImbalance<R>>) {
 		if let Some(fees) = fees_then_tips.next() {
 			// for fees, 80% are burned, 20% to the treasury
@@ -450,7 +450,7 @@ impl pallet_evm::Config for Runtime {
 	type OnChargeTransaction = pallet_evm::EVMCurrencyAdapter<Balances, DealWithFees<Runtime>>;
 	type BlockGasLimit = BlockGasLimit;
 	type FindAuthor = FindAuthorAdapter<AuthorInherent>;
-	type WeightInfo = pallet_evm::weights::SubstrateWeight<Self>;
+	type WeightInfo = pallet_evm::weights::AxlibWeight<Self>;
 }
 
 parameter_types! {
@@ -466,7 +466,7 @@ impl pallet_scheduler::Config for Runtime {
 	type MaximumWeight = MaximumSchedulerWeight;
 	type ScheduleOrigin = EnsureRoot<AccountId>;
 	type MaxScheduledPerBlock = MaxScheduledPerBlock;
-	type WeightInfo = pallet_scheduler::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_scheduler::weights::AxlibWeight<Runtime>;
 	type OriginPrivilegeCmp = EqualPrivilegeOnly;
 	type PreimageProvider = ();
 	type NoPreimagePostponement = ();
@@ -501,7 +501,7 @@ impl pallet_collective::Config<CouncilInstance> for Runtime {
 	type MaxProposals = CouncilMaxProposals;
 	type MaxMembers = CouncilMaxMembers;
 	type DefaultVote = pallet_collective::MoreThanMajorityThenPrimeDefaultVote;
-	type WeightInfo = pallet_collective::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_collective::weights::AxlibWeight<Runtime>;
 }
 
 impl pallet_collective::Config<TechCommitteeInstance> for Runtime {
@@ -512,7 +512,7 @@ impl pallet_collective::Config<TechCommitteeInstance> for Runtime {
 	type MaxProposals = TechCommitteeMaxProposals;
 	type MaxMembers = TechCommitteeMaxMembers;
 	type DefaultVote = pallet_collective::MoreThanMajorityThenPrimeDefaultVote;
-	type WeightInfo = pallet_collective::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_collective::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
@@ -577,7 +577,7 @@ impl pallet_democracy::Config for Runtime {
 	type MaxVotes = MaxVotes;
 	type OperationalPreimageOrigin = pallet_collective::EnsureMember<AccountId, CouncilInstance>;
 	type PalletsOrigin = OriginCaller;
-	type WeightInfo = pallet_democracy::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_democracy::weights::AxlibWeight<Runtime>;
 	type MaxProposals = MaxProposals;
 }
 
@@ -615,7 +615,7 @@ impl pallet_treasury::Config for Runtime {
 	type Burn = ();
 	type BurnDestination = ();
 	type MaxApprovals = MaxApprovals;
-	type WeightInfo = pallet_treasury::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_treasury::weights::AxlibWeight<Runtime>;
 	type SpendFunds = ();
 	type ProposalBondMaximum = ();
 }
@@ -653,7 +653,7 @@ impl pallet_identity::Config for Runtime {
 	type Slashed = Treasury;
 	type ForceOrigin = IdentityForceOrigin;
 	type RegistrarOrigin = IdentityRegistrarOrigin;
-	type WeightInfo = pallet_identity::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_identity::weights::AxlibWeight<Runtime>;
 }
 
 pub struct TransactionConverter;
@@ -787,7 +787,7 @@ impl allychain_staking::Config for Runtime {
 	type MinCandidateStk = MinCandidateStk;
 	type MinDelegation = MinDelegatorStk;
 	type MinDelegatorStk = MinDelegatorStk;
-	type WeightInfo = allychain_staking::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = allychain_staking::weights::AxlibWeight<Runtime>;
 }
 
 impl pallet_author_inherent::Config for Runtime {
@@ -828,7 +828,7 @@ impl pallet_crowdloan_rewards::Config for Runtime {
 	type VestingBlockNumber = cumulus_primitives_core::relay_chain::BlockNumber;
 	type VestingBlockProvider =
 		cumulus_pallet_allychain_system::RelaychainBlockNumberProvider<Self>;
-	type WeightInfo = pallet_crowdloan_rewards::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_crowdloan_rewards::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
@@ -840,7 +840,7 @@ impl pallet_author_mapping::Config for Runtime {
 	type Event = Event;
 	type DepositCurrency = Balances;
 	type DepositAmount = DepositAmount;
-	type WeightInfo = pallet_author_mapping::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_author_mapping::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
@@ -940,7 +940,7 @@ impl pallet_proxy::Config for Runtime {
 	type ProxyDepositBase = ProxyDepositBase;
 	type ProxyDepositFactor = ProxyDepositFactor;
 	type MaxProxies = MaxProxies;
-	type WeightInfo = pallet_proxy::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_proxy::weights::AxlibWeight<Runtime>;
 	type MaxPending = MaxPending;
 	type CallHasher = BlakeTwo256;
 	type AnnouncementDepositBase = AnnouncementDepositBase;
@@ -965,7 +965,7 @@ impl pallet_migrations::Config for Runtime {
 
 parameter_types! {
 	// The network Id of the relay
-	pub const RelayNetwork: NetworkId = NetworkId::Kusama;
+	pub const RelayNetwork: NetworkId = NetworkId::AxiaTest;
 	// The relay chain Origin type
 	pub RelayChainOrigin: Origin = cumulus_pallet_xcm::Origin::Relay.into();
 	// The ancestry, defines the multilocation describing this consensus system
@@ -1246,13 +1246,13 @@ impl pallet_assets::Config for Runtime {
 	type Freezer = ();
 	type Extra = ();
 	type AssetAccountDeposit = AssetAccountDeposit;
-	type WeightInfo = pallet_assets::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_assets::weights::AxlibWeight<Runtime>;
 }
 
 parameter_types! {
-	// Statemine ParaId in kusama
+	// Statemine ParaId in axctest
 	pub StatemineParaId: u32 = 1000;
-	// Assets Pallet instance in Statemine kusama
+	// Assets Pallet instance in Statemine axctest
 	pub StatemineAssetPalletInstance: u8 = 50;
 }
 
@@ -1369,7 +1369,7 @@ impl pallet_asset_manager::Config for Runtime {
 	type AssetType = AssetType;
 	type AssetRegistrar = AssetRegistrar;
 	type AssetModifierOrigin = EnsureRoot<AccountId>;
-	type WeightInfo = pallet_asset_manager::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = pallet_asset_manager::weights::AxlibWeight<Runtime>;
 }
 
 // Instruct how to go from an H160 to an AssetID
@@ -1491,9 +1491,9 @@ impl TryFrom<u8> for Transactors {
 impl UtilityEncodeCall for Transactors {
 	fn encode_call(self, call: UtilityAvailableCalls) -> Vec<u8> {
 		match self {
-			// Shall we use westend for moonbase? The tests are probably based on rococo
-			// but moonbase-alpha is attached to westend-runtime I think
-			Transactors::Relay => moonbeam_relay_encoder::kusama::KusamaEncoder.encode_call(call),
+			// Shall we use alphanet for moonbase? The tests are probably based on betanet
+			// but moonbase-alpha is attached to alphanet-runtime I think
+			Transactors::Relay => moonbeam_relay_encoder::axctest::AxiaTestEncoder.encode_call(call),
 		}
 	}
 }
@@ -1522,7 +1522,7 @@ impl xcm_transactor::Config for Runtime {
 	type LocationInverter = LocationInverter<Ancestry>;
 	type BaseXcmWeight = BaseXcmWeight;
 	type AssetTransactor = AssetTransactors;
-	type WeightInfo = xcm_transactor::weights::SubstrateWeight<Runtime>;
+	type WeightInfo = xcm_transactor::weights::AxlibWeight<Runtime>;
 }
 
 /// Maintenance mode Call filter
@@ -1787,9 +1787,9 @@ runtime_common::impl_runtime_apis_plus_common! {
 				return InvalidTransaction::Call.into();
 			}
 
-			// This runtime uses Substrate's pallet transaction payment. This
-			// makes the chain feel like a standard Substrate chain when submitting
-			// frame transactions and using Substrate ecosystem tools. It has the downside that
+			// This runtime uses Axlib's pallet transaction payment. This
+			// makes the chain feel like a standard Axlib chain when submitting
+			// frame transactions and using Axlib ecosystem tools. It has the downside that
 			// transaction are not prioritized by gas_price. The following code reprioritizes
 			// transactions to overcome this.
 			//

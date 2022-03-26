@@ -13,7 +13,7 @@ num_enum = { version = "0.5.3", default-features = false }
 pallet-author-mapping = { path = "../../pallets/author-mapping", default-features = false }
 precompile-utils = { path = "../utils", default-features = false }
 
-# Substrate
+# Axlib
 codec = { package = "parity-scale-codec", version = "2.0.0", default-features = false }
 fp-evm = { git = "https://github.com/axtend/frontier", branch = "frontier", default-features = false }
 frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
@@ -32,7 +32,7 @@ hex-literal = "0.3.4"
 nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "nimbus" }
 serde = "1.0.100"
 
-# Substrate
+# Axlib
 pallet-balances = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 pallet-scheduler = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 pallet-timestamp = { git = "https://github.com/axtend/axlib", branch = "axlib" }

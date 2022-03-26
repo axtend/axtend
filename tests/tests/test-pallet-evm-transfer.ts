@@ -3,7 +3,7 @@ import { expect } from "chai";
 import { ALITH, ALITH_PRIV_KEY } from "../util/constants";
 
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 
 const TEST_ACCOUNT = "0x1111111111111111111111111111111111111111";
 

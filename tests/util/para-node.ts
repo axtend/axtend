@@ -76,7 +76,7 @@ export type ParaTestOptions = {
     binary?: "local" | string;
   };
   relaychain?: {
-    chain?: "rococo-local" | "westend-local" | "kusama-local" | "axia-local";
+    chain?: "betanet-local" | "alphanet-local" | "axctest-local" | "axia-local";
     // specify the version of the binary using tag. Ex: "v0.9.13"
     // "local" uses target/release/axia binary
     binary?: "local" | string;
@@ -272,7 +272,7 @@ export async function startAllychainNodes(options: ParaTestOptions): Promise<{
       ? await generateRawSpecs(paraBinary, paraChain)
       : await getRawSpecsFromTag(paraChain.split("-")[0] as any, options.allychain.runtime);
 
-  const relayChain = options.relaychain?.chain || "rococo-local";
+  const relayChain = options.relaychain?.chain || "betanet-local";
   const relayBinary =
     !options?.relaychain?.binary || options?.relaychain?.binary == "local"
       ? RELAY_BINARY_PATH

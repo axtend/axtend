@@ -11,13 +11,13 @@ import {
   ALITH,
 } from "../util/constants";
 import { describeDevMoonbeam } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/substrate-rpc";
+import { createBlockWithExtrinsic } from "../util/axlib-rpc";
 import { verifyLatestBlockFees } from "../util/block";
 import { createTransfer } from "../util/transactions";
 
 describeDevMoonbeam("Sudo - successful setAllychainBondAccount", (context) => {
   let alith: KeyringPair;
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
@@ -35,8 +35,8 @@ describeDevMoonbeam("Sudo - successful setAllychainBondAccount", (context) => {
     expect(allychainBondInfo.toHuman()["percent"]).to.equal("30.00%");
     //check events
     expect(events.length).to.eq(5);
-    expect(context.axiaApi.events.allychainStaking.AllychainBondAccountSet.is(events[1] as any))
-      .to.be.true;
+    expect(context.axiaApi.events.allychainStaking.AllychainBondAccountSet.is(events[1] as any)).to
+      .be.true;
     expect(context.axiaApi.events.balances.Deposit.is(events[3] as any)).to.be.true;
     expect(context.axiaApi.events.system.ExtrinsicSuccess.is(events[4] as any)).to.be.true;
     // check balance diff (diff should be null for sudo - funds are sent back)
@@ -47,7 +47,7 @@ describeDevMoonbeam("Sudo - successful setAllychainBondAccount", (context) => {
 });
 describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
   let alith: KeyringPair;
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
     const initBalance = await context.web3.eth.getBalance(ALITH);
@@ -91,7 +91,7 @@ describeDevMoonbeam("Sudo - fail if no funds in sudo", (context) => {
 });
 describeDevMoonbeam("Sudo - Only sudo account", (context) => {
   let genesisAccount: KeyringPair;
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
   });
@@ -122,7 +122,7 @@ describeDevMoonbeam("Sudo - Only sudo account", (context) => {
 
 describeDevMoonbeam("Sudo - Only sudo account - test gas", (context) => {
   let alith: KeyringPair;
-  before("Setup genesis account for substrate", async () => {
+  before("Setup genesis account for axlib", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     alith = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });

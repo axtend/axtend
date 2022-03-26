@@ -25,14 +25,14 @@ export const rpcDefinitions: Record<string, Record<string, DefinitionRpc | Defin
       aliasSection: "txpool",
       description:
         "The detailed information regarding Ethereum transactions that are currently in the " +
-        "Substrate transaction pool.",
+        "Axlib transaction pool.",
       params: [],
       type: "TxPoolResultContent",
     },
     inspect: {
       aliasSection: "txpool",
       description:
-        "Summarized information of the Ethereum transactions that are currently in the Substrate" +
+        "Summarized information of the Ethereum transactions that are currently in the Axlib" +
         " transaction pool.",
       params: [],
       type: "TxPoolResultInspect",
@@ -40,7 +40,7 @@ export const rpcDefinitions: Record<string, Record<string, DefinitionRpc | Defin
     status: {
       aliasSection: "txpool",
       description:
-        "The number of Ethereum transaction that are currently in the Substrate transaction pool.",
+        "The number of Ethereum transaction that are currently in the Axlib transaction pool.",
       params: [],
       type: "TxPoolResultStatus",
     },
