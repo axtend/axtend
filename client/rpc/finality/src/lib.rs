@@ -28,7 +28,7 @@ use sp_runtime::traits::Block;
 
 /// An RPC endpoint to check for finality of blocks and transactions in Axtend
 #[rpc(server)]
-pub trait MoonbeamFinalityApi {
+pub trait AxtendFinalityApi {
 	/// Reports whether a Axlib or Ethereum block is finalized.
 	/// Returns false if the block is not found.
 	#[rpc(name = "moon_isBlockFinalized")]
@@ -40,13 +40,13 @@ pub trait MoonbeamFinalityApi {
 	fn is_tx_finalized(&self, tx_hash: H256) -> BoxFuture<'static, RpcResult<bool>>;
 }
 
-pub struct MoonbeamFinality<B: Block, C> {
+pub struct AxtendFinality<B: Block, C> {
 	pub backend: Arc<FrontierBackend<B>>,
 	pub client: Arc<C>,
 	_phdata: PhantomData<B>,
 }
 
-impl<B: Block, C> MoonbeamFinality<B, C> {
+impl<B: Block, C> AxtendFinality<B, C> {
 	pub fn new(client: Arc<C>, backend: Arc<FrontierBackend<B>>) -> Self {
 		Self {
 			backend,
@@ -56,7 +56,7 @@ impl<B: Block, C> MoonbeamFinality<B, C> {
 	}
 }
 
-impl<B, C> MoonbeamFinalityApi for MoonbeamFinality<B, C>
+impl<B, C> AxtendFinalityApi for AxtendFinality<B, C>
 where
 	B: Block<Hash = H256>,
 	C: HeaderBackend<B> + Send + Sync + 'static,

@@ -78,10 +78,10 @@ pub type HostFunctions = (
 );
 
 #[cfg(feature = "moonbeam-native")]
-pub struct MoonbeamExecutor;
+pub struct AxtendExecutor;
 
 #[cfg(feature = "moonbeam-native")]
-impl sc_executor::NativeExecutionDispatch for MoonbeamExecutor {
+impl sc_executor::NativeExecutionDispatch for AxtendExecutor {
 	type ExtendHostFunctions = HostFunctions;
 
 	fn dispatch(method: &str, data: &[u8]) -> Option<Vec<u8>> {
@@ -129,7 +129,7 @@ impl sc_executor::NativeExecutionDispatch for MoonbaseExecutor {
 #[derive(Clone)]
 pub enum RuntimeVariant {
 	#[cfg(feature = "moonbeam-native")]
-	Moonbeam,
+	Axtend,
 	#[cfg(feature = "moonriver-native")]
 	Moonriver,
 	#[cfg(feature = "moonbase-native")]
@@ -141,7 +141,7 @@ impl RuntimeVariant {
 	pub fn from_chain_spec(chain_spec: &Box<dyn ChainSpec>) -> Self {
 		match chain_spec {
 			#[cfg(feature = "moonbeam-native")]
-			spec if spec.is_moonbeam() => Self::Moonbeam,
+			spec if spec.is_moonbeam() => Self::Axtend,
 			#[cfg(feature = "moonriver-native")]
 			spec if spec.is_moonriver() => Self::Moonriver,
 			#[cfg(feature = "moonbase-native")]
@@ -234,7 +234,7 @@ pub fn new_chain_ops(
 		}
 		#[cfg(feature = "moonbeam-native")]
 		spec if spec.is_moonbeam() => {
-			new_chain_ops_inner::<moonbeam_runtime::RuntimeApi, MoonbeamExecutor>(config)
+			new_chain_ops_inner::<moonbeam_runtime::RuntimeApi, AxtendExecutor>(config)
 		}
 		#[cfg(feature = "moonbase-native")]
 		_ => new_chain_ops_inner::<moonbase_runtime::RuntimeApi, MoonbaseExecutor>(config),

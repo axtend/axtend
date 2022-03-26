@@ -448,7 +448,7 @@ pub fn run() -> Result<()> {
 			match chain_spec {
 				#[cfg(feature = "moonbeam-native")]
 				spec if spec.is_moonbeam() => runner.sync_run(|config| {
-					cmd.run::<service::moonbeam_runtime::RuntimeApi, service::MoonbeamExecutor>(
+					cmd.run::<service::moonbeam_runtime::RuntimeApi, service::AxtendExecutor>(
 						&cmd, config,
 					)
 				}),
@@ -490,7 +490,7 @@ pub fn run() -> Result<()> {
 					#[cfg(feature = "moonbeam-native")]
 					spec if spec.is_moonbeam() => {
 						return runner.sync_run(|config| {
-							cmd.run::<service::moonbeam_runtime::Block, service::MoonbeamExecutor>(
+							cmd.run::<service::moonbeam_runtime::Block, service::AxtendExecutor>(
 								config,
 							)
 						})
@@ -548,7 +548,7 @@ pub fn run() -> Result<()> {
 							})?;
 
 					Ok((
-						cmd.run::<service::moonbeam_runtime::Block, service::MoonbeamExecutor>(
+						cmd.run::<service::moonbeam_runtime::Block, service::AxtendExecutor>(
 							config,
 						),
 						task_manager,
@@ -629,7 +629,7 @@ pub fn run() -> Result<()> {
 						#[cfg(feature = "moonbeam-native")]
 						spec if spec.is_moonbeam() => service::new_dev::<
 							service::moonbeam_runtime::RuntimeApi,
-							service::MoonbeamExecutor,
+							service::AxtendExecutor,
 						>(config, author_id, cli.run.sealing, rpc_config)
 						.map_err(Into::into),
 						#[cfg(feature = "moonbase-native")]
@@ -700,7 +700,7 @@ pub fn run() -> Result<()> {
 					#[cfg(feature = "moonbeam-native")]
 					spec if spec.is_moonbeam() => service::start_node::<
 						service::moonbeam_runtime::RuntimeApi,
-						service::MoonbeamExecutor,
+						service::AxtendExecutor,
 					>(config, axia_config, id, rpc_config)
 					.await
 					.map(|r| r.0)

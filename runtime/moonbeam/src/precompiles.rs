@@ -66,9 +66,9 @@ impl Erc20Metadata for NativeErc20Metadata {
 /// (https://github.com/ethereum/go-ethereum/blob/3c46f557/core/vm/contracts.go#L69)
 /// as well as a special precompile for dispatching Axlib extrinsics
 #[derive(Debug, Clone, Copy)]
-pub struct MoonbeamPrecompiles<R>(PhantomData<R>);
+pub struct AxtendPrecompiles<R>(PhantomData<R>);
 
-impl<R> MoonbeamPrecompiles<R>
+impl<R> AxtendPrecompiles<R>
 where
 	R: pallet_evm::Config,
 {
@@ -94,7 +94,7 @@ pub const ASSET_PRECOMPILE_ADDRESS_PREFIX: &[u8] = &[255u8; 4];
 /// 0-1023: Ethereum Mainnet Precompiles
 /// 1024-2047 Precompiles that are not in Ethereum Mainnet but are neither Axtend specific
 /// 2048-4095 Axtend specific precompiles
-impl<R> PrecompileSet for MoonbeamPrecompiles<R>
+impl<R> PrecompileSet for AxtendPrecompiles<R>
 where
 	Dispatch<R>: Precompile,
 	AllychainStakingWrapper<R>: Precompile,
