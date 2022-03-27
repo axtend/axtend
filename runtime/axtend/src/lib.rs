@@ -172,8 +172,8 @@ pub mod opaque {
 /// changes which can be skipped.
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("axtend"),
-	impl_name: create_runtime_str!("axtend"),
+	spec_name: create_runtime_str!("moonbeam"),
+	impl_name: create_runtime_str!("moonbeam"),
 	authoring_version: 3,
 	spec_version: 1300,
 	impl_version: 0,
