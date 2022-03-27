@@ -34,8 +34,8 @@ trie-root = "0.15.2"
 cli-opt = { package = "axtend-cli-opt", path = "../cli-opt" }
 manual-xcm-rpc = { path = "../../client/rpc/manual-xcm" }
 axtend-core-primitives = { path = "../../core-primitives" }
-moonbeam-finality-rpc = { path = "../../client/rpc/finality" }
-moonbeam-primitives-ext = { path = "../../primitives/ext" }
+axtend-finality-rpc = { path = "../../client/rpc/finality" }
+axtend-primitives-ext = { path = "../../primitives/ext" }
 axtend-rpc-debug = { path = "../../client/rpc/debug" }
 axtend-rpc-primitives-debug = { path = "../../primitives/rpc/debug" }
 axtend-rpc-primitives-txpool = { path = "../../primitives/rpc/txpool" }

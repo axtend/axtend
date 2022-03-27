@@ -1990,6 +1990,75 @@ dependencies = [
 ]
 
 [[package]]
+name = "axtend-evm-tracer"
+version = "0.1.0"
+dependencies = [
+ "axtend-primitives-ext",
+ "ethereum-types",
+ "evm",
+ "evm-gasometer",
+ "evm-runtime",
+ "evm-tracing-events",
+ "fp-evm",
+ "pallet-evm",
+ "parity-scale-codec 2.3.1",
+ "sp-core",
+ "sp-io",
+ "sp-runtime",
+ "sp-std",
+]
+
+[[package]]
+name = "axtend-finality-rpc"
+version = "0.1.0"
+dependencies = [
+ "fc-db",
+ "fc-rpc",
+ "futures 0.3.21",
+ "jsonrpc-core",
+ "jsonrpc-derive",
+ "parity-scale-codec 2.3.1",
+ "sp-api",
+ "sp-blockchain",
+ "sp-core",
+ "sp-runtime",
+ "tokio",
+]
+
+[[package]]
+name = "axtend-primitives-ext"
+version = "0.1.0"
+dependencies = [
+ "ethereum-types",
+ "evm-tracing-events",
+ "parity-scale-codec 2.3.1",
+ "sp-externalities",
+ "sp-runtime-interface",
+ "sp-std",
+]
+
+[[package]]
+name = "axtend-relay-encoder"
+version = "0.1.0"
+dependencies = [
+ "alphanet-runtime",
+ "axctest-runtime",
+ "axia-runtime",
+ "betanet-runtime",
+ "cumulus-primitives-core",
+ "frame-support",
+ "frame-system",
+ "pallet-proxy",
+ "pallet-staking",
+ "pallet-utility",
+ "parity-scale-codec 2.3.1",
+ "relay-encoder-precompiles",
+ "sp-runtime",
+ "sp-std",
+ "xcm-primitives",
+]
+
+[[package]]
 name = "axtend-rpc-core-debug"
 version = "0.1.0"
 dependencies = [
@@ -2168,6 +2237,8 @@ dependencies = [
  "axia-runtime-allychains",
  "axlib-wasm-builder",
  "axtend-core-primitives",
+ "axtend-evm-tracer",
+ "axtend-relay-encoder",
  "axtend-rpc-primitives-debug",
  "axtend-rpc-primitives-txpool",
  "crowdloan-rewards-precompiles",
@@ -2194,8 +2265,6 @@ dependencies = [
  "hex",
  "hex-literal",
  "log",
- "moonbeam-evm-tracer",
- "moonbeam-relay-encoder",
  "nimbus-primitives",
  "orml-xtokens",
  "pallet-asset-manager",
@@ -2285,6 +2354,8 @@ dependencies = [
  "axlib-test-runtime-client",
  "axtend-cli-opt",
  "axtend-core-primitives",
+ "axtend-finality-rpc",
+ "axtend-primitives-ext",
  "axtend-rpc-debug",
  "axtend-rpc-primitives-debug",
  "axtend-rpc-primitives-txpool",
@@ -2325,8 +2396,6 @@ dependencies = [
  "manual-xcm-rpc",
  "maplit",
  "moonbase-runtime",
- "moonbeam-finality-rpc",
- "moonbeam-primitives-ext",
  "moonriver-runtime",
  "nimbus-consensus",
  "nimbus-primitives",
@@ -7129,6 +7198,8 @@ dependencies = [
  "axia-runtime-allychains",
  "axlib-wasm-builder",
  "axtend-core-primitives",
+ "axtend-evm-tracer",
+ "axtend-relay-encoder",
  "axtend-rpc-primitives-debug",
  "axtend-rpc-primitives-txpool",
  "crowdloan-rewards-precompiles",
@@ -7155,8 +7226,6 @@ dependencies = [
  "hex",
  "hex-literal",
  "log",
- "moonbeam-evm-tracer",
- "moonbeam-relay-encoder",
  "nimbus-primitives",
  "orml-xtokens",
  "pallet-asset-manager",
@@ -7247,75 +7316,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "moonbeam-evm-tracer"
-version = "0.1.0"
-dependencies = [
- "ethereum-types",
- "evm",
- "evm-gasometer",
- "evm-runtime",
- "evm-tracing-events",
- "fp-evm",
- "moonbeam-primitives-ext",
- "pallet-evm",
- "parity-scale-codec 2.3.1",
- "sp-core",
- "sp-io",
- "sp-runtime",
- "sp-std",
-]
-
-[[package]]
-name = "moonbeam-finality-rpc"
-version = "0.1.0"
-dependencies = [
- "fc-db",
- "fc-rpc",
- "futures 0.3.21",
- "jsonrpc-core",
- "jsonrpc-derive",
- "parity-scale-codec 2.3.1",
- "sp-api",
- "sp-blockchain",
- "sp-core",
- "sp-runtime",
- "tokio",
-]
-
-[[package]]
-name = "moonbeam-primitives-ext"
-version = "0.1.0"
-dependencies = [
- "ethereum-types",
- "evm-tracing-events",
- "parity-scale-codec 2.3.1",
- "sp-externalities",
- "sp-runtime-interface",
- "sp-std",
-]
-
-[[package]]
-name = "moonbeam-relay-encoder"
-version = "0.1.0"
-dependencies = [
- "alphanet-runtime",
- "axctest-runtime",
- "axia-runtime",
- "betanet-runtime",
- "cumulus-primitives-core",
- "frame-support",
- "frame-system",
- "pallet-proxy",
- "pallet-staking",
- "pallet-utility",
- "parity-scale-codec 2.3.1",
- "relay-encoder-precompiles",
- "sp-runtime",
- "sp-std",
- "xcm-primitives",
-]
-
-[[package]]
 name = "moonkey"
 version = "0.1.1"
 dependencies = [
@@ -7336,6 +7336,8 @@ dependencies = [
  "axia-runtime-allychains",
  "axlib-wasm-builder",
  "axtend-core-primitives",
+ "axtend-evm-tracer",
+ "axtend-relay-encoder",
  "axtend-rpc-primitives-debug",
  "axtend-rpc-primitives-txpool",
  "crowdloan-rewards-precompiles",
@@ -7362,8 +7364,6 @@ dependencies = [
  "hex",
  "hex-literal",
  "log",
- "moonbeam-evm-tracer",
- "moonbeam-relay-encoder",
  "nimbus-primitives",
  "orml-xtokens",
  "pallet-asset-manager",

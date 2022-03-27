@@ -1,10 +1,10 @@
 [package]
-name = "moonbeam-relay-encoder"
+name = "axtend-relay-encoder"
 authors = ["PureStake"]
 edition = "2018"
 homepage = "https://axtend.network"
 license = "GPL-3.0-only"
-repository = "https://github.com/PureStake/moonbeam/"
+repository = "https://github.com/axtend/axtend/"
 version = "0.1.0"
 
 [dependencies]

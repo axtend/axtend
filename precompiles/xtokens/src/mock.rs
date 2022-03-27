@@ -71,7 +71,7 @@ construct_runtime!(
 	}
 );
 
-// FRom https://github.com/PureStake/moonbeam/pull/518. Merge to common once is merged
+// FRom https://github.com/axtend/axtend/pull/518. Merge to common once is merged
 #[derive(
 	Eq,
 	PartialEq,

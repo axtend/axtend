@@ -1493,7 +1493,7 @@ impl UtilityEncodeCall for Transactors {
 		match self {
 			// Shall we use alphanet for moonbase? The tests are probably based on betanet
 			// but moonbase-alpha is attached to alphanet-runtime I think
-			Transactors::Relay => moonbeam_relay_encoder::axctest::AxiaTestEncoder.encode_call(call),
+			Transactors::Relay => axtend_relay_encoder::axctest::AxiaTestEncoder.encode_call(call),
 		}
 	}
 }

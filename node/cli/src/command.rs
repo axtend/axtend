@@ -121,7 +121,7 @@ impl AxlibCli for Cli {
 	}
 
 	fn support_url() -> String {
-		"https://github.com/PureStake/moonbeam/issues/new".into()
+		"https://github.com/axtend/axtend/issues/new".into()
 	}
 
 	fn copyright_start_year() -> i32 {
@@ -168,7 +168,7 @@ impl AxlibCli for RelayChainCli {
 	}
 
 	fn support_url() -> String {
-		"https://github.com/PureStake/moonbeam/issues/new".into()
+		"https://github.com/axtend/axtend/issues/new".into()
 	}
 
 	fn copyright_start_year() -> i32 {

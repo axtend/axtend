@@ -74,7 +74,7 @@ type MaybeSelectChain = Option<sc_consensus::LongestChain<FullBackend, Block>>;
 
 pub type HostFunctions = (
 	frame_benchmarking::benchmarking::HostFunctions,
-	moonbeam_primitives_ext::axtend_ext::HostFunctions,
+	axtend_primitives_ext::axtend_ext::HostFunctions,
 );
 
 #[cfg(feature = "axtend-native")]
