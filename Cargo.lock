@@ -1922,6 +1922,23 @@ dependencies = [
 ]
 
 [[package]]
+name = "axtend"
+version = "0.12.3"
+dependencies = [
+ "assert_cmd",
+ "axtend-cli",
+ "axtend-service",
+ "futures 0.3.21",
+ "hex",
+ "nix 0.17.0",
+ "pallet-xcm",
+ "serde",
+ "serde_json",
+ "tempfile",
+ "xcm-builder",
+]
+
+[[package]]
 name = "axtend-cli"
 version = "0.21.1"
 dependencies = [
@@ -7296,23 +7313,6 @@ dependencies = [
  "xcm-transactor",
  "xcm-transactor-precompiles",
  "xtokens-precompiles",
-]
-
-[[package]]
-name = "moonbeam"
-version = "0.12.3"
-dependencies = [
- "assert_cmd",
- "axtend-cli",
- "axtend-service",
- "futures 0.3.21",
- "hex",
- "nix 0.17.0",
- "pallet-xcm",
- "serde",
- "serde_json",
- "tempfile",
- "xcm-builder",
 ]
 
 [[package]]

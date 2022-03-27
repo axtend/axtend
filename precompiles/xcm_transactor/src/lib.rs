@@ -188,7 +188,7 @@ where
 		let inner_call = input.read::<Bytes>(gasometer)?;
 
 		// Depending on the Runtime, this might involve a DB read. This is not the case in
-		// moonbeam, as we are using IdentityMapping
+		// axtend, as we are using IdentityMapping
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
 		let call = xcm_transactor::Call::<Runtime>::transact_through_derivative_multilocation {
 			dest: transactor,
@@ -227,7 +227,7 @@ where
 		let to_account = Runtime::AddressMapping::into_account_id(to_address);
 
 		// We convert the address into a currency
-		// This involves a DB read in moonbeam, hence the db Read
+		// This involves a DB read in axtend, hence the db Read
 		gasometer.record_cost(RuntimeHelper::<Runtime>::db_read_gas_cost())?;
 		let currency_id: <Runtime as xcm_transactor::Config>::CurrencyId =
 			Runtime::account_to_currency_id(to_account)
@@ -240,7 +240,7 @@ where
 		let inner_call = input.read::<Bytes>(gasometer)?;
 
 		// Depending on the Runtime, this might involve a DB read. This is not the case in
-		// moonbeam, as we are using IdentityMapping
+		// axtend, as we are using IdentityMapping
 		let origin = Runtime::AddressMapping::into_account_id(context.caller);
 		let call = xcm_transactor::Call::<Runtime>::transact_through_derivative {
 			dest: transactor,

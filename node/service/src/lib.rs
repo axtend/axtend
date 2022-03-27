@@ -141,7 +141,7 @@ impl RuntimeVariant {
 	pub fn from_chain_spec(chain_spec: &Box<dyn ChainSpec>) -> Self {
 		match chain_spec {
 			#[cfg(feature = "axtend-native")]
-			spec if spec.is_moonbeam() => Self::Axtend,
+			spec if spec.is_axtend() => Self::Axtend,
 			#[cfg(feature = "moonriver-native")]
 			spec if spec.is_moonriver() => Self::Moonriver,
 			#[cfg(feature = "moonbase-native")]
@@ -158,7 +158,7 @@ pub trait IdentifyVariant {
 	fn is_moonbase(&self) -> bool;
 
 	/// Returns `true` if this is a configuration for the `Axtend` network.
-	fn is_moonbeam(&self) -> bool;
+	fn is_axtend(&self) -> bool;
 
 	/// Returns `true` if this is a configuration for the `Moonriver` network.
 	fn is_moonriver(&self) -> bool;
@@ -172,8 +172,8 @@ impl IdentifyVariant for Box<dyn ChainSpec> {
 		self.id().starts_with("moonbase")
 	}
 
-	fn is_moonbeam(&self) -> bool {
-		self.id().starts_with("moonbeam")
+	fn is_axtend(&self) -> bool {
+		self.id().starts_with("axtend")
 	}
 
 	fn is_moonriver(&self) -> bool {
@@ -191,7 +191,7 @@ pub fn frontier_database_dir(config: &Configuration) -> std::path::PathBuf {
 		.as_ref()
 		.map(|base_path| base_path.config_dir(config.chain_spec.id()))
 		.unwrap_or_else(|| {
-			BasePath::from_project("", "", "moonbeam").config_dir(config.chain_spec.id())
+			BasePath::from_project("", "", "axtend").config_dir(config.chain_spec.id())
 		});
 	config_dir.join("frontier").join("db")
 }
@@ -233,7 +233,7 @@ pub fn new_chain_ops(
 			new_chain_ops_inner::<moonriver_runtime::RuntimeApi, MoonriverExecutor>(config)
 		}
 		#[cfg(feature = "axtend-native")]
-		spec if spec.is_moonbeam() => {
+		spec if spec.is_axtend() => {
 			new_chain_ops_inner::<axtend_runtime::RuntimeApi, AxtendExecutor>(config)
 		}
 		#[cfg(feature = "moonbase-native")]
@@ -279,13 +279,13 @@ where
 	))
 }
 
-// If we're using prometheus, use a registry with a prefix of `moonbeam`.
+// If we're using prometheus, use a registry with a prefix of `axtend`.
 fn set_prometheus_registry(config: &mut Configuration) -> Result<(), ServiceError> {
 	if let Some(PrometheusConfig { registry, .. }) = config.prometheus_config.as_mut() {
 		let labels = hashmap! {
 			"chain".into() => config.chain_spec.id().into(),
 		};
-		*registry = Registry::new_custom(Some("moonbeam".into()), Some(labels))?;
+		*registry = Registry::new_custom(Some("axtend".into()), Some(labels))?;
 	}
 
 	Ok(())
@@ -1039,9 +1039,9 @@ mod tests {
 	use super::*;
 
 	#[test]
-	fn test_set_prometheus_registry_uses_moonbeam_prefix() {
+	fn test_set_prometheus_registry_uses_axtend_prefix() {
 		let counter_name = "my_counter";
-		let expected_metric_name = "moonbeam_my_counter";
+		let expected_metric_name = "axtend_my_counter";
 		let counter = Box::new(Counter::new(counter_name, "foobar").unwrap());
 		let mut config = Configuration {
 			prometheus_config: Some(PrometheusConfig::new_with_default_registry(

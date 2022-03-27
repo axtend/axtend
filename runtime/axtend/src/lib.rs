@@ -172,8 +172,8 @@ pub mod opaque {
 /// changes which can be skipped.
 #[sp_version::runtime_version]
 pub const VERSION: RuntimeVersion = RuntimeVersion {
-	spec_name: create_runtime_str!("moonbeam"),
-	impl_name: create_runtime_str!("moonbeam"),
+	spec_name: create_runtime_str!("moonbeam"), // no touchy touch
+	impl_name: create_runtime_str!("moonbeam"), // no touchy touch
 	authoring_version: 3,
 	spec_version: 1300,
 	impl_version: 0,
@@ -785,7 +785,7 @@ parameter_types! {
 	pub const InitializationPayment: Perbill = Perbill::from_percent(30);
 	pub const MaxInitContributorsBatchSizes: u32 = 500;
 	pub const RelaySignaturesThreshold: Perbill = Perbill::from_percent(100);
-	pub const SignatureNetworkIdentifier:  &'static [u8] = b"moonbeam-";
+	pub const SignatureNetworkIdentifier:  &'static [u8] = b"axtend-";
 }
 
 impl pallet_crowdloan_rewards::Config for Runtime {

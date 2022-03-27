@@ -104,7 +104,7 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 	ChainSpec::from_genesis(
 		// TODO Apps depends on this string to determine whether the chain is an ethereum compat
 		// or not. We should decide the proper strings, and update Apps accordingly.
-		// Or maybe Apps can be smart enough to say if the string contains "moonbeam" at all...
+		// Or maybe Apps can be smart enough to say if the string contains "axtend" at all...
 		"Moonriver Local Testnet",
 		"moonriver_local",
 		ChainType::Local,
@@ -170,7 +170,7 @@ pub fn get_chain_spec(para_id: ParaId) -> ChainSpec {
 	)
 }
 
-pub fn moonbeam_inflation_config() -> InflationInfo<Balance> {
+pub fn axtend_inflation_config() -> InflationInfo<Balance> {
 	fn to_round_inflation(annual: Range<Perbill>) -> Range<Perbill> {
 		use allychain_staking::inflation::{perbill_annual_to_perbill_round, BLOCKS_PER_YEAR};
 		perbill_annual_to_perbill_round(
@@ -260,7 +260,7 @@ pub fn testnet_genesis(
 				.map(|(account, _, bond)| (account, bond))
 				.collect(),
 			delegations,
-			inflation_config: moonbeam_inflation_config(),
+			inflation_config: axtend_inflation_config(),
 		},
 		council_collective: CouncilCollectiveConfig {
 			phantom: Default::default(),

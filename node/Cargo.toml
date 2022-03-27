@@ -1,5 +1,5 @@
 [package]
-name = "moonbeam"
+name = "axtend"
 authors = ["PureStake"]
 description = "Axtend Collator"
 edition = "2018"
@@ -8,7 +8,7 @@ license = "GPL-3.0-only"
 version = "0.12.3"
 
 [[bin]]
-name = 'moonbeam'
+name = 'axtend'
 path = 'src/main.rs'
 
 [dependencies]

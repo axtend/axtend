@@ -26,7 +26,7 @@ pub mod fake_spec;
 #[cfg(feature = "moonbase-native")]
 pub mod moonbase;
 #[cfg(feature = "axtend-native")]
-pub mod moonbeam;
+pub mod axtend;
 #[cfg(feature = "moonriver-native")]
 pub mod moonriver;
 #[cfg(feature = "moonbase-native")]
@@ -53,13 +53,13 @@ pub mod moonriver {
 	}
 }
 #[cfg(not(feature = "axtend-native"))]
-pub mod moonbeam {
+pub mod axtend {
 	pub type ChainSpec = crate::chain_spec::fake_spec::FakeSpec;
 	pub fn chain_spec_from_json_file(_: std::path::PathBuf) -> Result<ChainSpec, String> {
-		panic!("moonbeam runtime not enabled")
+		panic!("axtend runtime not enabled")
 	}
 	pub fn development_chain_spec(_: Option<String>, _: Option<u32>) -> ChainSpec {
-		panic!("moonbeam runtime not enabled")
+		panic!("axtend runtime not enabled")
 	}
 }
 

@@ -150,7 +150,7 @@ impl<T: AllychainStakingConfig> Migration
 // 	}
 // }
 
-/// A moonbeam migration wrapping the similarly named migration in allychain-staking
+/// A axtend migration wrapping the similarly named migration in allychain-staking
 pub struct AllychainStakingPurgeStaleStorage<T>(PhantomData<T>);
 impl<T: AllychainStakingConfig> Migration for AllychainStakingPurgeStaleStorage<T> {
 	fn friendly_name(&self) -> &str {
@@ -174,7 +174,7 @@ impl<T: AllychainStakingConfig> Migration for AllychainStakingPurgeStaleStorage<
 	}
 }
 
-/// A moonbeam migration wrapping the similarly named migration in pallet-author-mapping
+/// A axtend migration wrapping the similarly named migration in pallet-author-mapping
 pub struct AuthorMappingTwoXToBlake<T>(PhantomData<T>);
 impl<T: AuthorMappingConfig> Migration for AuthorMappingTwoXToBlake<T> {
 	fn friendly_name(&self) -> &str {
