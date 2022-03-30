@@ -5,7 +5,7 @@ import { BN, u8aToHex } from "@axia/util";
 
 import { ALITH_PRIV_KEY, RANDOM_PRIV_KEY } from "../util/constants";
 import { describeDevAxtend } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/axlib-rpc";
+import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 import { customWeb3Request } from "../util/providers";
 import type { XcmVersionedXcm } from "@axia/types/lookup";
 
@@ -168,7 +168,7 @@ describeDevAxtend("Mock XCM - receive horizontal transfer", (context) => {
 
   it("Should receive a 10 Statemine tokens to Alith with old prefix", async function () {
     // We are going to test that, using the prefix prior to
-    // https://github.com/paritytech/cumulus/pull/831
+    // https://github.com/axiatech/cumulus/pull/831
     // we can receive the tokens on the assetId registed with the old prefix
 
     // Old prefix:
@@ -296,7 +296,7 @@ describeDevAxtend("Mock XCM - receive horizontal transfer", (context) => {
 
   it("Should receive a 10 Statemine tokens to Alith with new prefix", async function () {
     // We are going to test that, using the prefix after
-    // https://github.com/paritytech/cumulus/pull/831
+    // https://github.com/axiatech/cumulus/pull/831
     // we can receive the tokens on the assetId registed with the old prefix
 
     // New prefix:

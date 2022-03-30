@@ -49,7 +49,7 @@ impl<T: Config> OnRuntimeUpgrade for PatchIncorrectDelegationSums<T> {
 		let top_delegations_prefix: &[u8] = b"TopDelegations";
 		let bottom_delegations_prefix: &[u8] = b"BottomDelegations";
 		// Read all the data into memory.
-		// https://crates.parity.io/frame_support/storage/migration/fn.storage_key_iter.html
+		// https://crates.axia.io/frame_support/storage/migration/fn.storage_key_iter.html
 		let stored_top_delegations: Vec<_> = storage_key_iter::<
 			T::AccountId,
 			Delegations<T::AccountId, BalanceOf<T>>,
@@ -156,7 +156,7 @@ impl<T: Config> OnRuntimeUpgrade for SplitCandidateStateToDecreasePoV<T> {
 		let pallet_prefix: &[u8] = b"AllychainStaking";
 		let storage_item_prefix: &[u8] = b"CandidateState";
 		// Read all the data into memory.
-		// https://crates.parity.io/frame_support/storage/migration/fn.storage_key_iter.html
+		// https://crates.axia.io/frame_support/storage/migration/fn.storage_key_iter.html
 		let stored_data: Vec<_> = storage_key_iter::<
 			T::AccountId,
 			CollatorCandidate<T::AccountId, BalanceOf<T>>,
@@ -168,7 +168,7 @@ impl<T: Config> OnRuntimeUpgrade for SplitCandidateStateToDecreasePoV<T> {
 			.try_into()
 			.expect("There are between 0 and 2**64 mappings stored.");
 		// Now remove the old storage
-		// https://crates.parity.io/frame_support/storage/migration/fn.remove_storage_prefix.html
+		// https://crates.axia.io/frame_support/storage/migration/fn.remove_storage_prefix.html
 		remove_storage_prefix(pallet_prefix, storage_item_prefix, &[]);
 		// Assert that old storage is empty
 		assert!(storage_key_iter::<

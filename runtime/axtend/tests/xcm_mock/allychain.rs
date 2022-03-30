@@ -1,4 +1,4 @@
-// Copyright 2021 Parity Technologies (UK) Ltd.
+// Copyright 2021 Axia Technologies (UK) Ltd.
 // This file is part of Axia.
 
 // Axia is free software: you can redistribute it and/or modify
@@ -132,7 +132,7 @@ impl pallet_assets::Config for Runtime {
 	type StringLimit = AssetsStringLimit;
 	type Freezer = ();
 	type Extra = ();
-	type WeightInfo = pallet_assets::weights::AxlibWeight<Runtime>;
+	type WeightInfo = pallet_assets::weights::SubstrateWeight<Runtime>;
 	type AssetAccountDeposit = AssetAccountDeposit;
 }
 
@@ -580,7 +580,7 @@ impl Default for AssetType {
 impl From<MultiLocation> for AssetType {
 	fn from(location: MultiLocation) -> Self {
 		match location {
-			// Change https://github.com/paritytech/cumulus/pull/831
+			// Change https://github.com/axiatech/cumulus/pull/831
 			// This avoids interrumption once they upgrade
 			// We map the previous location to the new one so that the assetId is well retrieved
 			MultiLocation {
@@ -716,7 +716,7 @@ impl pallet_evm::Config for Runtime {
 	type ChainId = ();
 	type BlockGasLimit = ();
 	type OnChargeTransaction = ();
-	type BlockHashMapping = pallet_evm::AxlibBlockHashMapping<Self>;
+	type BlockHashMapping = pallet_evm::SubstrateBlockHashMapping<Self>;
 	type FindAuthor = ();
 	type WeightInfo = ();
 }

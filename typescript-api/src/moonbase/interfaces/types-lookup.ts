@@ -2577,7 +2577,7 @@ declare module "@axia/types/lookup" {
     readonly value: U256;
     readonly input: Bytes;
     readonly accessList: Vec<EthereumTransactionAccessListItem>;
-    readonly oddYParity: bool;
+    readonly oddYAxia: bool;
     readonly r: H256;
     readonly s: H256;
   }
@@ -2603,7 +2603,7 @@ declare module "@axia/types/lookup" {
     readonly value: U256;
     readonly input: Bytes;
     readonly accessList: Vec<EthereumTransactionAccessListItem>;
-    readonly oddYParity: bool;
+    readonly oddYAxia: bool;
     readonly r: H256;
     readonly s: H256;
   }

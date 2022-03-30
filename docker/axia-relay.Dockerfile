@@ -1,11 +1,11 @@
 # Inspired by Axia Dockerfile
 
-FROM docker.io/paritytech/ci-linux:production as builder
+FROM docker.io/axiatech/ci-linux:production as builder
 LABEL maintainer "alan@purestake.com"
 LABEL description="This is the build stage for Axia. Here we create the binary."
 
 ARG AXIA_COMMIT=master
-ARG AXIA_REPO=https://github.com/paritytech/axia
+ARG AXIA_REPO=https://github.com/axiatech/axia
 RUN echo "Using axia ${AXIA_COMMIT}"
 WORKDIR /
 

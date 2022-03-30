@@ -164,7 +164,7 @@ where
 	Runtime: pallet_evm::Config,
 	Runtime::Call: Dispatchable<PostInfo = PostDispatchInfo> + GetDispatchInfo,
 {
-	/// Try to dispatch a Axlib call.
+	/// Try to dispatch a Substrate call.
 	/// Return an error if there are not enough gas, or if the call fails.
 	/// If successful returns the used gas using the Runtime GasWeightMapping.
 	pub fn try_dispatch<Call>(
@@ -190,7 +190,7 @@ where
 
 		// Dispatch call.
 		// It may be possible to not record gas cost if the call returns Pays::No.
-		// However while Axlib handle checking weight while not making the sender pay for it,
+		// However while Substrate handle checking weight while not making the sender pay for it,
 		// the EVM doesn't. It seems this safer to always record the costs to avoid unmetered
 		// computations.
 		let used_weight = call
@@ -213,14 +213,14 @@ impl<Runtime> RuntimeHelper<Runtime>
 where
 	Runtime: pallet_evm::Config,
 {
-	/// Cost of a Axlib DB write in gas.
+	/// Cost of a Substrate DB write in gas.
 	pub fn db_write_gas_cost() -> u64 {
 		<Runtime as pallet_evm::Config>::GasWeightMapping::weight_to_gas(
 			<Runtime as frame_system::Config>::DbWeight::get().write,
 		)
 	}
 
-	/// Cost of a Axlib DB read in gas.
+	/// Cost of a Substrate DB read in gas.
 	pub fn db_read_gas_cost() -> u64 {
 		<Runtime as pallet_evm::Config>::GasWeightMapping::weight_to_gas(
 			<Runtime as frame_system::Config>::DbWeight::get().read,

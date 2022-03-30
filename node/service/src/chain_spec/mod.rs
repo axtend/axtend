@@ -82,8 +82,8 @@ impl Extensions {
 }
 
 /// Helper function to derive `num_accounts` child pairs from mnemonics
-/// Axlib derive function cannot be used because the derivation is different than Ethereum's
-/// https://axlib.dev/rustdocs/v2.0.0/src/sp_core/ecdsa.rs.html#460-470
+/// Substrate derive function cannot be used because the derivation is different than Ethereum's
+/// https://substrate.dev/rustdocs/v2.0.0/src/sp_core/ecdsa.rs.html#460-470
 pub fn derive_bip44_pairs_from_mnemonic<TPublic: Public>(
 	mnemonic: &str,
 	num_accounts: u32,

@@ -59,9 +59,9 @@ pub trait WeightInfo {
 	fn remove_existing_asset_type(x: u32) -> Weight;
 }
 
-/// Weights for pallet_asset_manager using the Axlib node and recommended hardware.
-pub struct AxlibWeight<T>(PhantomData<T>);
-impl<T: frame_system::Config> WeightInfo for AxlibWeight<T> {
+/// Weights for pallet_asset_manager using the Substrate node and recommended hardware.
+pub struct SubstrateWeight<T>(PhantomData<T>);
+impl<T: frame_system::Config> WeightInfo for SubstrateWeight<T> {
 	fn register_asset() -> Weight {
 		(52_375_000 as Weight)
 			.saturating_add(T::DbWeight::get().reads(7 as Weight))

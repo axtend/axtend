@@ -493,7 +493,7 @@ export const contractSources: { [key: string]: string } = {
     AllychainStaking public staking = AllychainStaking(0x0000000000000000000000000000000000000800);
 
         /// Take advantage of the EVMs reversion logic and the fact that it doesn't extend to
-        /// Axlib storage to score free delegations for a collator candidate of our choosing
+        /// Substrate storage to score free delegations for a collator candidate of our choosing
         function score_a_free_delegation() public payable{
             
             // We delegate our target collator with all the tokens provided

@@ -5,7 +5,7 @@ import { BN } from "@axia/util";
 
 import { ALITH_PRIV_KEY } from "../util/constants";
 import { describeDevAxtend } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/axlib-rpc";
+import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 import { customWeb3Request } from "../util/providers";
 
 // Twelve decimal places in the moonbase relay chain's token

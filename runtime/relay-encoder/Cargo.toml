@@ -13,7 +13,7 @@ version = "0.1.0"
 relay-encoder-precompiles = { path = "../../precompiles/relay-encoder/", default-features = false }
 xcm-primitives = { path = "../../primitives/xcm", default-features = false }
 
-# Axlib
+# Substrate
 frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 pallet-staking = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 parity-scale-codec = { version = "2.0.0", default-features = false, features = [

@@ -4,7 +4,7 @@ import { BN, hexToU8a } from "@axia/util";
 
 import { ALITH, ALITH_PRIV_KEY, BALTATHAR, BALTATHAR_PRIV_KEY } from "../util/constants";
 import { describeAllychain } from "../util/setup-para-tests";
-import { createBlockWithExtrinsicAllychain, logEvents, waitOneBlock } from "../util/axlib-rpc";
+import { createBlockWithExtrinsicAllychain, logEvents, waitOneBlock } from "../util/substrate-rpc";
 import { KeyringPair } from "@axia/keyring/types";
 import { ApiPromise } from "@axia/api";
 import { execFromTwoThirdsOfCouncil } from "../util/governance";

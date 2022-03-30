@@ -16,8 +16,8 @@
 
 //! Moonbase Chain Specifications and utilities for building them.
 //!
-//! Learn more about Axlib chain specifications at
-//! https://axlib.dev/docs/en/knowledgebase/integrate/chain-spec
+//! Learn more about Substrate chain specifications at
+//! https://substrate.dev/docs/en/knowledgebase/integrate/chain-spec
 
 #[cfg(test)]
 use crate::chain_spec::{derive_bip44_pairs_from_mnemonic, get_account_id_from_pair};
@@ -38,7 +38,7 @@ use sp_core::ecdsa;
 use sp_core::U256;
 use sp_runtime::{Perbill, Permill};
 
-/// Specialized `ChainSpec`. This is a specialization of the general Axlib ChainSpec type.
+/// Specialized `ChainSpec`. This is a specialization of the general Substrate ChainSpec type.
 pub type ChainSpec = sc_service::GenericChainSpec<GenesisConfig, Extensions>;
 
 /// Generate a chain spec for use with the development service.

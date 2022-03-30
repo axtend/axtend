@@ -1,18 +1,18 @@
-// As inspired by https://github.com/paritytech/txwrapper/blob/master/examples/axia.ts
+// As inspired by https://github.com/axiatech/txwrapper/blob/master/examples/axia.ts
 // This flow is used by some exchange partners like kraken
 
 import { expect } from "chai";
-import { methods as axlibMethods } from "@axlib/txwrapper-axlib";
-import { createMetadata, KeyringPair, OptionsWithMeta } from "@axlib/txwrapper-core";
+import { methods as substrateMethods } from "@substrate/txwrapper-substrate";
+import { createMetadata, KeyringPair, OptionsWithMeta } from "@substrate/txwrapper-core";
 import { Keyring } from "@axia/api";
-import { getRegistry } from "@axlib/txwrapper-registry";
+import { getRegistry } from "@substrate/txwrapper-registry";
 
 import { GENESIS_ACCOUNT, GENESIS_ACCOUNT_PRIVATE_KEY } from "../../util/constants";
 
 import { describeDevAxtend } from "../../util/setup-dev-tests";
 import { rpcToLocalNode } from "../../util/transactions";
 import { EXTRINSIC_VERSION } from "@axia/types/extrinsic/v4/Extrinsic";
-import { createSignedTx, createSigningPayload } from "@axlib/txwrapper-core/lib/core/construct";
+import { createSignedTx, createSigningPayload } from "@substrate/txwrapper-core/lib/core/construct";
 import { verifyLatestBlockFees } from "../../util/block";
 
 /**
@@ -67,7 +67,7 @@ describeDevAxtend("Balance transfer - txwrapper", (context) => {
       specVersion,
       metadataRpc,
     });
-    const unsigned = axlibMethods.balances.transfer(
+    const unsigned = substrateMethods.balances.transfer(
       {
         dest: TEST_ACCOUNT,
         value: 512,

@@ -228,7 +228,7 @@ impl pallet_evm::Config for Runtime {
 	type ChainId = ();
 	type OnChargeTransaction = ();
 	type BlockGasLimit = ();
-	type BlockHashMapping = pallet_evm::AxlibBlockHashMapping<Self>;
+	type BlockHashMapping = pallet_evm::SubstrateBlockHashMapping<Self>;
 	type FindAuthor = ();
 	type WeightInfo = ();
 }

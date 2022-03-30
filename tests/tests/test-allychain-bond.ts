@@ -8,14 +8,14 @@ import {
   ZERO_ADDRESS,
 } from "../util/constants";
 import { describeDevAxtend } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../util/axlib-rpc";
+import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 
 const TWENTY_PERCENT = 20;
 const TWENTY_PERCENT_STRING = "20.00%";
 
 describeDevAxtend("Staking - Allychain Bond - genesis and setAllychainBondAccount", (context) => {
   let sudoAccount: KeyringPair;
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
@@ -40,7 +40,7 @@ describeDevAxtend("Staking - Allychain Bond - genesis and setAllychainBondAccoun
 describeDevAxtend("Staking - Allychain Bond - no sudo on setAllychainBondAccount", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -67,7 +67,7 @@ describeDevAxtend("Staking - Allychain Bond - no sudo on setAllychainBondAccount
 describeDevAxtend("Staking - Allychain Bond - setAllychainBondReservePercent", (context) => {
   let sudoAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
@@ -88,7 +88,7 @@ describeDevAxtend(
   "Staking - Allychain Bond - no sudo on setAllychainBondReservePercent",
   (context) => {
     let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
-    before("Setup genesis account for axlib", async () => {
+    before("Setup genesis account for substrate", async () => {
       const keyring = new Keyring({ type: "ethereum" });
       genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
       sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");

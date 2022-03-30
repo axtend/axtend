@@ -61,7 +61,7 @@ use sp_api::ConstructRuntimeApi;
 use sp_blockchain::HeaderBackend;
 use sp_keystore::SyncCryptoStorePtr;
 use std::sync::Arc;
-use axlib_prometheus_endpoint::Registry;
+use substrate_prometheus_endpoint::Registry;
 
 pub use client::*;
 pub mod chain_spec;
@@ -197,7 +197,7 @@ pub fn frontier_database_dir(config: &Configuration) -> std::path::PathBuf {
 }
 
 // TODO This is copied from frontier. It should be imported instead after
-// https://github.com/paritytech/frontier/issues/333 is solved
+// https://github.com/axiatech/frontier/issues/333 is solved
 pub fn open_frontier_backend(config: &Configuration) -> Result<Arc<fc_db::Backend<Block>>, String> {
 	Ok(Arc::new(fc_db::Backend::<Block>::new(
 		&fc_db::DatabaseSettings {
@@ -510,7 +510,7 @@ where
 	rpc::spawn_essential_tasks(rpc::SpawnTasksParams {
 		task_manager: &task_manager,
 		client: client.clone(),
-		axlib_backend: backend.clone(),
+		substrate_backend: backend.clone(),
 		frontier_backend: frontier_backend.clone(),
 		filter_pool: filter_pool.clone(),
 		overrides: overrides.clone(),
@@ -526,7 +526,7 @@ where
 				rpc::SpawnTasksParams {
 					task_manager: &task_manager,
 					client: client.clone(),
-					axlib_backend: backend.clone(),
+					substrate_backend: backend.clone(),
 					frontier_backend: frontier_backend.clone(),
 					filter_pool: filter_pool.clone(),
 					overrides: overrides.clone(),
@@ -919,7 +919,7 @@ where
 	rpc::spawn_essential_tasks(rpc::SpawnTasksParams {
 		task_manager: &task_manager,
 		client: client.clone(),
-		axlib_backend: backend.clone(),
+		substrate_backend: backend.clone(),
 		frontier_backend: frontier_backend.clone(),
 		filter_pool: filter_pool.clone(),
 		overrides: overrides.clone(),
@@ -934,7 +934,7 @@ where
 				rpc::SpawnTasksParams {
 					task_manager: &task_manager,
 					client: client.clone(),
-					axlib_backend: backend.clone(),
+					substrate_backend: backend.clone(),
 					frontier_backend: frontier_backend.clone(),
 					filter_pool: filter_pool.clone(),
 					overrides: overrides.clone(),

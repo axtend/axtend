@@ -14,7 +14,7 @@ import {
   startAllychainNodes,
   stopAllychainNodes,
 } from "./para-node";
-import { KeyringPair } from "@axlib/txwrapper-core";
+import { KeyringPair } from "@substrate/txwrapper-core";
 import { sha256 } from "ethers/lib/utils";
 const debug = require("debug")("test:setup");
 

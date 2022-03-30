@@ -3,7 +3,7 @@ import Keyring from "@axia/keyring";
 
 import { ALITH, BOB_AUTHOR_ID } from "../../util/constants";
 import { describeDevAxtend } from "../../util/setup-dev-tests";
-import { createBlockWithExtrinsic } from "../../util/axlib-rpc";
+import { createBlockWithExtrinsic } from "../../util/substrate-rpc";
 import { ALITH_PRIVATE_KEY, BALTATHAR_PRIVATE_KEY } from "../../util/constants";
 
 export async function getMappingInfo(

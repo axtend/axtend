@@ -24,7 +24,7 @@ use frame_support::{
 use frame_system::{EnsureRoot, EnsureSigned};
 use pallet_democracy::VoteThreshold;
 use pallet_evm::{
-	AddressMapping, EnsureAddressNever, EnsureAddressRoot, PrecompileSet, AxlibBlockHashMapping,
+	AddressMapping, EnsureAddressNever, EnsureAddressRoot, PrecompileSet, SubstrateBlockHashMapping,
 };
 use scale_info::TypeInfo;
 use serde::{Deserialize, Serialize};
@@ -187,7 +187,7 @@ impl pallet_evm::Config for Runtime {
 	type ChainId = ();
 	type OnChargeTransaction = ();
 	type BlockGasLimit = ();
-	type BlockHashMapping = AxlibBlockHashMapping<Self>;
+	type BlockHashMapping = SubstrateBlockHashMapping<Self>;
 	type FindAuthor = ();
 	type WeightInfo = ();
 }

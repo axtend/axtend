@@ -15,7 +15,7 @@ precompile-utils = { path = "../utils", default-features = false }
 xcm-primitives = { path = "../../primitives/xcm/", default-features = false }
 xcm-transactor = { path = "../../pallets/xcm-transactor", default-features = false }
 
-# Axlib
+# Substrate
 frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 sp-core = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
@@ -40,7 +40,7 @@ sha3 = "0.9"
 # Axtend
 xcm-primitives = { path = "../../primitives/xcm/" }
 
-# Axlib
+# Substrate
 codec = { package = "parity-scale-codec", version = "2.2", default-features = false, features = [
 	"max-encoded-len",
 ] }

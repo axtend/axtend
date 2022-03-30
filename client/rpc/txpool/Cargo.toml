@@ -17,7 +17,7 @@ sha3 = "0.9"
 axtend-rpc-core-txpool = { path = "../../rpc-core/txpool" }
 axtend-rpc-primitives-txpool = { path = "../../../primitives/rpc/txpool" }
 
-# Axlib
+# Substrate
 frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-transaction-pool = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 sc-transaction-pool-api = { git = "https://github.com/axtend/axlib", branch = "axlib" }

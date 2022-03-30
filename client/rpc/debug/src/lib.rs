@@ -416,7 +416,7 @@ where
 	/// In order to succesfully reproduce the result of the original transaction we need a correct
 	/// state to replay over.
 	///
-	/// Axlib allows to apply extrinsics in the Runtime and thus creating an overlayed state.
+	/// Substrate allows to apply extrinsics in the Runtime and thus creating an overlayed state.
 	/// This overlayed changes will live in-memory for the lifetime of the ApiRef.
 	fn handle_transaction_request(
 		client: Arc<C>,

@@ -15,7 +15,7 @@ import {
 import { execFromAllMembersOfTechCommittee } from "../util/governance";
 
 import { describeDevAxtend } from "../util/setup-dev-tests";
-import { createBlockWithExtrinsic, createBlockWithExtrinsicAllychain } from "../util/axlib-rpc";
+import { createBlockWithExtrinsic, createBlockWithExtrinsicAllychain } from "../util/substrate-rpc";
 import { createTransfer } from "../util/transactions";
 import { VESTING_PERIOD } from "./test-crowdloan";
 import { mockAssetBalance } from "./test-precompile/test-precompile-assets-erc20";

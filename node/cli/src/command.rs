@@ -27,7 +27,7 @@ use axia_allychain::primitives::AccountIdConversion;
 use axia_service::AlphanetChainSpec;
 use sc_cli::{
 	ChainSpec, CliConfiguration, DefaultConfigurationValues, ImportParams, KeystoreParams,
-	NetworkParams, Result, RuntimeVersion, SharedParams, AxlibCli,
+	NetworkParams, Result, RuntimeVersion, SharedParams, SubstrateCli,
 };
 use sc_service::config::{BasePath, PrometheusConfig};
 use service::{chain_spec, frontier_database_dir, IdentifyVariant};
@@ -97,7 +97,7 @@ fn load_spec(
 	})
 }
 
-impl AxlibCli for Cli {
+impl SubstrateCli for Cli {
 	fn impl_name() -> String {
 		"Axtend Allychain Collator".into()
 	}
@@ -146,7 +146,7 @@ impl AxlibCli for Cli {
 	}
 }
 
-impl AxlibCli for RelayChainCli {
+impl SubstrateCli for RelayChainCli {
 	fn impl_name() -> String {
 		"Axtend Allychain Collator".into()
 	}
@@ -328,7 +328,7 @@ pub fn run() -> Result<()> {
 						.chain(cli.relaychain_args.iter()),
 				);
 
-				let axia_config = AxlibCli::create_configuration(
+				let axia_config = SubstrateCli::create_configuration(
 					&axia_cli,
 					&axia_cli,
 					config.tokio_handle.clone(),
@@ -681,7 +681,7 @@ pub fn run() -> Result<()> {
 
 				let tokio_handle = config.tokio_handle.clone();
 				let axia_config =
-					AxlibCli::create_configuration(&axia_cli, &axia_cli, tokio_handle)
+					SubstrateCli::create_configuration(&axia_cli, &axia_cli, tokio_handle)
 						.map_err(|err| format!("Relay chain argument error: {}", err))?;
 
 				info!("Allychain id: {:?}", id);

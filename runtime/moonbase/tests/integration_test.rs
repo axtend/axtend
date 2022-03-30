@@ -63,14 +63,14 @@ fn verify_pallet_prefixes() {
 		// Compares the unhashed pallet prefix in the `StorageInstance` implementation by every
 		// storage item in the pallet P. This pallet prefix is used in conjunction with the
 		// item name to get the unique storage key: hash(PalletPrefix) + hash(StorageName)
-		// https://github.com/paritytech/axlib/blob/master/frame/support/procedural/src/pallet/
+		// https://github.com/axiatech/substrate/blob/master/frame/support/procedural/src/pallet/
 		// expand/storage.rs#L389-L401
 		assert_eq!(
 			<moonbase_runtime::Runtime as frame_system::Config>::PalletInfo::name::<P>(),
 			Some(name)
 		);
 	}
-	// TODO: use StorageInfoTrait from https://github.com/paritytech/axlib/pull/9246
+	// TODO: use StorageInfoTrait from https://github.com/axiatech/substrate/pull/9246
 	// This is now available with axia-v0.9.9 dependencies
 	is_pallet_prefix::<moonbase_runtime::System>("System");
 	is_pallet_prefix::<moonbase_runtime::Utility>("Utility");
@@ -1518,7 +1518,7 @@ fn ethereum_invalid_transaction() {
 }
 
 #[test]
-fn transfer_ed_0_axlib() {
+fn transfer_ed_0_substrate() {
 	ExtBuilder::default()
 		.with_balances(vec![
 			(AccountId::from(ALICE), (1 * UNIT) + (1 * WEI)),
@@ -1526,7 +1526,7 @@ fn transfer_ed_0_axlib() {
 		])
 		.build()
 		.execute_with(|| {
-			// Axlib transfer
+			// Substrate transfer
 			assert_ok!(Balances::transfer(
 				origin_of(AccountId::from(ALICE)),
 				AccountId::from(BOB),

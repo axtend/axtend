@@ -14,7 +14,7 @@ rustc-hex = { version = "2.0.1", default-features = false }
 allychain-staking = { path = "../../pallets/allychain-staking", default-features = false }
 precompile-utils = { path = "../utils", default-features = false }
 
-# Axlib
+# Substrate
 codec = { package = "parity-scale-codec", version = "2.2", default-features = false, features = [
 	"max-encoded-len",
 ] }
@@ -34,7 +34,7 @@ derive_more = "0.99"
 serde = "1.0.100"
 sha3 = "0.9"
 
-# Axlib
+# Substrate
 pallet-balances = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 pallet-timestamp = { git = "https://github.com/axtend/axlib", branch = "axlib" }
 scale-info = { version = "1.0", default-features = false, features = [

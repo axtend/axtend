@@ -81,7 +81,7 @@ where
 		if rpc_config.ethapi.contains(&EthApiCmd::Trace) {
 			let (trace_filter_task, trace_filter_requester) = CacheTask::create(
 				Arc::clone(&params.client),
-				Arc::clone(&params.axlib_backend),
+				Arc::clone(&params.substrate_backend),
 				Duration::from_secs(rpc_config.ethapi_trace_cache_duration),
 				Arc::clone(&permit_pool),
 				Arc::clone(&params.overrides),
@@ -94,7 +94,7 @@ where
 	let (debug_task, debug_requester) = if rpc_config.ethapi.contains(&EthApiCmd::Debug) {
 		let (debug_task, debug_requester) = DebugHandler::task(
 			Arc::clone(&params.client),
-			Arc::clone(&params.axlib_backend),
+			Arc::clone(&params.substrate_backend),
 			Arc::clone(&params.frontier_backend),
 			Arc::clone(&permit_pool),
 			Arc::clone(&params.overrides),

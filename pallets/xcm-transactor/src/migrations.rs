@@ -52,7 +52,7 @@ impl<T: Config> OnRuntimeUpgrade for MaxTransactWeight<T> {
 		let storage_item_prefix: &[u8] = b"TransactInfo";
 
 		// Read all the data into memory.
-		// https://crates.parity.io/frame_support/storage/migration/fn.storage_key_iter.html
+		// https://crates.axia.io/frame_support/storage/migration/fn.storage_key_iter.html
 		let stored_data: Vec<_> = storage_key_iter::<
 			MultiLocation,
 			OldRemoteTransactInfo,
@@ -68,7 +68,7 @@ impl<T: Config> OnRuntimeUpgrade for MaxTransactWeight<T> {
 		log::info!(target: "MaxTransactWeight", "Migrating {:?} elements", migrated_count);
 
 		// Now remove the old storage
-		// https://crates.parity.io/frame_support/storage/migration/fn.remove_storage_prefix.html
+		// https://crates.axia.io/frame_support/storage/migration/fn.remove_storage_prefix.html
 		remove_storage_prefix(pallet_prefix, storage_item_prefix, &[]);
 
 		// Assert that old storage is empty

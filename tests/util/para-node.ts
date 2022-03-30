@@ -153,7 +153,7 @@ export async function getAxtendReleaseBinary(binaryTag: string): Promise<string>
 export async function getAxiaReleaseBinary(binaryTag: string): Promise<string> {
   const binaryPath = path.join(BINARY_DIRECTORY, `axia-${binaryTag}`);
   return getGithubReleaseBinary(
-    `https://github.com/paritytech/axia/releases/download/${binaryTag}/axia`,
+    `https://github.com/axiatech/axia/releases/download/${binaryTag}/axia`,
     binaryPath
   );
 }
@@ -463,7 +463,7 @@ export async function stopAllychainNodes() {
     process.kill();
   });
   await new Promise((resolve) => {
-    // TODO: improve, make killAll async https://github.com/paritytech/axia-launch/issues/139
+    // TODO: improve, make killAll async https://github.com/axiatech/axia-launch/issues/139
     process.stdout.write("Waiting 5 seconds for processes to shut down...");
     setTimeout(resolve, 5000);
     nodeStarted = false;

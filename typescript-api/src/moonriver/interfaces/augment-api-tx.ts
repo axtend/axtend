@@ -706,7 +706,7 @@ declare module "@axia/api-base/types/submittable" {
        * This inherent is a workaround to run code after the "real" inherents
        * have executed, but before transactions are executed. This this should
        * go into on_post_inherents when it is ready
-       * https://github.com/paritytech/axlib/pull/10128 TODO better weight.
+       * https://github.com/axiatech/substrate/pull/10128 TODO better weight.
        * For now we jsut set a somewhat soncervative fudge factor
        */
       kickOffAuthorshipValidation: AugmentedSubmittable<() => SubmittableExtrinsic<ApiType>, []>;

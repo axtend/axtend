@@ -78,7 +78,7 @@ impl<T: Config> OnRuntimeUpgrade for UnitsWithAssetType<T> {
 		let storage_item_prefix: &[u8] = b"AssetIdUnitsPerSecond";
 
 		// Read all the data into memory.
-		// https://crates.parity.io/frame_support/storage/migration/fn.storage_key_iter.html
+		// https://crates.axia.io/frame_support/storage/migration/fn.storage_key_iter.html
 		let stored_data: Vec<_> = storage_key_iter::<T::AssetId, u128, Blake2_128Concat>(
 			pallet_prefix,
 			storage_item_prefix,
@@ -196,7 +196,7 @@ impl<T: Config> OnRuntimeUpgrade for PopulateAssetTypeIdStorage<T> {
 		let storage_item_prefix: &[u8] = b"AssetIdType";
 
 		// Read all the data into memory.
-		// https://crates.parity.io/frame_support/storage/migration/fn.storage_key_iter.html
+		// https://crates.axia.io/frame_support/storage/migration/fn.storage_key_iter.html
 		let stored_data: Vec<_> = storage_key_iter::<T::AssetId, T::AssetType, Blake2_128Concat>(
 			pallet_prefix,
 			storage_item_prefix,
@@ -316,7 +316,7 @@ where
 		let storage_item_prefix: &[u8] = b"AssetIdType";
 
 		// Read all the data into memory.
-		// https://crates.parity.io/frame_support/storage/migration/fn.storage_key_iter.html
+		// https://crates.axia.io/frame_support/storage/migration/fn.storage_key_iter.html
 		let stored_data: Vec<_> = storage_key_iter::<T::AssetId, T::AssetType, Blake2_128Concat>(
 			pallet_prefix,
 			storage_item_prefix,
@@ -450,7 +450,7 @@ impl<T: Config> OnRuntimeUpgrade for PopulateSupportedFeePaymentAssets<T> {
 		);
 
 		// Read all the data into memory.
-		// https://crates.parity.io/frame_support/storage/migration/fn.storage_key_iter.html
+		// https://crates.axia.io/frame_support/storage/migration/fn.storage_key_iter.html
 		let stored_data: Vec<_> = storage_key_iter::<T::AssetType, u128, Blake2_128Concat>(
 			pallet_prefix,
 			storage_item_prefix,

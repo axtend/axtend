@@ -23,7 +23,7 @@ serde = { version = "1.0.101", optional = true, default-features = false, featur
 ] }
 sha3 = { version = "0.9", default-features = false }
 
-# Axlib
+# Substrate
 parity-scale-codec = { version = "2.2", default-features = false, features = [
 	"derive",
 ] }

@@ -14,7 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Axtend.  If not, see <http://www.gnu.org/licenses/>.
 
-use axlib_wasm_builder::WasmBuilder;
+use substrate_wasm_builder::WasmBuilder;
 
 fn main() {
 	WasmBuilder::new()

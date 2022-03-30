@@ -34,7 +34,7 @@ pub trait RuntimeApiCollection:
 	sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block>
 	+ sp_api::ApiExt<Block>
 	+ sp_block_builder::BlockBuilder<Block>
-	+ axlib_frame_rpc_system::AccountNonceApi<Block, AccountId, Index>
+	+ substrate_frame_rpc_system::AccountNonceApi<Block, AccountId, Index>
 	+ pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance>
 	+ sp_api::Metadata<Block>
 	+ sp_offchain::OffchainWorkerApi<Block>
@@ -56,7 +56,7 @@ where
 	Api: sp_transaction_pool::runtime_api::TaggedTransactionQueue<Block>
 		+ sp_api::ApiExt<Block>
 		+ sp_block_builder::BlockBuilder<Block>
-		+ axlib_frame_rpc_system::AccountNonceApi<Block, AccountId, Index>
+		+ substrate_frame_rpc_system::AccountNonceApi<Block, AccountId, Index>
 		+ pallet_transaction_payment_rpc_runtime_api::TransactionPaymentApi<Block, Balance>
 		+ sp_api::Metadata<Block>
 		+ sp_offchain::OffchainWorkerApi<Block>

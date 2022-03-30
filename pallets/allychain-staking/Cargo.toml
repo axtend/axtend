@@ -9,7 +9,7 @@ version = "3.0.0"
 log = "0.4"
 serde = { version = "1.0.101", optional = true }
 
-# Axlib
+# Substrate
 frame-benchmarking = { git = "https://github.com/axtend/axlib", branch = "axlib", optional = true, default-features = false }
 frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
@@ -21,7 +21,7 @@ scale-info = { version = "1.0", default-features = false, features = [
 ] }
 sp-runtime = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 sp-std = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
-axlib-fixed = { git = "https://github.com/axtend/axlib-fixed", default-features = false, branch = "axlibfixed" }
+substrate-fixed = { git = "https://github.com/axtend/axlib-fixed", default-features = false, branch = "axlibfixed" }
 
 # Nimbus
 nimbus-primitives = { git = "https://github.com/axtend/nimbus", branch = "nimbus", default-features = false }

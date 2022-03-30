@@ -4,13 +4,13 @@ import { getCommitAndLabels } from "./github-utils";
 
 async function printInfo(octokit: Octokit, previousVersion: string, nextVersion: string) {
   const owners = {
-    axlib: "paritytech",
-    axia: "paritytech",
-    cumulus: "paritytech",
+    substrate: "axiatech",
+    axia: "axiatech",
+    cumulus: "axiatech",
     nimbus: "purestake",
   };
   const prefixes = {
-    axlib: "axia-",
+    substrate: "axia-",
     axia: "release-",
     cumulus: "axia-",
     nimbus: "axtend-axia-",
@@ -101,8 +101,8 @@ async function printInfo(octokit: Octokit, previousVersion: string, nextVersion:
     }
   }
 
-  console.log(`\n## Review 'axlib-migrations' repo\n`);
-  console.log(`https://github.com/apopiak/axlib-migrations#frame-migrations`);
+  console.log(`\n## Review 'substrate-migrations' repo\n`);
+  console.log(`https://github.com/apopiak/substrate-migrations#frame-migrations`);
   console.log(`\nThis repository contains a list of FRAME-related migrations which might be`);
   console.log(`relevant to Axtend.`);
 }

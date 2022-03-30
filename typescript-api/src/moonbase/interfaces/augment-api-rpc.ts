@@ -1041,7 +1041,7 @@ declare module "@axia/rpc-core/types/jsonrpc" {
        */
       reservedPeers: AugmentedRpc<() => Observable<Vec<Text>>>;
       /**
-       * Resets the log filter to Axlib defaults
+       * Resets the log filter to Substrate defaults
        */
       resetLogFilter: AugmentedRpc<() => Observable<Null>>;
       /**

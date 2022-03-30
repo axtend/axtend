@@ -5,7 +5,7 @@ with the app or the API.
 
 ## ⚠️Warning: Types deprecation⚠️
 
-Following runtime upgrade 900 (include axlib v0.9.11), types are now retrieved from the node, in
+Following runtime upgrade 900 (include substrate v0.9.11), types are now retrieved from the node, in
 a **camelCase** format
 
 A **new version** has been released `axtend-types-bundle@2.0.0`.

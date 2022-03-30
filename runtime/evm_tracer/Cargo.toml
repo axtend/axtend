@@ -15,7 +15,7 @@ evm-tracing-events = { path = "../../primitives/rpc/evm-tracing-events", default
 ] }
 axtend-primitives-ext = { path = "../../primitives/ext", default-features = false }
 
-# Axlib
+# Substrate
 codec = { package = "parity-scale-codec", version = "2.2", default-features = false }
 sp-core = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 sp-io = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }

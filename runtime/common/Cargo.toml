@@ -18,7 +18,7 @@ pallet-migrations = { path = "../../pallets/migrations", default-features = fals
 allychain-staking = { path = "../../pallets/allychain-staking", default-features = false }
 xcm-transactor = { path = "../../pallets/xcm-transactor", optional = true, default-features = false }
 
-# Axlib
+# Substrate
 frame-support = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 frame-system = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 pallet-collective = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }

@@ -13,7 +13,7 @@ ethereum-types = { version = "0.12.1", default-features = false }
 # Axtend
 evm-tracing-events = { path = "../rpc/evm-tracing-events", default-features = false }
 
-# Axlib
+# Substrate
 codec = { package = "parity-scale-codec", version = "2.2", default-features = false }
 sp-externalities = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 sp-runtime-interface = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }

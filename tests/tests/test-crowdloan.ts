@@ -6,7 +6,7 @@ import { Account } from "web3-core";
 import { stringToU8a } from "@axia/util";
 import type { SubmittableExtrinsic } from "@axia/api/promise/types";
 import { blake2AsHex, randomAsHex } from "@axia/util-crypto";
-import { createBlockWithExtrinsic } from "../util/axlib-rpc";
+import { createBlockWithExtrinsic } from "../util/substrate-rpc";
 
 import {
   GENESIS_ACCOUNT,
@@ -52,7 +52,7 @@ export const getAccountPayable = async (
 describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -104,7 +104,7 @@ describeDevAxtend("Crowdloan", (context) => {
 describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -166,7 +166,7 @@ describeDevAxtend("Crowdloan", (context) => {
 describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -223,7 +223,7 @@ describeDevAxtend("Crowdloan", (context) => {
 describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -275,7 +275,7 @@ describeDevAxtend("Crowdloan", (context) => {
 describeDevAxtend("Crowdloan", (context) => {
   let genesisAccount: KeyringPair, sudoAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     genesisAccount = await keyring.addFromUri(GENESIS_ACCOUNT_PRIVATE_KEY, null, "ethereum");
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
@@ -319,7 +319,7 @@ describeDevAxtend("Crowdloan", (context) => {
 describeDevAxtend("Crowdloan", (context) => {
   let alithAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     alithAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
@@ -373,7 +373,7 @@ describeDevAxtend("Crowdloan", (context) => {
   let numberOfAccounts: number = 1000; // min 2
   let largInput: [string, string, bigint][];
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     numberOfAccounts = Number(
       (await context.axiaApi.consts.crowdloanRewards.maxInitContributors) as any
     );
@@ -433,7 +433,7 @@ describeDevAxtend("Crowdloan", (context) => {
   let numberOfAccounts: number = 1000; // min 2
   let largInput: [string, string, bigint][];
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     // We shouldnt be able to register as many accounts unless we do it in batches
     numberOfAccounts = Number(
       (await context.axiaApi.consts.crowdloanRewards.maxInitContributors) as any
@@ -507,7 +507,7 @@ describeDevAxtend("Crowdloan", (context) => {
 describeDevAxtend("Crowdloan", (context) => {
   let sudoAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });
@@ -593,7 +593,7 @@ describeDevAxtend("Crowdloan", (context) => {
 describeDevAxtend("Crowdloan", (context) => {
   let sudoAccount: KeyringPair;
 
-  before("Setup genesis account for axlib", async () => {
+  before("Setup genesis account for substrate", async () => {
     const keyring = new Keyring({ type: "ethereum" });
     sudoAccount = await keyring.addFromUri(ALITH_PRIV_KEY, null, "ethereum");
   });

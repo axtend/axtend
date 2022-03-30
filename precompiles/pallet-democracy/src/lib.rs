@@ -206,14 +206,14 @@ where
 	}
 
 	// This method is not yet implemented because it depends on
-	// https://github.com/paritytech/axlib/pull/9565 which has been merged into Axlib
+	// https://github.com/axiatech/substrate/pull/9565 which has been merged into Substrate
 	// master, but is not on the release branches that we are following
 	fn ongoing_referendum_info(
 		_input: &mut EvmDataReader,
 		gasometer: &mut Gasometer,
 	) -> EvmResult<PrecompileOutput> {
 		Err(gasometer
-			.revert("This method depends on https://github.com/paritytech/axlib/pull/9565"))
+			.revert("This method depends on https://github.com/axiatech/substrate/pull/9565"))
 		// let mut gasometer = Gasometer::new(target_gas);
 
 		// // Bound check
@@ -258,17 +258,17 @@ where
 	}
 
 	// This method is not yet implemented because it depends on
-	// https://github.com/paritytech/axlib/pull/9565 which has been merged into Axlib
+	// https://github.com/axiatech/substrate/pull/9565 which has been merged into Substrate
 	// master, but is not on the release branches that we are following
 	fn finished_referendum_info(
 		_input: &mut EvmDataReader,
 		gasometer: &mut Gasometer,
 	) -> EvmResult<PrecompileOutput> {
 		Err(gasometer
-			.revert("This method depends on https://github.com/paritytech/axlib/pull/9565"))
+			.revert("This method depends on https://github.com/axiatech/substrate/pull/9565"))
 	}
 
-	// The dispatchable wrappers are next. They dispatch a Axlib inner Call.
+	// The dispatchable wrappers are next. They dispatch a Substrate inner Call.
 	fn propose(
 		input: &mut EvmDataReader,
 		gasometer: &mut Gasometer,

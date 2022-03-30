@@ -37,7 +37,7 @@ pub trait ManualXcmApi {
 	///
 	/// Cumulus Allychain System seems to have a constraint that at most one hrmp message will be
 	/// sent on a channel per block. At least that's what this comment implies:
-	/// https://github.com/paritytech/cumulus/blob/c308c01b/pallets/allychain-system/src/lib.rs#L204
+	/// https://github.com/axiatech/cumulus/blob/c308c01b/pallets/allychain-system/src/lib.rs#L204
 	/// Neither this RPC, nor the mock inherent data provider make any attempt to enforce this
 	/// constraint. In fact, violating it may be useful for testing.
 	/// The method accepts a sending paraId and a bytearray representing an arbitrary message as

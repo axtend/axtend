@@ -10,7 +10,7 @@ version = "0.1.0"
 [dependencies]
 environmental = { version = "1.1.2", default-features = false }
 
-# Axlib
+# Substrate
 codec = { package = "parity-scale-codec", version = "2.2", default-features = false }
 sp-runtime-interface = { git = "https://github.com/axtend/axlib", branch = "axlib", default-features = false }
 

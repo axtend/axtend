@@ -1,4 +1,4 @@
-// Copyright 2021 Parity Technologies (UK) Ltd.
+// Copyright 2021 Axia Technologies (UK) Ltd.
 // This file is part of Axia.
 
 // Axia is free software: you can redistribute it and/or modify
@@ -108,7 +108,7 @@ parameter_types! {
 	pub const ApprovalDeposit: Balance = 0;
 	pub const AssetsStringLimit: u32 = 50;
 	/// Key = 32 bytes, Value = 36 bytes (32+1+1+1+1)
-	// https://github.com/paritytech/axlib/blob/069917b/frame/assets/src/lib.rs#L257L271
+	// https://github.com/axiatech/substrate/blob/069917b/frame/assets/src/lib.rs#L257L271
 	pub const MetadataDepositBase: Balance = 0;
 	pub const MetadataDepositPerByte: Balance = 0;
 	pub const ExecutiveBody: BodyId = BodyId::Executive;
@@ -431,7 +431,7 @@ impl mock_msg_queue::Config for Runtime {
 	type XcmExecutor = XcmExecutor<XcmConfig>;
 }
 
-// Pallet to cover test cases for change https://github.com/paritytech/cumulus/pull/831
+// Pallet to cover test cases for change https://github.com/axiatech/cumulus/pull/831
 #[frame_support::pallet]
 pub mod mock_statemine_prefix {
 	use super::*;

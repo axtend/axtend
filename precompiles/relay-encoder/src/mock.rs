@@ -20,7 +20,7 @@ use super::*;
 use frame_support::traits::Everything;
 use frame_support::{construct_runtime, parameter_types};
 use pallet_evm::{
-	AddressMapping, EnsureAddressNever, EnsureAddressRoot, PrecompileSet, AxlibBlockHashMapping,
+	AddressMapping, EnsureAddressNever, EnsureAddressRoot, PrecompileSet, SubstrateBlockHashMapping,
 };
 use parity_scale_codec::{Decode, Encode, MaxEncodedLen};
 use serde::{Deserialize, Serialize};
@@ -215,7 +215,7 @@ impl pallet_evm::Config for Runtime {
 	type ChainId = ();
 	type OnChargeTransaction = ();
 	type BlockGasLimit = ();
-	type BlockHashMapping = AxlibBlockHashMapping<Self>;
+	type BlockHashMapping = SubstrateBlockHashMapping<Self>;
 	type FindAuthor = ();
 	type WeightInfo = ();
 }
